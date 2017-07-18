@@ -1,9 +1,18 @@
 cmake_minimum_required (VERSION 3.6)
 
-project (VulkanEngine)
+project(VulkanEngine)
+
+##########################################################
+##################### CMAKE MODULES ######################
+##########################################################
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 
+##########################################################
+####################### LIBRARIES ########################
+##########################################################
+
+# Libraries path
 set(LIB_DIR ${PROJECT_SOURCE_DIR}/libs)
 
 # GLFW Library
@@ -20,12 +29,27 @@ include_directories(${LIB_DIR}/glm)
 find_package(Vulkan REQUIRED)
 include_directories(${VULKAN_INCLUDE_DIR})
 
-# Folders considered for compilation
-add_subdirectory(src)
+##########################################################
+####################### SOURCES ##########################
+##########################################################
 
-####################################
-####################################
-####################################
+file(GLOB SRC_LIST "src/*.h" "src/*.cpp" "src/*.hpp")
+add_executable(${PROJECT_NAME} ${SRC_LIST} ${RES_DIR})
+target_link_libraries(${PROJECT_NAME} ${VULKAN_LIBRARY} glfw)
+
+##########################################################
+###################### RESOURCES #########################
+##########################################################
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/resources
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>/resources)
+
+##########################################################
+####################### DOXYGEN ##########################
+##########################################################
+
 # First we can indicate the documentation build as an option and set it to ON by default
 option(BUILD_DOC "Build documentation" ON)
 
