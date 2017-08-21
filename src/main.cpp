@@ -1,5 +1,7 @@
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
+#include "vk_instance_manager.h"
+#include "vk_device.h"
 
 #include <iostream>
 #include <fstream>
@@ -125,6 +127,8 @@ private:
 	}
 
 	void mainLoop() {
+		vkr::VulkanInstanceManager test(std::vector<char *>());
+
 		while (!glfwWindowShouldClose(window)) {
 			glfwPollEvents();
 			drawFrame();

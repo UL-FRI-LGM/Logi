@@ -33,7 +33,9 @@ include_directories(${VULKAN_INCLUDE_DIR})
 ####################### SOURCES ##########################
 ##########################################################
 
-file(GLOB SRC_LIST "src/*.h" "src/*.cpp" "src/*.hpp")
+include_directories(${PROJECT_SOURCE_DIR}/include)
+
+file(GLOB SRC_LIST "src/*.cpp")
 add_executable(${PROJECT_NAME} ${SRC_LIST} ${RES_DIR})
 target_link_libraries(${PROJECT_NAME} ${VULKAN_LIBRARY} glfw)
 
