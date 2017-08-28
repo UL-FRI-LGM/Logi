@@ -5,8 +5,8 @@
 
 namespace vkr {
 
-VulkanDevice::VulkanDevice(VkPhysicalDevice device, uint32_t device_idx)
-	: physical_device_(device), logical_device_(nullptr), device_idx_(device_idx), graphics_family_idx_(UINT_MAX) {
+VulkanDevice::VulkanDevice(VkPhysicalDevice device)
+	: physical_device_(device), logical_device_(nullptr), initialized_(false){
 	this->physical_device_ = device;
 
 	// Get device meta data.
@@ -23,15 +23,23 @@ VulkanDevice::VulkanDevice(VkPhysicalDevice device, uint32_t device_idx)
 	vkGetPhysicalDeviceQueueFamilyProperties(device, &queue_family_count, queue_family_properties.data());
 
 	// Check if the device has graphics capabilities.
-	for (size_t i = 0; i < queue_family_properties.size(); i++) {
-		if (queue_family_properties[i].queueCount > 0 && queue_family_properties[i].queueFlags & VK_QUEUE_GRAPHICS_BIT) {
-			graphics_capabilities_ = true;
+	for (uint32_t i = 0u; i < queue_family_properties.size(); i++) {
+		// Disregard queue families with 0 queues.
+		if (queue_family_properties[i].queueCount == 0u) {
+			continue;
+		}
 
-			// Add new queue entry.
-			graphics_queue_families_.push_back(QueueInfo());
-			QueueInfo &queue_info = graphics_queue_families_.back();
-			queue_info.family_idx = i;
-			queue_info.queues.resize(queue_family_properties[i].queueCount, nullptr);
+		std::shared_ptr<VulkanQueueFamily> queue_family = std::make_shared<VulkanQueueFamily>(*this, i, queue_family_properties[i]);
+
+		// Sort queue families in queue families with graphical and compute only capabilities
+		if (queue_family_properties[i].queueFlags & VK_QUEUE_GRAPHICS_BIT) {
+			graphics_queue_families_.push_back(queue_family);
+		}
+		else if (queue_family_properties[i].queueFlags & VK_QUEUE_COMPUTE_BIT) {
+			compute_queue_families_.push_back(queue_family);
+		}
+		else if (queue_family_properties[i].queueFlags & VK_QUEUE_TRANSFER_BIT) {
+			transfer_queue_families_.push_back(queue_family);
 		}
 	}
 
@@ -43,7 +51,23 @@ VulkanDevice::VulkanDevice(VkPhysicalDevice device, uint32_t device_idx)
 	vkEnumerateDeviceExtensionProperties(device, nullptr, &extension_count, available_extensions_.data());
 }
 
-bool VulkanDevice::supportsExtensions(const std::vector<const char*> &extensions) {
+VulkanDevice::~VulkanDevice() {
+	if (initialized_) {
+		waitIdle();
+	}
+
+	// Clear the queues.
+	graphics_queue_families_.clear();
+	compute_queue_families_.clear();
+	transfer_queue_families_.clear();
+
+	// Destroy the logical device.
+	if (initialized_) {
+		vkDestroyDevice(logical_device_, nullptr);
+	}
+}
+
+bool VulkanDevice::supportsExtensions(const std::vector<const char*> &extensions) const {
 	std::set<std::string> extensions_set(extensions.begin(), extensions.end());
 
 	// Cross the queried extensions off the list.
@@ -54,10 +78,11 @@ bool VulkanDevice::supportsExtensions(const std::vector<const char*> &extensions
 	return extensions_set.empty();
 }
 
-bool VulkanDevice::initialize(const std::vector<const char*> &requested_extensions) {
+
+bool VulkanDevice::initializeLogicalDevice(const std::vector<const char*> &requested_extensions, const VkPhysicalDeviceFeatures *requested_features) {
 	// Check if the requested extensions are supported.
-	// NOTE: We currently support only devices with graphics_capabilities
-	if (!supportsExtensions(requested_extensions) && hasGraphicsCapabilities()) {
+	// NOTE: Device must have at least compute capabilities.
+	if (!supportsExtensions(requested_extensions) && hasComputeCapabilities()) {
 		return false;
 	}
 
@@ -71,40 +96,78 @@ bool VulkanDevice::initialize(const std::vector<const char*> &requested_extensio
 
 	// Construct create infos for queues.
 	std::vector<VkDeviceQueueCreateInfo> queue_create_infos;
-
 	float queue_priority = 1.0f;
-	for (QueueInfo &queueFamily : graphics_queue_families_) {
 
+	auto addQueueCreateInfo = [&] (std::shared_ptr<VulkanQueueFamily> &queue_family) {
 		VkDeviceQueueCreateInfo create_info = {};
 		create_info.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
 		create_info.pNext = nullptr;
-		create_info.queueFamilyIndex = queueFamily.family_idx;
-		create_info.queueCount = queueFamily.queues.size();
+		create_info.queueFamilyIndex = queue_family->getFamilyIdx();
+		create_info.queueCount = queue_family->getQueueCount();
 		create_info.pQueuePriorities = &queue_priority;
 
 		queue_create_infos.push_back(create_info);
-	}
+	};
 
-	// Construct create info for logical device
-	// Create logical device
-	const char* extensions[] = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
-	uint32_t numExtensions = sizeof(extensions) / sizeof(extensions[0]);
+	// Build create info structures for both graphics and compute queue families.
+	std::for_each(graphics_queue_families_.begin(), graphics_queue_families_.end(), addQueueCreateInfo);
+	std::for_each(compute_queue_families_.begin(), compute_queue_families_.end(), addQueueCreateInfo);
+	std::for_each(transfer_queue_families_.begin(), transfer_queue_families_.end(), addQueueCreateInfo);
 
+	// Construct logical device
 	VkDeviceCreateInfo device_info;
 	device_info.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 	device_info.pNext = nullptr;
 	device_info.flags = 0;
-	device_info.queueCreateInfoCount = (uint32_t) queue_create_infos.size();
+	device_info.queueCreateInfoCount = static_cast<uint32_t>(queue_create_infos.size());
 	device_info.pQueueCreateInfos = queue_create_infos.data();
-	device_info.pEnabledFeatures = &mDeviceFeatures;
-	device_info.enabledExtensionCount = requested_extensions.size();
+	device_info.pEnabledFeatures = requested_features;
+	device_info.enabledExtensionCount = static_cast<uint32_t>(requested_extensions.size());
 	device_info.ppEnabledExtensionNames = requested_extensions.data();
-	device_info.enabledLayerCount = 0;
+	// Note: Device validation layers are deprecated.
+	device_info.enabledLayerCount = 0u;
 	device_info.ppEnabledLayerNames = nullptr;
 
-	// TODO
+	// Try to create logical device.
+	if (vkCreateDevice(physical_device_, &device_info, nullptr, &logical_device_) != VK_SUCCESS) {
+		throw std::runtime_error("Failed to create logical device!");
+	}
 
+	// Initialize queues.
+	auto queueFamilyInit = [] (std::shared_ptr<VulkanQueueFamily> &queue_family) { queue_family->initializeQueues(); };
 
+	std::for_each(graphics_queue_families_.begin(), graphics_queue_families_.end(), queueFamilyInit);
+	std::for_each(compute_queue_families_.begin(), compute_queue_families_.end(), queueFamilyInit);
+	std::for_each(transfer_queue_families_.begin(), transfer_queue_families_.end(), queueFamilyInit);
+
+	return true;
+}
+
+void VulkanDevice::waitIdle() const {
+	VkResult result = vkDeviceWaitIdle(logical_device_);
+	if (result != VK_SUCCESS) {
+		throw std::runtime_error("Device wait idle error!");
+	}
+}
+
+bool VulkanDevice::hasGraphicsCapabilities() const {
+	return graphics_queue_families_.size() > 0;
+}
+
+bool VulkanDevice::hasComputeCapabilities() const {
+	return (compute_queue_families_.size() > 0) || (graphics_queue_families_.size() > 0);
+}
+
+VkPhysicalDeviceFeatures VulkanDevice::getSupportedFeatures() const {
+	return device_features_;
+};
+
+VkPhysicalDevice VulkanDevice::getPhysicalDeviceHandle() {
+	return physical_device_;
+}
+
+VkDevice VulkanDevice::getLogicalDeviceHandle() {
+	return logical_device_;
 }
 
 }

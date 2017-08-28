@@ -75,7 +75,7 @@ private:
 	VkInstance instance;
 	VkDebugReportCallbackEXT callback;
 	VkSurfaceKHR surface;
-
+	
 	VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
 	VkDevice device;
 
@@ -127,7 +127,8 @@ private:
 	}
 
 	void mainLoop() {
-		vkr::VulkanInstanceManager test(std::vector<char *>());
+		std::vector<char *> extension_names;
+		vkr::VulkanInstanceManager test(extension_names);
 
 		while (!glfwWindowShouldClose(window)) {
 			glfwPollEvents();

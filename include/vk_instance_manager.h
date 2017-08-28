@@ -11,6 +11,8 @@
 #ifndef _VKR_VK_INSTANCE_MANAGER_H_
 #define _VKR_VK_INSTANCE_MANAGER_H_
 
+#include <vk_device.h>
+
 #include <vulkan/vulkan.hpp>
 #include <cstdint>
 #include <vector>
@@ -34,15 +36,16 @@ public:
 	*/
 	~VulkanInstanceManager();
 
-protected:
 	/**
-	 * @brief Checks if all of the requested validation layers are supported.
-	 * 
-	 * @param layers Vector containing names of the requested validation layers.
-	 * @return true if all the layers are supported.
-	 */
+	* @brief Checks if all of the requested validation layers are supported.
+	*
+	* @param layers Vector containing names of the requested validation layers.
+	* @return true if all the layers are supported.
+	*/
 	static bool checkValidationLayerSupport(const std::vector<char*> layers);
 
+protected:
+	
 	/**
 	 * @brief Sets up validation layers debug callback if validation is enabled. 
 	 */
@@ -56,7 +59,9 @@ private:
 
 	VkInstance vk_instance_;  ///< Vulkan instance.
 
-	VkDebugReportCallbackEXT callback;  ///< Debug callback.
+	VkDebugReportCallbackEXT dbg_callback_;  ///< Debug callback.
+
+	std::vector<std::shared_ptr<VulkanDevice>> devices_; ///< Vector containing detected devices.
 };
 
 }

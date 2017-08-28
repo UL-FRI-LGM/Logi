@@ -63,6 +63,22 @@ VulkanInstanceManager::VulkanInstanceManager(std::vector<char *> extension_names
 	if (globals::kEnableValidation) {
 		setupDebugCallback();
 	}
+
+	// Fetch supported devices
+	uint32_t device_count = 0;
+	vkEnumeratePhysicalDevices(vk_instance_, &device_count, nullptr);
+
+	// No supported device was found.
+	if (device_count == 0) {
+		return;
+	}
+
+	std::vector<VkPhysicalDevice> physical_devices(device_count);
+	vkEnumeratePhysicalDevices(vk_instance_, &device_count, physical_devices.data());
+
+	for (const auto &p_dev : physical_devices) {
+		devices_.push_back(std::make_shared<VulkanDevice>(p_dev));
+	}
 }
 
 VulkanInstanceManager::~VulkanInstanceManager() {
@@ -71,7 +87,7 @@ VulkanInstanceManager::~VulkanInstanceManager() {
 		auto delete_debug_fn = (PFN_vkDestroyDebugReportCallbackEXT)vkGetInstanceProcAddr(vk_instance_, "vkDestroyDebugReportCallbackEXT");
 
 		if (delete_debug_fn != nullptr) {
-			delete_debug_fn(vk_instance_, callback, nullptr);
+			delete_debug_fn(vk_instance_, dbg_callback_, nullptr);
 		}
 	}
 
@@ -121,7 +137,7 @@ void VulkanInstanceManager::setupDebugCallback() {
 	auto setup_debug_fn = (PFN_vkCreateDebugReportCallbackEXT)vkGetInstanceProcAddr(vk_instance_, "vkCreateDebugReportCallbackEXT");
 
 	if (setup_debug_fn != nullptr) {
-		setup_debug_fn(vk_instance_, &createInfo, nullptr, &callback);
+		setup_debug_fn(vk_instance_, &createInfo, nullptr, &dbg_callback_);
 	}
 	else {
 		throw std::runtime_error("Failed to set up debug callback!");
