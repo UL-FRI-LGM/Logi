@@ -65,7 +65,6 @@ void VulkanSwapChain::initialize(VulkanDevice *device, VkSurfaceKHR surface, uin
 	}
 
 	// Retrieve VkImages.
-	int32_t image_count{};
 	std::vector<VkImage> swapchain_images;
 
 	vkGetSwapchainImagesKHR(device_->getLogicalDeviceHandle(), swapchain_, &image_count, nullptr);

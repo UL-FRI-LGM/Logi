@@ -1,0 +1,17 @@
+{
+  "shader_list": {
+    "base_vert": {
+      "path": "./shader_base_vert.spv",
+      "type": "vertex"
+    },
+    "base_frag": {
+      "path": "./shader_base_frag.spv",
+      "type": "fragment"
+    }
+  },
+  "programs": {
+    "base_prog": {
+      "shaders": [ "base_vert", "base_frag" ]
+    }
+  }
+}

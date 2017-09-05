@@ -34,6 +34,9 @@ include_directories(${VULKAN_INCLUDE_DIR})
 # VMA - Vulkan Memory Allocator
 include_directories(${LIB_DIR}/vma)
 
+# Json parser
+include_directories(${LIB_DIR}/json)
+
 ##########################################################
 ####################### SOURCES ##########################
 ##########################################################
