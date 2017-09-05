@@ -6,7 +6,7 @@
 namespace vkr {
 
 VulkanDevice::VulkanDevice(VkPhysicalDevice device)
-	: physical_device_(device), logical_device_(nullptr), initialized_(false){
+	: physical_device_(device), logical_device_(nullptr), mem_allocator_(nullptr), initialized_(false){
 	this->physical_device_ = device;
 
 	// Get device meta data.
@@ -29,17 +29,17 @@ VulkanDevice::VulkanDevice(VkPhysicalDevice device)
 			continue;
 		}
 
-		std::shared_ptr<VulkanQueueFamily> queue_family = std::make_shared<VulkanQueueFamily>(*this, i, queue_family_properties[i]);
+		std::unique_ptr<VulkanQueueFamily> queue_family = std::make_unique<VulkanQueueFamily>(*this, i, queue_family_properties[i]);
 
 		// Sort queue families in queue families with graphical and compute only capabilities
 		if (queue_family_properties[i].queueFlags & VK_QUEUE_GRAPHICS_BIT) {
-			graphics_queue_families_.push_back(queue_family);
+			graphics_queue_families_.push_back(std::move(queue_family));
 		}
 		else if (queue_family_properties[i].queueFlags & VK_QUEUE_COMPUTE_BIT) {
-			compute_queue_families_.push_back(queue_family);
+			compute_queue_families_.push_back(std::move(queue_family));
 		}
 		else if (queue_family_properties[i].queueFlags & VK_QUEUE_TRANSFER_BIT) {
-			transfer_queue_families_.push_back(queue_family);
+			transfer_queue_families_.push_back(std::move(queue_family));
 		}
 	}
 
@@ -52,7 +52,7 @@ VulkanDevice::VulkanDevice(VkPhysicalDevice device)
 }
 
 VulkanDevice::~VulkanDevice() {
-	if (initialized_) {
+	if (logical_device_ != nullptr) {
 		waitIdle();
 	}
 
@@ -62,8 +62,12 @@ VulkanDevice::~VulkanDevice() {
 	transfer_queue_families_.clear();
 
 	// Destroy the logical device.
-	if (initialized_) {
+	if (logical_device_ != nullptr) {
 		vkDestroyDevice(logical_device_, nullptr);
+	}
+
+	if (mem_allocator_ != nullptr) {
+		vmaDestroyAllocator(mem_allocator_);
 	}
 }
 
@@ -133,12 +137,23 @@ bool VulkanDevice::initializeLogicalDevice(const std::vector<const char*> &reque
 		throw std::runtime_error("Failed to create logical device!");
 	}
 
+	// Try to create memory allocator.
+	VmaAllocatorCreateInfo allocator_info = {};
+	allocator_info.physicalDevice = physical_device_;
+	allocator_info.device = logical_device_;
+
+	if (vmaCreateAllocator(&allocator_info, &mem_allocator_) != VK_SUCCESS) {
+		throw std::runtime_error("Failed to create memory allocator for the device!");
+	}
+
 	// Initialize queues.
 	auto queueFamilyInit = [] (std::shared_ptr<VulkanQueueFamily> &queue_family) { queue_family->initializeQueues(); };
 
 	std::for_each(graphics_queue_families_.begin(), graphics_queue_families_.end(), queueFamilyInit);
 	std::for_each(compute_queue_families_.begin(), compute_queue_families_.end(), queueFamilyInit);
 	std::for_each(transfer_queue_families_.begin(), transfer_queue_families_.end(), queueFamilyInit);
+
+	initialized_ = true;
 
 	return true;
 }

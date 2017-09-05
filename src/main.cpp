@@ -1,5 +1,7 @@
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
+#define VMA_IMPLEMENTATION
+#include <vk_mem_alloc.h>
 #include "vk_instance_manager.h"
 #include "vk_device.h"
 

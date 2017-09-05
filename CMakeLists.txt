@@ -31,6 +31,9 @@ include_directories(${LIB_DIR}/glm)
 find_package(Vulkan REQUIRED)
 include_directories(${VULKAN_INCLUDE_DIR})
 
+# VMA - Vulkan Memory Allocator
+include_directories(${LIB_DIR}/vma)
+
 ##########################################################
 ####################### SOURCES ##########################
 ##########################################################

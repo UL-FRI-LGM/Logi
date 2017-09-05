@@ -11,15 +11,12 @@ VulkanSwapChain& VulkanSwapChain::getInstance() {
 	return instance;
 }
 
-void VulkanSwapChain::initialize(std::weak_ptr<VulkanDevice> device_weak, VkSurfaceKHR surface, uint32_t width, uint32_t height, bool vsync, VkFormat color_format, VkFormat depth_format) {
+void VulkanSwapChain::initialize(VulkanDevice *device, VkSurfaceKHR surface, uint32_t width, uint32_t height, bool vsync, VkFormat color_format, VkFormat depth_format) {
 	if (initialized_) {
 		throw std::runtime_error("Tried to reinitialize swap-chain without cleaning up.");
 	}
-	else if (device_weak.expired()) {
-		throw std::runtime_error("Received expired device pointer.");
-	}
 
-	device_ = device_weak.lock();
+	device_ = device;
 
 	// Fetch support details.
 	SwapChainSupportDetails support_details = querySwapChainSupport(device_->getPhysicalDeviceHandle(), surface);
@@ -67,6 +64,17 @@ void VulkanSwapChain::initialize(std::weak_ptr<VulkanDevice> device_weak, VkSurf
 		throw std::runtime_error("Failed to create swap-chain!");
 	}
 
+	// Retrieve VkImages.
+	int32_t image_count{};
+	std::vector<VkImage> swapchain_images;
+
+	vkGetSwapchainImagesKHR(device_->getLogicalDeviceHandle(), swapchain_, &image_count, nullptr);
+	swapchain_images.resize(image_count);
+	vkGetSwapchainImagesKHR(device_->getLogicalDeviceHandle(), swapchain_, &image_count, swapchain_images.data());
+
+	for (auto &image : swapchain_images) {
+		textures_.push_back(std::make_unique<VulkanTexture>(image, device_, false));
+	}
 }
 
 VkPresentModeKHR VulkanSwapChain::pickSwapchainPresentMode(const std::vector<VkPresentModeKHR> &supported_present_modes, bool vsync) {

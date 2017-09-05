@@ -13,6 +13,7 @@
 
 #include <vulkan/vulkan.hpp>
 #include "vk_device.h"
+#include "vk_texture.h"
 #include <vector>
 
 namespace vkr {
@@ -45,7 +46,6 @@ public:
 	 */
 	void operator=(VulkanSwapChain const&) = delete;
 
-
 	/**
 	 * @brief Initializes swap chain for the given device and surface.
 	 *
@@ -56,7 +56,7 @@ public:
 	 * @param color_format Color format used in presentation images.
 	 * @param depth_format Depth format used for depth buffer. If VK_FORMAT_UNDEFINED depth buffer wont be used.
 	 */
-	void initialize(std::weak_ptr<VulkanDevice> device_weak, VkSurfaceKHR surface, uint32_t width, uint32_t height, bool vsync, VkFormat color_format, VkFormat depth_format);
+	void initialize(VulkanDevice *device, VkSurfaceKHR surface, uint32_t width, uint32_t height, bool vsync, VkFormat color_format, VkFormat depth_format);
 
 	/**
 	 * @brief Retrieves device capabilities, supported formats and supported present modes for the given surface.
@@ -87,9 +87,10 @@ private:
 	 */
 	VkSurfaceFormatKHR pickSwapchainSurfaceFormat(const std::vector<VkSurfaceFormatKHR> &supported_surface_formats);
 
-	bool initialized_;
-	std::shared_ptr<VulkanDevice> device_;
-	VkSwapchainKHR swapchain_;
+	bool initialized_; ///< True if the swap-chain is initialized.
+	VulkanDevice *device_; ///< Owner device.
+	VkSwapchainKHR swapchain_; ///< Swap-chain handle
+	std::vector<std::unique_ptr<VulkanTexture>> textures_; ///< Vulkan texture.
 };
 
 }

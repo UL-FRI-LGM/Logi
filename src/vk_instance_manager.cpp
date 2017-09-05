@@ -9,7 +9,7 @@
 */
 
 #include "vk_instance_manager.h"
-#include <vulkan/vulkan.hpp>
+#include <vulkan/vulkan.h>
 #include <cstdint>
 #include <stdexcept>
 #include <iostream>
@@ -77,7 +77,7 @@ VulkanInstanceManager::VulkanInstanceManager(std::vector<char *> extension_names
 	vkEnumeratePhysicalDevices(vk_instance_, &device_count, physical_devices.data());
 
 	for (const auto &p_dev : physical_devices) {
-		devices_.push_back(std::make_shared<VulkanDevice>(p_dev));
+		devices_.push_back(std::make_unique<VulkanDevice>(p_dev));
 	}
 }
 
@@ -95,7 +95,7 @@ VulkanInstanceManager::~VulkanInstanceManager() {
 }
 
 bool VulkanInstanceManager::checkValidationLayerSupport(const std::vector<char*> layers) {
-	size_t layerCount;
+	uint32_t layerCount;
 	vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
 
 	// Fetch validation layers

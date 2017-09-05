@@ -15,6 +15,7 @@
 #include "vk_queue_family.h"
 #include <array>
 #include <vector>
+#include <vk_mem_alloc.h>
 
 namespace vkr {
 
@@ -113,6 +114,8 @@ private:
 	std::vector<std::shared_ptr<VulkanQueueFamily>> graphics_queue_families_; ///< Vector containing all queue families that have graphics capabilities (and implicitly compute capabilities).
 	std::vector<std::shared_ptr<VulkanQueueFamily>> compute_queue_families_; ///< Vector containing all queue families that have compute capabilities but not graphics capabilities.
 	std::vector<std::shared_ptr<VulkanQueueFamily>> transfer_queue_families_; ///< Vector containing all queue families that have dedicated transfer capabilities.
+
+	VmaAllocator mem_allocator_; ///< Device memory allocator.
 
 	bool initialized_; ///< True if the logical device was successfully initialized.
 };

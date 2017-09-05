@@ -10,7 +10,7 @@ namespace vkr {
 VulkanQueueFamily::VulkanQueueFamily(VulkanDevice &owner_device, uint32_t family_idx, VkQueueFamilyProperties properties) 
 	: owner_device_(owner_device), family_idx_(family_idx), properties_(properties) {
 
-	queues_.resize(properties_.queueCount, nullptr);
+	queues_.reserve(properties_.queueCount);
 }
 
 void VulkanQueueFamily::initializeQueues() {
@@ -19,7 +19,7 @@ void VulkanQueueFamily::initializeQueues() {
 		VkQueue queue;
 		vkGetDeviceQueue(owner_device_.getLogicalDeviceHandle(), family_idx_, i, &queue);
 
-		queues_[i] = std::make_shared<VulkanQueue>(*this, queue);
+		queues_.push_back(std::make_unique<VulkanQueue>(*this, queue));
 	}
 }
 

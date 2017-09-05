@@ -11,7 +11,7 @@
 #ifndef _VKR_VK_INSTANCE_MANAGER_H_
 #define _VKR_VK_INSTANCE_MANAGER_H_
 
-#include <vk_device.h>
+#include "vk_device.h"
 
 #include <vulkan/vulkan.hpp>
 #include <cstdint>
@@ -61,7 +61,7 @@ private:
 
 	VkDebugReportCallbackEXT dbg_callback_;  ///< Debug callback.
 
-	std::vector<std::shared_ptr<VulkanDevice>> devices_; ///< Vector containing detected devices.
+	std::vector<std::unique_ptr<VulkanDevice>> devices_; ///< Vector containing detected devices.
 };
 
 }

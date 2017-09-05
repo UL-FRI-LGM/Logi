@@ -72,7 +72,7 @@ private:
 	uint32_t family_idx_; ///< Index of the queue family.
 	VkQueueFamilyProperties properties_; ///< Queue family properties.
 
-	std::vector<std::shared_ptr<VulkanQueue>> queues_; ///< Vulkan queues.
+	std::vector<std::unique_ptr<VulkanQueue>> queues_; ///< Vulkan queues.
 
 	VkCommandPool command_pool_; ///< Queue family command pool.
 };
