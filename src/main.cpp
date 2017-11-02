@@ -10,7 +10,7 @@
 #include <vector>
 #include <cstring>
 #include <set>
-#include <VulkanDevice.h>
+#include "RendererBase.h"
 
 const int WIDTH = 800;
 const int HEIGHT = 600;
@@ -909,7 +909,18 @@ private:
 	}
 };
 
+static VKAPI_ATTR VkBool32 VKAPI_CALL debugtest(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType, uint64_t obj, size_t location, int32_t code, const char* layerPrefix, const char* msg, void* userData) {
+	std::cerr << "validation layer: " << msg << std::endl;
+
+	return VK_FALSE;
+}
+
 int main() {
+	{
+		vkr::RendererBase rb({});
+		rb.setupDebugCallback(vk::DebugReportFlagBitsEXT::eError | vk::DebugReportFlagBitsEXT::eWarning | vk::DebugReportFlagBitsEXT::eInformation, &debugtest);
+	}
+
 	HelloTriangleApplication app;
 
 	try {

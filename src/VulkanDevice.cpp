@@ -9,10 +9,12 @@
 #include "VulkanDevice.h"
 #include <vulkan\vulkan.hpp>
 
+namespace vkr {
+
 VulkanDevice::VulkanDevice(vk::PhysicalDevice& device)
-	: physical_device_(device), logical_device_(nullptr), device_properties_(), device_features_(), memory_properties_(), 
-	  available_extensions_(), enabled_features_(), queue_family_properties_(), queue_families_(), initialized_(false) {
-	
+	: physical_device_(device), logical_device_(nullptr), device_properties_(), device_features_(), memory_properties_(),
+	available_extensions_(), enabled_features_(), queue_family_properties_(), queue_families_(), initialized_(false) {
+
 	physical_device_ = device;
 
 	// Fetch device meta data.
@@ -145,7 +147,7 @@ void VulkanDevice::initialize(const vk::PhysicalDeviceFeatures& features, const 
 	device_create_info.queueCreateInfoCount = static_cast<uint32_t>(queue_create_infos.size());;
 	device_create_info.pQueueCreateInfos = queue_create_infos.data();
 	device_create_info.pEnabledFeatures = &features;
-	
+
 	if (extensions.size() > 0) {
 		device_create_info.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
 		device_create_info.ppEnabledExtensionNames = extensions.data();
@@ -197,3 +199,5 @@ VulkanDevice::~VulkanDevice() {
 		logical_device_.destroy();
 	}
 }
+
+} /// !namespace vkr

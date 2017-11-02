@@ -14,6 +14,8 @@
 #include <set>
 #include <string>
 
+namespace vkr {
+
 /**
  * @brief Structure used to specify queues configuration during initialization of VulkanDevice.
  */
@@ -35,9 +37,10 @@ struct QueueConfig {
 	 * @param dedicated_transfer If true, a dedicated transfer queue will be used.
 	 */
 	QueueConfig(uint32_t graphic_count, uint32_t compute_count, bool dedicated_transfer)
-		: graphic_count(graphic_count), compute_count(compute_count), dedicated_transfer(dedicated_transfer) {}
+		: graphic_count(graphic_count), compute_count(compute_count), dedicated_transfer(dedicated_transfer) {
+	}
 };
- 
+
 /**
  * @brief Used to address specific VulkanDevice QueueFamily.
  */
@@ -64,7 +67,7 @@ public:
 	 * @brief Initialize Vulkan logical device with the given features and extensions enabled and initialize queues based
 	 * on the given configuration.
 	 * @throw std::runtime_error if anything goes wrong during initialization.
-	 * 
+	 *
 	 * @param features Requested features.
 	 * @param extensions Requested extensions.
 	 * @param queue_config Queue configuration.
@@ -100,7 +103,7 @@ public:
 protected:
 	/**
 	 * @brief Generate Vulkan queue create infos based on the give queue_config configuration.
-	 * @throw std::runtime_error if bad configuration is given. 
+	 * @throw std::runtime_error if bad configuration is given.
 	 *
 	 * @param queue_config Queue configuration structure.
 	 * @return Vector containing queue create infos.
@@ -128,7 +131,7 @@ private:
 		/**
 		 * @brief Default constructor.
 		 */
-		QueueFamily(): family_index(UINT32_MAX), queue_count(0), queues(), command_pool(nullptr) {};
+		QueueFamily() : family_index(UINT32_MAX), queue_count(0), queues(), command_pool(nullptr) {};
 	};
 
 	const float kDefaultQueuePriority = 0.0f;
@@ -142,7 +145,7 @@ private:
 	vk::PhysicalDeviceFeatures device_features_; ///< Structure describing the fine-grained features that can be supported by an implementation.
 	vk::PhysicalDeviceMemoryProperties memory_properties_; ///< Structure specifying physical device memory properties.
 	std::set<std::string> available_extensions_; ///< List of supported extensions.
-	
+
 	// Enabled features.
 	vk::PhysicalDeviceFeatures enabled_features_; ///< Features enabled during logical device creation.
 
@@ -152,5 +155,7 @@ private:
 
 	bool initialized_; ///< Is device initialized.
 };
+
+} /// !namespace vkr
 
 #endif // !VULKAN_DEVICE_H_

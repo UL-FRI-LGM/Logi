@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.6)
 
 project(VulkanEngine)
 
-option(BUILD_DOC "Build documentation" OFF)
+option(BUILD_DOC "Build documentation" ON)
 
 ##########################################################
 ##################### CMAKE MODULES ######################
@@ -70,12 +70,10 @@ if (BUILD_DOC)
 		configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
 		message("Doxygen build started")
 
-		file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/doc_doxygen)
-
 		# Note the option ALL which allows to build the docs together with the application
 		add_custom_target(doc_doxygen ALL
 			COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-			WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/src
+			WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include
 			COMMENT "Generating API documentation with Doxygen"
 			VERBATIM)
 	else (DOXYGEN_FOUND)
