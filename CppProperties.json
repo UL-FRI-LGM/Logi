@@ -7,8 +7,11 @@
       "name": "x86-Debug",
       "includePath": [
         "${env.INCLUDE}",
-        "c:\\VulkanSDK\\1.0.51.0\\Include",
-        "c:\\Primoz\\Projekti\\VulkanRenderer\\include"
+        "${env.VULKAN_SDK}\\Include",
+        "${projectRoot}\\include",
+        "${projectRoot}\\libs\\glm",
+        "${projectRoot}\\libs\\glfw\\include",
+        "${projectRoot}\\libs\\vma"
       ],
       "defines": [
         "WIN32",
@@ -25,7 +28,11 @@
       "name": "x86-Release",
       "includePath": [
         "${env.INCLUDE}",
-        "c:\\Primoz\\Projekti\\VulkanRenderer\\include"
+        "${env.VULKAN_SDK}\\Include",
+        "${projectRoot}\\include",
+        "${projectRoot}\\libs\\glm",
+        "${projectRoot}\\libs\\glfw\\include",
+        "${projectRoot}\\libs\\vma"
       ],
       "defines": [
         "WIN32",
@@ -42,8 +49,11 @@
       "name": "x64-Debug",
       "includePath": [
         "${env.INCLUDE}",
-        "c:\\VulkanSDK\\1.0.51.0\\Include",
-        "c:\\Primoz\\Projekti\\VulkanRenderer\\include"
+        "${env.VULKAN_SDK}\\Include",
+        "${projectRoot}\\include",
+        "${projectRoot}\\libs\\glm",
+        "${projectRoot}\\libs\\glfw\\include",
+        "${projectRoot}\\libs\\vma"
       ],
       "defines": [
         "WIN32",
@@ -60,7 +70,11 @@
       "name": "x64-Release",
       "includePath": [
         "${env.INCLUDE}",
-        "c:\\Primoz\\Projekti\\VulkanRenderer\\include"
+        "${env.VULKAN_SDK}\\Include",
+        "${projectRoot}\\include",
+        "${projectRoot}\\libs\\glm",
+        "${projectRoot}\\libs\\glfw\\include",
+        "${projectRoot}\\libs\\vma"
       ],
       "defines": [
         "WIN32",

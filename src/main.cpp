@@ -2,8 +2,6 @@
 #include <GLFW/glfw3.h>
 #define VMA_IMPLEMENTATION
 #include <vk_mem_alloc.h>
-#include "vk_instance_manager.h"
-#include "vk_device.h"
 
 #include <iostream>
 #include <fstream>
@@ -12,6 +10,7 @@
 #include <vector>
 #include <cstring>
 #include <set>
+#include <VulkanDevice.h>
 
 const int WIDTH = 800;
 const int HEIGHT = 600;
@@ -129,8 +128,6 @@ private:
 	}
 
 	void mainLoop() {
-		std::vector<char *> extension_names;
-		vkr::VulkanInstanceManager test(extension_names);
 
 		while (!glfwWindowShouldClose(window)) {
 			glfwPollEvents();
