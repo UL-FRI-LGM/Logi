@@ -98,6 +98,39 @@ public:
 	 */
 	uint32_t getQueueCount(const QueueFamilyType type) const;
 
+	/**
+	 * @brief Retrieve queue family properties.
+	 *
+	 * @return Vector containing queue family properties structures.
+	 */
+	const std::vector<vk::QueueFamilyProperties>& getQueueFamilyProperties() const;
+
+	/**
+	 * @brief Retrieve physical device handle.
+	 *
+	 * @return Physical device handle.
+	 */
+	vk::PhysicalDevice getPhysicalDeviceHandle() const;
+	
+	/**
+	 * @brief Retrieve logical device handle.
+	 *
+	 * @return Logical device handle.
+	 */
+	vk::Device getLogicalDeviceHandle() const;
+
+	/**
+	 * @brief Retrieve index of the family of the given type.
+	 *
+	 * @return Index of the queue family or UINT32_MAX if the queue of the given type is not supported.
+	 */
+	uint32_t getFamilyIndex(QueueFamilyType type) const;
+
+	/**
+	 * @brief Check if the device is initialized.
+	 */
+	bool initialized() const;
+
 	~VulkanDevice();
 
 protected:

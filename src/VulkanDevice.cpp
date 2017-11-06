@@ -21,8 +21,7 @@ VulkanDevice::VulkanDevice(vk::PhysicalDevice& device)
 	physical_device_.getProperties(&device_properties_);
 	physical_device_.getFeatures(&device_features_);
 	physical_device_.getMemoryProperties(&memory_properties_);
-
-
+	
 	// Fetch available extensions.
 	uint32_t extension_count;
 	physical_device_.enumerateDeviceExtensionProperties(nullptr, &extension_count, nullptr);
@@ -191,6 +190,26 @@ bool VulkanDevice::supportsQueueFamily(const QueueFamilyType type) const {
 
 uint32_t VulkanDevice::getQueueCount(const QueueFamilyType type) const {
 	return queue_families_[static_cast<size_t>(type)].queue_count;
+}
+
+const std::vector<vk::QueueFamilyProperties>& VulkanDevice::getQueueFamilyProperties() const {
+	return queue_family_properties_;
+}
+
+vk::PhysicalDevice VulkanDevice::getPhysicalDeviceHandle() const {
+	return physical_device_;
+}
+
+vk::Device VulkanDevice::getLogicalDeviceHandle() const {
+	return logical_device_;
+}
+
+uint32_t VulkanDevice::getFamilyIndex(QueueFamilyType type) const {
+	return queue_families_[static_cast<size_t>(type)].family_index;
+}
+
+bool VulkanDevice::initialized() const {
+	return initialized_;
 }
 
 VulkanDevice::~VulkanDevice() {

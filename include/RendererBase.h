@@ -36,7 +36,7 @@ private:
 	vk::Instance vk_instance_;
 	std::vector<std::unique_ptr<VulkanDevice>> devices_;
 
-	std::vector<VkDebugReportCallbackEXT> debug_callbacks_;
+	std::vector<vk::DebugReportCallbackEXT> debug_callbacks_;
 
 };
 

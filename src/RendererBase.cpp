@@ -109,15 +109,15 @@ void RendererBase::setupDebugCallback(const vk::DebugReportFlagsEXT& flags, PFN_
 	createInfo.pfnCallback = callback;
 
 	// Setup callback.
-	auto setup_callback_fn = (PFN_vkCreateDebugReportCallbackEXT) vk_instance_.getProcAddr("vkCreateDebugReportCallbackEXT");
+	auto setup_callback_fn = reinterpret_cast<PFN_vkCreateDebugReportCallbackEXT>(vk_instance_.getProcAddr("vkCreateDebugReportCallbackEXT"));
 
 	// Check if the setup callback function was successfully retrieved.
 	if (setup_callback_fn == nullptr) {
 		throw std::runtime_error("Failed to set up debug callback!");
 	}
 
-	debug_callbacks_.push_back(nullptr);
-	setup_callback_fn(vk_instance_, &static_cast<VkDebugReportCallbackCreateInfoEXT>(createInfo), nullptr, &debug_callbacks_.back());
+	debug_callbacks_.push_back({});
+	setup_callback_fn((VkInstance) vk_instance_, &static_cast<VkDebugReportCallbackCreateInfoEXT>(createInfo), nullptr, (VkDebugReportCallbackEXT*) &debug_callbacks_.back());
 }
 
 RendererBase::~RendererBase() {
@@ -132,7 +132,7 @@ RendererBase::~RendererBase() {
 		}
 
 		for (auto& callback : debug_callbacks_) {
-			destroy_callback_fn(vk_instance_, callback, nullptr);
+			destroy_callback_fn((VkInstance) vk_instance_, (VkDebugReportCallbackEXT) callback, nullptr);
 		}
 	}
 }

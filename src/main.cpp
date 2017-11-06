@@ -10,6 +10,7 @@
 #include <vector>
 #include <cstring>
 #include <set>
+#include <SwapChain.h>
 #include "RendererBase.h"
 
 const int WIDTH = 800;
@@ -919,6 +920,7 @@ int main() {
 	{
 		vkr::RendererBase rb({});
 		rb.setupDebugCallback(vk::DebugReportFlagBitsEXT::eError | vk::DebugReportFlagBitsEXT::eWarning | vk::DebugReportFlagBitsEXT::eInformation, &debugtest);
+		vkr::SwapChain testSC;
 	}
 
 	HelloTriangleApplication app;
