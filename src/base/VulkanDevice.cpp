@@ -6,7 +6,7 @@
 * This code is licensed under the MIT license (MIT) (http://opensource.org/licenses/MIT)
 */
 
-#include "VulkanDevice.h"
+#include "base/VulkanDevice.h"
 #include <vulkan\vulkan.hpp>
 
 namespace vkr {

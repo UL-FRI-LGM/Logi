@@ -24,7 +24,6 @@ const std::vector<char *> kValidationLayers{
 
 constexpr VkDebugReportFlagBitsEXT kDebugFlags = static_cast<VkDebugReportFlagBitsEXT>(VK_DEBUG_REPORT_ERROR_BIT_EXT | VK_DEBUG_REPORT_WARNING_BIT_EXT); ///< Types of messages that will be handled by the debug callback.
 
-
 }
 }
 

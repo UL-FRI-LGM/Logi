@@ -1,0 +1,13 @@
+{
+  "modules_list": [ "base" ],
+  "base": [
+    {
+      "stage": "vertex",
+      "path": "./shader_base.frag"
+    },
+    {
+      "stage": "fragment",
+      "path": "./shader_base.frag"
+    }
+  ]
+}

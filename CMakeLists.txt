@@ -2,6 +2,15 @@ cmake_minimum_required (VERSION 3.6)
 
 project(VulkanEngine)
 
+# C++ 17 SUPPORT
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+if(MSVC)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
+endif(MSVC)
+
 option(BUILD_DOC "Build documentation" ON)
 
 ##########################################################
@@ -31,6 +40,9 @@ include_directories(${LIB_DIR}/glm)
 find_package(Vulkan REQUIRED)
 include_directories(${VULKAN_INCLUDE_DIR})
 
+# Json
+include_directories(${LIB_DIR}/json)
+
 # VMA - Vulkan Memory Allocator
 include_directories(${LIB_DIR}/vma)
 
@@ -40,7 +52,7 @@ include_directories(${LIB_DIR}/vma)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
-file(GLOB SRC_LIST "src/*.cpp")
+file(GLOB_RECURSE SRC_LIST "src/*.cpp")
 add_executable(${PROJECT_NAME} ${SRC_LIST} ${RES_DIR})
 target_link_libraries(${PROJECT_NAME} ${VULKAN_LIBRARY} glfw)
 

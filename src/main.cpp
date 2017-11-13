@@ -10,8 +10,9 @@
 #include <vector>
 #include <cstring>
 #include <set>
-#include <SwapChain.h>
-#include "RendererBase.h"
+#include <base/SwapChain.h>
+#include "base/RendererBase.h"
+#include "base/ShaderManager.h"
 
 const int WIDTH = 800;
 const int HEIGHT = 600;
@@ -918,6 +919,7 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL debugtest(VkDebugReportFlagsEXT flags, VkD
 
 int main() {
 	{
+		vkr::ShaderManager("./resources/shaders");
 		vkr::RendererBase rb({});
 		rb.setupDebugCallback(vk::DebugReportFlagBitsEXT::eError | vk::DebugReportFlagBitsEXT::eWarning | vk::DebugReportFlagBitsEXT::eInformation, &debugtest);
 		vkr::SwapChain testSC;

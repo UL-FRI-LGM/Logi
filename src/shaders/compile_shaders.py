@@ -1,17 +1,24 @@
 import subprocess
 import os
+import pathlib
+import shutil
 
-directory = os.fsencode('./')
+directory = os.fsencode('.\\')
 
-for file in os.listdir(directory):
-    filename = os.fsdecode(file)
-    filenameSplitted = os.path.splitext(filename)
+if not os.path.exists(os.path.join(directory, b"shaders_map.json")):
+	print ("Warning: shaders_map.json does not exist!")
+else:
+	shutil.copy(".\\shaders_map.json", "./../../resources/shaders/")
 
-    if filename.endswith(".frag"):
-        result = subprocess.run(['glslangValidator', '-V', filename, '-o', './../../resources/shaders/' + filenameSplitted[0] + '_frag.spv'], stdout=subprocess.PIPE)
-        print(result.stdout)
-    elif filename.endswith(".vert"):
-        result = subprocess.run(['glslangValidator', '-V', filename, '-o', './../../resources/shaders/' + filenameSplitted[0] + '_vert.spv'], stdout=subprocess.PIPE)
-        print(result.stdout)
+for root, directories, files in os.walk(directory):
 
-    
+	for file in files:
+		full_path = os.path.join(root, file).decode("utf-8")
+		filename = os.path.splitext(file)[0]
+
+		if file.decode("utf-8").endswith(".frag"):
+			pathlib.Path("./../../resources/shaders/" + root.decode("utf-8")).mkdir(parents=True, exist_ok=True)
+			subprocess.run(['glslangValidator', '-V', full_path, '-o', './../../resources/shaders/' + os.path.join(root, filename).decode("utf-8") + '_frag.spv'])
+		elif file.decode("utf-8").endswith(".vert"):
+			pathlib.Path("./../../resources/shaders/" + root.decode("utf-8")).mkdir(parents=True, exist_ok=True)
+			subprocess.run(['glslangValidator', '-V', full_path, '-o', './../../resources/shaders/' + os.path.join(root, filename).decode("utf-8") + '_vert.spv'])

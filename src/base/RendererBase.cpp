@@ -6,7 +6,8 @@
 * This code is licensed under the MIT license (MIT) (http://opensource.org/licenses/MIT)
 */
 
-#include "RendererBase.h"
+#include "base/RendererBase.h"
+#include <algorithm>
 #include "GlobalConfig.h"
 #include "DebugUtils.h"
 
@@ -118,6 +119,23 @@ void RendererBase::setupDebugCallback(const vk::DebugReportFlagsEXT& flags, PFN_
 
 	debug_callbacks_.push_back({});
 	setup_callback_fn((VkInstance) vk_instance_, &static_cast<VkDebugReportCallbackCreateInfoEXT>(createInfo), nullptr, (VkDebugReportCallbackEXT*) &debug_callbacks_.back());
+}
+
+std::vector<std::pair<int32_t, VulkanDevice*>> RendererBase::retrieveDevices(const std::function<int32_t(VulkanDevice*)>& f_score) {
+	std::vector<std::pair<int32_t, VulkanDevice*>> devices_p;
+	
+	// Fetch raw pointers to devices.
+	for (auto& it : devices_) {
+		int32_t score = f_score(it.get());
+		if (score >= 0) {
+			devices_p.push_back(std::make_pair(score, it.get()));
+		}
+	}
+
+	// Sort the pointers based on the score.
+	std::sort(devices_p.begin(), devices_p.end(), [](const std::pair<int32_t, VulkanDevice*> &a, const std::pair<int32_t, VulkanDevice*> &b) { return a.first > b.first; });
+
+	return devices_p;
 }
 
 RendererBase::~RendererBase() {

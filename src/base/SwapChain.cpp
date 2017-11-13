@@ -6,7 +6,7 @@
 * This code is licensed under the MIT license (MIT) (http://opensource.org/licenses/MIT)
 */
 
-#include "SwapChain.h"
+#include "base/SwapChain.h"
 #include <assert.h>
 
 namespace vkr {
