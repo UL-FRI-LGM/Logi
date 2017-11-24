@@ -13,28 +13,57 @@
 #include <map>
 #include <vulkan/vulkan.hpp>
 #include <filesystem>
+#include "VulkanDevice.h"
 
 namespace vkr {
 namespace filesystem = std::experimental::filesystem;  ///< todo(plavric): Change when the filesystem will no longer be experimental.
 
 class ShaderManager {
 public:
-	ShaderManager(const std::string& shaders_path);
+	/**
+	 * @brief Load the shaders meta data stored in "shader_map.json" file. This file is expected in the root of the given directory.
+	 * @throw std::runtime_error if something goes wrong while loading shaders meta data.
+	 *
+	 * @param shaders_path Path to the directory containing "shader_map.json" file.
+	 */
+	void loadShaders(const std::string& shaders_path);
 
-protected:
-	void loadShaders();
-
-	vk::ShaderModule getShaderModule(const std::string& name);
+	/**
+	 * @brief Retrieve shader pipeline stages. When first called it generates and caches the pipeline stages. All subsequent calls
+	 * return cached pipeline stages.
+	 *
+	 * @param device Device for which the pipeline stages will be generated.
+	 * @return Vector containing shader pipeline stages.
+	 */
+	std::vector<vk::PipelineShaderStageCreateInfo> getShaderPipelineStages(VulkanDevice& device, const std::string& pipeline_id);
 private:
+	/**
+	 * @brief Internal structure holding the shader module meta data.
+	 */
 	struct ShaderModuleInfo {
-		std::vector<std::pair<vk::ShaderStageFlagBits, filesystem::path>> shaders;
-		std::map<vk::PhysicalDevice, vk::ShaderModule> compiled_modules;
+		vk::ShaderStageFlagBits stage; ///< Pipeline stage of the shader.
+		filesystem::path shader_path; ///< Path to the SPIR shader file.
 	};
 
-	static std::vector<char> readShaderFile(const filesystem::path& filename);
+	/**
+	 * @brief Read raw data from the SPIRV shader file located on the given path.
+	 * @throw std::runtime_error if something hoes wrong while reading the shader file.
+	 * 
+	 * @param path Path to the SPIRV shader file.
+	 * @return Raw SPIRV shader data.
+	 */
+	std::vector<char> readShaderFile(const filesystem::path& path);
 
-	filesystem::path shaders_path_;
-	std::map<std::string, ShaderModuleInfo> shader_modules_;
+	/**
+	 * @brief Create shader module for the given device using the given code.
+	 *
+	 * @param device Target device.
+	 * @param code Shader code used to create the module.
+	 * @return Created shader module.
+	 */
+	vk::ShaderModule createShaderModule(vk::Device& device, const std::vector<char>& code);
+
+	std::map<std::string, std::vector<ShaderModuleInfo>> shader_pipelines_; ///< Maps pipeline id to the shader pipeline modules meta data.
 };
 
 }

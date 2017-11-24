@@ -12,6 +12,7 @@
 #include <vulkan\vulkan.hpp>
 #include <vector>
 #include <set>
+#include <map>
 #include <string>
 
 namespace vkr {
@@ -55,6 +56,9 @@ enum class QueueFamilyType {
  * @brief Wraps Vulkan physical and logical device.
  */
 class VulkanDevice {
+// Because shader modules are bound to the device and need to be destroyed before the device shade we cache shader inside VulkanDevice.
+friend class ShaderManager;
+
 public:
 	/**
 	 * @brief Default constructor. Wraps the given physical device and queries its properties.
@@ -127,6 +131,27 @@ public:
 	uint32_t getFamilyIndex(QueueFamilyType type) const;
 
 	/**
+	 * @brief Retrieve device base properties.
+	 *
+	 * @return Device base properties.
+	 */
+	const vk::PhysicalDeviceProperties& properties() const;
+
+	/**
+	 * @brief Retrieve device features.
+	 *
+	 * @return Device features.
+	 */
+	const vk::PhysicalDeviceFeatures& features() const;
+
+	/**
+	 * @brief Retrieve device memory properties.
+	 *
+	 * @return Device memory properties.
+	 */
+	const vk::PhysicalDeviceMemoryProperties& memoryProperties() const;
+
+	/**
 	 * @brief Check if the device is initialized.
 	 */
 	bool initialized() const;
@@ -185,6 +210,9 @@ private:
 	// Queue families.
 	std::vector<vk::QueueFamilyProperties> queue_family_properties_; ///< Queue family properties structures.
 	QueueFamily queue_families_[3]; ///< Queue family data.
+
+	// Used by the friend ShaderManager to cache shaders.
+	std::map<std::string, std::vector<vk::PipelineShaderStageCreateInfo>> f_shader_cache_;
 
 	bool initialized_; ///< Is device initialized.
 };

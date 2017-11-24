@@ -1,5 +1,4 @@
 {
-  "modules_list": [ "base" ],
   "base": [
     {
       "stage": "vertex",

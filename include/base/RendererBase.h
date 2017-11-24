@@ -20,7 +20,7 @@ namespace vkr {
 
 class RendererBase {
 public:
-	RendererBase(std::vector<char *> extension_names);
+	RendererBase(std::vector<char *>& global_extensions);
 
 	/**
 	* @brief Check if the given validation layers are supported.
@@ -36,7 +36,7 @@ public:
 
 protected:
 	/**
-	 * @brief Retrieves raw pointers to the devices soreted based on the score assigned to them by the give function.
+	 * @brief Retrieves raw pointers to the devices sorted based on the score assigned to them by the give function.
 	 * If the function assigns negative score to the device it will be omitted.
 	 *
 	 * @param f_score Vulkan device scoring function.

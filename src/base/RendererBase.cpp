@@ -13,7 +13,7 @@
 
 namespace vkr {
 
-RendererBase::RendererBase(std::vector<char *> extension_names) {
+RendererBase::RendererBase(std::vector<char *>& global_extensions) {
 	// Create ApplicationInfo using the global configuration.
 	vk::ApplicationInfo appInfo{};
 	appInfo.pApplicationName = global_config::kAppName;
@@ -28,11 +28,11 @@ RendererBase::RendererBase(std::vector<char *> extension_names) {
 	// Initialize requested extensions.
 	// Add debug report extension if the validation is enabled.
 	if (debug_utils::kEnableValidation) {
-		extension_names.push_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
+		global_extensions.push_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
 	}
 
-	createInfo.enabledExtensionCount = static_cast<uint32_t>(extension_names.size());
-	createInfo.ppEnabledExtensionNames = extension_names.data();
+	createInfo.enabledExtensionCount = static_cast<uint32_t>(global_extensions.size());
+	createInfo.ppEnabledExtensionNames = global_extensions.data();
 
 	// Check if requested validation layers are supported.
 	if (debug_utils::kEnableValidation && !checkValidationLayerSupport(debug_utils::kValidationLayers)) {

@@ -13,6 +13,7 @@
 #include <base/SwapChain.h>
 #include "base/RendererBase.h"
 #include "base/ShaderManager.h"
+#include "volumetric/VolumetricRenderer.h"
 
 const int WIDTH = 800;
 const int HEIGHT = 600;
@@ -919,9 +920,13 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL debugtest(VkDebugReportFlagsEXT flags, VkD
 
 int main() {
 	{
-		vkr::ShaderManager("./resources/shaders");
-		vkr::RendererBase rb({});
-		rb.setupDebugCallback(vk::DebugReportFlagBitsEXT::eError | vk::DebugReportFlagBitsEXT::eWarning | vk::DebugReportFlagBitsEXT::eInformation, &debugtest);
+		vkr::ShaderManager sm;
+		sm.loadShaders("./resources/shaders");
+		std::vector<char*> global_extensions;
+		std::vector<char*> device_extensions{ VK_KHR_SWAPCHAIN_EXTENSION_NAME };
+		vk::PhysicalDeviceFeatures features;
+		vkr::VolumetricRender renderer(global_extensions, device_extensions, features);
+		//rb.setupDebugCallback(vk::DebugReportFlagBitsEXT::eError | vk::DebugReportFlagBitsEXT::eWarning | vk::DebugReportFlagBitsEXT::eInformation, &debugtest);
 		vkr::SwapChain testSC;
 	}
 

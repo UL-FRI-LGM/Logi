@@ -1,3 +1,6 @@
+#include "..\..\include\base\VulkanDevice.h"
+#include "..\..\include\base\VulkanDevice.h"
+#include "..\..\include\base\VulkanDevice.h"
 /*
 * Vulkan Device class.
 *
@@ -208,6 +211,18 @@ uint32_t VulkanDevice::getFamilyIndex(QueueFamilyType type) const {
 	return queue_families_[static_cast<size_t>(type)].family_index;
 }
 
+const vk::PhysicalDeviceProperties & VulkanDevice::properties() const {
+	return device_properties_;
+}
+
+const vk::PhysicalDeviceFeatures & VulkanDevice::features() const {
+	return device_features_;
+}
+
+const vk::PhysicalDeviceMemoryProperties & VulkanDevice::memoryProperties() const {
+	return memory_properties_;
+}
+
 bool VulkanDevice::initialized() const {
 	return initialized_;
 }
@@ -215,6 +230,20 @@ bool VulkanDevice::initialized() const {
 VulkanDevice::~VulkanDevice() {
 	// If logical device was created, destroy it.
 	if (logical_device_) {
+		// Destroy cached shader modules.
+		for (auto& shader_pipeline : f_shader_cache_) {
+			for (vk::PipelineShaderStageCreateInfo& shader_stage : shader_pipeline.second) {
+				logical_device_.destroyShaderModule(shader_stage.module);
+			}
+		}
+
+		// Destroy command pools
+		for (QueueFamily& queue_family : queue_families_) {
+			if (queue_family.family_index != UINT32_MAX && queue_family.queue_count > 0) {
+				logical_device_.destroyCommandPool(queue_family.command_pool);
+			}
+		}
+
 		logical_device_.destroy();
 	}
 }
