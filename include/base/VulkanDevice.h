@@ -56,10 +56,9 @@ enum class QueueFamilyType {
  * @brief Wraps Vulkan physical and logical device.
  */
 class VulkanDevice {
-// Because shader modules are bound to the device and need to be destroyed before the device shade we cache shader inside VulkanDevice.
-friend class ShaderManager;
-
 public:
+	friend class ProgramManager;
+
 	/**
 	 * @brief Default constructor. Wraps the given physical device and queries its properties.
 	 *
@@ -211,10 +210,31 @@ private:
 	std::vector<vk::QueueFamilyProperties> queue_family_properties_; ///< Queue family properties structures.
 	QueueFamily queue_families_[3]; ///< Queue family data.
 
-	// Used by the friend ShaderManager to cache shaders.
-	std::map<std::string, std::vector<vk::PipelineShaderStageCreateInfo>> f_shader_cache_;
+	// List of cached shaders.
+	std::vector<vk::ShaderModule> cached_shaders_;
 
 	bool initialized_; ///< Is device initialized.
+
+	/**
+	 * @brief Create the shader module using the given code and caches it.
+	 *
+	 * @param code Shader code.
+	 * @return size_t Index of the shader module (this index is used to fetch the shader).
+	 */
+	size_t createShaderModule(const std::vector<uint32_t>& code);
+
+	/**
+	 * @brief Retrieve the shader module with the given index. If the shader module is not found it returns a null handle.
+	 *
+	 * @param index Shader module index.
+	 * @return Shader module.
+	 */
+	vk::ShaderModule getShaderModule(size_t index);
+
+	/**
+	 * @brief Destroy all cached shader modules (this invalidate all indices previously outputted by createShaderModule).
+	 */
+	void clearShaderModules();
 };
 
 } /// !namespace vkr

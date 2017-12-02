@@ -21,7 +21,7 @@ class VolumetricRender : public RendererBase {
 public:
 	VolumetricRender(std::vector<char *>& global_extensions, std::vector<char *>& device_extensions, vk::PhysicalDeviceFeatures& features);
 
-private:
+//private:
 	VulkanDevice* gpu_;
 };
 

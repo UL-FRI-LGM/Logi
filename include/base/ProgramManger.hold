@@ -18,7 +18,7 @@
 namespace vkr {
 namespace filesystem = std::experimental::filesystem;  ///< todo(plavric): Change when the filesystem will no longer be experimental.
 
-class ShaderManager {
+class ProgramManager {
 public:
 	/**
 	 * @brief Load the shaders meta data stored in "shader_map.json" file. This file is expected in the root of the given directory.
@@ -36,7 +36,14 @@ public:
 	 * @return Vector containing shader pipeline stages.
 	 */
 	std::vector<vk::PipelineShaderStageCreateInfo> getShaderPipelineStages(VulkanDevice& device, const std::string& pipeline_id);
+
 private:
+	struct Shader {
+		vk::ShaderStageFlagBits flag; ///< Pipeline stage of the shader.
+		filesystem::path shader_path; ///< Path to the SPIR shader file.
+
+	};
+
 	/**
 	 * @brief Internal structure holding the shader module meta data.
 	 */
@@ -52,7 +59,7 @@ private:
 	 * @param path Path to the SPIRV shader file.
 	 * @return Raw SPIRV shader data.
 	 */
-	std::vector<char> readShaderFile(const filesystem::path& path);
+	std::vector<uint32_t> readShaderFile(const filesystem::path& path);
 
 	/**
 	 * @brief Create shader module for the given device using the given code.
@@ -61,7 +68,7 @@ private:
 	 * @param code Shader code used to create the module.
 	 * @return Created shader module.
 	 */
-	vk::ShaderModule createShaderModule(vk::Device& device, const std::vector<char>& code);
+	vk::ShaderModule createShaderModule(vk::Device& device, const std::vector<uint32_t>& code);
 
 	std::map<std::string, std::vector<ShaderModuleInfo>> shader_pipelines_; ///< Maps pipeline id to the shader pipeline modules meta data.
 };

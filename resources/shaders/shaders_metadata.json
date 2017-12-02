@@ -1,0 +1,26 @@
+{
+    "__note_shaders__": "Ids map to the ids used in pipelines.shaders array.",
+    "shaders": [
+        {
+            "id": "base_vert",
+            "path": "./base_vert.spv",
+            "stage": "vertex"
+        },
+        {
+            "id": "base_frag",
+            "path": "./base_frag.spv",
+            "stage": "fragment"
+        }
+    ],
+
+    "__note_pipelines__": "Order of the pipeline programs must match the indices defined in ShaderPrograms.h",
+    "pipelines": [
+        {
+            "id": "base",
+            "shaders": [
+                "base_vert",
+                "base_frag"
+            ]
+        }
+    ]
+}

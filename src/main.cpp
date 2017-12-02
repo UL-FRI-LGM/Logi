@@ -12,7 +12,8 @@
 #include <set>
 #include <base/SwapChain.h>
 #include "base/RendererBase.h"
-#include "base/ShaderManager.h"
+#include "base/ProgramManager.h"
+#include <glm\glm.hpp>
 #include "volumetric/VolumetricRenderer.h"
 
 const int WIDTH = 800;
@@ -918,10 +919,20 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL debugtest(VkDebugReportFlagsEXT flags, VkD
 	return VK_FALSE;
 }
 
+struct Vertex {
+	glm::vec2 pos;
+	glm::vec3 color;
+};
+
 int main() {
 	{
-		vkr::ShaderManager sm;
-		sm.loadShaders("./resources/shaders");
+		std::cout << sizeof(Vertex) << std::endl;
+		std::cout << offsetof(Vertex, pos) << std::endl;
+
+		vkr::ProgramManager& pm = vkr::ProgramManager::instance();
+		pm.initialize("./resources/shaders");
+		pm.loadShaders(NULL);
+
 		std::vector<char*> global_extensions;
 		std::vector<char*> device_extensions{ VK_KHR_SWAPCHAIN_EXTENSION_NAME };
 		vk::PhysicalDeviceFeatures features;

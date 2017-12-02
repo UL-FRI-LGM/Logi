@@ -5,11 +5,11 @@ import shutil
 
 directory = os.fsencode('.\\')
 
-if not os.path.exists(os.path.join(directory, b"shaders_map.json")):
-	print ("Warning: shaders_map.json does not exist!")
+if not os.path.exists(os.path.join(directory, b"shaders_metadata.json")):
+	print ("Warning: shaders_metadata.json does not exist!")
 else:
 	pathlib.Path("..\\..\\resources\\shaders\\").mkdir(parents=True, exist_ok=True)
-	shutil.copyfile(".\\shaders_map.json", "..\\..\\resources\\shaders\\shaders_map.json")
+	shutil.copyfile(".\\shaders_metadata.json", "..\\..\\resources\\shaders\\shaders_metadata.json")
 
 for root, directories, files in os.walk(directory):
 

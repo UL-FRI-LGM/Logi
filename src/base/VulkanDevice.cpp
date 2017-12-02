@@ -1,6 +1,4 @@
-#include "..\..\include\base\VulkanDevice.h"
-#include "..\..\include\base\VulkanDevice.h"
-#include "..\..\include\base\VulkanDevice.h"
+#include "base\VulkanDevice.h"
 /*
 * Vulkan Device class.
 *
@@ -223,6 +221,34 @@ const vk::PhysicalDeviceMemoryProperties & VulkanDevice::memoryProperties() cons
 	return memory_properties_;
 }
 
+size_t VulkanDevice::createShaderModule(const std::vector<uint32_t>& code) {
+	if (!initialized_) {
+		throw std::runtime_error("Tried to create shader module for uninitialized device.");
+	}
+
+	// Create and cache the shader.
+	vk::ShaderModuleCreateInfo createInfo{};
+	createInfo.codeSize = code.size();
+	createInfo.pCode = code.data();
+	cached_shaders_.push_back(logical_device_.createShaderModule(createInfo));
+
+	// Return the shader index.
+	return cached_shaders_.size() - 1;
+}
+
+vk::ShaderModule VulkanDevice::getShaderModule(size_t index) {
+	return cached_shaders_[index];
+}
+
+void VulkanDevice::clearShaderModules() {
+	// Destroy the cached shader.
+	for (vk::ShaderModule& sm : cached_shaders_) {
+		logical_device_.destroyShaderModule(sm);
+	}
+
+	cached_shaders_.clear();
+}
+
 bool VulkanDevice::initialized() const {
 	return initialized_;
 }
@@ -231,11 +257,7 @@ VulkanDevice::~VulkanDevice() {
 	// If logical device was created, destroy it.
 	if (logical_device_) {
 		// Destroy cached shader modules.
-		for (auto& shader_pipeline : f_shader_cache_) {
-			for (vk::PipelineShaderStageCreateInfo& shader_stage : shader_pipeline.second) {
-				logical_device_.destroyShaderModule(shader_stage.module);
-			}
-		}
+		clearShaderModules();
 
 		// Destroy command pools
 		for (QueueFamily& queue_family : queue_families_) {

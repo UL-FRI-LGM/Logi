@@ -14,7 +14,6 @@
 #include <vector>
 #include <functional>
 #include "base/VulkanDevice.h"
-#include "base/ShaderManager.h"
 
 namespace vkr {
 

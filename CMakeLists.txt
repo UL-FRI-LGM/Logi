@@ -46,6 +46,8 @@ include_directories(${LIB_DIR}/json)
 # VMA - Vulkan Memory Allocator
 include_directories(${LIB_DIR}/vma)
 
+add_subdirectory(${LIB_DIR}/spirv-cross)
+
 ##########################################################
 ####################### SOURCES ##########################
 ##########################################################
@@ -54,7 +56,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 
 file(GLOB_RECURSE SRC_LIST "src/*.cpp")
 add_executable(${PROJECT_NAME} ${SRC_LIST} ${RES_DIR})
-target_link_libraries(${PROJECT_NAME} ${VULKAN_LIBRARY} glfw)
+target_link_libraries(${PROJECT_NAME} ${VULKAN_LIBRARY} glfw spirv-cross)
 
 ##########################################################
 ###################### RESOURCES #########################

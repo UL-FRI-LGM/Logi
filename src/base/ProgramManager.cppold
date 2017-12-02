@@ -3,6 +3,7 @@
 #include <json.hpp>
 #include <vulkan/vulkan.hpp>
 #include <tuple>
+#include <spirv_cross.hpp>
 
 namespace vkr {
 
@@ -13,7 +14,7 @@ static const std::map<std::string, vk::ShaderStageFlagBits> stage_map{
 };
 
 
-void ShaderManager::loadShaders(const std::string& shaders_path) {
+void ProgramManager::loadShaders(const std::string& shaders_path) {
 	using json = nlohmann::json;
 
 	std::ifstream shader_map_file(filesystem::canonical(filesystem::path(shaders_path) / filesystem::path("shaders_map.json")), std::ios::in);
@@ -55,7 +56,7 @@ void ShaderManager::loadShaders(const std::string& shaders_path) {
 	}
 }
 
-std::vector<vk::PipelineShaderStageCreateInfo> ShaderManager::getShaderPipelineStages(VulkanDevice& device, const std::string& pipeline_id) {
+std::vector<vk::PipelineShaderStageCreateInfo> ProgramManager::getShaderPipelineStages(VulkanDevice& device, const std::string& pipeline_id) {
 	// Check if the shader pipeline was already complied for this device.
 	auto chached_pipeline_it = device.f_shader_cache_.find(pipeline_id);
 	if (chached_pipeline_it == device.f_shader_cache_.end()) {
@@ -74,7 +75,7 @@ std::vector<vk::PipelineShaderStageCreateInfo> ShaderManager::getShaderPipelineS
 	std::vector<vk::PipelineShaderStageCreateInfo> stages;
 
 	for (auto stage_info : pipeline_it->second) {
-		std::vector<char> code = readShaderFile(stage_info.shader_path);
+		std::vector<uint32_t> code = readShaderFile(stage_info.shader_path);
 
 		vk::PipelineShaderStageCreateInfo shader_stage_info{};
 		shader_stage_info.stage = stage_info.stage;
@@ -90,15 +91,15 @@ std::vector<vk::PipelineShaderStageCreateInfo> ShaderManager::getShaderPipelineS
 	return stages;
 }
 
-vk::ShaderModule ShaderManager::createShaderModule(vk::Device& device, const std::vector<char>& code) {
+vk::ShaderModule ProgramManager::createShaderModule(vk::Device& device, const std::vector<uint32_t>& code) {
 	vk::ShaderModuleCreateInfo createInfo = {};
 	createInfo.codeSize = code.size();
-	createInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
+	createInfo.pCode = code.data();
 
 	return device.createShaderModule(createInfo);
 }
 
-std::vector<char> ShaderManager::readShaderFile(const filesystem::path& path) {
+std::vector<uint32_t> ProgramManager::readShaderFile(const filesystem::path& path) {
 	std::ifstream file(path, std::ios::ate | std::ios::binary);
 
 	// Check if the shader file was successfully openeed.
@@ -107,10 +108,10 @@ std::vector<char> ShaderManager::readShaderFile(const filesystem::path& path) {
 	}
 
 	size_t file_size = (size_t)file.tellg();
-	std::vector<char> buffer(file_size);
+	std::vector<uint32_t> buffer(file_size / sizeof(uint32_t));
 
 	file.seekg(0);
-	file.read(buffer.data(), file_size);
+	file.read(reinterpret_cast<char*>(buffer.data()), file_size);
 	file.close();
 
 	return buffer;
