@@ -42,8 +42,11 @@ private:
 		std::string id;
 		filesystem::path shader_path;
 		vk::ShaderStageFlagBits stage;
+		std::vector<vk::VertexInputAttributeDescription> vtx_attribute_descriptions;
+		std::vector<vk::VertexInputBindingDescription> vtx_bindings_descriptions;
+		bool initialized;
 
-		ShaderMeta(std::string id, filesystem::path shader_path, vk::ShaderStageFlagBits stage) : id(id), shader_path(shader_path), stage(stage) { }
+		ShaderMeta(std::string id, filesystem::path shader_path, vk::ShaderStageFlagBits stage) : id(id), shader_path(shader_path), stage(stage), initialized(false), vertex_attributes(), vertex_bindings() { }
 	};
 
 	struct PipelineMeta {

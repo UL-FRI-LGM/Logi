@@ -3,8 +3,8 @@
 #include <json.hpp>
 #include <vulkan/vulkan.hpp>
 #include <spirv_cross.hpp>
-#include "base\ProgramManager.h"
-#include "base\ProgramManager.h"
+#include "base/ProgramManager.h"
+#include "util/FormatConversion.h"
 
 namespace vkr {
 
@@ -36,24 +36,47 @@ void ProgramManager::loadShaders(VulkanDevice* device) {
 	for (ShaderMeta shader_meta : shaders_metadata_) {
 		std::vector<uint32_t> code = readShaderFile(shader_meta.shader_path);
 
-		spirv_cross::Compiler comp(code);
-		// The SPIR-V is now parsed, and we can perform reflection on it.
-		spirv_cross::ShaderResources resources = comp.get_shader_resources();
+		// Create shader module for the device
+		//device->createShaderModule(code);
 
-		for (auto& resource : resources.stage_inputs) {
-			uint32_t loc = comp.get_decoration(resource.id, spv::DecorationLocation);
-			uint32_t bind = comp.get_decoration(resource.id, spv::DecorationBinding);
-			auto type = comp.get_type_from_variable(resource.id);
-			std::cout << loc;
-			spirv_cross::SPIRType::BaseType::
-		}
+		// Initialize shader meta data.
+		if (!shader_meta.initialized) {
+			spirv_cross::Compiler comp(code);
+			// The SPIR-V is now parsed, and we can perform reflection on it.
+			spirv_cross::ShaderResources resources = comp.get_shader_resources();
 
-		// Get all sampled images in the shader.
-		for (auto &resource : resources.sampled_images) {
-			unsigned set = comp.get_decoration(resource.id, spv::DecorationDescriptorSet);
-			unsigned binding = comp.get_decoration(resource.id, spv::DecorationBinding);
+			// Parse attributes if it's a vertex shader.
+			if (shader_meta.stage == vk::ShaderStageFlagBits::eVertex) {
+				for (auto& resource : resources.stage_inputs) {
+					uint32_t binding = comp.get_decoration(resource.id, spv::DecorationBinding);
+					auto resource_type = comp.get_type_from_variable(resource.id);
 
-			std::cout << "binding" << binding;
+					// Add attribute description
+					shader_meta.vtx_attribute_descriptions.push_back({});
+					
+					vk::VertexInputAttributeDescription& attribute_description = shader_meta.vtx_attribute_descriptions[shader_meta.vtx_attribute_descriptions.size() - 1];
+					attribute_description.location = comp.get_decoration(resource.id, spv::DecorationLocation);
+					attribute_description.binding = binding;
+					attribute_description.offset = 0;
+					attribute_description.format = getVertexBufferFormat(resource_type);
+
+					// Add bindings description.
+					shader_meta.vtx_bindings_descriptions.push_back({});
+
+					vk::VertexInputBindingDescription& binding_description = shader_meta.vtx_bindings_descriptions[shader_meta.vtx_bindings_descriptions.size() - 1];
+					binding_description.binding = binding;
+					binding_description.inputRate = vk::VertexInputRate::eVertex; // TODO: Expand this in future.
+					binding_description.stride = (resource_type.width * resource_type.vecsize * resource_type.columns) / 8; // Size of the single element in bytes.
+				}
+			}
+
+			// Get all sampled images in the shader.
+			for (auto &resource : resources.sampled_images) {
+				unsigned set = comp.get_decoration(resource.id, spv::DecorationDescriptorSet);
+				unsigned binding = comp.get_decoration(resource.id, spv::DecorationBinding);
+
+				std::cout << "binding" << binding;
+			}
 		}
 	}
 }
