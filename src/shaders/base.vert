@@ -8,7 +8,11 @@ layout(location = 2) in mat4 test;
 layout(binding = 0) uniform UniformBufferObject {
 	vec3 test;
 	ivec2 a;
-} ubo;
+} ubo[2];
+
+layout(push_constant) uniform PushConsts {
+	vec3 lightPos;
+} pushConsts;
 
 out gl_PerVertex {
     vec4 gl_Position;
@@ -30,9 +34,9 @@ vec3 colors[3] = vec3[](
 );
 
 void main() {
-	if (ubo.a.x > 0) {
-    gl_Position = vec4(position + ubo.test, 0.0) * test;
+	if (ubo[1].a.x > 0) {
+    gl_Position = vec4(position + ubo[0].test, 0.0) * test;
 	}
 	//vec4(positions[gl_VertexIndex], 0.0, 1.0);
-    fragColor = colors[gl_VertexIndex] + color;
+    fragColor = colors[gl_VertexIndex] + color * pushConsts.lightPos;
 }

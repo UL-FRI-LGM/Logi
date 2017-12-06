@@ -5,6 +5,7 @@
 #include <spirv_cross.hpp>
 #include "base/ProgramManager.h"
 #include "util/FormatConversion.h"
+#include "..\..\include\base\ProgramManager.h"
 
 namespace vkr {
 
@@ -32,51 +33,95 @@ void ProgramManager::initialize(const std::string & shaders_dir) {
 	initialized_ = true;
 }
 
+void ProgramManager::initializeShaderDescriptorMeta(ShaderMeta & shader_meta_entry, const std::vector<uint32_t>& code) {
+	spirv_cross::Compiler comp(code);
+	// The SPIR-V is now parsed, and we can perform reflection on it.
+	spirv_cross::ShaderResources resources = comp.get_shader_resources();
+
+	// Parse attributes if it's a vertex shader.
+	if (shader_meta_entry.stage == vk::ShaderStageFlagBits::eVertex) {
+		for (auto& resource : resources.stage_inputs) {
+			uint32_t binding = comp.get_decoration(resource.id, spv::DecorationBinding);
+			auto resource_type = comp.get_type_from_variable(resource.id);
+
+			// Add attribute description
+			shader_meta.vtx_attribute_descriptions.push_back({});
+
+			vk::VertexInputAttributeDescription& attribute_description = shader_meta.vtx_attribute_descriptions[shader_meta.vtx_attribute_descriptions.size() - 1];
+			attribute_description.location = comp.get_decoration(resource.id, spv::DecorationLocation);
+			attribute_description.binding = binding;
+			attribute_description.offset = 0;
+			attribute_description.format = getVertexBufferFormat(resource_type);
+
+			// Add bindings description.
+			shader_meta.vtx_bindings_descriptions.push_back({});
+
+			vk::VertexInputBindingDescription& binding_description = shader_meta.vtx_bindings_descriptions[shader_meta.vtx_bindings_descriptions.size() - 1];
+			binding_description.binding = binding;
+			binding_description.inputRate = vk::VertexInputRate::eVertex; // TODO: Expand this in future.
+			binding_description.stride = (resource_type.width * resource_type.vecsize * resource_type.columns) / 8; // Size of the single element in bytes.
+		}
+	}
+
+	// Helper lambda used to add new DescriptorSetLayoutMeta entry to the shader meta.
+	auto addDescriptorMeta = [&shader_meta_entry, &comp](const spirv_cross::Resource& resource, vk::DescriptorType type) {
+		auto resource_type = comp.get_type_from_variable(resource.id);
+
+		// Add new descriptor set meta.
+		shader_meta_entry.descriptor_set_meta.push_back({});
+		DescriptorSetLayoutMeta& descriptor_meta = shader_meta.descriptor_set_meta[shader_meta.descriptor_set_meta.size() - 1];
+
+		descriptor_meta.set = comp.get_decoration(resource.id, spv::DecorationDescriptorSet);
+		descriptor_meta.binding = comp.get_decoration(resource.id, spv::DecorationBinding);
+		descriptor_meta.count = std::accumulate(resource_type.array.begin(), resource_type.array.end(), 1, std::multiplies<uint32_t>());
+		descriptor_meta.type = type;
+	};
+
+	// Add uniform buffers meta.
+	for (auto& resource : resources.uniform_buffers) {
+		addDescriptorMeta(resource, vk::DescriptorType::eUniformBuffer);
+	}
+
+	// Add storage buffers meta.
+	for (auto& resource : resources.storage_buffers) {
+		addDescriptorMeta(resource, vk::DescriptorType::eStorageBuffer);
+	}
+
+	// Add storage images meta.
+	for (auto& resource : resources.storage_images) {
+		addDescriptorMeta(resource, vk::DescriptorType::eStorageImage);
+	}
+
+	// Add sampled images (separate) meta.
+	for (auto& resource : resources.separate_images) {
+		addDescriptorMeta(resource, vk::DescriptorType::eSampledImage);
+	}
+
+	// Add sampled images (combined with sampler) meta.
+	for (auto& resource : resources.sampled_images) {
+		addDescriptorMeta(resource, vk::DescriptorType::eCombinedImageSampler);
+	}
+
+	// Add sampler meta (used in conjunction with a sampled image (separate).
+	for (auto& resource : resources.separate_samplers) {
+		addDescriptorMeta(resource, vk::DescriptorType::eSampler);
+	}
+
+	// Add Push constants
+	// TODO
+}
+
 void ProgramManager::loadShaders(VulkanDevice* device) {
+	// Initialize shader metadata.
 	for (ShaderMeta shader_meta : shaders_metadata_) {
 		std::vector<uint32_t> code = readShaderFile(shader_meta.shader_path);
 
 		// Create shader module for the device
-		//device->createShaderModule(code);
+		device->createShaderModule(code);
 
 		// Initialize shader meta data.
 		if (!shader_meta.initialized) {
-			spirv_cross::Compiler comp(code);
-			// The SPIR-V is now parsed, and we can perform reflection on it.
-			spirv_cross::ShaderResources resources = comp.get_shader_resources();
-
-			// Parse attributes if it's a vertex shader.
-			if (shader_meta.stage == vk::ShaderStageFlagBits::eVertex) {
-				for (auto& resource : resources.stage_inputs) {
-					uint32_t binding = comp.get_decoration(resource.id, spv::DecorationBinding);
-					auto resource_type = comp.get_type_from_variable(resource.id);
-
-					// Add attribute description
-					shader_meta.vtx_attribute_descriptions.push_back({});
-					
-					vk::VertexInputAttributeDescription& attribute_description = shader_meta.vtx_attribute_descriptions[shader_meta.vtx_attribute_descriptions.size() - 1];
-					attribute_description.location = comp.get_decoration(resource.id, spv::DecorationLocation);
-					attribute_description.binding = binding;
-					attribute_description.offset = 0;
-					attribute_description.format = getVertexBufferFormat(resource_type);
-
-					// Add bindings description.
-					shader_meta.vtx_bindings_descriptions.push_back({});
-
-					vk::VertexInputBindingDescription& binding_description = shader_meta.vtx_bindings_descriptions[shader_meta.vtx_bindings_descriptions.size() - 1];
-					binding_description.binding = binding;
-					binding_description.inputRate = vk::VertexInputRate::eVertex; // TODO: Expand this in future.
-					binding_description.stride = (resource_type.width * resource_type.vecsize * resource_type.columns) / 8; // Size of the single element in bytes.
-				}
-			}
-
-			// Get all sampled images in the shader.
-			for (auto &resource : resources.sampled_images) {
-				unsigned set = comp.get_decoration(resource.id, spv::DecorationDescriptorSet);
-				unsigned binding = comp.get_decoration(resource.id, spv::DecorationBinding);
-
-				std::cout << "binding" << binding;
-			}
+			initializeShaderDescriptorMeta(shader_meta, code);
 		}
 	}
 }

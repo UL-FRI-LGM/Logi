@@ -38,15 +38,23 @@ public:
 	void operator=(ProgramManager const&) = delete;
 
 private:
+	struct DescriptorSetLayoutMeta {
+		uint32_t set;
+		uint32_t binding;
+		vk::DescriptorType type;
+		uint32_t count; // Number of array entries.
+	};
+
 	struct ShaderMeta {
 		std::string id;
 		filesystem::path shader_path;
 		vk::ShaderStageFlagBits stage;
 		std::vector<vk::VertexInputAttributeDescription> vtx_attribute_descriptions;
 		std::vector<vk::VertexInputBindingDescription> vtx_bindings_descriptions;
+		std::vector<DescriptorSetLayoutMeta> descriptor_set_meta;
 		bool initialized;
 
-		ShaderMeta(std::string id, filesystem::path shader_path, vk::ShaderStageFlagBits stage) : id(id), shader_path(shader_path), stage(stage), initialized(false), vertex_attributes(), vertex_bindings() { }
+		ShaderMeta(std::string id, filesystem::path shader_path, vk::ShaderStageFlagBits stage) : id(id), shader_path(shader_path), stage(stage), vtx_attribute_descriptions(), vtx_bindings_descriptions(), descriptor_set_meta(), initialized(false) { }
 	};
 
 	struct PipelineMeta {
@@ -62,6 +70,8 @@ private:
 	bool initialized_;
 
 	ProgramManager();
+
+	void initializeShaderDescriptorMeta(ShaderMeta& shader_meta_entry, const std::vector<uint32_t>& code);
 
 	void loadMetaData(const filesystem::path& shaders_dir);
 
