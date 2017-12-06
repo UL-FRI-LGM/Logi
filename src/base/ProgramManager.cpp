@@ -33,30 +33,34 @@ void ProgramManager::initialize(const std::string & shaders_dir) {
 	initialized_ = true;
 }
 
-void ProgramManager::initializeShaderDescriptorMeta(ShaderMeta & shader_meta_entry, const std::vector<uint32_t>& code) {
+void ProgramManager::initializeShaderDescriptorMeta(ShaderMeta& shader_meta_entry, const std::vector<uint32_t>& code) {
 	spirv_cross::Compiler comp(code);
 	// The SPIR-V is now parsed, and we can perform reflection on it.
 	spirv_cross::ShaderResources resources = comp.get_shader_resources();
 
 	// Parse attributes if it's a vertex shader.
 	if (shader_meta_entry.stage == vk::ShaderStageFlagBits::eVertex) {
+		// Allocate vectors that point to vectors of vertex descriptions and bindings.
+		shader_meta_entry.vtx_attribute_descriptions = std::make_unique<std::vector<vk::VertexInputAttributeDescription>>();
+		shader_meta_entry.vtx_bindings_descriptions = std::make_unique<std::vector<vk::VertexInputBindingDescription>>();
+		
 		for (auto& resource : resources.stage_inputs) {
 			uint32_t binding = comp.get_decoration(resource.id, spv::DecorationBinding);
 			auto resource_type = comp.get_type_from_variable(resource.id);
 
 			// Add attribute description
-			shader_meta.vtx_attribute_descriptions.push_back({});
+			shader_meta_entry.vtx_attribute_descriptions->push_back({});
 
-			vk::VertexInputAttributeDescription& attribute_description = shader_meta.vtx_attribute_descriptions[shader_meta.vtx_attribute_descriptions.size() - 1];
+			vk::VertexInputAttributeDescription& attribute_description = shader_meta_entry.vtx_attribute_descriptions[shader_meta_entry.vtx_attribute_descriptions.size() - 1];
 			attribute_description.location = comp.get_decoration(resource.id, spv::DecorationLocation);
 			attribute_description.binding = binding;
 			attribute_description.offset = 0;
 			attribute_description.format = getVertexBufferFormat(resource_type);
 
 			// Add bindings description.
-			shader_meta.vtx_bindings_descriptions.push_back({});
+			shader_meta_entry.vtx_bindings_descriptions->push_back({});
 
-			vk::VertexInputBindingDescription& binding_description = shader_meta.vtx_bindings_descriptions[shader_meta.vtx_bindings_descriptions.size() - 1];
+			vk::VertexInputBindingDescription& binding_description = shader_meta_entry.vtx_bindings_descriptions[shader_meta_entry.vtx_bindings_descriptions.size() - 1];
 			binding_description.binding = binding;
 			binding_description.inputRate = vk::VertexInputRate::eVertex; // TODO: Expand this in future.
 			binding_description.stride = (resource_type.width * resource_type.vecsize * resource_type.columns) / 8; // Size of the single element in bytes.
@@ -69,7 +73,7 @@ void ProgramManager::initializeShaderDescriptorMeta(ShaderMeta & shader_meta_ent
 
 		// Add new descriptor set meta.
 		shader_meta_entry.descriptor_set_meta.push_back({});
-		DescriptorSetLayoutMeta& descriptor_meta = shader_meta.descriptor_set_meta[shader_meta.descriptor_set_meta.size() - 1];
+		DescriptorSetLayoutMeta& descriptor_meta = shader_meta_entry.descriptor_set_meta[shader_meta_entry.descriptor_set_meta.size() - 1];
 
 		descriptor_meta.set = comp.get_decoration(resource.id, spv::DecorationDescriptorSet);
 		descriptor_meta.binding = comp.get_decoration(resource.id, spv::DecorationBinding);
@@ -109,19 +113,87 @@ void ProgramManager::initializeShaderDescriptorMeta(ShaderMeta & shader_meta_ent
 
 	// Add Push constants
 	// TODO
+
+	// Mark shader entry as initialized.
+	shader_meta_entry.initialized = true;
 }
 
+void ProgramManager::initializePipelineMeta(PipelineMeta& pipeline_meta_entry) {
+	std::vector<size_t>& shader_indices = pipeline_meta_entry.shaders_indices;
+
+	// Determine pipeline type.
+	if (shader_indices.size() == 1) {
+		// If there is a single shader in a pipeline, it has to be compute shader.
+		if (shaders_metadata_[shader_indices[0]].stage != vk::ShaderStageFlagBits::eCompute) {
+			throw std::runtime_error("Invalid pipeline configuration. Pipeline id: id: \"" + pipeline_meta_entry.id + "\".");
+		}
+		
+		pipeline_meta_entry.type = PipelineType::COMPUTE;
+	}
+	else {
+		pipeline_meta_entry.type = PipelineType::GRAPHIC;
+
+		// Sort shaders into correct order.
+		std::sort(shader_indices.begin(), shader_indices.end(), [this](const size_t& idx_a, const size_t& idx_b) {
+			return shaders_metadata_[idx_a].stage < shaders_metadata_[idx_b].stage;
+		});
+
+		vk::ShaderStageFlags stages{};
+		// Check if all required shader stages are present.
+		for (size_t idx : shader_indices) {
+			// Check if duplicate stage.
+			if (stages & shaders_metadata_[idx].stage) {
+				throw std::runtime_error("Duplicate shader stage in pipeline. Pipeline id: id: \"" + pipeline_meta_entry.id + "\".");
+			}
+
+			stages |= shaders_metadata_[idx].stage;
+		}
+
+		// Check if vertex and fragment shaders are present.
+		if (!(stages & vk::ShaderStageFlagBits::eVertex) || !(stages & vk::ShaderStageFlagBits::eFragment)) {
+			throw std::runtime_error("Missing required shaders. Pipeline id: id: \"" + pipeline_meta_entry.id + "\".");
+		}
+
+		// Check if the compute shader is present in graphical pipeline
+		if (stages & vk::ShaderStageFlagBits::eCompute) {
+			throw std::runtime_error("Compute shader in graphical pipeline. Pipeline id: id: \"" + pipeline_meta_entry.id + "\".");
+		}
+
+		// Setup graphic pipeline attribute descriptions and bindings create info.
+		pipeline_meta_entry.attributes_info = std::make_unique<vk::PipelineVertexInputStateCreateInfo>();
+		ShaderMeta& vertex_shader = shaders_metadata_[shader_indices[0]];
+
+		pipeline_meta_entry.attributes_info->vertexAttributeDescriptionCount = vertex_shader.vtx_attribute_descriptions->size();
+		pipeline_meta_entry.attributes_info->pVertexAttributeDescriptions = vertex_shader.vtx_attribute_descriptions->data();
+		pipeline_meta_entry.attributes_info->vertexBindingDescriptionCount = vertex_shader.vtx_bindings_descriptions->size();
+		pipeline_meta_entry.attributes_info->pVertexBindingDescriptions = vertex_shader.vtx_bindings_descriptions->data();
+	}
+
+	
+
+
+}
+
+
+
 void ProgramManager::loadShaders(VulkanDevice* device) {
-	// Initialize shader metadata.
-	for (ShaderMeta shader_meta : shaders_metadata_) {
+	// Initialize shader meta data.
+	for (ShaderMeta& shader_meta : shaders_metadata_) {
 		std::vector<uint32_t> code = readShaderFile(shader_meta.shader_path);
 
 		// Create shader module for the device
-		device->createShaderModule(code);
+		//device->createShaderModule(code);
 
 		// Initialize shader meta data.
 		if (!shader_meta.initialized) {
 			initializeShaderDescriptorMeta(shader_meta, code);
+		}
+	}
+
+	// Initialize pipeline meta data.
+	for (PipelineMeta& pipeline_meta : pipelines_metadata_) {
+		if (!pipeline_meta.initialized) {
+			initializePipelineMeta(pipeline_meta);
 		}
 	}
 }
@@ -200,6 +272,11 @@ void ProgramManager::loadMetaData(const filesystem::path & shaders_dir) {
 			}
 
 			shaders_indices.push_back(shader_idx->second);
+		}
+
+		// There must be at least one shader in the pipeline.
+		if (shaders_indices.empty) {
+			throw std::runtime_error("Pipeline has no shaders. Pipeline id: \"" + id + "\".");
 		}
 
 		// Store pipeline metadata.

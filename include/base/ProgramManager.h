@@ -38,6 +38,12 @@ public:
 	void operator=(ProgramManager const&) = delete;
 
 private:
+	enum class PipelineType {
+		UNKNOWN,
+		COMPUTE,
+		GRAPHIC
+	};
+
 	struct DescriptorSetLayoutMeta {
 		uint32_t set;
 		uint32_t binding;
@@ -49,19 +55,29 @@ private:
 		std::string id;
 		filesystem::path shader_path;
 		vk::ShaderStageFlagBits stage;
-		std::vector<vk::VertexInputAttributeDescription> vtx_attribute_descriptions;
-		std::vector<vk::VertexInputBindingDescription> vtx_bindings_descriptions;
-		std::vector<DescriptorSetLayoutMeta> descriptor_set_meta;
-		bool initialized;
+		
+		// Vertex attributes meta data.
+		std::unique_ptr<std::vector<vk::VertexInputAttributeDescription>> vtx_attribute_descriptions;
+		std::unique_ptr<std::vector<vk::VertexInputBindingDescription>> vtx_bindings_descriptions;
 
-		ShaderMeta(std::string id, filesystem::path shader_path, vk::ShaderStageFlagBits stage) : id(id), shader_path(shader_path), stage(stage), vtx_attribute_descriptions(), vtx_bindings_descriptions(), descriptor_set_meta(), initialized(false) { }
+		// Descriptors meta data.
+		std::vector<DescriptorSetLayoutMeta> descriptor_set_meta;
+		
+		bool initialized; ///< True if ShadeMetadata is initialized.
+
+		ShaderMeta(std::string id, filesystem::path shader_path, vk::ShaderStageFlagBits stage) : id(id), shader_path(shader_path), stage(stage), vtx_attribute_descriptions(nullptr), vtx_bindings_descriptions(nullptr), descriptor_set_meta(), initialized(false) { }
 	};
 
 	struct PipelineMeta {
 		std::string id;
 		std::vector<size_t> shaders_indices;
+		std::unique_ptr<vk::PipelineVertexInputStateCreateInfo> attributes_info;
+		std::unique_ptr<vk::PipelineLayoutCreateInfo> pipeline_layout;
+		
+		PipelineType type;
+		bool initialized;
 
-		PipelineMeta(std::string id, std::vector<size_t> shaders_indices) : id(id), shaders_indices(shaders_indices) {}
+		PipelineMeta(std::string id, std::vector<size_t> shaders_indices) : id(id), shaders_indices(shaders_indices), attributes_info(nullptr), pipeline_layout(nullptr), type(PipelineType::UNKNOWN), initialized(false) {}
 	};
 
 	std::vector<ShaderMeta> shaders_metadata_;
@@ -72,6 +88,8 @@ private:
 	ProgramManager();
 
 	void initializeShaderDescriptorMeta(ShaderMeta& shader_meta_entry, const std::vector<uint32_t>& code);
+
+	void ProgramManager::initializePipelineMeta(PipelineMeta& pipeline_meta_entry);
 
 	void loadMetaData(const filesystem::path& shaders_dir);
 
