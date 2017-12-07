@@ -44,7 +44,7 @@ private:
 		GRAPHIC
 	};
 
-	struct DescriptorSetLayoutMeta {
+	struct DescriptorBindingMeta {
 		uint32_t set;
 		uint32_t binding;
 		vk::DescriptorType type;
@@ -57,11 +57,11 @@ private:
 		vk::ShaderStageFlagBits stage;
 		
 		// Vertex attributes meta data.
-		std::unique_ptr<std::vector<vk::VertexInputAttributeDescription>> vtx_attribute_descriptions;
-		std::unique_ptr<std::vector<vk::VertexInputBindingDescription>> vtx_bindings_descriptions;
+		std::unique_ptr<const std::vector<vk::VertexInputAttributeDescription>> vtx_attribute_descriptions;
+		std::unique_ptr<const std::vector<vk::VertexInputBindingDescription>> vtx_bindings_descriptions;
 
 		// Descriptors meta data.
-		std::vector<DescriptorSetLayoutMeta> descriptor_set_meta;
+		std::vector<DescriptorBindingMeta> descriptor_set_meta;
 		
 		bool initialized; ///< True if ShadeMetadata is initialized.
 
@@ -72,12 +72,11 @@ private:
 		std::string id;
 		std::vector<size_t> shaders_indices;
 		std::unique_ptr<vk::PipelineVertexInputStateCreateInfo> attributes_info;
-		std::unique_ptr<vk::PipelineLayoutCreateInfo> pipeline_layout;
+		std::unique_ptr<std::vector<const vk::DescriptorSetLayoutBinding>> descriptor_set_layouts;
 		
 		PipelineType type;
-		bool initialized;
 
-		PipelineMeta(std::string id, std::vector<size_t> shaders_indices) : id(id), shaders_indices(shaders_indices), attributes_info(nullptr), pipeline_layout(nullptr), type(PipelineType::UNKNOWN), initialized(false) {}
+		PipelineMeta(std::string id, std::vector<size_t> shaders_indices) : id(id), shaders_indices(shaders_indices), attributes_info(nullptr), descriptor_set_layouts(nullptr), type(PipelineType::UNKNOWN) {}
 	};
 
 	std::vector<ShaderMeta> shaders_metadata_;
@@ -89,7 +88,7 @@ private:
 
 	void initializeShaderDescriptorMeta(ShaderMeta& shader_meta_entry, const std::vector<uint32_t>& code);
 
-	void ProgramManager::initializePipelineMeta(PipelineMeta& pipeline_meta_entry);
+	void ProgramManager::initializePipelineLayout(PipelineMeta& pipeline_meta_entry);
 
 	void loadMetaData(const filesystem::path& shaders_dir);
 

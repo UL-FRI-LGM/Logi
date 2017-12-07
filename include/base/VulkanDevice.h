@@ -212,6 +212,7 @@ private:
 
 	// List of cached shaders.
 	std::vector<vk::ShaderModule> cached_shaders_;
+	std::vector<vk::DescriptorSetLayout> cached_descriptor_sets_;
 
 	bool initialized_; ///< Is device initialized.
 

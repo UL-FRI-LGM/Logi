@@ -40,31 +40,34 @@ void ProgramManager::initializeShaderDescriptorMeta(ShaderMeta& shader_meta_entr
 
 	// Parse attributes if it's a vertex shader.
 	if (shader_meta_entry.stage == vk::ShaderStageFlagBits::eVertex) {
-		// Allocate vectors that point to vectors of vertex descriptions and bindings.
-		shader_meta_entry.vtx_attribute_descriptions = std::make_unique<std::vector<vk::VertexInputAttributeDescription>>();
-		shader_meta_entry.vtx_bindings_descriptions = std::make_unique<std::vector<vk::VertexInputBindingDescription>>();
-		
+		// Temporary containers for attribute and bindings descriptions.
+		std::vector<vk::VertexInputAttributeDescription> attribute_descriptions;
+		std::vector<vk::VertexInputBindingDescription> bindings_descriptions;
+
 		for (auto& resource : resources.stage_inputs) {
 			uint32_t binding = comp.get_decoration(resource.id, spv::DecorationBinding);
 			auto resource_type = comp.get_type_from_variable(resource.id);
 
 			// Add attribute description
-			shader_meta_entry.vtx_attribute_descriptions->push_back({});
+			attribute_descriptions.push_back({});
 
-			vk::VertexInputAttributeDescription& attribute_description = shader_meta_entry.vtx_attribute_descriptions[shader_meta_entry.vtx_attribute_descriptions.size() - 1];
+			vk::VertexInputAttributeDescription& attribute_description = attribute_descriptions[attribute_descriptions.size() - 1];
 			attribute_description.location = comp.get_decoration(resource.id, spv::DecorationLocation);
 			attribute_description.binding = binding;
 			attribute_description.offset = 0;
 			attribute_description.format = getVertexBufferFormat(resource_type);
 
 			// Add bindings description.
-			shader_meta_entry.vtx_bindings_descriptions->push_back({});
+			bindings_descriptions.push_back({});
 
-			vk::VertexInputBindingDescription& binding_description = shader_meta_entry.vtx_bindings_descriptions[shader_meta_entry.vtx_bindings_descriptions.size() - 1];
+			vk::VertexInputBindingDescription& binding_description = bindings_descriptions[bindings_descriptions.size() - 1];
 			binding_description.binding = binding;
 			binding_description.inputRate = vk::VertexInputRate::eVertex; // TODO: Expand this in future.
 			binding_description.stride = (resource_type.width * resource_type.vecsize * resource_type.columns) / 8; // Size of the single element in bytes.
 		}
+
+		shader_meta_entry.vtx_attribute_descriptions = std::make_unique<const std::vector<vk::VertexInputAttributeDescription>>(std::move(attribute_descriptions));
+		shader_meta_entry.vtx_bindings_descriptions = std::make_unique<const std::vector<vk::VertexInputBindingDescription>>(std::move(bindings_descriptions));
 	}
 
 	// Helper lambda used to add new DescriptorSetLayoutMeta entry to the shader meta.
@@ -73,7 +76,7 @@ void ProgramManager::initializeShaderDescriptorMeta(ShaderMeta& shader_meta_entr
 
 		// Add new descriptor set meta.
 		shader_meta_entry.descriptor_set_meta.push_back({});
-		DescriptorSetLayoutMeta& descriptor_meta = shader_meta_entry.descriptor_set_meta[shader_meta_entry.descriptor_set_meta.size() - 1];
+		DescriptorBindingMeta& descriptor_meta = shader_meta_entry.descriptor_set_meta[shader_meta_entry.descriptor_set_meta.size() - 1];
 
 		descriptor_meta.set = comp.get_decoration(resource.id, spv::DecorationDescriptorSet);
 		descriptor_meta.binding = comp.get_decoration(resource.id, spv::DecorationBinding);
@@ -118,7 +121,7 @@ void ProgramManager::initializeShaderDescriptorMeta(ShaderMeta& shader_meta_entr
 	shader_meta_entry.initialized = true;
 }
 
-void ProgramManager::initializePipelineMeta(PipelineMeta& pipeline_meta_entry) {
+void ProgramManager::initializePipelineLayout(VulkanDevice* device, PipelineMeta& pipeline_meta_entry) {
 	std::vector<size_t>& shader_indices = pipeline_meta_entry.shaders_indices;
 
 	// Determine pipeline type.
@@ -169,8 +172,13 @@ void ProgramManager::initializePipelineMeta(PipelineMeta& pipeline_meta_entry) {
 		pipeline_meta_entry.attributes_info->pVertexBindingDescriptions = vertex_shader.vtx_bindings_descriptions->data();
 	}
 
-	
+	std::vector<std::vector<vk::DescriptorSetLayoutBinding>> layout_bindings{};
 
+	for (size_t idx : shader_indices) {
+		for (const DescriptorBindingMeta& descriptor_binding : shaders_metadata_[idx].descriptor_set_meta) {
+			if (layout_bindings.sidescriptor_binding.set
+		}
+	}
 
 }
 
@@ -190,11 +198,9 @@ void ProgramManager::loadShaders(VulkanDevice* device) {
 		}
 	}
 
-	// Initialize pipeline meta data.
+	// Initialize pipeline layouts
 	for (PipelineMeta& pipeline_meta : pipelines_metadata_) {
-		if (!pipeline_meta.initialized) {
-			initializePipelineMeta(pipeline_meta);
-		}
+			initializePipelineLayout(device, pipeline_meta);
 	}
 }
 
@@ -275,7 +281,7 @@ void ProgramManager::loadMetaData(const filesystem::path & shaders_dir) {
 		}
 
 		// There must be at least one shader in the pipeline.
-		if (shaders_indices.empty) {
+		if (shaders_indices.empty()) {
 			throw std::runtime_error("Pipeline has no shaders. Pipeline id: \"" + id + "\".");
 		}
 
