@@ -51,7 +51,7 @@ void ProgramManager::initializeShaderDescriptorMeta(ShaderMeta& shader_meta_entr
 			// Add attribute description
 			attribute_descriptions.push_back({});
 
-			vk::VertexInputAttributeDescription& attribute_description = attribute_descriptions[attribute_descriptions.size() - 1];
+			vk::VertexInputAttributeDescription& attribute_description = attribute_descriptions.back();
 			attribute_description.location = comp.get_decoration(resource.id, spv::DecorationLocation);
 			attribute_description.binding = binding;
 			attribute_description.offset = 0;
@@ -60,14 +60,14 @@ void ProgramManager::initializeShaderDescriptorMeta(ShaderMeta& shader_meta_entr
 			// Add bindings description.
 			bindings_descriptions.push_back({});
 
-			vk::VertexInputBindingDescription& binding_description = bindings_descriptions[bindings_descriptions.size() - 1];
+			vk::VertexInputBindingDescription& binding_description = bindings_descriptions.back();
 			binding_description.binding = binding;
 			binding_description.inputRate = vk::VertexInputRate::eVertex; // TODO: Expand this in future.
 			binding_description.stride = (resource_type.width * resource_type.vecsize * resource_type.columns) / 8; // Size of the single element in bytes.
 		}
 
-		shader_meta_entry.vtx_attribute_descriptions = std::make_unique<const std::vector<vk::VertexInputAttributeDescription>>(std::move(attribute_descriptions));
-		shader_meta_entry.vtx_bindings_descriptions = std::make_unique<const std::vector<vk::VertexInputBindingDescription>>(std::move(bindings_descriptions));
+		shader_meta_entry.vtx_attribute_descriptions = std::make_unique<std::vector<vk::VertexInputAttributeDescription>>(std::move(attribute_descriptions));
+		shader_meta_entry.vtx_bindings_descriptions = std::make_unique<std::vector<vk::VertexInputBindingDescription>>(std::move(bindings_descriptions));
 	}
 
 	// Helper lambda used to add new DescriptorSetLayoutMeta entry to the shader meta.
@@ -76,7 +76,7 @@ void ProgramManager::initializeShaderDescriptorMeta(ShaderMeta& shader_meta_entr
 
 		// Add new descriptor set meta.
 		shader_meta_entry.descriptor_set_meta.push_back({});
-		DescriptorBindingMeta& descriptor_meta = shader_meta_entry.descriptor_set_meta[shader_meta_entry.descriptor_set_meta.size() - 1];
+		DescriptorBindingMeta& descriptor_meta = shader_meta_entry.descriptor_set_meta.back();
 
 		descriptor_meta.set = comp.get_decoration(resource.id, spv::DecorationDescriptorSet);
 		descriptor_meta.binding = comp.get_decoration(resource.id, spv::DecorationBinding);
@@ -172,14 +172,43 @@ void ProgramManager::initializePipelineLayout(VulkanDevice* device, PipelineMeta
 		pipeline_meta_entry.attributes_info->pVertexBindingDescriptions = vertex_shader.vtx_bindings_descriptions->data();
 	}
 
-	std::vector<std::vector<vk::DescriptorSetLayoutBinding>> layout_bindings{};
+	std::vector<std::vector<vk::DescriptorSetLayoutBinding>> descriptor_sets{};
 
 	for (size_t idx : shader_indices) {
-		for (const DescriptorBindingMeta& descriptor_binding : shaders_metadata_[idx].descriptor_set_meta) {
-			if (layout_bindings.sidescriptor_binding.set
+		for (const DescriptorBindingMeta& descriptor_meta : shaders_metadata_[idx].descriptor_set_meta) {
+			// Check if the layout descriptor set already exists.
+			if (descriptor_sets.size() <= descriptor_meta.set) {
+				descriptor_sets.resize(descriptor_meta.set + 1);
+			}
+
+			std::vector<vk::DescriptorSetLayoutBinding>& bindings = descriptor_sets[descriptor_meta.set];
+
+			// Search for existing binding.
+			auto b_it = std::find_if(bindings.begin(), bindings.end(), [&descriptor_meta](const vk::DescriptorSetLayoutBinding& binding_layout) { return binding_layout.binding == descriptor_meta.binding; });
+			
+			// If the binding already exists only add a stage flag. 
+			if (b_it != bindings.end()) {
+				b_it->stageFlags |= shaders_metadata_[idx].stage;
+			}
+			else {
+				// Add new binding layout descriptor.
+				bindings.push_back({});
+				vk::DescriptorSetLayoutBinding& binding_layout = bindings.back();
+				binding_layout.binding = descriptor_meta.binding;
+				binding_layout.descriptorCount = descriptor_meta.count;
+				binding_layout.descriptorType = descriptor_meta.type;
+				binding_layout.stageFlags = shaders_metadata_[idx].stage;
+			}
 		}
 	}
 
+	// Sort bindings.
+	for (std::vector<vk::DescriptorSetLayoutBinding>& descriptor_set : descriptor_sets) {
+		std::sort(descriptor_set.begin(), descriptor_set.end(), [](const vk::DescriptorSetLayoutBinding& a, const vk::DescriptorSetLayoutBinding& b) { return a.binding < b.binding; });
+	}
+
+	// Store descriptor set layouts.
+	pipeline_meta_entry.descriptor_set_layouts = std::make_unique<std::vector<std::vector<vk::DescriptorSetLayoutBinding>>>(descriptor_sets);
 }
 
 

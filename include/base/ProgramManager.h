@@ -57,8 +57,8 @@ private:
 		vk::ShaderStageFlagBits stage;
 		
 		// Vertex attributes meta data.
-		std::unique_ptr<const std::vector<vk::VertexInputAttributeDescription>> vtx_attribute_descriptions;
-		std::unique_ptr<const std::vector<vk::VertexInputBindingDescription>> vtx_bindings_descriptions;
+		std::unique_ptr<std::vector<vk::VertexInputAttributeDescription>> vtx_attribute_descriptions;
+		std::unique_ptr<std::vector<vk::VertexInputBindingDescription>> vtx_bindings_descriptions;
 
 		// Descriptors meta data.
 		std::vector<DescriptorBindingMeta> descriptor_set_meta;
@@ -72,7 +72,7 @@ private:
 		std::string id;
 		std::vector<size_t> shaders_indices;
 		std::unique_ptr<vk::PipelineVertexInputStateCreateInfo> attributes_info;
-		std::unique_ptr<std::vector<const vk::DescriptorSetLayoutBinding>> descriptor_set_layouts;
+		std::unique_ptr<std::vector<std::vector<vk::DescriptorSetLayoutBinding>>> descriptor_set_layouts;
 		
 		PipelineType type;
 
@@ -88,7 +88,7 @@ private:
 
 	void initializeShaderDescriptorMeta(ShaderMeta& shader_meta_entry, const std::vector<uint32_t>& code);
 
-	void ProgramManager::initializePipelineLayout(PipelineMeta& pipeline_meta_entry);
+	void initializePipelineLayout(VulkanDevice* device, PipelineMeta& pipeline_meta_entry);
 
 	void loadMetaData(const filesystem::path& shaders_dir);
 

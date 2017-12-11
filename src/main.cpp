@@ -15,6 +15,7 @@
 #include "base/ProgramManager.h"
 #include <glm\glm.hpp>
 #include "volumetric/VolumetricRenderer.h"
+#include <base/PipelineState.h>
 
 const int WIDTH = 800;
 const int HEIGHT = 600;
@@ -924,7 +925,17 @@ struct Vertex {
 	glm::vec3 color;
 };
 
+
+void test() {
+	vkr::PipelineState state;
+	state.setPrimitiveTopology(vk::PrimitiveTopology::ePatchList);
+	vk::PrimitiveTopology top = state.getPrimitiveTopology();
+	int a = 0;
+}
+
 int main() {
+	//test();
+	//return 1;
 	{
 		std::cout << sizeof(Vertex) << std::endl;
 		std::cout << offsetof(Vertex, pos) << std::endl;
