@@ -235,7 +235,7 @@ void SwapChain::create(uint32_t& width, uint32_t& height, bool vsync) {
 
 	// If an existing swap chain is re-created, destroy the old swap chain
 	// This also cleans up all the presentable images
-	if (old_swapchain != nullptr) {
+	if (old_swapchain) {
 		for (uint32_t i = 0; i < image_count_; i++) {
 			device_->getLogicalDeviceHandle().destroyImageView(image_views_[i]);
 		}
@@ -272,7 +272,7 @@ void SwapChain::create(uint32_t& width, uint32_t& height, bool vsync) {
 }
 
 void SwapChain::cleanup() {
-	if (swapchain_ != nullptr) {
+	if (swapchain_) {
 		for (uint32_t i = 0; i < image_count_; i++) {
 			device_->getLogicalDeviceHandle().destroyImageView(image_views_[i]);
 		}
@@ -283,7 +283,7 @@ void SwapChain::cleanup() {
 		images_.clear();
 	}
 
-	if (surface_ != nullptr) {
+	if (surface_) {
 		fpDestroySwapchainKHR((VkDevice)device_->getLogicalDeviceHandle(), (VkSwapchainKHR)swapchain_, nullptr);
 	}
 
@@ -308,7 +308,7 @@ vk::Result SwapChain::queuePresent(vk::Queue queue, uint32_t image_index, vk::Se
 	present_info.pSwapchains = &swapchain_;
 	present_info.pImageIndices = &image_index;
 	// Check if a wait semaphore has been specified to wait for before presenting the image
-	if (wait_semaphore != nullptr) {
+	if (wait_semaphore) {
 		present_info.pWaitSemaphores = &wait_semaphore;
 		present_info.waitSemaphoreCount = 1;
 	}

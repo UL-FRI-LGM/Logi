@@ -89,7 +89,7 @@ private:
 	vk::ColorSpaceKHR color_space_; ///< Selected swap chain color space.
 
 	// Color attachment images
-	size_t image_count_; ///< Number of images inside the swap chain
+	uint32_t image_count_; ///< Number of images inside the swap chain
 	std::vector<vk::Image> images_; ///< Swap chain images.
 	std::vector<vk::ImageView> image_views_; ///< Views of swap chain images
 

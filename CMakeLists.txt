@@ -7,6 +7,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# C++ Google Test
+set(BUILD_TESTS ON)
+
 if(MSVC)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
 endif(MSVC)
@@ -46,6 +49,7 @@ include_directories(${LIB_DIR}/json)
 # VMA - Vulkan Memory Allocator
 include_directories(${LIB_DIR}/vma)
 
+include_directories(${LIB_DIR}/spirv-cross)
 add_subdirectory(${LIB_DIR}/spirv-cross)
 
 ##########################################################
@@ -55,8 +59,11 @@ add_subdirectory(${LIB_DIR}/spirv-cross)
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
 file(GLOB_RECURSE SRC_LIST "src/*.cpp")
-add_executable(${PROJECT_NAME} ${SRC_LIST} ${RES_DIR})
-target_link_libraries(${PROJECT_NAME} ${VULKAN_LIBRARY} glfw spirv-cross)
+list(REMOVE_ITEM SRC_LIST "src/main.cpp")
+
+add_library(vkr STATIC ${SRC_LIST})
+add_executable(${PROJECT_NAME} "src/main.cpp")
+target_link_libraries(${PROJECT_NAME} ${VULKAN_LIBRARY} glfw spirv-cross vkr)
 
 ##########################################################
 ###################### RESOURCES #########################
@@ -94,3 +101,11 @@ if (BUILD_DOC)
 	  message("Doxygen need to be installed to generate the doxygen documentation")
 	endif (DOXYGEN_FOUND)
 endif (BUILD_DOC)
+
+##########################################################
+####################### DOXYGEN ##########################
+##########################################################
+if (BUILD_TESTS)
+	enable_testing()
+	add_subdirectory(test)
+endif (BUILD_TESTS)

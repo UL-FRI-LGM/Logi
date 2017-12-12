@@ -5,16 +5,17 @@
         "msvc_x86"
       ],
       "name": "x86-Debug",
-        "includePath": [
-            "${env.INCLUDE}",
-            "${env.VULKAN_SDK}\\Include",
-            "${projectRoot}\\include",
-            "${projectRoot}\\libs\\glm",
-            "${projectRoot}\\libs\\glfw\\include",
-            "${projectRoot}\\libs\\spirv-cross",
-            "${projectRoot}\\libs\\vma",
-            "${projectRoot}\\libs\\json"
-        ],
+      "includePath": [
+        "${env.INCLUDE}",
+        "${env.VULKAN_SDK}\\Include",
+        "${projectRoot}\\include",
+        "${projectRoot}\\libs\\glm",
+        "${projectRoot}\\libs\\glfw\\include",
+        "${projectRoot}\\libs\\spirv-cross",
+        "${projectRoot}\\libs\\vma",
+        "${projectRoot}\\libs\\json",
+        "${projectRoot}\\test\\libs\\googletest\\googletest\\include"
+      ],
       "defines": [
         "WIN32",
         "_DEBUG",
@@ -28,16 +29,17 @@
         "msvc_x86"
       ],
       "name": "x86-Release",
-        "includePath": [
-            "${env.INCLUDE}",
-            "${env.VULKAN_SDK}\\Include",
-            "${projectRoot}\\include",
-            "${projectRoot}\\libs\\glm",
-            "${projectRoot}\\libs\\glfw\\include",
-            "${projectRoot}\\libs\\spirv-cross",
-            "${projectRoot}\\libs\\vma",
-            "${projectRoot}\\libs\\json"
-        ],
+      "includePath": [
+        "${env.INCLUDE}",
+        "${env.VULKAN_SDK}\\Include",
+        "${projectRoot}\\include",
+        "${projectRoot}\\libs\\glm",
+        "${projectRoot}\\libs\\glfw\\include",
+        "${projectRoot}\\libs\\spirv-cross",
+        "${projectRoot}\\libs\\vma",
+        "${projectRoot}\\libs\\json",
+        "${projectRoot}\\test\\libs\\googletest\\googletest\\include"
+      ],
       "defines": [
         "WIN32",
         "NDEBUG",
@@ -51,16 +53,17 @@
         "msvc_x64"
       ],
       "name": "x64-Debug",
-        "includePath": [
-            "${env.INCLUDE}",
-            "${env.VULKAN_SDK}\\Include",
-            "${projectRoot}\\include",
-            "${projectRoot}\\libs\\glm",
-            "${projectRoot}\\libs\\glfw\\include",
-            "${projectRoot}\\libs\\spirv-cross",
-            "${projectRoot}\\libs\\vma",
-            "${projectRoot}\\libs\\json"
-        ],
+      "includePath": [
+        "${env.INCLUDE}",
+        "${env.VULKAN_SDK}\\Include",
+        "${projectRoot}\\include",
+        "${projectRoot}\\libs\\glm",
+        "${projectRoot}\\libs\\glfw\\include",
+        "${projectRoot}\\libs\\spirv-cross",
+        "${projectRoot}\\libs\\vma",
+        "${projectRoot}\\libs\\json",
+        "${projectRoot}\\test\\libs\\googletest\\googletest\\include"
+      ],
       "defines": [
         "WIN32",
         "_DEBUG",
@@ -74,16 +77,17 @@
         "msvc_x64"
       ],
       "name": "x64-Release",
-        "includePath": [
-            "${env.INCLUDE}",
-            "${env.VULKAN_SDK}\\Include",
-            "${projectRoot}\\include",
-            "${projectRoot}\\libs\\glm",
-            "${projectRoot}\\libs\\glfw\\include",
-            "${projectRoot}\\libs\\spirv-cross",
-            "${projectRoot}\\libs\\vma",
-            "${projectRoot}\\libs\\json"
-        ],
+      "includePath": [
+        "${env.INCLUDE}",
+        "${env.VULKAN_SDK}\\Include",
+        "${projectRoot}\\include",
+        "${projectRoot}\\libs\\glm",
+        "${projectRoot}\\libs\\glfw\\include",
+        "${projectRoot}\\libs\\spirv-cross",
+        "${projectRoot}\\libs\\vma",
+        "${projectRoot}\\libs\\json",
+        "${projectRoot}\\test\\libs\\googletest\\googletest\\include"
+      ],
       "defines": [
         "WIN32",
         "NDEBUG",

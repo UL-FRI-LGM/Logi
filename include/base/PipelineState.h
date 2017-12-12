@@ -16,6 +16,10 @@ public:
 
 	PipelineState();
 
+	size_t computeHash();
+
+	bool operator==(const PipelineState &other) const;
+
 	// Input assembly state setters/getters.
 	void setPrimitiveTopology(vk::PrimitiveTopology topology);
 	void setPrimitiveRestartEnable(bool enable);
@@ -58,12 +62,12 @@ public:
 	// Depth state setters/getters.
 	void setDepthTestEnable(bool enable);
 	void setDepthWriteEnable(bool enable);
-	void setDepthCompareOpEnable(vk::CompareOp op);
+	void setDepthCompareOp(vk::CompareOp op);
 	void setDepthBoundsTestEnable(bool enable);
 
 	bool getDepthTestEnable();
 	bool getDepthWriteEnable();
-	vk::CompareOp getDepthCompareOpEnable();
+	vk::CompareOp getDepthCompareOp();
 	bool getDepthBoundsTestEnable();
 
 	// Stencil state setters/getters
@@ -119,7 +123,14 @@ public:
 	bool getBlendMaskAlpha(uint8_t attachment);
 
 private:
-	std::bitset<128> state_;
+	// Num attachments.
+	static const size_t kMaxAttachments = 8;
+
+	std::bitset<127 + 8 * 37> state_;
+	std::hash<std::bitset<127 + 8 * 37>> hash_fn_;
+	size_t cached_hash_;
+	bool dirty_;
+
 	std::vector<std::bitset<37>> attachment_states_;
 	std::bitset<4> blend_logic_op_;
 	std::bitset<5> depth_state_;
@@ -151,5 +162,7 @@ inline std::bitset<K> PipelineState::getBits(const std::bitset<N>& src, size_t o
 }
 
 }
+
+
 
 #endif

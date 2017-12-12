@@ -1,9 +1,7 @@
+#include "..\..\include\base\PipelineState.h"
 #include <base/PipelineState.h>
 
 namespace vkr {
-
-// Num attachments.
-static const size_t kMaxAttachments = 8;
 
 #pragma region Assembly state bits.
 static const size_t   kPrimitiveTopologyOffset = 0, kPrimitiveTopologyNumBits = 4;
@@ -74,11 +72,11 @@ static const size_t    kStencilBackReferenceOffset = 64;
 static const size_t kBlendLogicOpEnableBit = 117;
 static const size_t kBlendLogicOpOffset = 118,	kBlendLogicOpNumBits = 4;
 static const size_t kDynamicBlendConstants = 122;
-static const size_t kNumAttachmentsOffset = 123, kNumAttachmentsNumBits = 3;
+static const size_t kNumAttachmentsOffset = 123, kNumAttachmentsNumBits = 4;
 
-static const size_t kColorBlendAttachmentsOffset = 126;
+static const size_t kColorBlendAttachmentsOffset = 127;
 // Attachment config
-static const size_t kAttachmentStateSize = 37;
+static const size_t			  kAttachmentStateSize = 37;
 static const size_t            kBlendEnableBit = 0;
 static const size_t kSrcColorBlendFactorOffset = 1,		kSrcColorBlendFactorNumBits = 5;
 static const size_t kDstColorBlendFactorOffset = 6,		kDstColorBlendFactorNumBits = 5;
@@ -357,17 +355,32 @@ inline vk::BlendOp bitsToBlendOp(uint64_t bits) {
 #pragma endregion
 
 // Default constructor
-PipelineState::PipelineState() : state_(0), attachment_states_(kMaxAttachments, {0}) { }
+PipelineState::PipelineState() : state_(0), hash_fn_(), cached_hash_(0), dirty_(true), attachment_states_(kMaxAttachments, {0}), blend_logic_op_(0), depth_state_(0), stencil_state_() { }
+
+size_t PipelineState::computeHash() {
+	if (dirty_) {
+		cached_hash_ = hash_fn_(state_);
+		dirty_ = false;
+	}
+
+	return cached_hash_;
+}
+
+bool PipelineState::operator==(const PipelineState &other) const {
+	return state_ == other.state_;
+}
 
 #pragma region Assembly state setters/getters
 
 void PipelineState::setPrimitiveTopology(vk::PrimitiveTopology topology) {
 	std::bitset<kPrimitiveTopologyNumBits> bits{ primitiveTopologyToBits(topology) };
 	setBits(bits, state_, kPrimitiveTopologyOffset);
+	dirty_ = true;
 }
 
 void PipelineState::setPrimitiveRestartEnable(bool enable) {
 	state_[kPrimitiveRestartEnableBit] = enable;
+	dirty_ = true;
 }
 
 
@@ -386,6 +399,7 @@ bool PipelineState::getPrimitiveRestartEnable() {
 void PipelineState::setPatchControlPoints(uint8_t count) {
 	std::bitset<kPatchControlPointsNumBits> bits{ count };
 	setBits(bits, state_, kPatchControlPointsOffset);
+	dirty_ = true;
 }
 
 
@@ -400,11 +414,13 @@ uint8_t PipelineState::getPatchControlPoints() {
 void PipelineState::setViewportCount(uint8_t count) {
 	std::bitset<kViewportCountNumBits> bits{ count };
 	setBits(bits, state_, kViewportCountOffset);
+	dirty_ = true;
 }
 
 void PipelineState::setScissorsCount(uint8_t count) {
 	std::bitset<kScissorsCountNumBits> bits{ count };
 	setBits(bits, state_, kScissorsCountOffset);
+	dirty_ = true;
 }
 
 
@@ -422,32 +438,39 @@ uint8_t PipelineState::getScissorsCount() {
 
 void PipelineState::setDepthClampEnabled(bool enable) {
 	state_[kDepthClampEnableBit] = enable;
+	dirty_ = true;
 }
 
 void PipelineState::setRasterizerDiscardEnabled(bool enable) {
 	state_[kRasterizerDiscardEnabledBit] = enable;
+	dirty_ = true;
 }
 
 void PipelineState::setPolygonMode(vk::PolygonMode poly_mode) {
 	std::bitset<kPolygonModeNumBits> bits{ polygonModeToBits(poly_mode) };
 	setBits(bits, state_, kPolygonModeOffset);
+	dirty_ = true;
 }
 
 void PipelineState::setCullMode(vk::CullModeFlagBits cull_mode) {
 	std::bitset<kCullModeNumBits> bits{ cullModeFlagToBits(cull_mode) };
 	setBits(bits, state_, kCullModeOffset);
+	dirty_ = true;
 }
 
 void PipelineState::setFrontFace(vk::FrontFace front_face) {
 	state_[kFrontFaceBit] = front_face == vk::FrontFace::eCounterClockwise;
+	dirty_ = true;
 }
 
 void PipelineState::setDepthBiasEnable(bool enable) {
 	state_[kDepthBiasEnableBit] = enable;
+	dirty_ = true;
 }
 
 void PipelineState::setDynamicLineWidth(bool enable) {
 	state_[kDynamicStateLineWidth] = enable;
+	dirty_ = true;
 }
 
 
@@ -486,6 +509,7 @@ bool PipelineState::getDynamicLineWidth() {
 void PipelineState::setMultisampleStateIndex(uint8_t index) {
 	std::bitset<kMultisampleStateIndexNumBits> bits{ index };
 	setBits(bits, state_, kMultisampleStateIndexOffset);
+	dirty_ = true;
 }
 
 uint8_t PipelineState::getMultisampleStateIndex() {
@@ -507,6 +531,7 @@ void PipelineState::setDepthTestEnable(bool enable) {
 		std::bitset<kDepthStateNumBits> bits{ 0 };
 		setBits(bits, state_, kDepthStateBitsOffset);
 	}
+	dirty_ = true;
 }
 
 void PipelineState::setDepthWriteEnable(bool enable) {
@@ -515,16 +540,18 @@ void PipelineState::setDepthWriteEnable(bool enable) {
 	// If depth testing enabled apply configuration also to main state.
 	if (getDepthTestEnable()) {
 		state_[kDepthStateBitsOffset + kDepthWriteEnableBit] = depth_state_[kDepthWriteEnableBit];
+		dirty_ = true;
 	}
 }
 
-void PipelineState::setDepthCompareOpEnable(vk::CompareOp op) {
+void PipelineState::setDepthCompareOp(vk::CompareOp op) {
 	std::bitset<kCompareOpNumBits> bits{ compareOpToBits(op) };
-	setBits(bits, depth_state_, kCompareOpNumBits);
+	setBits(bits, depth_state_, kDepthCompareOpOffset);
 
 	// If depth testing enabled apply configuration also to main state.
 	if (getDepthTestEnable()) {
-		setBits(bits, state_, kDepthStateBitsOffset + kCompareOpNumBits);
+		setBits(bits, state_, kDepthStateBitsOffset + kDepthCompareOpOffset);
+		dirty_ = true;
 	}
 }
 
@@ -534,6 +561,7 @@ void PipelineState::setDepthBoundsTestEnable(bool enable) {
 	// If depth testing enabled apply configuration also to main state.
 	if (getDepthTestEnable()) {
 		state_[kDepthStateBitsOffset + kDepthBoundsTestEnableBit] = depth_state_[kDepthBoundsTestEnableBit];
+		dirty_ = true;
 	}
 }
 
@@ -545,7 +573,7 @@ bool PipelineState::getDepthWriteEnable() {
 	return depth_state_[kDepthWriteEnableBit];
 }
 
-vk::CompareOp PipelineState::getDepthCompareOpEnable() {
+vk::CompareOp PipelineState::getDepthCompareOp() {
 	return bitsToCompareOp(getBits<kCompareOpNumBits>(depth_state_, kDepthCompareOpOffset).to_ulong());
 }
 
@@ -568,6 +596,7 @@ void PipelineState::setStencilTestEnable(bool enable) {
 		std::bitset<kStencilStateNumBits> bits{ 0 };
 		setBits(bits, state_, kStencilStateBitsOffset);
 	}
+	dirty_ = true;
 }
 
 void PipelineState::setStencilFailOp(StencilState ss, vk::StencilOp op) {
@@ -577,12 +606,14 @@ void PipelineState::setStencilFailOp(StencilState ss, vk::StencilOp op) {
 		setBits(bits, stencil_state_, kStencilFrontFailOpOffset);
 		if (getStencilTestEnable()) {
 			setBits(bits, state_, kStencilStateBitsOffset + kStencilFrontFailOpOffset);
+			dirty_ = true;
 		}
 	}
 	else if (ss == StencilState::BACK) {
 		setBits(bits, stencil_state_, kStencilBackFailOpOffset);
 		if (getStencilTestEnable()) {
 			setBits(bits, state_, kStencilStateBitsOffset + kStencilBackFailOpOffset);
+			dirty_ = true;
 		}
 	}
 }
@@ -594,12 +625,14 @@ void PipelineState::setStencilPassOp(StencilState ss, vk::StencilOp op) {
 		setBits(bits, stencil_state_, kStencilFrontPassOpOffset);
 		if (getStencilTestEnable()) {
 			setBits(bits, state_, kStencilStateBitsOffset + kStencilFrontPassOpOffset);
+			dirty_ = true;
 		}
 	}
 	else if (ss == StencilState::BACK) {
 		setBits(bits, stencil_state_, kStencilBackPassOpOffset);
 		if (getStencilTestEnable()) {
 			setBits(bits, state_, kStencilStateBitsOffset + kStencilBackPassOpOffset);
+			dirty_ = true;
 		}
 	}
 }
@@ -611,12 +644,14 @@ void PipelineState::setStencilDepthFailOp(StencilState ss, vk::StencilOp op) {
 		setBits(bits, stencil_state_, kStencilFrontDepthFailOpOffset);
 		if (getStencilTestEnable()) {
 			setBits(bits, state_, kStencilStateBitsOffset + kStencilFrontDepthFailOpOffset);
+			dirty_ = true;
 		}
 	}
 	else if (ss == StencilState::BACK) {
 		setBits(bits, stencil_state_, kStencilBackDepthFailOpOffset);
 		if (getStencilTestEnable()) {
 			setBits(bits, state_, kStencilStateBitsOffset + kStencilBackDepthFailOpOffset);
+			dirty_ = true;
 		}
 	}
 }
@@ -628,12 +663,14 @@ void PipelineState::setStencilCompareOp(StencilState ss, vk::CompareOp op) {
 		setBits(bits, stencil_state_, kStencilFrontCompareOpOffset);
 		if (getStencilTestEnable()) {
 			setBits(bits, state_, kStencilStateBitsOffset + kStencilFrontCompareOpOffset);
+			dirty_ = true;
 		}
 	}
 	else if (ss == StencilState::BACK) {
 		setBits(bits, stencil_state_, kStencilBackCompareOpOffset);
 		if (getStencilTestEnable()) {
 			setBits(bits, state_, kStencilStateBitsOffset + kStencilBackCompareOpOffset);
+			dirty_ = true;
 		}
 	}
 }
@@ -645,12 +682,14 @@ void PipelineState::setStencilCompareMask(StencilState ss, uint8_t mask) {
 		setBits(bits, stencil_state_, kStencilFrontCompareMaskOffset);
 		if (getStencilTestEnable()) {
 			setBits(bits, state_, kStencilStateBitsOffset + kStencilFrontCompareMaskOffset);
+			dirty_ = true;
 		}
 	}
 	else if (ss == StencilState::BACK) {
 		setBits(bits, stencil_state_, kStencilBackCompareMaskOffset);
 		if (getStencilTestEnable()) {
 			setBits(bits, state_, kStencilStateBitsOffset + kStencilBackCompareMaskOffset);
+			dirty_ = true;
 		}
 	}
 }
@@ -662,12 +701,14 @@ void PipelineState::setStencilWriteMask(StencilState ss, uint8_t mask) {
 		setBits(bits, stencil_state_, kStencilFrontWriteMaskOffset);
 		if (getStencilTestEnable()) {
 			setBits(bits, state_, kStencilStateBitsOffset + kStencilFrontWriteMaskOffset);
+			dirty_ = true;
 		}
 	}
 	else if (ss == StencilState::BACK) {
 		setBits(bits, stencil_state_, kStencilBackWriteMaskOffset);
 		if (getStencilTestEnable()) {
 			setBits(bits, state_, kStencilStateBitsOffset + kStencilBackWriteMaskOffset);
+			dirty_ = true;
 		}
 	}
 }
@@ -679,12 +720,14 @@ void PipelineState::setStencilReference(StencilState ss, uint8_t ref) {
 		setBits(bits, stencil_state_, kStencilFrontReferenceOffset);
 		if (getStencilTestEnable()) {
 			setBits(bits, state_, kStencilStateBitsOffset + kStencilFrontReferenceOffset);
+			dirty_ = true;
 		}
 	}
 	else if (ss == StencilState::BACK) {
 		setBits(bits, stencil_state_, kStencilBackReferenceOffset);
 		if (getStencilTestEnable()) {
 			setBits(bits, state_, kStencilStateBitsOffset + kStencilBackReferenceOffset);
+			dirty_ = true;
 		}
 	}
 }
@@ -780,6 +823,7 @@ void PipelineState::setBlendLogicOpEnable(bool enable) {
 	if (enable) {
 		setBits(blend_logic_op_, state_, kBlendLogicOpOffset);
 	}
+	dirty_ = true;
 }
 
 void PipelineState::setBlendLogicOp(vk::LogicOp op) {
@@ -787,11 +831,13 @@ void PipelineState::setBlendLogicOp(vk::LogicOp op) {
 
 	if (getBlendLogicOpEnable()) {
 		setBits(blend_logic_op_, state_, kBlendLogicOpOffset);
+		dirty_ = true;
 	}
 }
 
 void PipelineState::setDynamicBlendConstants(bool enable) {
 	state_[kDynamicBlendConstants] = enable;
+	dirty_ = true;
 }
 
 void PipelineState::setNumAttachments(uint8_t num_attachments) {
@@ -800,7 +846,7 @@ void PipelineState::setNumAttachments(uint8_t num_attachments) {
 	}
 
 	// Set number of attachments
-	std::bitset<3> bits{ num_attachments };
+	std::bitset<4> bits{ num_attachments };
 	setBits(bits, state_, kNumAttachmentsOffset);
 
 	std::bitset<kAttachmentStateSize> zero_bits{ 0u };
@@ -819,6 +865,8 @@ void PipelineState::setNumAttachments(uint8_t num_attachments) {
 	for (size_t i = num_attachments; i < kMaxAttachments; i++) {
 		setBits(zero_bits, state_, kColorBlendAttachmentsOffset + i * kAttachmentStateSize);
 	}
+
+	dirty_ = true;
 }
 
 void PipelineState::setBlendEnable(uint8_t attachment, bool enable) {
@@ -834,6 +882,8 @@ void PipelineState::setBlendEnable(uint8_t attachment, bool enable) {
 		std::bitset<kAttachmentStateSize> zero_bits{ 0u };
 		setBits(zero_bits, state_, kColorBlendAttachmentsOffset + attachment * kAttachmentStateSize);
 	}
+
+	dirty_ = true;
 }
 
 void PipelineState::setSrcColorBlendFactor(uint8_t attachment, vk::BlendFactor blend_factor) {
@@ -846,6 +896,7 @@ void PipelineState::setSrcColorBlendFactor(uint8_t attachment, vk::BlendFactor b
 
 	if (getBlendEnable(attachment)) {
 		setBits(bits, state_, kColorBlendAttachmentsOffset + attachment * kAttachmentStateSize + kSrcColorBlendFactorOffset);
+		dirty_ = true;
 	}
 }
 
@@ -859,6 +910,7 @@ void PipelineState::setDstColorBlendFactor(uint8_t attachment, vk::BlendFactor b
 
 	if (getBlendEnable(attachment)) {
 		setBits(bits, state_, kColorBlendAttachmentsOffset + attachment * kAttachmentStateSize + kDstColorBlendFactorOffset);
+		dirty_ = true;
 	}
 }
 
@@ -872,6 +924,7 @@ void PipelineState::setColorBlendOp(uint8_t attachment, vk::BlendOp blend_op) {
 
 	if (getBlendEnable(attachment)) {
 		setBits(bits, state_, kColorBlendAttachmentsOffset + attachment * kAttachmentStateSize + kColorBlendOpOffset);
+		dirty_ = true;
 	}
 }
 
@@ -885,6 +938,7 @@ void PipelineState::setSrcAlphaBlendFactor(uint8_t attachment, vk::BlendFactor b
 
 	if (getBlendEnable(attachment)) {
 		setBits(bits, state_, kColorBlendAttachmentsOffset + attachment * kAttachmentStateSize + kSrcAlphaBlendFactorOffset);
+		dirty_ = true;
 	}
 }
 
@@ -898,6 +952,7 @@ void PipelineState::setDstAlphaBlendFactor(uint8_t attachment, vk::BlendFactor b
 
 	if (getBlendEnable(attachment)) {
 		setBits(bits, state_, kColorBlendAttachmentsOffset + attachment * kAttachmentStateSize + kDstAlphaBlendFactorOffset);
+		dirty_ = true;
 	}
 }
 
@@ -911,6 +966,7 @@ void PipelineState::setAlphaBlendOp(uint8_t attachment, vk::BlendOp blend_op) {
 
 	if (getBlendEnable(attachment)) {
 		setBits(bits, state_, kColorBlendAttachmentsOffset + attachment * kAttachmentStateSize + kAlphaBlendOpOffset);
+		dirty_ = true;
 	}
 }
 
@@ -922,6 +978,7 @@ void PipelineState::setBlendMaskRed(uint8_t attachment, bool enable) {
 	attachment_states_[attachment][kBlendMaskRedBit] = enable;
 	if (getBlendEnable(attachment)) {
 		state_[kColorBlendAttachmentsOffset + attachment * kAttachmentStateSize + kBlendMaskRedBit] = enable;
+		dirty_ = true;
 	}
 }
 
@@ -933,6 +990,7 @@ void PipelineState::setBlendMaskGreen(uint8_t attachment, bool enable) {
 	attachment_states_[attachment][kBlendMaskGreenBit] = enable;
 	if (getBlendEnable(attachment)) {
 		state_[kColorBlendAttachmentsOffset + attachment * kAttachmentStateSize + kBlendMaskGreenBit] = enable;
+		dirty_ = true;
 	}
 }
 
@@ -944,6 +1002,7 @@ void PipelineState::setBlendMaskBlue(uint8_t attachment, bool enable) {
 	attachment_states_[attachment][kBlendMaskBlueBit] = enable;
 	if (getBlendEnable(attachment)) {
 		state_[kColorBlendAttachmentsOffset + attachment * kAttachmentStateSize + kBlendMaskBlueBit] = enable;
+		dirty_ = true;
 	}
 }
 
@@ -955,6 +1014,7 @@ void PipelineState::setBlendMaskAlpha(uint8_t attachment, bool enable) {
 	attachment_states_[attachment][kBlendMaskAlphaBit] = enable;
 	if (getBlendEnable(attachment)) {
 		state_[kColorBlendAttachmentsOffset + attachment * kAttachmentStateSize + kBlendMaskAlphaBit] = enable;
+		dirty_ = true;
 	}
 }
 
