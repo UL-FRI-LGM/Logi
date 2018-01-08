@@ -12,6 +12,7 @@ layout(binding = 0) uniform UniformBufferObject {
 
 layout(push_constant) uniform PushConsts {
 	vec3 lightPos;
+	int abc;
 } pushConsts;
 
 out gl_PerVertex {
@@ -38,5 +39,5 @@ void main() {
     gl_Position = vec4(position + ubo[0].test, 0.0) * test;
 	}
 	//vec4(positions[gl_VertexIndex], 0.0, 1.0);
-    fragColor = colors[gl_VertexIndex] + color * pushConsts.lightPos;
+    fragColor = colors[gl_VertexIndex] + color * pushConsts.lightPos * pushConsts.abc;
 }

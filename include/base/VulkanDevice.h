@@ -14,6 +14,8 @@
 #include <set>
 #include <map>
 #include <string>
+#include "base/PipelineResources.h"
+#include "descriptors/DescriptorPool.h"
 
 namespace vkr {
 
@@ -114,7 +116,7 @@ public:
 	 * @return Physical device handle.
 	 */
 	vk::PhysicalDevice getPhysicalDeviceHandle() const;
-	
+
 	/**
 	 * @brief Retrieve logical device handle.
 	 *
@@ -150,10 +152,16 @@ public:
 	 */
 	const vk::PhysicalDeviceMemoryProperties& memoryProperties() const;
 
+	void createDescriptorPool(const DescriptorsCount& pool_sizes, bool releasable_sets = false);
+
+	DescriptorPool* getDescriptorPool();
+
 	/**
 	 * @brief Check if the device is initialized.
 	 */
 	bool initialized() const;
+
+	PipelineResources* getPipelineResources();
 
 	~VulkanDevice();
 
@@ -176,6 +184,7 @@ protected:
 	vk::CommandPool createCommandPool(const uint32_t family_index, const vk::CommandPoolCreateFlags flags = vk::CommandPoolCreateFlagBits::eResetCommandBuffer);
 
 private:
+
 	/**
 	 * @brief Holds Vulkan queue family related information.
 	 */
@@ -210,32 +219,10 @@ private:
 	std::vector<vk::QueueFamilyProperties> queue_family_properties_; ///< Queue family properties structures.
 	QueueFamily queue_families_[3]; ///< Queue family data.
 
-	// List of cached shaders.
-	std::vector<vk::ShaderModule> cached_shaders_;
-	std::vector<vk::DescriptorSetLayout> cached_descriptor_sets_;
+	std::unique_ptr<PipelineResources> pipeline_resources_;
+	std::unique_ptr<DescriptorPool> descriptor_pool_;
 
 	bool initialized_; ///< Is device initialized.
-
-	/**
-	 * @brief Create the shader module using the given code and caches it.
-	 *
-	 * @param code Shader code.
-	 * @return size_t Index of the shader module (this index is used to fetch the shader).
-	 */
-	size_t createShaderModule(const std::vector<uint32_t>& code);
-
-	/**
-	 * @brief Retrieve the shader module with the given index. If the shader module is not found it returns a null handle.
-	 *
-	 * @param index Shader module index.
-	 * @return Shader module.
-	 */
-	vk::ShaderModule getShaderModule(size_t index);
-
-	/**
-	 * @brief Destroy all cached shader modules (this invalidate all indices previously outputted by createShaderModule).
-	 */
-	void clearShaderModules();
 };
 
 } /// !namespace vkr

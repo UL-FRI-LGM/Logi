@@ -7,10 +7,12 @@
 */
 
 #include "volumetric/VolumetricRenderer.h"
+#include "program_management/ProgramManager.h"
 #include <vector>
 #include <iostream>
 #include "base/VulkanDevice.h"
 #include "util/helpers.h"
+#include "base/Types.h"
 
 namespace vkr {
 
@@ -70,6 +72,16 @@ VolumetricRender::VolumetricRender(std::vector<char *>& global_extensions, std::
 	// Select and initialize the device.
 	gpu_ = devices[selection].second;
 	gpu_->initialize(features, device_extensions, QueueConfig(1, 0, true));
+
+
+	compute_id_t pipeline_id = ProgramManager::instance().getComputePipelineId("fibbonaci");
+	ComputePipeline* pipeline = ProgramManager::instance().getComputePipeline(pipeline_id);
+	vk::Pipeline vk_pipeline = pipeline->getVkHandle(gpu_);
+
+	DescriptorsCount descriptorsCount = ProgramManager::instance().getDescriptorsCount();
+
+	gpu_->createDescriptorPool(descriptorsCount);
+	size_t a = 0;
 }
 
 }

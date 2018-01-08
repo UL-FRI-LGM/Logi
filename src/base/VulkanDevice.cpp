@@ -1,4 +1,3 @@
-#include "base\VulkanDevice.h"
 /*
 * Vulkan Device class.
 *
@@ -6,15 +5,15 @@
 *
 * This code is licensed under the MIT license (MIT) (http://opensource.org/licenses/MIT)
 */
-
+#include <vulkan/vulkan.hpp>
 #include "base/VulkanDevice.h"
-#include <vulkan\vulkan.hpp>
 
 namespace vkr {
 
+
 VulkanDevice::VulkanDevice(vk::PhysicalDevice& device)
 	: physical_device_(device), logical_device_(nullptr), device_properties_(), device_features_(), memory_properties_(),
-	available_extensions_(), enabled_features_(), queue_family_properties_(), queue_families_(), initialized_(false) {
+	available_extensions_(), enabled_features_(), queue_family_properties_(), queue_families_(), pipeline_resources_(nullptr), initialized_(false) {
 
 	physical_device_ = device;
 
@@ -177,6 +176,8 @@ void VulkanDevice::initialize(const vk::PhysicalDeviceFeatures& features, const 
 		}
 	}
 
+	pipeline_resources_ = std::make_unique<PipelineResources>(logical_device_);
+
 	// Mark the device as initialized.
 	initialized_ = true;
 }
@@ -209,55 +210,43 @@ uint32_t VulkanDevice::getFamilyIndex(QueueFamilyType type) const {
 	return queue_families_[static_cast<size_t>(type)].family_index;
 }
 
-const vk::PhysicalDeviceProperties & VulkanDevice::properties() const {
+const vk::PhysicalDeviceProperties& VulkanDevice::properties() const {
 	return device_properties_;
 }
 
-const vk::PhysicalDeviceFeatures & VulkanDevice::features() const {
+const vk::PhysicalDeviceFeatures& VulkanDevice::features() const {
 	return device_features_;
 }
 
-const vk::PhysicalDeviceMemoryProperties & VulkanDevice::memoryProperties() const {
+const vk::PhysicalDeviceMemoryProperties& VulkanDevice::memoryProperties() const {
 	return memory_properties_;
 }
 
-size_t VulkanDevice::createShaderModule(const std::vector<uint32_t>& code) {
+void VulkanDevice::createDescriptorPool(const DescriptorsCount& pool_sizes, bool releasable_sets) {
 	if (!initialized_) {
-		throw std::runtime_error("Tried to create shader module for uninitialized device.");
+		throw std::runtime_error("Tried to create descriptor pool on an uninitialized device.");
 	}
 
-	// Create and cache the shader.
-	vk::ShaderModuleCreateInfo createInfo{};
-	createInfo.codeSize = code.size();
-	createInfo.pCode = code.data();
-	cached_shaders_.push_back(logical_device_.createShaderModule(createInfo));
-
-	// Return the shader index.
-	return cached_shaders_.size() - 1;
+	descriptor_pool_ = std::make_unique<DescriptorPool>(logical_device_, pool_sizes, releasable_sets);
 }
 
-vk::ShaderModule VulkanDevice::getShaderModule(size_t index) {
-	return cached_shaders_[index];
-}
-
-void VulkanDevice::clearShaderModules() {
-	// Destroy the cached shader.
-	for (vk::ShaderModule& sm : cached_shaders_) {
-		logical_device_.destroyShaderModule(sm);
-	}
-
-	cached_shaders_.clear();
+DescriptorPool* VulkanDevice::getDescriptorPool() {
+	return descriptor_pool_.get();
 }
 
 bool VulkanDevice::initialized() const {
 	return initialized_;
 }
 
+PipelineResources* VulkanDevice::getPipelineResources() {
+	return pipeline_resources_.get();
+}
+
 VulkanDevice::~VulkanDevice() {
 	// If logical device was created, destroy it.
 	if (logical_device_) {
-		// Destroy cached shader modules.
-		clearShaderModules();
+		descriptor_pool_.reset();
+		pipeline_resources_.reset();
 
 		// Destroy command pools
 		for (QueueFamily& queue_family : queue_families_) {

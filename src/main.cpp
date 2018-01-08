@@ -12,7 +12,7 @@
 #include <set>
 #include <base/SwapChain.h>
 #include "base/RendererBase.h"
-#include "base/ProgramManager.h"
+#include "program_management/ProgramManager.h"
 #include <glm\glm.hpp>
 #include "volumetric/VolumetricRenderer.h"
 #include <base/PipelineState.h>
@@ -540,6 +540,7 @@ private:
 		pipelineInfo.layout = pipelineLayout;
 		pipelineInfo.renderPass = renderPass;
 		pipelineInfo.subpass = 0;
+
 		pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 
 		if (vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline) != VK_SUCCESS) {
@@ -940,9 +941,10 @@ int main() {
 		std::cout << sizeof(Vertex) << std::endl;
 		std::cout << offsetof(Vertex, pos) << std::endl;
 
+		std::cout << std::this_thread::get_id() << std::endl;
+
 		vkr::ProgramManager& pm = vkr::ProgramManager::instance();
-		pm.initialize("./resources/shaders");
-		pm.loadShaders(NULL);
+		pm.loadPrograms("./resources/shaders");
 
 		std::vector<char*> global_extensions;
 		std::vector<char*> device_extensions{ VK_KHR_SWAPCHAIN_EXTENSION_NAME };

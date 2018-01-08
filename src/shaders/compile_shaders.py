@@ -17,9 +17,14 @@ for root, directories, files in os.walk(directory):
 		full_path = os.path.join(root, file).decode("utf-8")
 		filename = os.path.splitext(file)[0]
 
+		ending = ""
 		if file.decode("utf-8").endswith(".frag"):
-			pathlib.Path("..\\..\\resources\\shaders\\" + root.decode("utf-8")).mkdir(parents=True, exist_ok=True)
-			subprocess.run(["glslangValidator", '-V', full_path, "-o", "..\\..\\resources\\shaders\\" + os.path.join(root, filename).decode("utf-8") + '_frag.spv'])
+			ending = "_frag.spv"
 		elif file.decode("utf-8").endswith(".vert"):
+			ending = "_vert.spv"
+		elif file.decode("utf-8").endswith(".comp"):
+			ending = "_comp.spv"
+
+		if ending != "":
 			pathlib.Path("..\\..\\resources\\shaders\\" + root.decode("utf-8")).mkdir(parents=True, exist_ok=True)
-			subprocess.run(["glslangValidator", "-V", full_path, "-o", "..\\..\\resources\\shaders\\" + os.path.join(root, filename).decode("utf-8") + '_vert.spv'])
+			subprocess.run(["glslangValidator", "-V", "-Od", "--keep-uncalled", full_path, "-o", "..\\..\\resources\\shaders\\" + os.path.join(root, filename).decode("utf-8") + ending])
