@@ -152,8 +152,18 @@ public:
 	 */
 	const vk::PhysicalDeviceMemoryProperties& memoryProperties() const;
 
+	/**
+	 * @brief Creates descriptor pool. Allocates enough memory to support creation of as many descriptors of a given type as specified in pool_sizes.
+	 *
+	 * @param pool_sizes Contains number of sets and descriptors of different types.
+	 * @param releasable_sets If true the allocated descriptor sets can be released.
+	 */
 	void createDescriptorPool(const DescriptorsCount& pool_sizes, bool releasable_sets = false);
 
+	/**
+	 * @brief Returns pointer to the descriptor pool. Returns nullptr if descriptor pool was not yet created
+	 *
+	 */
 	DescriptorPool* getDescriptorPool();
 
 	/**
