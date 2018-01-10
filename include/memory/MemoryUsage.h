@@ -1,4 +1,5 @@
 #ifndef MEMORY_MEMORY_USAGE_H
+#define MEMORY_MEMORY_USAGE_H
 
 enum class MemoryUsage {
 	GPU_ONLY,

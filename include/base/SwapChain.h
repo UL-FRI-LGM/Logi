@@ -12,6 +12,7 @@
 #include <vulkan/vulkan.hpp>
 #include <tuple>
 #include "base/VulkanDevice.h"
+#include "queues/QueueFamily.h"
 
 namespace vkr {
 
@@ -82,7 +83,7 @@ private:
 	VulkanDevice* device_; ///< Vulkan device.
 
 	vk::SurfaceKHR surface_; ///< Surface.
-	uint32_t present_family_idx_; ///< Index of queue family that supports presenting.
+	QueueFamily* present_family_; ///< Family with presentation support.
 
 	vk::SwapchainKHR swapchain_; ///< Swap chain object.
 	vk::Format color_format_; /// Selected swap chain color format.

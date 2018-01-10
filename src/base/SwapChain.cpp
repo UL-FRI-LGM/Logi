@@ -11,7 +11,7 @@
 
 namespace vkr {
 
-SwapChain::SwapChain() : instance_(nullptr), device_(nullptr), surface_(nullptr), present_family_idx_(UINT32_MAX),
+SwapChain::SwapChain() : instance_(nullptr), device_(nullptr), surface_(nullptr), present_family_(nullptr),
 swapchain_(nullptr), color_format_(vk::Format::eUndefined), color_space_(), image_count_(0), images_(), image_views_() {
 }
 
@@ -45,17 +45,17 @@ void SwapChain::init(vk::SurfaceKHR surface) {
 	// Store surface.
 	surface_ = surface;
 
-	// Find queue families that support present.
-	static const std::vector<QueueFamilyType> kPreferedFamilyOrder = { QueueFamilyType::GRAPHIC , QueueFamilyType::COMPUTE, QueueFamilyType::TRANSFER };
 	VkBool32 present_support = false;
+	std::vector<QueueFamily*> queue_families = { device_->getGraphicalFamily(), device_->getComputeFamily(), device_->getTransferFamily() };
 
-	for (QueueFamilyType type : kPreferedFamilyOrder) {
-		fpGetPhysicalDeviceSurfaceSupportKHR((VkPhysicalDevice)device_->getPhysicalDeviceHandle(), device_->getFamilyIndex(type), (VkSurfaceKHR)surface, &present_support);
+	for (QueueFamily* family : queue_families) {
+		if (family != nullptr) {
+			fpGetPhysicalDeviceSurfaceSupportKHR((VkPhysicalDevice)device_->getPhysicalDeviceHandle(), family->getFamilyIndex(), (VkSurfaceKHR) surface, &present_support);
 
-		// Stop when you find queue family that supports presenting on the give surface.
-		if (present_support) {
-			present_family_idx_ = device_->getFamilyIndex(type);
-			break;
+			if (present_support) {
+				present_family_ = family;
+				break;
+			}
 		}
 	}
 
@@ -205,13 +205,13 @@ void SwapChain::create(uint32_t& width, uint32_t& height, bool vsync) {
 	swapchain_ci.preTransform = pre_transform;
 	swapchain_ci.imageArrayLayers = 1;
 
-	if (present_family_idx_ == device_->getFamilyIndex(QueueFamilyType::GRAPHIC)) {
+	if (present_family_ == device_->getGraphicalFamily()) {
 		swapchain_ci.imageSharingMode = vk::SharingMode::eExclusive;
 		swapchain_ci.queueFamilyIndexCount = 0;
 		swapchain_ci.pQueueFamilyIndices = NULL;
 	}
 	else {
-		uint32_t family_indices[] = { device_->getFamilyIndex(QueueFamilyType::GRAPHIC), present_family_idx_ };
+		uint32_t family_indices[] = { device_->getGraphicalFamily()->getFamilyIndex(), present_family_->getFamilyIndex() };
 		swapchain_ci.imageSharingMode = vk::SharingMode::eConcurrent;
 		swapchain_ci.queueFamilyIndexCount = 2;
 		swapchain_ci.pQueueFamilyIndices = family_indices;
@@ -287,7 +287,7 @@ void SwapChain::cleanup() {
 		fpDestroySwapchainKHR((VkDevice)device_->getLogicalDeviceHandle(), (VkSwapchainKHR)swapchain_, nullptr);
 	}
 
-	present_family_idx_ = UINT32_MAX;
+	present_family_ = nullptr;
 	surface_ = nullptr;
 	swapchain_ = nullptr;
 	device_ = nullptr;

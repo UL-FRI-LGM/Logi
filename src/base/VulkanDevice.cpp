@@ -7,13 +7,17 @@
 */
 #include <vulkan/vulkan.hpp>
 #include "base/VulkanDevice.h"
+#include "..\..\include\base\VulkanDevice.h"
 
 namespace vkr {
 
+QueueConfig::QueueConfig(uint32_t graphic_count, uint32_t compute_count, uint32_t transfer_count) : graphic_count(graphic_count), compute_count(compute_count), transfer_count(transfer_count) {
+}
 
+#pragma region INITIALIZATION
 VulkanDevice::VulkanDevice(vk::PhysicalDevice& device)
 	: physical_device_(device), logical_device_(nullptr), device_properties_(), device_features_(), memory_properties_(),
-	available_extensions_(), enabled_features_(), queue_family_properties_(), queue_families_(), pipeline_resources_(nullptr), initialized_(false) {
+	available_extensions_(), enabled_features_(), graphical_family_(nullptr), compute_family_(nullptr), transfer_family_(nullptr), pipeline_resources_(nullptr), initialized_(false) {
 
 	physical_device_ = device;
 
@@ -34,112 +38,82 @@ VulkanDevice::VulkanDevice(vk::PhysicalDevice& device)
 		available_extensions_.insert(extension.extensionName);
 	});
 
-	// Fetch queue families.
-	uint32_t queue_family_count;
-	physical_device_.getQueueFamilyProperties(&queue_family_count, nullptr);
-
-	queue_family_properties_.resize(queue_family_count);
-	physical_device_.getQueueFamilyProperties(&queue_family_count, queue_family_properties_.data());
-
 	// Try to find dedicated graphic, compute and transfer queues.
-	for (uint32_t i = 0; i < static_cast<uint32_t>(queue_family_properties_.size()); i++) {
-		if (queue_families_[static_cast<size_t>(QueueFamilyType::GRAPHIC)].family_index == UINT_MAX && queue_family_properties_[i].queueFlags & vk::QueueFlagBits::eGraphics) {
-			queue_families_[static_cast<size_t>(QueueFamilyType::GRAPHIC)].family_index = i;
+	std::vector<vk::QueueFamilyProperties> queue_family_properties = physical_device_.getQueueFamilyProperties();
+
+	for (uint32_t i = 0; i < static_cast<uint32_t>(queue_family_properties.size()); i++) {
+
+		if (queue_family_properties[i].queueFlags & vk::QueueFlagBits::eGraphics) {
+			if (graphical_family_.get() == nullptr) {
+				graphical_family_ = std::make_unique<QueueFamily>(i, queue_family_properties[i].queueFlags, queue_family_properties[i].queueCount, queue_family_properties[i].timestampValidBits, queue_family_properties[i].minImageTransferGranularity);
+			}
 		}
-		else if (queue_families_[static_cast<size_t>(QueueFamilyType::COMPUTE)].family_index == UINT_MAX && queue_family_properties_[i].queueFlags & vk::QueueFlagBits::eCompute) {
-			queue_families_[static_cast<size_t>(QueueFamilyType::COMPUTE)].family_index = i;
+		else if (queue_family_properties[i].queueFlags & vk::QueueFlagBits::eCompute) {
+			if (compute_family_.get() == nullptr) {
+				compute_family_ = std::make_unique<QueueFamily>(i, queue_family_properties[i].queueFlags, queue_family_properties[i].queueCount, queue_family_properties[i].timestampValidBits, queue_family_properties[i].minImageTransferGranularity);
+			}
 		}
-		else if (queue_families_[static_cast<size_t>(QueueFamilyType::TRANSFER)].family_index == UINT_MAX && queue_family_properties_[i].queueFlags & vk::QueueFlagBits::eTransfer) {
-			queue_families_[static_cast<size_t>(QueueFamilyType::TRANSFER)].family_index = i;
+		else if (queue_family_properties[i].queueFlags & vk::QueueFlagBits::eTransfer) {
+			if (transfer_family_.get() == nullptr) {
+				transfer_family_ = std::make_unique<QueueFamily>(i, queue_family_properties[i].queueFlags, queue_family_properties[i].queueCount, queue_family_properties[i].timestampValidBits, queue_family_properties[i].minImageTransferGranularity);
+			}
 		}
 	}
-}
-
-std::vector<vk::DeviceQueueCreateInfo> VulkanDevice::generateQueueCreateInfos(const QueueConfig& queue_config) {
-	std::vector<vk::DeviceQueueCreateInfo> queue_create_infos{};
-
-	// Populate create info structure for graphic queues.
-	if (queue_config.graphic_count > 0) {
-		uint32_t family_index = queue_families_[static_cast<size_t>(QueueFamilyType::GRAPHIC)].family_index;
-
-		// Make sure that device supports has graphic queue family and enough graphic queues available.
-		if (family_index == UINT32_MAX || queue_family_properties_[family_index].queueCount < queue_config.graphic_count) {
-			std::runtime_error("Device (" + std::string(device_properties_.deviceName) + ") does not provide enough graphic queues.");
-		}
-
-		// Create QueueCreateInfo.
-		vk::DeviceQueueCreateInfo queueInfo{};
-		queueInfo.queueFamilyIndex = family_index;
-		queueInfo.queueCount = queue_config.graphic_count;
-		queueInfo.pQueuePriorities = &kDefaultQueuePriority;
-		queue_create_infos.push_back(queueInfo);
-
-		// Store queue count.
-		queue_families_[static_cast<size_t>(QueueFamilyType::GRAPHIC)].queue_count = queue_config.graphic_count;
-	}
-
-	// Populate create info structure for compute queues.
-	if (queue_config.compute_count > 0) {
-		uint32_t family_index = queue_families_[static_cast<size_t>(QueueFamilyType::COMPUTE)].family_index;
-
-		// Make sure that device supports has graphic queue family and enough graphic queues available.
-		if (family_index == UINT32_MAX || queue_family_properties_[family_index].queueCount < queue_config.compute_count) {
-			std::runtime_error("Device (" + std::string(device_properties_.deviceName) + ") does not provide enough compute queues.");
-		}
-
-		// Create QueueCreateInfo.
-		vk::DeviceQueueCreateInfo queueInfo{};
-		queueInfo.queueFamilyIndex = family_index;
-		queueInfo.queueCount = queue_config.compute_count;
-		queueInfo.pQueuePriorities = &kDefaultQueuePriority;
-		queue_create_infos.push_back(queueInfo);
-
-		// Store queue count.
-		queue_families_[static_cast<size_t>(QueueFamilyType::COMPUTE)].queue_count = queue_config.compute_count;
-	}
-
-	// Populate create info structure for a dedicated transfer queue.
-	if (queue_config.dedicated_transfer) {
-		uint32_t family_index = queue_families_[static_cast<size_t>(QueueFamilyType::TRANSFER)].family_index;
-
-		if (family_index == UINT32_MAX) {
-			std::runtime_error("Device (" + std::string(device_properties_.deviceName) + ") does not provide dedicated transfer queue.");
-		}
-
-		// Create QueueCreateInfo.
-		vk::DeviceQueueCreateInfo queueInfo{};
-		queueInfo.queueFamilyIndex = family_index;
-		queueInfo.queueCount = 1;
-		queueInfo.pQueuePriorities = &kDefaultQueuePriority;
-		queue_create_infos.push_back(queueInfo);
-
-		queue_families_[static_cast<size_t>(QueueFamilyType::TRANSFER)].queue_count = 1;
-	}
-
-	return queue_create_infos;
-}
-
-vk::CommandPool VulkanDevice::createCommandPool(const uint32_t family_index, const vk::CommandPoolCreateFlags flags) {
-	// Populate create info.
-	vk::CommandPoolCreateInfo cmd_pool_info{};
-	cmd_pool_info.queueFamilyIndex = family_index;
-	cmd_pool_info.flags = flags;
-
-	// Create command pool.
-	vk::CommandPool cmd_pool;
-	vk::Result result = logical_device_.createCommandPool(&cmd_pool_info, nullptr, &cmd_pool);
-
-	if (result != vk::Result::eSuccess) {
-		throw std::runtime_error("Failed to create command pool for device (" + std::string(device_properties_.deviceName) + ").");
-	}
-
-	return cmd_pool;
 }
 
 void VulkanDevice::initialize(const vk::PhysicalDeviceFeatures& features, const std::vector<char*>& extensions, const QueueConfig& queue_config) {
 
 	// Generate queue create infos.
-	std::vector<vk::DeviceQueueCreateInfo> queue_create_infos = generateQueueCreateInfos(queue_config);
+	std::vector<vk::DeviceQueueCreateInfo> queue_create_infos{};
+	std::vector<float> priorities(std::max(std::max(queue_config.graphic_count, queue_config.compute_count), queue_config.transfer_count), 0);
+
+	// Populate create info structure for graphic queues.
+	if (queue_config.graphic_count > 0) {
+		// Make sure that device supports has graphic queue family and enough graphic queues available.
+		if (graphical_family_.get() == nullptr || graphical_family_->getMaxSupportedQueueCount() < queue_config.graphic_count) {
+			std::runtime_error("Device (" + std::string(device_properties_.deviceName) + ") does not provide enough graphic queues.");
+		}
+
+		// Create QueueCreateInfo.
+		vk::DeviceQueueCreateInfo queueInfo{};
+		queueInfo.queueFamilyIndex = graphical_family_->getFamilyIndex();
+		queueInfo.queueCount = queue_config.graphic_count;
+		queueInfo.pQueuePriorities = priorities.data();
+
+		queue_create_infos.push_back(queueInfo);
+	}
+
+	// Populate create info structure for compute queues.
+	if (queue_config.compute_count > 0) {
+		// Make sure that device supports has compute queue family and enough compute queues available.
+		if (compute_family_.get() == nullptr || compute_family_->getMaxSupportedQueueCount() < queue_config.compute_count) {
+			std::runtime_error("Device (" + std::string(device_properties_.deviceName) + ") does not provide enough compute queues.");
+		}
+
+		// Create QueueCreateInfo.
+		vk::DeviceQueueCreateInfo queueInfo{};
+		queueInfo.queueFamilyIndex = compute_family_->getFamilyIndex();
+		queueInfo.queueCount = queue_config.compute_count;
+		queueInfo.pQueuePriorities = priorities.data();
+
+		queue_create_infos.push_back(queueInfo);
+	}
+
+	// Populate create info structure for a dedicated transfer queue.
+	if (queue_config.transfer_count > 0) {
+		// Make sure that device supports has transfer queue family and enough transfer queues available.
+		if (transfer_family_.get() == nullptr || transfer_family_->getMaxSupportedQueueCount() < queue_config.transfer_count) {
+			std::runtime_error("Device (" + std::string(device_properties_.deviceName) + ") does not provide enough transfer queues.");
+		}
+
+		// Create QueueCreateInfo.
+		vk::DeviceQueueCreateInfo queueInfo{};
+		queueInfo.queueFamilyIndex = transfer_family_->getFamilyIndex();
+		queueInfo.queueCount = queue_config.transfer_count;
+		queueInfo.pQueuePriorities = priorities.data();
+
+		queue_create_infos.push_back(queueInfo);
+	}
 
 	// Construct device create info.
 	vk::DeviceCreateInfo device_create_info{};
@@ -147,67 +121,34 @@ void VulkanDevice::initialize(const vk::PhysicalDeviceFeatures& features, const 
 	device_create_info.pQueueCreateInfos = queue_create_infos.data();
 	device_create_info.pEnabledFeatures = &features;
 
+	// Store list of enabled features.
+	enabled_features_ = features;
+
 	if (extensions.size() > 0) {
 		device_create_info.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
 		device_create_info.ppEnabledExtensionNames = extensions.data();
 	}
 
-	// Try to create logical device.
-	vk::Result result = physical_device_.createDevice(&device_create_info, nullptr, &logical_device_);
+	// Create logical device.
+	logical_device_ = physical_device_.createDevice(device_create_info);
 
-	// Check if the logical device was successfully created.
-	if (result != vk::Result::eSuccess) {
-		throw std::runtime_error("Failed to create logical device.");
-	}
+	// Initialize queues.
+	graphical_family_->initialize(logical_device_, queue_config.graphic_count);
+	compute_family_->initialize(logical_device_, queue_config.compute_count);
+	transfer_family_->initialize(logical_device_, queue_config.transfer_count);
 
-	// Store list of enabled features.
-	enabled_features_ = features;
-
-	// Initialize command pools and fetch queues for each queue family.
-	for (QueueFamily& queue_family : queue_families_) {
-		// Fetch queues.
-		for (uint32_t i = 0; i < queue_family.queue_count; i++) {
-			queue_family.queues.push_back(logical_device_.getQueue(queue_family.family_index, i));
-		}
-
-		// Create command pool. (do not bother if there is no queue to use it)
-		if (queue_family.family_index != UINT32_MAX && queue_family.queue_count > 0) {
-			queue_family.command_pool = createCommandPool(queue_family.family_index);
-		}
-	}
-
+	// Create pipeline resources
 	pipeline_resources_ = std::make_unique<PipelineResources>(logical_device_);
+	allocation_manager_ = std::make_unique<AllocationManager>(physical_device_, logical_device_);
 
 	// Mark the device as initialized.
 	initialized_ = true;
 }
+#pragma endregion
 
+#pragma region META DATA GETTERS
 bool VulkanDevice::extensionSupported(const std::string& extension_name) const {
 	return available_extensions_.find(extension_name) != available_extensions_.end();
-}
-
-bool VulkanDevice::supportsQueueFamily(const QueueFamilyType type) const {
-	return queue_families_[static_cast<size_t>(type)].family_index != UINT32_MAX;
-}
-
-uint32_t VulkanDevice::getQueueCount(const QueueFamilyType type) const {
-	return queue_families_[static_cast<size_t>(type)].queue_count;
-}
-
-const std::vector<vk::QueueFamilyProperties>& VulkanDevice::getQueueFamilyProperties() const {
-	return queue_family_properties_;
-}
-
-vk::PhysicalDevice VulkanDevice::getPhysicalDeviceHandle() const {
-	return physical_device_;
-}
-
-vk::Device VulkanDevice::getLogicalDeviceHandle() const {
-	return logical_device_;
-}
-
-uint32_t VulkanDevice::getFamilyIndex(QueueFamilyType type) const {
-	return queue_families_[static_cast<size_t>(type)].family_index;
 }
 
 const vk::PhysicalDeviceProperties& VulkanDevice::properties() const {
@@ -222,6 +163,49 @@ const vk::PhysicalDeviceMemoryProperties& VulkanDevice::memoryProperties() const
 	return memory_properties_;
 }
 
+uint32_t VulkanDevice::getGraphicsQueueCount() const {
+	if (graphical_family_.get() != nullptr) {
+		return graphical_family_->getMaxSupportedQueueCount();
+	}
+	else {
+		return 0;
+	}
+}
+
+uint32_t VulkanDevice::getComputeQueueCount() const {
+	if (compute_family_.get() != nullptr) {
+		return compute_family_->getMaxSupportedQueueCount();
+	}
+	else {
+		return 0;
+	}
+}
+
+uint32_t VulkanDevice::getTransferQueueCount() const {
+	if (transfer_family_.get() != nullptr) {
+		return transfer_family_->getMaxSupportedQueueCount();
+	}
+	else {
+		return 0;
+	}
+}
+#pragma endregion
+
+#pragma region QUEUE FAMILIES
+QueueFamily* VulkanDevice::getGraphicalFamily() {
+	return graphical_family_.get();
+}
+
+QueueFamily* VulkanDevice::getComputeFamily() {
+	return compute_family_.get();
+}
+
+QueueFamily* VulkanDevice::getTransferFamily() {
+	return transfer_family_.get();
+}
+#pragma endregion
+
+
 void VulkanDevice::createDescriptorPool(const DescriptorsCount& pool_sizes, bool releasable_sets) {
 	if (!initialized_) {
 		throw std::runtime_error("Tried to create descriptor pool on an uninitialized device.");
@@ -234,13 +218,28 @@ DescriptorPool* VulkanDevice::getDescriptorPool() {
 	return descriptor_pool_.get();
 }
 
+PipelineResources* VulkanDevice::getPipelineResources() {
+	return pipeline_resources_.get();
+}
+
+AllocationManager * VulkanDevice::getAllocationManager() {
+	return allocation_manager_.get();
+}
+
+
 bool VulkanDevice::initialized() const {
 	return initialized_;
 }
 
-PipelineResources* VulkanDevice::getPipelineResources() {
-	return pipeline_resources_.get();
+#pragma region DEVICE HANDLE GETTERS
+const vk::PhysicalDevice& VulkanDevice::getPhysicalDeviceHandle() const {
+	return physical_device_;
 }
+
+const vk::Device& VulkanDevice::getLogicalDeviceHandle() const {
+	return logical_device_;
+}
+#pragma endregion
 
 VulkanDevice::~VulkanDevice() {
 	// If logical device was created, destroy it.
@@ -249,12 +248,11 @@ VulkanDevice::~VulkanDevice() {
 		pipeline_resources_.reset();
 
 		// Destroy command pools
-		for (QueueFamily& queue_family : queue_families_) {
-			if (queue_family.family_index != UINT32_MAX && queue_family.queue_count > 0) {
-				logical_device_.destroyCommandPool(queue_family.command_pool);
-			}
-		}
+		graphical_family_.reset();
+		compute_family_.reset();
+		transfer_family_.reset();
 
+		// Finally destroy the logical device
 		logical_device_.destroy();
 	}
 }

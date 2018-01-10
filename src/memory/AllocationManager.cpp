@@ -1,5 +1,6 @@
-
 #include "memory/AllocationManager.h"
+#define VMA_IMPLEMENTATION
+#include <vk_mem_alloc.h>
 
 namespace vkr {
 

@@ -6,7 +6,7 @@
 * This code is licensed under the MIT license (MIT) (http://opensource.org/licenses/MIT)
 */
 
-#include "volumetric/VolumetricRenderer.h"
+#include "examples/ExampleA.h"
 #include "program_management/ProgramManager.h"
 #include <vector>
 #include <iostream>
@@ -17,7 +17,7 @@
 namespace vkr {
 
 
-VolumetricRender::VolumetricRender(std::vector<char *>& global_extensions, std::vector<char *>& device_extensions, vk::PhysicalDeviceFeatures& features) : RendererBase(global_extensions), gpu_(nullptr) {
+ExampleA::ExampleA(std::vector<char *>& global_extensions, std::vector<char *>& device_extensions, vk::PhysicalDeviceFeatures& features) : RendererBase(global_extensions), gpu_(nullptr) {
 
 	auto scoreDevice = [&device_extensions, &features](const VulkanDevice* device) {
 		// Device must support all requested extensions.
@@ -31,7 +31,7 @@ VolumetricRender::VolumetricRender(std::vector<char *>& global_extensions, std::
 		if (!hasRequestedFeatures(device->features(), features)) {
 			return -1;
 		}
-		
+
 		int32_t score = 0;
 		// Prefer discrete gpu-s.
 		if (device->properties().deviceType == vk::PhysicalDeviceType::eDiscreteGpu) {
@@ -61,7 +61,7 @@ VolumetricRender::VolumetricRender(std::vector<char *>& global_extensions, std::
 	}
 
 	size_t selection;
-	while(true) {
+	while (true) {
 		std::cin >> selection;
 
 		if (selection < devices.size()) {
@@ -71,17 +71,20 @@ VolumetricRender::VolumetricRender(std::vector<char *>& global_extensions, std::
 
 	// Select and initialize the device.
 	gpu_ = devices[selection].second;
-	gpu_->initialize(features, device_extensions, QueueConfig(1, 0, true));
+	gpu_->initialize(features, device_extensions, QueueConfig(0, 1, 0));
+	gpu_->getComputeFamily()->createCommandPool(false, false);
+}
 
+void ExampleA::runExample() {
+	vkr::ProgramManager& pm = vkr::ProgramManager::instance();
+	pm.loadPrograms("./resources/shaders");
 
-	compute_id_t pipeline_id = ProgramManager::instance().getComputePipelineId("fibbonaci");
-	ComputePipeline* pipeline = ProgramManager::instance().getComputePipeline(pipeline_id);
-	vk::Pipeline vk_pipeline = pipeline->getVkHandle(gpu_);
+	std::vector<char*> global_extensions;
+	std::vector<char*> device_extensions{ VK_KHR_SWAPCHAIN_EXTENSION_NAME };
+	vk::PhysicalDeviceFeatures features;
+	ExampleA example(global_extensions, device_extensions, features);
 
-	DescriptorsCount descriptorsCount = ProgramManager::instance().getDescriptorsCount();
-
-	gpu_->createDescriptorPool(descriptorsCount);
-	size_t a = 0;
+	std::cout << "success" << std::endl;
 }
 
 }

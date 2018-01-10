@@ -14,43 +14,29 @@
 #include <set>
 #include <map>
 #include <string>
+#include "queues/QueueFamily.h"
 #include "base/PipelineResources.h"
 #include "descriptors/DescriptorPool.h"
+#include "memory/AllocationManager.h"
 
 namespace vkr {
 
 /**
- * @brief Structure used to specify queues configuration during initialization of VulkanDevice.
- */
+* @brief Structure used to specify queues configuration during initialization of VulkanDevice.
+*/
 struct QueueConfig {
-	const uint32_t graphic_count; ///< Number of graphic queues. If there is not enough graphic queues available, exception will be thrown.
-	const uint32_t compute_count; ///< Number of compute queues. If there is not enough compute queues available, graphic queues will be used.
-	const bool dedicated_transfer; ///< If true, a dedicated transfer queue will be used.
-
-	/**
-	 * @brief Do not allow usage of empty constructor.
-	 */
-	QueueConfig() = delete;
+	const uint32_t graphic_count;  ///< Number of graphic queues.
+	const uint32_t compute_count;  ///< Number of compute queues.
+	const uint32_t transfer_count; ///< Number of transfer queues.
 
 	/**
 	 * @brief Default constructor.
 	 *
-	 * @param graphic_count Number of graphic queues. If there is not enough graphic queues available, exception will be thrown.
-	 * @param compute_count Number of compute queues. If there is not enough compute queues available, graphic queues will be used.
-	 * @param dedicated_transfer If true, a dedicated transfer queue will be used.
+	 * @param graphic_count Number of graphic queues.
+	 * @param compute_count Number of compute queues.
+	 * @param transfer_count Number of transfer queues.
 	 */
-	QueueConfig(uint32_t graphic_count, uint32_t compute_count, bool dedicated_transfer)
-		: graphic_count(graphic_count), compute_count(compute_count), dedicated_transfer(dedicated_transfer) {
-	}
-};
-
-/**
- * @brief Used to address specific VulkanDevice QueueFamily.
- */
-enum class QueueFamilyType {
-	GRAPHIC = 0,
-	COMPUTE = 1,
-	TRANSFER = 2
+	QueueConfig(uint32_t graphic_count = 0, uint32_t compute_count = 0, uint32_t transfer_count = 0);
 };
 
 
@@ -61,6 +47,7 @@ class VulkanDevice {
 public:
 	friend class ProgramManager;
 
+#pragma region INITIALIZATION
 	/**
 	 * @brief Default constructor. Wraps the given physical device and queries its properties.
 	 *
@@ -78,7 +65,9 @@ public:
 	 * @param queue_config Queue configuration.
 	 */
 	void initialize(const vk::PhysicalDeviceFeatures& features, const std::vector<char*>& extensions, const QueueConfig& queue_config);
+#pragma endregion
 
+#pragma region META DATA GETTERS
 	/**
 	 * @brief Check if the extension is supported by the wrapped physical device.
 	 *
@@ -86,50 +75,6 @@ public:
 	 * @return True if the extension is supported.
 	 */
 	bool extensionSupported(const std::string& extension_name) const;
-
-	/**
-	* @brief Check if device supports the family of given type.
-	*
-	* @param type Queue family type.
-	* @return True if the family is supported;
-	*/
-	bool supportsQueueFamily(const QueueFamilyType type) const;
-
-	/**
-	 * @brief Fetch number of queues that belong to the family of given type.
-	 *
-	 * @param type Queue family type.
-	 * @return Number of queues.
-	 */
-	uint32_t getQueueCount(const QueueFamilyType type) const;
-
-	/**
-	 * @brief Retrieve queue family properties.
-	 *
-	 * @return Vector containing queue family properties structures.
-	 */
-	const std::vector<vk::QueueFamilyProperties>& getQueueFamilyProperties() const;
-
-	/**
-	 * @brief Retrieve physical device handle.
-	 *
-	 * @return Physical device handle.
-	 */
-	vk::PhysicalDevice getPhysicalDeviceHandle() const;
-
-	/**
-	 * @brief Retrieve logical device handle.
-	 *
-	 * @return Logical device handle.
-	 */
-	vk::Device getLogicalDeviceHandle() const;
-
-	/**
-	 * @brief Retrieve index of the family of the given type.
-	 *
-	 * @return Index of the queue family or UINT32_MAX if the queue of the given type is not supported.
-	 */
-	uint32_t getFamilyIndex(QueueFamilyType type) const;
 
 	/**
 	 * @brief Retrieve device base properties.
@@ -153,6 +98,54 @@ public:
 	const vk::PhysicalDeviceMemoryProperties& memoryProperties() const;
 
 	/**
+	* @brief Get number of dedicated graphical queues.
+	* @note Graphical queues also support both compute and transfer operations.
+	*
+	* @return Number of dedicated graphical queues.
+	*/
+	uint32_t getGraphicsQueueCount() const;
+
+	/**
+	* @brief Get number of dedicated compute queues.
+	* @note Compute queues also support transfer operations.
+	*
+	* @return Number of dedicated graphical queues.
+	*/
+	uint32_t getComputeQueueCount() const;
+
+	/**
+	* @brief Get number of dedicated transfer queues.
+	*
+	* @return Number of dedicated transfer queues.
+	*/
+	uint32_t getTransferQueueCount() const;
+#pragma endregion
+
+#pragma region QUEUE FAMILIES
+	/**
+	 * @brief Retrieves dedicated graphic family.
+	 *
+	 * @return Pointer to the dedicated graphic family or nullptr if the family is not supported.
+	 */
+	QueueFamily* getGraphicalFamily();
+
+	/**
+	 * @brief Retrieves dedicated compute family.
+	 *
+	 * @return Pointer to the dedicated compute family or nullptr if the family is not supported.
+	 */
+	QueueFamily* getComputeFamily();
+
+	/**
+	 * @brief Retrieves dedicated transfer family.
+	 *
+	 * @return Pointer to the dedicated transfer family or nullptr if the family is not supported.
+	 */
+	QueueFamily* getTransferFamily();
+#pragma endregion
+
+#pragma region DESCRIPTOR POOL
+	/**
 	 * @brief Creates descriptor pool. Allocates enough memory to support creation of as many descriptors of a given type as specified in pool_sizes.
 	 *
 	 * @param pool_sizes Contains number of sets and descriptors of different types.
@@ -165,6 +158,7 @@ public:
 	 *
 	 */
 	DescriptorPool* getDescriptorPool();
+#pragma endregion
 
 	/**
 	 * @brief Check if the device is initialized.
@@ -173,45 +167,28 @@ public:
 
 	PipelineResources* getPipelineResources();
 
+	AllocationManager* getAllocationManager();
+
+	/**
+	 * @brief Retrieve physical device handle.
+	 *
+	 * @return Physical device handle.
+	 */
+	const vk::PhysicalDevice& getPhysicalDeviceHandle() const;
+
+	/**
+	 * @brief Retrieve logical device handle.
+	 *
+	 * @return Logical device handle.
+	 */
+	const vk::Device& getLogicalDeviceHandle() const;
+
+	/**
+	 * @brief Frees resources.
+	 */
 	~VulkanDevice();
 
-protected:
-	/**
-	 * @brief Generate Vulkan queue create infos based on the give queue_config configuration.
-	 * @throw std::runtime_error if bad configuration is given.
-	 *
-	 * @param queue_config Queue configuration structure.
-	 * @return Vector containing queue create infos.
-	 */
-	std::vector<vk::DeviceQueueCreateInfo> generateQueueCreateInfos(const QueueConfig& queue_config);
-
-	/**
-	 * @brief Create CommandPool for the queue family with the given family index.
-	 * @throw std::runtime_error if CommandPool creation fails.
-	 *
-	 * @param queue_config Queue configuration structure.
-	 */
-	vk::CommandPool createCommandPool(const uint32_t family_index, const vk::CommandPoolCreateFlags flags = vk::CommandPoolCreateFlagBits::eResetCommandBuffer);
-
 private:
-
-	/**
-	 * @brief Holds Vulkan queue family related information.
-	 */
-	struct QueueFamily {
-		uint32_t family_index; ///< Index of the family.
-		uint32_t queue_count; ///< Number of instantiated queues.
-		std::vector<vk::Queue> queues; ///< Vulkan queues.
-		vk::CommandPool command_pool; ///< Command pool.
-
-		/**
-		 * @brief Default constructor.
-		 */
-		QueueFamily() : family_index(UINT32_MAX), queue_count(0), queues(), command_pool(nullptr) {};
-	};
-
-	const float kDefaultQueuePriority = 0.0f;
-
 	// Vulkan device handles.
 	vk::PhysicalDevice physical_device_; ///< Physical device handle.
 	vk::Device logical_device_; ///< Logical device handle.
@@ -225,12 +202,14 @@ private:
 	// Enabled features.
 	vk::PhysicalDeviceFeatures enabled_features_; ///< Features enabled during logical device creation.
 
-	// Queue families.
-	std::vector<vk::QueueFamilyProperties> queue_family_properties_; ///< Queue family properties structures.
-	QueueFamily queue_families_[3]; ///< Queue family data.
+	// Dedicated queue families.
+	std::unique_ptr<QueueFamily> graphical_family_;
+	std::unique_ptr<QueueFamily> compute_family_;
+	std::unique_ptr<QueueFamily> transfer_family_;
 
 	std::unique_ptr<PipelineResources> pipeline_resources_;
 	std::unique_ptr<DescriptorPool> descriptor_pool_;
+	std::unique_ptr<AllocationManager> allocation_manager_;
 
 	bool initialized_; ///< Is device initialized.
 };

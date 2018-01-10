@@ -17,9 +17,11 @@
 
 namespace vkr {
 
-class VolumetricRender : public RendererBase {
+class ExampleA : public RendererBase {
 public:
-	VolumetricRender(std::vector<char *>& global_extensions, std::vector<char *>& device_extensions, vk::PhysicalDeviceFeatures& features);
+	ExampleA(std::vector<char *>& global_extensions, std::vector<char *>& device_extensions, vk::PhysicalDeviceFeatures& features);
+
+	static void runExample();
 
 //private:
 	VulkanDevice* gpu_;

@@ -67,7 +67,6 @@ bool CommandPool::allowsBufferReset() const {
 	return resetable_buffers_;
 }
 
-
 CommandPool::~CommandPool() {
 }
 

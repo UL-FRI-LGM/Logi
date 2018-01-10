@@ -9,8 +9,7 @@ namespace vkr {
 class CommandPool {
 public:
 	CommandPool(const vk::Device& device, uint32_t queue_family_index, bool transistent, bool resetable_buffers);
-	~CommandPool();
-
+	
 	/**
 	 * @brief Allocates primary CommandBuffer. Primary command buffers cannot be called on their own but are called from the primary command buffers.
 	 *
@@ -52,6 +51,11 @@ public:
 	 * @raturn True if the buffers are allowed to be reset.
 	 */
 	bool allowsBufferReset() const;
+
+	/**
+	 * @brief Free resources.
+	 */
+	~CommandPool();
 
 protected:
 	vk::CommandBuffer allocateCommandBuffer(const vk::CommandBufferLevel&& level);
