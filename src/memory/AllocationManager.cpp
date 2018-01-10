@@ -30,7 +30,7 @@ AllocationManager::AllocationManager(const vk::PhysicalDevice& physical_device, 
 	vmaCreateAllocator(&allocatorInfo, &allocator_);
 }
 
-std::shared_ptr<Buffer> AllocationManager::allocateBuffer(const BufferConfiguration& configuration) {
+Buffer* AllocationManager::allocateBuffer(const BufferConfiguration& configuration) {
 	vk::BufferCreateInfo buffer_info{};
 	buffer_info.size = configuration.buffer_size;
 	buffer_info.usage = configuration.usage;
@@ -56,18 +56,23 @@ std::shared_ptr<Buffer> AllocationManager::allocateBuffer(const BufferConfigurat
 		return nullptr;
 	}
 
-	std::shared_ptr<Buffer> p_buffer = std::make_shared<Buffer>(vk::Buffer(buffer), allocation, configuration);
-	allocated_buffers_.emplace_back(p_buffer); 
+	allocated_buffers_.emplace_back(std::make_unique<Buffer>(vk::Buffer(buffer), allocation, configuration));
 
-	return p_buffer;
+	return allocated_buffers_.back().get();
 }
 
-void AllocationManager::freeBuffer(const std::shared_ptr<Buffer>& buffer) {
-	vmaDestroyBuffer(allocator_, (VkBuffer)buffer->getVkBuffer(), buffer->getAllocation());
-	allocated_buffers_.remove(buffer);
+void AllocationManager::freeBuffer(Buffer* buffer) {
+	vmaDestroyBuffer(allocator_, (VkBuffer) buffer->getVkBuffer(), buffer->getAllocation());
+	auto it = std::find_if(allocated_buffers_.begin(), allocated_buffers_.end(), [&buffer](const std::unique_ptr<Buffer>& entry) {
+		return entry.get() == buffer;
+	});
+
+	if (it != allocated_buffers_.end()) {
+		allocated_buffers_.erase(it);
+	}
 }
 
-std::shared_ptr<Image> AllocationManager::allocateImage(const ImageConfiguration& configuration) {
+Image* AllocationManager::allocateImage(const ImageConfiguration& configuration) {
 	// Build image create info.
 	vk::ImageCreateInfo image_info{};
 	image_info.flags = configuration.create_flags;
@@ -101,15 +106,20 @@ std::shared_ptr<Image> AllocationManager::allocateImage(const ImageConfiguration
 		return nullptr;
 	}
 
-	std::shared_ptr<Image> p_image = std::make_shared<Image>(vk::Image(image), allocation, configuration);
-	allocated_images_.emplace_back(p_image);
+	allocated_images_.emplace_back(std::make_unique<Image>(vk::Image(image), allocation, configuration));
 
-	return p_image;
+	return allocated_images_.back().get();
 }
 
-void AllocationManager::freeImage(const std::shared_ptr<Image>& image) {
+void AllocationManager::freeImage(Image* image) {
 	vmaDestroyImage(allocator_, (VkBuffer)image->getVkImage(), image->getAllocation());
-	allocated_images_.remove(image);
+	auto it = std::find_if(allocated_images_.begin(), allocated_images_.end(), [&image](const std::unique_ptr<Image>& entry) {
+		return entry.get() == image;
+	});
+
+	if (it != allocated_images_.end()) {
+		allocated_images_.erase(it);
+	}
 }
 
 AllocationManager::~AllocationManager() {
@@ -120,8 +130,11 @@ AllocationManager::~AllocationManager() {
 
 	// Destroy images.
 	for (auto it = allocated_images_.begin(); it != allocated_images_.end(); it++) {
-
+		vmaDestroyImage(allocator_, (VkBuffer)(*it)->getVkImage(), (*it)->getAllocation());
 	}
+
+	// Destroy the allocator.
+	vmaDestroyAllocator(allocator_);
 }
 
 }

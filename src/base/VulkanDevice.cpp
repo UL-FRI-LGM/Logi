@@ -246,6 +246,7 @@ VulkanDevice::~VulkanDevice() {
 	if (logical_device_) {
 		descriptor_pool_.reset();
 		pipeline_resources_.reset();
+		allocation_manager_.reset();
 
 		// Destroy command pools
 		graphical_family_.reset();

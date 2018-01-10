@@ -68,6 +68,7 @@ bool CommandPool::allowsBufferReset() const {
 }
 
 CommandPool::~CommandPool() {
+	device_.destroyCommandPool(cmd_pool_);
 }
 
 } /// !namespace vkr

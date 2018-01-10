@@ -16,20 +16,20 @@ class AllocationManager {
 public:
 	AllocationManager(const vk::PhysicalDevice& physical_device, const vk::Device& logical_device);
 
-	std::shared_ptr<Buffer> allocateBuffer(const BufferConfiguration& configuration);
+	Buffer* allocateBuffer(const BufferConfiguration& configuration);
 
-	void freeBuffer(const std::shared_ptr<Buffer>& buffer);
+	void freeBuffer(Buffer* buffer);
 
-	std::shared_ptr<Image> allocateImage(const ImageConfiguration& configuration);
+	Image* allocateImage(const ImageConfiguration& configuration);
 
-	void freeImage(const std::shared_ptr<Image>& image);
+	void freeImage( Image* image);
 
 	~AllocationManager();
 
 private:
 	VmaAllocator allocator_;
-	std::list<std::shared_ptr<Buffer>> allocated_buffers_;
-	std::list<std::shared_ptr<Image>> allocated_images_;
+	std::list<std::unique_ptr<Buffer>> allocated_buffers_;
+	std::list<std::unique_ptr<Image>> allocated_images_;
 };
 
 }

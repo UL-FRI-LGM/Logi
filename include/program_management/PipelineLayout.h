@@ -10,12 +10,12 @@
 
 namespace vkr {
 
-#pragma region DescriptorBinding
+#pragma region DescriptorBindingLayout
 
 /**
- * @brief Wraps Vulkan DescriptorBinding data.
+ * @brief Wraps Vulkan DescriptorBindingLayout data.
  */
-class DescriptorBinding {
+class DescriptorBindingLayout {
 public:
 	/**
 	 * @brief Initializes members with the given values.
@@ -26,7 +26,7 @@ public:
 	 * @param count Number of array entries.
 	 * @param stages Stages to which the binding should be available.
 	 */
-	DescriptorBinding(std::string name, uint32_t binding, vk::DescriptorType type, uint32_t count, vk::ShaderStageFlags stages);
+	DescriptorBindingLayout(std::string name, uint32_t binding, vk::DescriptorType type, uint32_t count, vk::ShaderStageFlags stages);
 
 	/**
 	 * @brief Add additional stages.
@@ -87,26 +87,26 @@ private:
 
 #pragma endregion
 
-#pragma region DescriptorSet
+#pragma region DescriptorSetLayout
 
 /**
-* @brief Wraps Vulkan DescriptorBinding data.
+* @brief Wraps Vulkan DescriptorBindingLayout data.
 */
-class DescriptorSet {
+class DescriptorSetLayout {
 friend class PipelineLayout;
 public:
 	/**
 	 * @brief Default constructor.
 	 */
-	DescriptorSet();
+	DescriptorSetLayout();
 
 	/**
-	 * @brief Retrieve DescriptorBinding with the given binding index.
+	 * @brief Retrieve DescriptorBindingLayout with the given binding index.
 	 *
 	 * @param binding Binding index.
-	 * @return Pointer to the DescriptorBinding or nullptr if the DescriptorBinding with the give binding index does not exist.
+	 * @return Pointer to the DescriptorBindingLayout or nullptr if the DescriptorBindingLayout with the give binding index does not exist.
 	 */
-	DescriptorBinding* getDescriptorBinding(uint32_t binding);
+	DescriptorBindingLayout* getDescriptorBinding(uint32_t binding);
 
 	/**
 	* @brief Get DescriptorSetLayout resource index.
@@ -127,11 +127,11 @@ public:
 
 protected:
 	/**
-	 * @brief Add new DescriptorBinding to the descriptor set.
+	 * @brief Add new DescriptorBindingLayout to the descriptor set.
 	 *
 	 * @param Descriptor binding.
 	 */
-	void addDescriptorBinding(const DescriptorBinding& binding);
+	void addDescriptorBinding(const DescriptorBindingLayout& binding);
 
 	/**
 	 * @brief Increment descriptor count of a given type.
@@ -141,7 +141,7 @@ protected:
 	void incrementDescriptorCount(const vk::DescriptorType& type);
 
 private:
-	std::vector<DescriptorBinding> bindings_; ///< Descriptor binding belonging to this set (bindings may be defined sparsely).
+	std::vector<DescriptorBindingLayout> bindings_; ///< Descriptor binding belonging to this set (bindings may be defined sparsely).
 	std::unordered_map<VulkanDevice*, descset_id_t> device_to_res_; ///< Maps device to resource id.
 	DescriptorsCount descriptors_count_;
 };
@@ -372,7 +372,7 @@ private:
 	std::string name_; ///< Layout name.
 	PipelineType type_; ///< Pipeline type (graphical or compute).
 	std::vector<ShaderData*> shaders_; ///< Pipeline shaders.
-	std::vector<DescriptorSet> descriptor_sets_; ///< Descriptor sets.
+	std::vector<DescriptorSetLayout> descriptor_sets_; ///< Descriptor sets.
 	std::vector<PushConstant> push_constants_; ///< Push constants.
 	DescriptorsCount combined_descriptors_count_;
 

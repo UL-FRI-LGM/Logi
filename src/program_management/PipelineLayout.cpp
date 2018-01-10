@@ -10,36 +10,36 @@
 
 namespace vkr {
 
-#pragma region DescriptorBinding
+#pragma region DescriptorBindingLayout
 
-DescriptorBinding::DescriptorBinding(std::string name, uint32_t binding, vk::DescriptorType type, uint32_t count, vk::ShaderStageFlags stages) : name_(name), binding_(binding), type_(type), count_(count), stages_(stages) {
+DescriptorBindingLayout::DescriptorBindingLayout(std::string name, uint32_t binding, vk::DescriptorType type, uint32_t count, vk::ShaderStageFlags stages) : name_(name), binding_(binding), type_(type), count_(count), stages_(stages) {
 }
 
-void DescriptorBinding::addStages(vk::ShaderStageFlags stages) {
+void DescriptorBindingLayout::addStages(vk::ShaderStageFlags stages) {
 	stages_ |= stages;
 }
 
-const std::string& DescriptorBinding::getName() const {
+const std::string& DescriptorBindingLayout::getName() const {
 	return name_;
 }
 
-uint32_t DescriptorBinding::getBinding() const {
+uint32_t DescriptorBindingLayout::getBinding() const {
 	return binding_;
 }
 
-vk::DescriptorType DescriptorBinding::getDescriptorType() const {
+vk::DescriptorType DescriptorBindingLayout::getDescriptorType() const {
 	return type_;
 }
 
-uint32_t DescriptorBinding::getCount() const {
+uint32_t DescriptorBindingLayout::getCount() const {
 	return count_;
 }
 
-vk::ShaderStageFlags DescriptorBinding::getShaderStages() const {
+vk::ShaderStageFlags DescriptorBindingLayout::getShaderStages() const {
 	return stages_;
 }
 
-vk::DescriptorSetLayoutBinding DescriptorBinding::getVkHandle() const {
+vk::DescriptorSetLayoutBinding DescriptorBindingLayout::getVkHandle() const {
 	return vk::DescriptorSetLayoutBinding(binding_, type_, count_, stages_, nullptr);
 }
 #pragma endregion
@@ -51,7 +51,7 @@ DescriptorSet::DescriptorSet() : bindings_(), device_to_res_(), descriptors_coun
 
 
 
-void DescriptorSet::addDescriptorBinding(const DescriptorBinding& binding) {
+void DescriptorSet::addDescriptorBinding(const DescriptorBindingLayout& binding) {
 	auto it = bindings_.begin();
 	for (; it != bindings_.end(); it++) {
 		// If an entry with the same binding is found add stage flags.
@@ -103,7 +103,7 @@ void DescriptorSet::incrementDescriptorCount(const vk::DescriptorType& type) {
 	}
 }
 
-DescriptorBinding* DescriptorSet::getDescriptorBinding(uint32_t binding) {
+DescriptorBindingLayout* DescriptorSet::getDescriptorBinding(uint32_t binding) {
 	for (auto it = bindings_.begin(); it != bindings_.end(); it++) {
 		if (it->getBinding() == binding) {
 			return &(*it);
@@ -386,7 +386,7 @@ void vkr::PipelineLayout::shaderReflection(const ShaderData* shader) {
 		}
 		auto test = comp.get_storage_class(resource.id);
 
-		descriptor_sets_[set].addDescriptorBinding(DescriptorBinding(resource.name, binding, type, count, stage));
+		descriptor_sets_[set].addDescriptorBinding(DescriptorBindingLayout(resource.name, binding, type, count, stage));
 	};
 
 	// Look at: http://vulkan-spec-chunked.ahcox.com/ch13s01.html

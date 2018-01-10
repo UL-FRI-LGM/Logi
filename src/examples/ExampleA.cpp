@@ -16,6 +16,9 @@
 
 namespace vkr {
 
+const int WIDTH = 3200;
+const int HEIGHT = 2400;
+const int WORKGROUP_SIZE = 32;
 
 ExampleA::ExampleA(std::vector<char *>& global_extensions, std::vector<char *>& device_extensions, vk::PhysicalDeviceFeatures& features) : RendererBase(global_extensions), gpu_(nullptr) {
 
@@ -82,7 +85,9 @@ void ExampleA::runExample() {
 	std::vector<char*> global_extensions;
 	std::vector<char*> device_extensions{ VK_KHR_SWAPCHAIN_EXTENSION_NAME };
 	vk::PhysicalDeviceFeatures features;
+
 	ExampleA example(global_extensions, device_extensions, features);
+	Buffer* buffer = example.gpu_->getAllocationManager()->allocateBuffer(BufferConfiguration(WIDTH * HEIGHT, vk::BufferUsageFlagBits::eStorageBuffer));
 
 	std::cout << "success" << std::endl;
 }
