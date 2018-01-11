@@ -9,13 +9,18 @@ namespace vkr {
 
 class ComputePipeline {
 public:
-	ComputePipeline(PipelineLayout* pipeline_layout);
+	ComputePipeline(const vk::Device& device, PipelineLayout* pipeline_layout);
 
 	const std::string& getName();
 
-	vk::Pipeline getVkHandle(VulkanDevice* device);
+	vk::Pipeline getVkHandle();
+
+	~ComputePipeline();
 
 private:
+	vk::Device device_;
+	vk::Pipeline pipeline_;
+
 	PipelineLayout* pipeline_layout_;
 };
 

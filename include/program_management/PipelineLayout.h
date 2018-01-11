@@ -4,11 +4,69 @@
 #include <vector>
 #include <unordered_map>
 #include <vulkan/vulkan.hpp>
-#include "base/VulkanDevice.h"
 #include "program_management/ShaderManager.h"
 #include "base/Types.h"
 
 namespace vkr {
+
+#pragma region DescriptorsCount
+struct DescriptorsCount {
+	uint32_t num_sets;
+
+	uint32_t samplers;
+	uint32_t combined_image_samplers;
+	uint32_t sampled_images;
+	uint32_t storage_images;
+	uint32_t uniform_texel_buffers;
+	uint32_t storage_texel_buffers;
+	uint32_t uniform_buffers;
+	uint32_t storage_buffers;
+	uint32_t uniform_buffers_dynamic;
+	uint32_t storage_buffers_dynamic;
+	uint32_t input_attachments;
+
+	/**
+	* @brief Default constructor.
+	*/
+	DescriptorsCount(uint32_t num_sets = 0u, uint32_t samplers = 0u, uint32_t combined_image_samplers = 0u, uint32_t sampled_images = 0u, uint32_t storage_images = 0u, uint32_t uniform_texel_buffers = 0u, uint32_t storage_texel_buffers = 0u,
+		uint32_t uniform_buffers = 0u, uint32_t storage_buffers = 0u, uint32_t uniform_buffers_dynamic = 0u, uint32_t storage_buffers_dynamic = 0u, uint32_t input_attachments = 0u);
+
+	/**
+	* @brief Adds descriptor and sets sizes of two DescriptorsCounts.
+	*
+	* @return DescriptorsCount containing the sum of sizes.
+	*/
+	DescriptorsCount operator+(const DescriptorsCount& other) const;
+
+	/**
+	* @brief Adds descriptor and sets sizes of two DescriptorsCounts.
+	*
+	* @return DescriptorsCount containing the sum of sizes.
+	*/
+	DescriptorsCount& operator+=(const DescriptorsCount& other);
+
+	/**
+	* @brief Multiplies descriptor counter with the given multiplier.
+	*
+	* @return Multiplied DescriptorsCount.
+	*/
+	DescriptorsCount operator*(uint32_t multipler) const;
+
+	/**
+	* @brief Multiplies descriptor counter with the given multiplier.
+	*
+	* @return Multiplied DescriptorsCount.
+	*/
+	DescriptorsCount operator*=(uint32_t multipler);
+
+	/**
+	* @brief Generates vector containing Vulkan DescriptorsCounts.
+	*
+	* @return Vector of Vulkan DescriptorsCounts.
+	*/
+	std::vector<vk::DescriptorPoolSize> getVkDescriptorPoolSizes() const;
+};
+#pragma endregion
 
 #pragma region DescriptorBindingLayout
 
@@ -78,10 +136,10 @@ public:
 	vk::DescriptorSetLayoutBinding getVkHandle() const;
 
 private:
-	std::string name_; ///< Binding name.
-	uint32_t binding_; ///< Binding index.
-	vk::DescriptorType type_; ///< Binding descriptor type.
-	uint32_t count_; ///< Number of array entries.
+	std::string name_;						///< Binding name.
+	uint32_t binding_;						///< Binding index.
+	vk::DescriptorType type_;			///< Binding descriptor type.
+	uint32_t count_;							///< Number of array entries.
 	vk::ShaderStageFlags stages_; ///< Stages to which the binding should be available.
 };
 
@@ -93,12 +151,25 @@ private:
 * @brief Wraps Vulkan DescriptorBindingLayout data.
 */
 class DescriptorSetLayout {
-friend class PipelineLayout;
 public:
 	/**
 	 * @brief Default constructor.
+	 *
+	 * @param device Logical device.
 	 */
-	DescriptorSetLayout();
+	DescriptorSetLayout(const vk::Device& device);
+
+	/**
+	* @brief Add new DescriptorBindingLayout to the descriptor set.
+	*
+	* @param Descriptor binding.
+	*/
+	void addDescriptorBinding(const DescriptorBindingLayout& binding);
+
+	/**
+	 * @brief Creates Vulkan DescriptorSetLayout containing the bindings added with addDescriptorBinding.
+	 */
+	void bake();
 
 	/**
 	 * @brief Retrieve DescriptorBindingLayout with the given binding index.
@@ -109,14 +180,9 @@ public:
 	DescriptorBindingLayout* getDescriptorBinding(uint32_t binding);
 
 	/**
-	* @brief Get DescriptorSetLayout resource index.
-	*/
-	descset_id_t getResourceId(VulkanDevice* device);
-
-	/**
 	 * @brief Get DescriptorSetLayout
 	 */
-	vk::DescriptorSetLayout getVkHandle(VulkanDevice* device);
+	vk::DescriptorSetLayout getVkHandle();
 
 	/**
 	 * @brief Returns DescriptorCount object that contains descriptor type counters.
@@ -125,14 +191,12 @@ public:
 	 */
 	const DescriptorsCount& getDescriptorsCount();
 
-protected:
 	/**
-	 * @brief Add new DescriptorBindingLayout to the descriptor set.
-	 *
-	 * @param Descriptor binding.
+	 * @brief Free resources.
 	 */
-	void addDescriptorBinding(const DescriptorBindingLayout& binding);
+	~DescriptorSetLayout();
 
+protected:
 	/**
 	 * @brief Increment descriptor count of a given type.
 	 * 
@@ -141,8 +205,10 @@ protected:
 	void incrementDescriptorCount(const vk::DescriptorType& type);
 
 private:
+	vk::Device device_; ///< Logical device.
+	vk::DescriptorSetLayout descriptor_set_layout_;
+
 	std::vector<DescriptorBindingLayout> bindings_; ///< Descriptor binding belonging to this set (bindings may be defined sparsely).
-	std::unordered_map<VulkanDevice*, descset_id_t> device_to_res_; ///< Maps device to resource id.
 	DescriptorsCount descriptors_count_;
 };
 
@@ -303,6 +369,7 @@ private:
 
 #pragma endregion
 
+#pragma region PipelineLayout
 enum class PipelineType {
 	GRAPHICAL,
 	COMPUTE
@@ -313,7 +380,7 @@ public:
 	/**
 	 * @brief Creates and initializes PipelineLayout from the given shaders.
 	 */
-	PipelineLayout(const std::string& name, const std::vector<ShaderData*>& shaders);
+	PipelineLayout(const vk::Device& device, const std::string& name, const std::vector<ShaderData*>& shaders);
 
 	/**
 	 * @brief Retrieve PipelineLayout string identifier.
@@ -330,36 +397,19 @@ public:
 	PipelineType getPipelineType();
 
 	/**
-	 * @brief Retrieves shader resource ids for the given device.
-	 *
-	 * @param device Device for which the shader ids will be retrieved.
-	 * @return Vector of shader resource ids.
-	 */
-	std::vector<size_t> getShaderResourceIds(VulkanDevice* device);
-
-	/**
 	 * @brief Retrieve vector of Vulkan shader handles built for the given device.
 	 *
 	 * @param Device for which the shaders shall be retrieved.
 	 * @return Vector containing shader handles.
 	 */
-	std::vector<vk::PipelineShaderStageCreateInfo> getVkShaderHandles(VulkanDevice* device);
+	std::vector<vk::PipelineShaderStageCreateInfo> getVkShaderHandles();
 
 	/**
-	 * @brief Retrieves layout resource id for the given device.
+	 * @brief Retrieve Vulkan layout handle.
 	 *
-	 * @param device Device for which the layout resource will be retrieved.
-	 * @return Id of the layout resource.
-	 */
-	layout_id_t getLayoutResourceId(VulkanDevice* device);
-
-	/**
-	 * @brief Retrieve Vulkan layout handle build for the given device.
-	 *
-	 * @param Vulkan device for which the layout shall be retrieved.
 	 * @return Pipeline layout.
 	 */
-	vk::PipelineLayout getVkHandle(VulkanDevice* device);
+	const vk::PipelineLayout& getVkHandle();
 
 	/**
 	 * @brief Retrieves descriptors count for the given pipeline layout.
@@ -368,16 +418,23 @@ public:
 	 */
 	const DescriptorsCount& getDescriptorsCount();
 
-private:
-	std::string name_; ///< Layout name.
-	PipelineType type_; ///< Pipeline type (graphical or compute).
-	std::vector<ShaderData*> shaders_; ///< Pipeline shaders.
-	std::vector<DescriptorSetLayout> descriptor_sets_; ///< Descriptor sets.
-	std::vector<PushConstant> push_constants_; ///< Push constants.
-	DescriptorsCount combined_descriptors_count_;
+	/**
+	 * @brief Free resources.
+	 */
+	~PipelineLayout();
 
-	std::vector<VertexAttribute> attributes_; ///< Only for graphical pipelines.
-	std::unordered_map<VulkanDevice*, layout_id_t> device_to_layout;
+private:
+	vk::Device device_;																	///< Logical device.
+	vk::PipelineLayout vk_pipeline_layout_;							///< Pipeline layout handle.
+
+	std::string name_;																	///< Layout name.
+	PipelineType type_;																	///< Pipeline type (graphical or compute).
+	std::vector<ShaderData*> shaders_;									///< Pipeline shaders.
+	std::vector<DescriptorSetLayout> descriptor_sets_;	///< Descriptor sets.
+	std::vector<PushConstant> push_constants_;					///< Push constants.
+	DescriptorsCount combined_descriptors_count_;				///< Combined number of descriptors.
+
+	std::vector<VertexAttribute> attributes_;						///< Only for graphical pipelines.
 
 	/**
 	 * @brief Perform shader reflection using spriv-cross.
@@ -386,15 +443,21 @@ private:
 	 */
 	void shaderReflection(const ShaderData* shader);
 
+	/**
+	 * @brief Add push constant to the layout.
+	 *
+	 * @param name Push constant name.
+	 * @param stage Stages to which the push constant is available.
+	 * @param size Size of the push constant.
+	 */
 	void addPushConstant(const std::string& name, vk::ShaderStageFlagBits stage, uint32_t size);
 
 	/**
-	 * @brief Builds vulkan pipeline layout for the given device.
-	 *
+	 * @brief Builds vulkan pipeline layout.
 	 */
-	std::tuple<size_t, vk::PipelineLayout> buildVkPipelineLayout(VulkanDevice* device);
+	void buildVkPipelineLayout();
 };
-
+#pragma endregion
 }
 
 #endif

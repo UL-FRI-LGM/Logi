@@ -79,14 +79,14 @@ ExampleA::ExampleA(std::vector<char *>& global_extensions, std::vector<char *>& 
 }
 
 void ExampleA::runExample() {
-	vkr::ProgramManager& pm = vkr::ProgramManager::instance();
-	pm.loadPrograms("./resources/shaders");
-
 	std::vector<char*> global_extensions;
 	std::vector<char*> device_extensions{ VK_KHR_SWAPCHAIN_EXTENSION_NAME };
 	vk::PhysicalDeviceFeatures features;
 
 	ExampleA example(global_extensions, device_extensions, features);
+	ProgramManager* pm = example.gpu_->getProgramManager();
+	pm->loadPrograms("./resources/shaders");
+
 	Buffer* buffer = example.gpu_->getAllocationManager()->allocateBuffer(BufferConfiguration(WIDTH * HEIGHT, vk::BufferUsageFlagBits::eStorageBuffer));
 
 	std::cout << "success" << std::endl;

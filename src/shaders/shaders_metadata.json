@@ -2,16 +2,6 @@
   "__note_shaders__": "Ids map to the ids used in pipelines.shaders array.",
   "shaders": [
     {
-      "id": "base_vert",
-      "path": "./base_vert.spv",
-      "stage": "vertex"
-    },
-    {
-      "id": "base_frag",
-      "path": "./base_frag.spv",
-      "stage": "fragment"
-    },
-    {
       "id": "test_comp",
       "path": "./compute_test_comp.spv",
       "stage": "compute"
@@ -20,23 +10,11 @@
       "id": "fibbonaci_comp",
       "path": "./fibbonaci_comp.spv",
       "stage": "compute"
-    },
-    {
-      "id": "raytracing_comp",
-      "path": "./raytracing_comp.spv",
-      "stage": "compute"
     }
   ],
 
   "__note_pipelines__": "Order of the pipeline programs must match the indices defined in ShaderPrograms.h",
   "pipelines": [
-    {
-      "id": "base",
-      "shaders": [
-        "base_vert",
-        "base_frag"
-      ]
-    },
     {
       "id": "compute_test",
       "shaders": [
@@ -47,12 +25,6 @@
       "id": "fibbonaci",
       "shaders": [
         "fibbonaci_comp"
-      ]
-    },
-    {
-      "id": "raytracing",
-      "shaders": [
-        "raytracing_comp"
       ]
     }
   ]

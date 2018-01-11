@@ -3,7 +3,12 @@
 
 namespace vkr {
 
-ShaderData::ShaderData(const std::string& id, vk::ShaderStageFlagBits stage, const std::vector<uint32_t>& code) : id_(id), stage_(stage), code_(code), device_to_res_() {
+ShaderData::ShaderData(const vk::Device& device, const std::string& id, vk::ShaderStageFlagBits stage, const std::vector<uint32_t>& code) : device_(device), shader_module_(nullptr), id_(id), stage_(stage), code_(code) {
+	vk::ShaderModuleCreateInfo shader_ci{};
+	shader_ci.pCode = code_.data();
+	shader_ci.codeSize = code_.size() * 4;
+
+	shader_module_ = device.createShaderModule(shader_ci);
 }
 
 const std::string & ShaderData::getId() const {
@@ -18,71 +23,33 @@ const std::vector<uint32_t>& ShaderData::getCode() const {
 	return code_;
 }
 
-shader_id_t ShaderData::getShaderResourceId(VulkanDevice* device) {
-	PipelineResources* resources = device->getPipelineResources();
-	auto it = device_to_res_.find(device);
+vk::PipelineShaderStageCreateInfo ShaderData::getVkHandle() {
+	vk::PipelineShaderStageCreateInfo shader_stage_ci{};
+	shader_stage_ci.stage = stage_;
+	shader_stage_ci.module = shader_module_;
+	shader_stage_ci.pName = "main";
 
-	// Resource index was found.
-	if (it != device_to_res_.end()) {
-		return it->second;
-	}
-
-	// Resource does not exist. Create it.
-	shader_id_t id{};
-	std::tie(id, std::ignore) = resources->createShaderModule(code_, stage_);
-	device_to_res_[device] = id;
-
-	return id;
+	return shader_stage_ci;
 }
 
-vk::PipelineShaderStageCreateInfo ShaderData::getVkHandle(VulkanDevice* device) {
-	PipelineResources* resources = device->getPipelineResources();
-	auto it = device_to_res_.find(device);
-
-	if (it == device_to_res_.end()) {
-		// Create shader module if it does not exist yet.
-		std::tuple<shader_id_t, vk::PipelineShaderStageCreateInfo> new_res = resources->createShaderModule(code_, stage_);
-		device_to_res_[device] = std::get<0>(new_res);
-
-		return std::get<1>(new_res);
-	}
-	else {
-		vk::PipelineShaderStageCreateInfo res = resources->getShaderModule(it->second);
-
-		// Check if the shader module is still valid (device did not destroy it).
-		if (!res.module) {
-			std::tuple<shader_id_t, vk::PipelineShaderStageCreateInfo> new_res = resources->createShaderModule(code_, stage_);
-			device_to_res_[device] = std::get<0>(new_res);
-			return std::get<1>(new_res);
-		}
-
-		return res;
-	}
+ShaderData::~ShaderData() {
+	device_.destroyShaderModule(shader_module_);
 }
 
-ShaderManager::ShaderManager() : shaders_() {
+ShaderManager::ShaderManager(const vk::Device& device) : device_(device), shaders_() {
 }
 
-shader_id_t ShaderManager::addShaderData(const std::string& id, vk::ShaderStageFlagBits stage, const std::vector<uint32_t>& code) {
-	if (id_to_idx.find(id) != id_to_idx.end()) {
+void ShaderManager::addShaderData(const std::string& id, vk::ShaderStageFlagBits stage, const std::vector<uint32_t>& code) {
+	if (shaders_.find(id) != shaders_.end()) {
 		throw std::runtime_error("Duplicate shader id.");
 	}
 
 	// Add new shader.
-	shaders_.emplace_back(std::make_unique<ShaderData>(id, stage, code));
-	id_to_idx[id] = shaders_.size() - 1;
-	return shaders_.size() - 1;
+	shaders_[id] = std::make_unique<ShaderData>(device_, id, stage, code);
 }
 
 ShaderData* ShaderManager::getShaderData(const std::string& id) {
-	auto it = id_to_idx.find(id);
-
-	if (it == id_to_idx.end()) {
-		return nullptr;
-	}
-	else {
-		return shaders_[it->second].get();
-	}
+	return shaders_[id].get();
 }
 
 }

@@ -15,7 +15,7 @@
 #include <map>
 #include <string>
 #include "queues/QueueFamily.h"
-#include "base/PipelineResources.h"
+#include "program_management/ProgramManager.h"
 #include "descriptors/DescriptorPool.h"
 #include "memory/AllocationManager.h"
 
@@ -165,7 +165,7 @@ public:
 	 */
 	bool initialized() const;
 
-	PipelineResources* getPipelineResources();
+	ProgramManager* getProgramManager();
 
 	AllocationManager* getAllocationManager();
 
@@ -207,7 +207,7 @@ private:
 	std::unique_ptr<QueueFamily> compute_family_;
 	std::unique_ptr<QueueFamily> transfer_family_;
 
-	std::unique_ptr<PipelineResources> pipeline_resources_;
+	std::unique_ptr<ProgramManager> program_manager_;
 	std::unique_ptr<DescriptorPool> descriptor_pool_;
 	std::unique_ptr<AllocationManager> allocation_manager_;
 

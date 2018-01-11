@@ -6,9 +6,101 @@
 #include <vulkan/vulkan.hpp>
 #include <spirv_cross.hpp>
 #include "util/FormatConversion.h"
-#include "base/VulkanDevice.h"
 
 namespace vkr {
+
+#pragma region DescriptorsCount
+DescriptorsCount::DescriptorsCount(uint32_t num_sets, uint32_t samplers, uint32_t combined_image_samplers, uint32_t sampled_images, uint32_t storage_images, uint32_t uniform_texel_buffers,
+	uint32_t storage_texel_buffers, uint32_t uniform_buffers, uint32_t storage_buffers, uint32_t uniform_buffers_dynamic, uint32_t storage_buffers_dynamic, uint32_t input_attachments)
+	: num_sets(num_sets), samplers(samplers), combined_image_samplers(combined_image_samplers), sampled_images(sampled_images), storage_images(storage_images),
+	uniform_texel_buffers(uniform_texel_buffers), storage_texel_buffers(storage_texel_buffers), uniform_buffers(uniform_buffers), storage_buffers(storage_buffers),
+	uniform_buffers_dynamic(uniform_buffers_dynamic), storage_buffers_dynamic(storage_buffers_dynamic), input_attachments(input_attachments) {
+}
+
+DescriptorsCount DescriptorsCount::operator+(const DescriptorsCount& other) const {
+	return DescriptorsCount(num_sets + other.num_sets, samplers + other.samplers, combined_image_samplers + other.combined_image_samplers, sampled_images + other.sampled_images, storage_images + other.storage_images, uniform_texel_buffers + other.uniform_texel_buffers,
+		storage_texel_buffers + other.storage_texel_buffers, uniform_buffers + other.uniform_buffers, storage_buffers + other.storage_buffers, uniform_buffers_dynamic + other.uniform_buffers_dynamic, storage_buffers_dynamic + other.storage_buffers_dynamic, input_attachments + other.input_attachments);
+}
+
+DescriptorsCount& DescriptorsCount::operator+=(const DescriptorsCount& other) {
+	num_sets += other.num_sets;
+	samplers += other.samplers;
+	combined_image_samplers += other.combined_image_samplers;
+	sampled_images += other.sampled_images;
+	storage_images += other.storage_images;
+	uniform_texel_buffers += other.uniform_texel_buffers;
+	storage_texel_buffers += other.storage_texel_buffers;
+	uniform_buffers += other.uniform_buffers;
+	storage_buffers += other.storage_buffers;
+	uniform_buffers_dynamic += other.uniform_buffers_dynamic;
+	storage_buffers_dynamic += other.storage_buffers_dynamic;
+	input_attachments += other.input_attachments;
+
+	return *this;
+}
+
+DescriptorsCount DescriptorsCount::operator*(uint32_t multipler) const {
+	return DescriptorsCount(num_sets * multipler, samplers * multipler, combined_image_samplers * multipler, sampled_images * multipler, storage_images * multipler, uniform_texel_buffers * multipler,
+		storage_texel_buffers * multipler, uniform_buffers * multipler, storage_buffers * multipler, uniform_buffers_dynamic * multipler, storage_buffers_dynamic * multipler, input_attachments * multipler);
+}
+
+DescriptorsCount DescriptorsCount::operator*=(uint32_t multipler) {
+	num_sets *= multipler;
+	samplers *= multipler;
+	combined_image_samplers *= multipler;
+	sampled_images *= multipler;
+	storage_images *= multipler;
+	uniform_texel_buffers *= multipler;
+	storage_texel_buffers *= multipler;
+	uniform_buffers *= multipler;
+	storage_buffers *= multipler;
+	uniform_buffers_dynamic *= multipler;
+	storage_buffers_dynamic *= multipler;
+	input_attachments *= multipler;
+
+	return *this;
+}
+
+std::vector<vk::DescriptorPoolSize> DescriptorsCount::getVkDescriptorPoolSizes() const {
+	std::vector<vk::DescriptorPoolSize> vk_pool_sizes{};
+
+	if (samplers > 0) {
+		vk_pool_sizes.emplace_back(vk::DescriptorPoolSize(vk::DescriptorType::eSampler, samplers));
+	}
+	if (combined_image_samplers > 0) {
+		vk_pool_sizes.emplace_back(vk::DescriptorPoolSize(vk::DescriptorType::eCombinedImageSampler, combined_image_samplers));
+	}
+	if (sampled_images > 0) {
+		vk_pool_sizes.emplace_back(vk::DescriptorPoolSize(vk::DescriptorType::eSampledImage, sampled_images));
+	}
+	if (storage_images > 0) {
+		vk_pool_sizes.emplace_back(vk::DescriptorPoolSize(vk::DescriptorType::eStorageImage, storage_images));
+	}
+	if (uniform_texel_buffers > 0) {
+		vk_pool_sizes.emplace_back(vk::DescriptorPoolSize(vk::DescriptorType::eUniformTexelBuffer, uniform_texel_buffers));
+	}
+	if (storage_texel_buffers > 0) {
+		vk_pool_sizes.emplace_back(vk::DescriptorPoolSize(vk::DescriptorType::eStorageTexelBuffer, storage_texel_buffers));
+	}
+	if (uniform_buffers > 0) {
+		vk_pool_sizes.emplace_back(vk::DescriptorPoolSize(vk::DescriptorType::eUniformBuffer, uniform_buffers));
+	}
+	if (storage_buffers > 0) {
+		vk_pool_sizes.emplace_back(vk::DescriptorPoolSize(vk::DescriptorType::eStorageBuffer, storage_buffers));
+	}
+	if (uniform_buffers_dynamic > 0) {
+		vk_pool_sizes.emplace_back(vk::DescriptorPoolSize(vk::DescriptorType::eUniformBufferDynamic, uniform_buffers_dynamic));
+	}
+	if (storage_buffers_dynamic > 0) {
+		vk_pool_sizes.emplace_back(vk::DescriptorPoolSize(vk::DescriptorType::eStorageBufferDynamic, storage_buffers_dynamic));
+	}
+	if (input_attachments > 0) {
+		vk_pool_sizes.emplace_back(vk::DescriptorPoolSize(vk::DescriptorType::eInputAttachment, input_attachments));
+	}
+
+	return vk_pool_sizes;
+}
+#pragma endregion
 
 #pragma region DescriptorBindingLayout
 
@@ -44,14 +136,17 @@ vk::DescriptorSetLayoutBinding DescriptorBindingLayout::getVkHandle() const {
 }
 #pragma endregion
 
-#pragma region DescriptorSet
+#pragma region DescriptorSetLayout
 
-DescriptorSet::DescriptorSet() : bindings_(), device_to_res_(), descriptors_count_(1u) {
+DescriptorSetLayout::DescriptorSetLayout(const vk::Device& device) : device_(device), descriptor_set_layout_(nullptr), bindings_(), descriptors_count_(1u) {
 }
 
+void DescriptorSetLayout::addDescriptorBinding(const DescriptorBindingLayout& binding) {
+	// Check if the descriptor set layout is already baked.
+	if (descriptor_set_layout_) {
+		throw std::runtime_error("Descriptor set layout is already baked.");
+	}
 
-
-void DescriptorSet::addDescriptorBinding(const DescriptorBindingLayout& binding) {
 	auto it = bindings_.begin();
 	for (; it != bindings_.end(); it++) {
 		// If an entry with the same binding is found add stage flags.
@@ -69,7 +164,29 @@ void DescriptorSet::addDescriptorBinding(const DescriptorBindingLayout& binding)
 	bindings_.insert(it, binding);
 }
 
-void DescriptorSet::incrementDescriptorCount(const vk::DescriptorType& type) {
+void DescriptorSetLayout::bake() {
+	// Check if the descriptor set layout is already baked.
+	if (descriptor_set_layout_) {
+		throw std::runtime_error("Descriptor set layout is already baked.");
+	}
+
+	// Generate bindings.
+	std::vector<vk::DescriptorSetLayoutBinding> vk_bindings{};
+	vk_bindings.reserve(bindings_.size());
+
+	for (auto it = bindings_.begin(); it != bindings_.end(); it++) {
+		vk_bindings.push_back(it->getVkHandle());
+	}
+
+	// Create descriptor set layout.
+	vk::DescriptorSetLayoutCreateInfo dsl_ci;
+	dsl_ci.bindingCount = vk_bindings.size();
+	dsl_ci.pBindings = vk_bindings.data();
+
+	descriptor_set_layout_ = device_.createDescriptorSetLayout(dsl_ci);
+}
+
+void DescriptorSetLayout::incrementDescriptorCount(const vk::DescriptorType& type) {
 	switch (type) {
 	case vk::DescriptorType::eSampler:
 		descriptors_count_.samplers++;
@@ -103,7 +220,7 @@ void DescriptorSet::incrementDescriptorCount(const vk::DescriptorType& type) {
 	}
 }
 
-DescriptorBindingLayout* DescriptorSet::getDescriptorBinding(uint32_t binding) {
+DescriptorBindingLayout* DescriptorSetLayout::getDescriptorBinding(uint32_t binding) {
 	for (auto it = bindings_.begin(); it != bindings_.end(); it++) {
 		if (it->getBinding() == binding) {
 			return &(*it);
@@ -116,47 +233,19 @@ DescriptorBindingLayout* DescriptorSet::getDescriptorBinding(uint32_t binding) {
 	return nullptr;
 }
 
-descset_id_t DescriptorSet::getResourceId(VulkanDevice* device) {
-	auto it = device_to_res_.find(device);
 
-	if (it != device_to_res_.end()) {
-		return it->second;
-	}
-	else {
-		static_cast<void>(getVkHandle(device));
-		return device_to_res_[device];
-	}
+vk::DescriptorSetLayout DescriptorSetLayout::getVkHandle() {
+	return descriptor_set_layout_;
 }
 
-vk::DescriptorSetLayout DescriptorSet::getVkHandle(VulkanDevice* device) {
-	PipelineResources* resources = device->getPipelineResources();
-	auto it = device_to_res_.find(device);
-
-	// Check if this descriptor set layout was already allocated for this device.
-	if (it != device_to_res_.end()) {
-		vk::DescriptorSetLayout descriptor_set = resources->getDescriptorSetLayout(it->second);
-		if (!descriptor_set) {
-			return descriptor_set;
-		}
-	}
-
-	// Generate bindings.
-	std::vector<vk::DescriptorSetLayoutBinding> vk_bindings{};
-	vk_bindings.reserve(bindings_.size());
-
-	for (auto jt = bindings_.begin(); jt != bindings_.end(); jt++) {
-		vk_bindings.push_back(jt->getVkHandle());
-	}
-
-	// Build descriptor set layout.
-	std::tuple<descset_id_t, vk::DescriptorSetLayout> descriptor_set = resources->createDescriptorSetLayout(vk_bindings);
-	device_to_res_[device] = std::get<0>(descriptor_set);
-
-	return std::get<1>(descriptor_set);
-}
-
-const DescriptorsCount& DescriptorSet::getDescriptorsCount() {
+const DescriptorsCount& DescriptorSetLayout::getDescriptorsCount() {
 	return descriptors_count_;
+}
+
+DescriptorSetLayout::~DescriptorSetLayout() {
+	if (descriptor_set_layout_) {
+		device_.destroyDescriptorSetLayout(descriptor_set_layout_);
+	}
 }
 
 #pragma endregion
@@ -238,7 +327,7 @@ vk::VertexInputRate VertexAttribute::getInputRate() const {
 
 #pragma region PipelineLayout
 
-PipelineLayout::PipelineLayout(const std::string& name, const std::vector<ShaderData*>& shaders) : name_(name), shaders_(shaders), descriptor_sets_(), push_constants_(), combined_descriptors_count_(), attributes_(), device_to_layout() {
+PipelineLayout::PipelineLayout(const vk::Device& device, const std::string& name, const std::vector<ShaderData*>& shaders) : device_(device), name_(name), shaders_(shaders), descriptor_sets_(), push_constants_(), combined_descriptors_count_(), attributes_() {
 	// Sort the shaders in the same order as they come in the pipeline.
 	std::sort(shaders_.begin(), shaders_.end(), [](ShaderData* a, ShaderData* b) { return a->getStage() < b->getStage(); });
 
@@ -272,10 +361,18 @@ PipelineLayout::PipelineLayout(const std::string& name, const std::vector<Shader
 		shaderReflection(*it);
 	}
 
+	// Bake descriptor sets.
+	for (auto& desc_set : descriptor_sets_) {
+		desc_set.bake();
+	}
+
 	// Update descriptor count.
 	for (auto it = descriptor_sets_.begin(); it != descriptor_sets_.end(); it++) {
 		combined_descriptors_count_ += it->getDescriptorsCount();
 	}
+
+	// Build Vulkan pipeline layout.
+	buildVkPipelineLayout();
 }
 
 const std::string& PipelineLayout::getName() {
@@ -286,61 +383,28 @@ PipelineType PipelineLayout::getPipelineType() {
 	return type_;
 }
 
-std::vector<size_t> PipelineLayout::getShaderResourceIds(VulkanDevice* device) {
-	std::vector<size_t> shader_res_ids{};
-	shader_res_ids.reserve(shaders_.size());
-
-	// Retrieve shader indices.
-	for (ShaderData* shader : shaders_) {
-		shader_res_ids.emplace_back(shader->getShaderResourceId(device));
-	}
-
-	return shader_res_ids;
-}
-
-std::vector<vk::PipelineShaderStageCreateInfo> PipelineLayout::getVkShaderHandles(VulkanDevice* device) {
+std::vector<vk::PipelineShaderStageCreateInfo> PipelineLayout::getVkShaderHandles() {
 	std::vector<vk::PipelineShaderStageCreateInfo> vk_shaders{};
 	vk_shaders.reserve(shaders_.size());
 
 	// Build or retrieve cached shader modules.
 	for (ShaderData* shader : shaders_) {
-		vk_shaders.emplace_back(shader->getVkHandle(device));
+		vk_shaders.emplace_back(shader->getVkHandle());
 	}
 
 	return vk_shaders;
 }
 
-layout_id_t PipelineLayout::getLayoutResourceId(VulkanDevice* device) {
-	PipelineResources* resources = device->getPipelineResources();
-	auto it = device_to_layout.find(device);
-
-	// Resource already exists. Return its index.
-	if (it != device_to_layout.end()) {
-		return it->second;
-	}
-
-	// Create the resource.
-	layout_id_t id{};
-	std::tie(id, std::ignore) = buildVkPipelineLayout(device);
-	return id;
-}
-
-vk::PipelineLayout PipelineLayout::getVkHandle(VulkanDevice* device) {
-	PipelineResources* resources = device->getPipelineResources();
-	auto it = device_to_layout.find(device);
-	
-	// If the pipeline was already built, return it.
-	if (it != device_to_layout.end()) {
-		return resources->getPipelineLayout(it->second);
-	}
-
-	vk::PipelineLayout vk_layout{};
-	std::tie(std::ignore, vk_layout) = buildVkPipelineLayout(device);
-	return vk_layout;
+const vk::PipelineLayout& PipelineLayout::getVkHandle() {
+	return vk_pipeline_layout_;
 }
 
 const DescriptorsCount& PipelineLayout::getDescriptorsCount() {
 	return combined_descriptors_count_;
+}
+
+PipelineLayout::~PipelineLayout() {
+	device_.destroyPipelineLayout(vk_pipeline_layout_);
 }
 
 void vkr::PipelineLayout::shaderReflection(const ShaderData* shader) {
@@ -382,7 +446,7 @@ void vkr::PipelineLayout::shaderReflection(const ShaderData* shader) {
 
 		// If the set does not yet exist add a new one.
 		if (descriptor_sets_.size() <= set) {
-			descriptor_sets_.resize(set + 1);
+			descriptor_sets_.resize(set + 1, DescriptorSetLayout(device_));
 		}
 		auto test = comp.get_storage_class(resource.id);
 
@@ -468,13 +532,13 @@ void PipelineLayout::addPushConstant(const std::string& name, vk::ShaderStageFla
 	push_constants_.emplace_back(PushConstant(name, stage, offset, size));
 }
 
-std::tuple<size_t, vk::PipelineLayout> PipelineLayout::buildVkPipelineLayout(VulkanDevice* device) {
-	// Retrieve descriptor set resource ids
-	std::vector<descset_id_t> vk_desc_set_ids{};
-	vk_desc_set_ids.reserve(descriptor_sets_.size());
+void PipelineLayout::buildVkPipelineLayout() {
+	// Retrieve descriptor set vulkan handles
+	std::vector<vk::DescriptorSetLayout> vk_desc_set_layouts{};
+	vk_desc_set_layouts.reserve(descriptor_sets_.size());
 
-	for (DescriptorSet& desc_set : descriptor_sets_) {
-		vk_desc_set_ids.emplace_back(desc_set.getResourceId(device));
+	for (DescriptorSetLayout& desc_set : descriptor_sets_) {
+		vk_desc_set_layouts.emplace_back(desc_set.getVkHandle());
 	}
 
 	// Build vulkan push constants.
@@ -485,11 +549,13 @@ std::tuple<size_t, vk::PipelineLayout> PipelineLayout::buildVkPipelineLayout(Vul
 		vk_push_constants.emplace_back(push_constant.getVkHandle());
 	}
 
-	// Create new resource and cache it.
-	std::tuple<size_t, vk::PipelineLayout> layout_res = device->getPipelineResources()->createPipelineLayout(vk_desc_set_ids, vk_push_constants);
-	device_to_layout[device] = std::get<0>(layout_res);
+	vk::PipelineLayoutCreateInfo layout_ci{};
+	layout_ci.pSetLayouts = vk_desc_set_layouts.data();
+	layout_ci.setLayoutCount = vk_desc_set_layouts.size();
+	layout_ci.pPushConstantRanges = vk_push_constants.data();
+	layout_ci.pushConstantRangeCount = vk_push_constants.size();
 
-	return layout_res;
+	vk_pipeline_layout_ = device_.createPipelineLayout(layout_ci);
 }
 
 #pragma endregion

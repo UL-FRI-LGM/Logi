@@ -14,12 +14,8 @@ static const std::map<std::string, vk::ShaderStageFlagBits> stage_map{
 	{ "compute", vk::ShaderStageFlagBits::eCompute }
 };
 
-ProgramManager::ProgramManager() : shader_manager_(), pipeline_layouts_(), compute_pipelines_() { }
+ProgramManager::ProgramManager(const vk::Device& device) : device_(device), shader_manager_(std::make_unique<ShaderManager>(device_)), pipeline_layouts_(), compute_pipelines_() {}
 
-ProgramManager& ProgramManager::instance() {
-	static ProgramManager instance;
-	return instance;
-}
 
 void ProgramManager::loadPrograms(const filesystem::path& shaders_dir) {
 	using json = nlohmann::json;
@@ -59,7 +55,7 @@ void ProgramManager::loadPrograms(const filesystem::path& shaders_dir) {
 		}
 
 		// Store shader meta.
-		shader_manager_.addShaderData(id, stage_it->second, readShaderFile(shader_path));
+		shader_manager_->addShaderData(id, stage_it->second, readShaderFile(shader_path));
 	}
 
 	// Parse pipeline data
@@ -74,7 +70,7 @@ void ProgramManager::loadPrograms(const filesystem::path& shaders_dir) {
 		
 		// Fetch shader indices.
 		for (auto& shader : pipeline["shaders"]) {
-			ShaderData* shader_data = shader_manager_.getShaderData(shader.get<std::string>());
+			ShaderData* shader_data = shader_manager_->getShaderData(shader.get<std::string>());
 
 			// Check if the shader was found.
 			if (shader_data == nullptr) {
@@ -85,11 +81,11 @@ void ProgramManager::loadPrograms(const filesystem::path& shaders_dir) {
 		}
 
 		// Store pipeline metadata.
-		pipeline_layouts_.emplace_back(std::make_unique<PipelineLayout>(id, pipeline_shaders));
+		pipeline_layouts_.emplace_back(std::make_unique<PipelineLayout>(device_, id, pipeline_shaders));
 	
 		// If the pipeline layout belongs to compute pipeline create it.
 		if (pipeline_layouts_.back()->getPipelineType() == PipelineType::COMPUTE) {
-			compute_pipelines_.emplace_back(std::make_unique<ComputePipeline>(pipeline_layouts_.back().get()));
+			compute_pipelines_.emplace_back(std::make_unique<ComputePipeline>(device_, pipeline_layouts_.back().get()));
 		}
 	}
 }
@@ -143,5 +139,12 @@ std::vector<uint32_t> ProgramManager::readShaderFile(const filesystem::path& pat
 
 	return buffer;
 }
+
+ProgramManager::~ProgramManager() {
+	compute_pipelines_.clear();
+	pipeline_layouts_.clear();
+	shader_manager_.reset();
+}
+
 
 }

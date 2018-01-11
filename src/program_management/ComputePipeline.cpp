@@ -2,31 +2,29 @@
 
 namespace vkr {
 
-ComputePipeline::ComputePipeline(PipelineLayout* pipeline_layout) : pipeline_layout_(pipeline_layout) {
+ComputePipeline::ComputePipeline(const vk::Device& device, PipelineLayout* pipeline_layout) : device_(device), pipeline_(nullptr), pipeline_layout_(pipeline_layout) {
 	if (pipeline_layout_->getPipelineType() != PipelineType::COMPUTE) {
 		throw std::runtime_error("Invalid pipeline layout type.");
 	}
+
+	// Create compute pipeline.
+	vk::ComputePipelineCreateInfo cpipeline_ci{};
+	cpipeline_ci.layout = pipeline_layout_->getVkHandle();
+	cpipeline_ci.stage = pipeline_layout_->getVkShaderHandles()[0];
+
+	pipeline_ = device.createComputePipeline(vk::PipelineCache(nullptr), cpipeline_ci);
 }
 
 const std::string& ComputePipeline::getName() {
 	return pipeline_layout_->getName();
 }
 
+vk::Pipeline ComputePipeline::getVkHandle() {
+	return pipeline_;
+}
 
-vk::Pipeline ComputePipeline::getVkHandle(VulkanDevice* device) {
-	PipelineResources* resources = device->getPipelineResources();
-	std::vector<size_t> shader_indices = pipeline_layout_->getShaderResourceIds(device);
-
-	// Try to fetch existing pipeline
-	vk::Pipeline pipeline = resources->getComputePipeline(shader_indices[0]);
-
-	// If the pipeline does not exist create it.
-	if (!pipeline) {
-		resources->createComputePipeline(shader_indices[0], pipeline_layout_->getLayoutResourceId(device));
-		pipeline = resources->getComputePipeline(shader_indices[0]);
-	}
-
-	return pipeline;
+ComputePipeline::~ComputePipeline() {
+	device_.destroyPipeline(pipeline_);
 }
 
 }

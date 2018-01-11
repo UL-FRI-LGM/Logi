@@ -13,7 +13,6 @@
 #include <map>
 #include <vulkan/vulkan.hpp>
 #include <filesystem>
-#include "base/VulkanDevice.h"
 #include "program_management/ShaderManager.h"
 #include "program_management/PipelineLayout.h"
 #include "program_management/ComputePipeline.h"
@@ -25,11 +24,11 @@ namespace filesystem = std::experimental::filesystem;  ///< todo(plavric): Chang
 class ProgramManager {
 public:
 	/**
-	 * @brief Retrieve reference to singleton (lazily evaluated).
+	 * @brief Default constructor.
 	 *
-	 * @return Reference to the ProgramManager.
+	 * @param device Logical device handle.
 	 */
-	static ProgramManager& instance();
+	ProgramManager(const vk::Device& device);
 
 	/**
 	 * @bref Loads shader programs and pipeline layouts from the given directory.
@@ -41,11 +40,11 @@ public:
 	PipelineLayout* getPipelineLayout(const std::string& name);
 
 	/**
-	* @brief Creates compute pipeline using the pipeline layout with the given id.
-	*
-	* @param pipeline_id Pipeline layout identifier.
-	* @return Compute pipeline.
-	*/
+	 * @brief Creates compute pipeline using the pipeline layout with the given id.
+	 *
+	 * @param pipeline_id Pipeline layout identifier.
+	 * @return Compute pipeline.
+	 */
 	ComputePipeline* getComputePipeline(compute_id_t id);
 
 	compute_id_t getComputePipelineId(const std::string& name);
@@ -57,18 +56,17 @@ public:
 	 */
 	DescriptorsCount getDescriptorsCount();
 
-	ProgramManager(ProgramManager const&) = delete;
-	void operator=(ProgramManager const&) = delete;
+	/**
+	 * @brief Free resources.
+	 */
+	~ProgramManager();
 
 private:
-	ShaderManager shader_manager_;
+	vk::Device device_;
+
+	std::unique_ptr<ShaderManager> shader_manager_;
 	std::vector<std::unique_ptr<PipelineLayout>> pipeline_layouts_;
 	std::vector<std::unique_ptr<ComputePipeline>> compute_pipelines_;
-
-	/**
-	 * @brief Default constructor.
-	 */
-	ProgramManager();
 
 	/**
 	* @brief Read raw data from the SPIRV shader file located on the given path.

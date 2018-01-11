@@ -17,7 +17,7 @@ QueueConfig::QueueConfig(uint32_t graphic_count, uint32_t compute_count, uint32_
 #pragma region INITIALIZATION
 VulkanDevice::VulkanDevice(vk::PhysicalDevice& device)
 	: physical_device_(device), logical_device_(nullptr), device_properties_(), device_features_(), memory_properties_(),
-	available_extensions_(), enabled_features_(), graphical_family_(nullptr), compute_family_(nullptr), transfer_family_(nullptr), pipeline_resources_(nullptr), initialized_(false) {
+	available_extensions_(), enabled_features_(), graphical_family_(nullptr), compute_family_(nullptr), transfer_family_(nullptr), program_manager_(nullptr), descriptor_pool_(nullptr), allocation_manager_(nullptr), initialized_(false) {
 
 	physical_device_ = device;
 
@@ -137,9 +137,9 @@ void VulkanDevice::initialize(const vk::PhysicalDeviceFeatures& features, const 
 	compute_family_->initialize(logical_device_, queue_config.compute_count);
 	transfer_family_->initialize(logical_device_, queue_config.transfer_count);
 
-	// Create pipeline resources
-	pipeline_resources_ = std::make_unique<PipelineResources>(logical_device_);
+	// Create allocation and program manager
 	allocation_manager_ = std::make_unique<AllocationManager>(physical_device_, logical_device_);
+	program_manager_ = std::make_unique<ProgramManager>(logical_device_);
 
 	// Mark the device as initialized.
 	initialized_ = true;
@@ -218,14 +218,13 @@ DescriptorPool* VulkanDevice::getDescriptorPool() {
 	return descriptor_pool_.get();
 }
 
-PipelineResources* VulkanDevice::getPipelineResources() {
-	return pipeline_resources_.get();
+ProgramManager* VulkanDevice::getProgramManager() {
+	return program_manager_.get();
 }
 
-AllocationManager * VulkanDevice::getAllocationManager() {
+AllocationManager* VulkanDevice::getAllocationManager() {
 	return allocation_manager_.get();
 }
-
 
 bool VulkanDevice::initialized() const {
 	return initialized_;
@@ -244,9 +243,9 @@ const vk::Device& VulkanDevice::getLogicalDeviceHandle() const {
 VulkanDevice::~VulkanDevice() {
 	// If logical device was created, destroy it.
 	if (logical_device_) {
-		descriptor_pool_.reset();
-		pipeline_resources_.reset();
 		allocation_manager_.reset();
+		descriptor_pool_.reset();
+		program_manager_.reset();
 
 		// Destroy command pools
 		graphical_family_.reset();

@@ -5,7 +5,6 @@
 #include <string>
 #include <unordered_map>
 #include <vulkan/vulkan.hpp>
-#include "base/VulkanDevice.h"
 
 namespace vkr {
 
@@ -17,11 +16,12 @@ public:
 	/**
 	 * @brief Create new shader data with the given id from the given code and stage.
 	 *
+	 * @param device logical device
 	 * @param id Shader id.
 	 * @param stage Shader stage.
 	 * @param code Shader code.
 	 */
-	ShaderData(const std::string& id, vk::ShaderStageFlagBits stage, const std::vector<uint32_t>& code);
+	ShaderData(const vk::Device& device, const std::string& id, vk::ShaderStageFlagBits stage, const std::vector<uint32_t>& code);
 
 	/**
 	 * @brief Get shader unique identifier.
@@ -45,27 +45,24 @@ public:
 	const std::vector<uint32_t>& getCode() const;
 
 	/**
-	 * @brief Retrieves shader resource index for the given device. If the shader was not already created for this device, create it.
+	 * @brief Return Vulkan shader handle.
 	 *
-	 * @param device Vulkan device for which the shader will be retrieved.
-	 * @return Index of the shader resource for the given device.
-	 */
-	shader_id_t getShaderResourceId(VulkanDevice* device);
-
-	/**
-	 * @brief Return Vulkan shader handle for the given device.
-	 *
-	 * @param Vulkan device for which the shader will be retrieved.
 	 * @return Vulkan shader handle.
 	 */
-	vk::PipelineShaderStageCreateInfo getVkHandle(VulkanDevice* device);
+	vk::PipelineShaderStageCreateInfo getVkHandle();
+
+	/**
+	 * @brief Free resources.
+	 */
+	~ShaderData();
 
 private:
-	std::string id_; ///< Shader identifier.
-	vk::ShaderStageFlagBits stage_; ///< Shader stage.
-	std::vector<uint32_t> code_; ///< Shader code.
+	vk::Device device_;								///< Logical device.
+	vk::ShaderModule shader_module_;	///< Vulkan shader module.
 
-	std::unordered_map<VulkanDevice*, shader_id_t> device_to_res_;  ///< Maps Device identifier to Vulkan handle identifier.
+	std::string id_;									///< Shader identifier.
+	vk::ShaderStageFlagBits stage_;		///< Shader stage.
+	std::vector<uint32_t> code_;			///< Shader code.
 };
 
 /**
@@ -76,7 +73,7 @@ public:
 	/**
 	 * @brief Default constructor.
 	 */
-	ShaderManager();
+	ShaderManager(const vk::Device& device);
 
 	/**
 	 * @brief Add new shader data.
@@ -84,22 +81,19 @@ public:
 	 * @param id Shader identifier (required to be unique).
 	 * @param stage Shader stage.
 	 * @param code Shader code.
-	 * @return Index of the newly created ShaderData.
 	 */
-	shader_id_t addShaderData(const std::string& id, vk::ShaderStageFlagBits stage, const std::vector<uint32_t>& code);
+	void addShaderData(const std::string& id, vk::ShaderStageFlagBits stage, const std::vector<uint32_t>& code);
 	
 	/**
 	 * @brief Find the index of the ShaderData with the given ID.
 	 *
 	 * @param id Shader identifier.
-	 * @return Shader index (if shader could not be found max(size_t) will be returned).
 	 */
 	ShaderData* getShaderData(const std::string& id);
 
-
 private:
-	std::vector<std::unique_ptr<ShaderData>> shaders_; ///< Stores shader data.
-	std::unordered_map<std::string, size_t> id_to_idx; ///< Maps shader identifier to its index.
+	vk::Device device_; ///< Logical device.
+	std::unordered_map<std::string, std::unique_ptr<ShaderData>> shaders_; ///< Maps shader identifier to its index.
 };
 
 }
