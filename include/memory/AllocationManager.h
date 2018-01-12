@@ -27,9 +27,10 @@ public:
 	~AllocationManager();
 
 private:
+	vk::Device device_;
 	VmaAllocator allocator_;
-	std::list<std::unique_ptr<Buffer>> allocated_buffers_;
-	std::list<std::unique_ptr<Image>> allocated_images_;
+	std::list<std::pair<VmaAllocation, std::unique_ptr<Buffer>>> allocated_buffers_;
+	std::list<std::pair<VmaAllocation, std::unique_ptr<Image>>> allocated_images_;
 };
 
 }

@@ -15,11 +15,15 @@ ComputePipeline::ComputePipeline(const vk::Device& device, PipelineLayout* pipel
 	pipeline_ = device.createComputePipeline(vk::PipelineCache(nullptr), cpipeline_ci);
 }
 
-const std::string& ComputePipeline::getName() {
+const std::string& ComputePipeline::getName() const {
 	return pipeline_layout_->getName();
 }
 
-vk::Pipeline ComputePipeline::getVkHandle() {
+const PipelineLayout* ComputePipeline::getPipelineLayout() const {
+	return pipeline_layout_;
+}
+
+const vk::Pipeline& ComputePipeline::getVkHandle() const {
 	return pipeline_;
 }
 

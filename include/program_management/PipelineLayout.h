@@ -177,12 +177,12 @@ public:
 	 * @param binding Binding index.
 	 * @return Pointer to the DescriptorBindingLayout or nullptr if the DescriptorBindingLayout with the give binding index does not exist.
 	 */
-	DescriptorBindingLayout* getDescriptorBinding(uint32_t binding);
+	const DescriptorBindingLayout* getDescriptorBinding(uint32_t binding) const;
 
 	/**
 	 * @brief Get DescriptorSetLayout
 	 */
-	vk::DescriptorSetLayout getVkHandle();
+	const vk::DescriptorSetLayout& getVkHandle() const;
 
 	/**
 	 * @brief Returns DescriptorCount object that contains descriptor type counters.

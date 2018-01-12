@@ -11,9 +11,11 @@ class ComputePipeline {
 public:
 	ComputePipeline(const vk::Device& device, PipelineLayout* pipeline_layout);
 
-	const std::string& getName();
+	const std::string& getName() const;
 
-	vk::Pipeline getVkHandle();
+	const PipelineLayout* getPipelineLayout() const;
+
+	const vk::Pipeline& getVkHandle() const;
 
 	~ComputePipeline();
 

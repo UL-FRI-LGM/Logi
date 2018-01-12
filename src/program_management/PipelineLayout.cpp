@@ -220,7 +220,7 @@ void DescriptorSetLayout::incrementDescriptorCount(const vk::DescriptorType& typ
 	}
 }
 
-DescriptorBindingLayout* DescriptorSetLayout::getDescriptorBinding(uint32_t binding) {
+const DescriptorBindingLayout* DescriptorSetLayout::getDescriptorBinding(uint32_t binding) const {
 	for (auto it = bindings_.begin(); it != bindings_.end(); it++) {
 		if (it->getBinding() == binding) {
 			return &(*it);
@@ -234,7 +234,7 @@ DescriptorBindingLayout* DescriptorSetLayout::getDescriptorBinding(uint32_t bind
 }
 
 
-vk::DescriptorSetLayout DescriptorSetLayout::getVkHandle() {
+const vk::DescriptorSetLayout& DescriptorSetLayout::getVkHandle() const {
 	return descriptor_set_layout_;
 }
 

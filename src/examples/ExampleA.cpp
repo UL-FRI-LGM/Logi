@@ -87,7 +87,15 @@ void ExampleA::runExample() {
 	ProgramManager* pm = example.gpu_->getProgramManager();
 	pm->loadPrograms("./resources/shaders");
 
+	example.gpu_->createDescriptorPool(pm->getDescriptorsCount());
+	DescriptorPool* dp = example.gpu_->getDescriptorPool();
+	
+	ComputePipeline* compute_pipeline = pm->getComputePipeline(pm->getComputePipelineId("compute_test"));
+
+	dp->createDescriptorSet(compute_pipeline->getPipelineLayout())
+
 	Buffer* buffer = example.gpu_->getAllocationManager()->allocateBuffer(BufferConfiguration(WIDTH * HEIGHT, vk::BufferUsageFlagBits::eStorageBuffer));
+	
 
 	std::cout << "success" << std::endl;
 }

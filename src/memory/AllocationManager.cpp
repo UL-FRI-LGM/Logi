@@ -21,7 +21,7 @@ VmaMemoryUsage memoryUsageToVma(const MemoryUsage& usage) {
 	}
 }
 
-AllocationManager::AllocationManager(const vk::PhysicalDevice& physical_device, const vk::Device& logical_device) : allocated_buffers_(), allocated_images_() {
+AllocationManager::AllocationManager(const vk::PhysicalDevice& physical_device, const vk::Device& logical_device) : device_(logical_device), allocated_buffers_(), allocated_images_() {
 	// Create VMA for the given device.
 	VmaAllocatorCreateInfo allocatorInfo = {};
 	allocatorInfo.physicalDevice = (VkPhysicalDevice) physical_device;
@@ -56,18 +56,20 @@ Buffer* AllocationManager::allocateBuffer(const BufferConfiguration& configurati
 		return nullptr;
 	}
 
-	allocated_buffers_.emplace_back(std::make_unique<Buffer>(vk::Buffer(buffer), allocation, configuration));
+	allocated_buffers_.emplace_back(std::make_pair(allocation, std::make_unique<Buffer>(device_, vk::Buffer(buffer), configuration)));
 
-	return allocated_buffers_.back().get();
+	return allocated_buffers_.back().second.get();
 }
 
 void AllocationManager::freeBuffer(Buffer* buffer) {
-	vmaDestroyBuffer(allocator_, (VkBuffer) buffer->getVkBuffer(), buffer->getAllocation());
-	auto it = std::find_if(allocated_buffers_.begin(), allocated_buffers_.end(), [&buffer](const std::unique_ptr<Buffer>& entry) {
-		return entry.get() == buffer;
+	auto it = std::find_if(allocated_buffers_.begin(), allocated_buffers_.end(), [&buffer](const std::pair<VmaAllocation, std::unique_ptr<Buffer>>& entry) {
+		return entry.second.get() == buffer;
 	});
 
+	// Free the buffer
 	if (it != allocated_buffers_.end()) {
+		it->second.reset();
+		vmaFreeMemory(allocator_, it->first);
 		allocated_buffers_.erase(it);
 	}
 }
@@ -106,18 +108,20 @@ Image* AllocationManager::allocateImage(const ImageConfiguration& configuration)
 		return nullptr;
 	}
 
-	allocated_images_.emplace_back(std::make_unique<Image>(vk::Image(image), allocation, configuration));
+	allocated_images_.emplace_back(std::make_pair(allocation, std::make_unique<Image>(device_, vk::Image(image), configuration)));
 
-	return allocated_images_.back().get();
+	return allocated_images_.back().second.get();
 }
 
 void AllocationManager::freeImage(Image* image) {
-	vmaDestroyImage(allocator_, (VkBuffer)image->getVkImage(), image->getAllocation());
-	auto it = std::find_if(allocated_images_.begin(), allocated_images_.end(), [&image](const std::unique_ptr<Image>& entry) {
-		return entry.get() == image;
+	
+	auto it = std::find_if(allocated_images_.begin(), allocated_images_.end(), [&image](const std::pair<VmaAllocation, std::unique_ptr<Image>>& entry) {
+		return entry.second.get() == image;
 	});
 
 	if (it != allocated_images_.end()) {
+		it->second.reset();
+		vmaFreeMemory(allocator_, it->first);
 		allocated_images_.erase(it);
 	}
 }
@@ -125,12 +129,14 @@ void AllocationManager::freeImage(Image* image) {
 AllocationManager::~AllocationManager() {
 	// Destroy buffers.
 	for (auto it = allocated_buffers_.begin(); it != allocated_buffers_.end(); it++) {
-		vmaDestroyBuffer(allocator_, (VkBuffer) (*it)->getVkBuffer(), (*it)->getAllocation());
+		it->second.reset();
+		vmaFreeMemory(allocator_, it->first);
 	}
 
 	// Destroy images.
 	for (auto it = allocated_images_.begin(); it != allocated_images_.end(); it++) {
-		vmaDestroyImage(allocator_, (VkBuffer)(*it)->getVkImage(), (*it)->getAllocation());
+		it->second.release();
+		vmaFreeMemory(allocator_, it->first);
 	}
 
 	// Destroy the allocator.

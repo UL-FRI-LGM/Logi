@@ -16,11 +16,24 @@
 
 namespace vkr {
 
+class DescriptorSet {
+public:
+	DescriptorSet(const vk::DescriptorSet& descriptor_set, const DescriptorSetLayout* descriptor_set_layout);
+
+	const vk::DescriptorSet& getVkDescriptorSet() const;
+
+	const DescriptorSetLayout* getLayout() const;
+
+private:
+	vk::DescriptorSet descriptor_set_;	///< Descriptor set Vulkan handle.
+	const DescriptorSetLayout* layout_;	///< Vulkan device layout.
+};
+
 class DescriptorPool {
 public:
-	DescriptorPool(vk::Device device, const DescriptorsCount& pool_sizes, bool releasable_sets);
+	DescriptorPool(const vk::Device& device, const DescriptorsCount& pool_sizes, bool releasable_sets);
 
-	vk::DescriptorSet getDescriptorSet(const vk::DescriptorSetLayout& set_layout);
+	DescriptorSet* createDescriptorSet(const DescriptorSetLayout* set_layout);
 
 	~DescriptorPool();
 private:
@@ -30,8 +43,9 @@ private:
 	// Configuration
 	DescriptorsCount pool_sizes_;
 
+	bool releasable_sets_;
 	vk::DescriptorPool pool_; ///< Descriptor pool object.
-	std::unordered_map<VkDescriptorSetLayout, vk::DescriptorSet> cached_ds_;
+	std::list<std::unique_ptr<DescriptorSet>> allocated_descriptor_sets_;
 };
 
 }
