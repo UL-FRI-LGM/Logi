@@ -13,7 +13,7 @@ const vk::CommandBuffer & CommandBuffer::getVkHandle() const {
 	return command_buffer_;
 }
 
-void CommandBuffer::bindPipeline(const vk::Pipeline& pipeline, const vk::PipelineBindPoint& bind_point) {
+void CommandBuffer::bindPipeline(const vk::Pipeline& pipeline, vk::PipelineBindPoint bind_point) {
 	command_buffer_.bindPipeline(bind_point, pipeline);
 }
 

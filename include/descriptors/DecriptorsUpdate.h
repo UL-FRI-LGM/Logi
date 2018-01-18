@@ -23,9 +23,9 @@ public:
 
 	void writeBufferToDescriptorSet(const DescriptorSet* dst_set, uint32_t dst_binding, uint32_t dst_array_element, Buffer* buffer, vk::DeviceSize offset, vk::DeviceSize range);
 
-	const std::vector<vk::CopyDescriptorSet>& getCopyOperations();
+	const std::vector<vk::CopyDescriptorSet>& getCopyOperations() const;
 
-	const std::vector<vk::WriteDescriptorSet>& getWriteOperations();
+	const std::vector<vk::WriteDescriptorSet>& getWriteOperations() const;
 
 private:
 	std::vector<vk::WriteDescriptorSet> write_operations_;

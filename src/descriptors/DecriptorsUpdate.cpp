@@ -31,11 +31,11 @@ void DescriptorsUpdate::writeBufferToDescriptorSet(const DescriptorSet* dst_set,
 	write_operations_.push_back(write_ds);
 }
 
-const std::vector<vk::CopyDescriptorSet>& DescriptorsUpdate::getCopyOperations() {
+const std::vector<vk::CopyDescriptorSet>& DescriptorsUpdate::getCopyOperations() const {
 	return copy_operations_;
 }
 
-const std::vector<vk::WriteDescriptorSet>& DescriptorsUpdate::getWriteOperations() {
+const std::vector<vk::WriteDescriptorSet>& DescriptorsUpdate::getWriteOperations() const {
 	return write_operations_;
 }
 

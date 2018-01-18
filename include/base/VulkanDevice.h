@@ -18,6 +18,7 @@
 #include "program_management/ProgramManager.h"
 #include "descriptors/DescriptorPool.h"
 #include "memory/AllocationManager.h"
+#include "descriptors\DecriptorsUpdate.h"
 
 namespace vkr {
 
@@ -45,8 +46,6 @@ struct QueueConfig {
  */
 class VulkanDevice {
 public:
-	friend class ProgramManager;
-
 #pragma region INITIALIZATION
 	/**
 	 * @brief Default constructor. Wraps the given physical device and queries its properties.
@@ -159,6 +158,8 @@ public:
 	 */
 	DescriptorPool* getDescriptorPool();
 #pragma endregion
+
+	void executeDescriptorsUpdate(const DescriptorsUpdate& update) const;
 
 	/**
 	 * @brief Check if the device is initialized.

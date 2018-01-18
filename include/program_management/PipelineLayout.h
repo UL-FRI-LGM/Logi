@@ -387,14 +387,14 @@ public:
 	 *
 	 * @return String identifier.
 	 */
-	const std::string& getName();
+	const std::string& getName() const;
 
 	/**
 	 * @brief Retrieve Pipeline type COMPUTE/GRAPHICAL.
 	 *
 	 * @return Pipeline type.
 	 */
-	PipelineType getPipelineType();
+	PipelineType getPipelineType() const;
 
 	/**
 	 * @brief Retrieve vector of Vulkan shader handles built for the given device.
@@ -409,14 +409,28 @@ public:
 	 *
 	 * @return Pipeline layout.
 	 */
-	const vk::PipelineLayout& getVkHandle();
+	const vk::PipelineLayout& getVkHandle() const;
 
 	/**
-	 * @brief Retrieves descriptors count for the given pipeline layout.
+	 * @brief Retrieve descriptors count for the given pipeline layout.
 	 *
 	 * @return DescriptorsCount object.
 	 */
-	const DescriptorsCount& getDescriptorsCount();
+	const DescriptorsCount& getDescriptorsCount() const;
+
+	/**
+	 * @brief Retrieve the descriptor set layout of the set with the given index.
+	 *
+	 * @return Pointer to DescriptorSetLayout.
+	 */
+	const DescriptorSetLayout* getDescriptorSetLayout(size_t set) const;
+
+	/**
+	 * @brief Get number of descriptor sets.
+	 *
+	 * @return Descriptor set count.
+	 */
+	size_t getDescriptorSetCount() const;
 
 	/**
 	 * @brief Free resources.
@@ -424,17 +438,17 @@ public:
 	~PipelineLayout();
 
 private:
-	vk::Device device_;																	///< Logical device.
-	vk::PipelineLayout vk_pipeline_layout_;							///< Pipeline layout handle.
+	vk::Device device_;													///< Logical device.
+	vk::PipelineLayout vk_pipeline_layout_;								///< Pipeline layout handle.
 
-	std::string name_;																	///< Layout name.
-	PipelineType type_;																	///< Pipeline type (graphical or compute).
+	std::string name_;													///< Layout name.
+	PipelineType type_;													///< Pipeline type (graphical or compute).
 	std::vector<ShaderData*> shaders_;									///< Pipeline shaders.
-	std::vector<DescriptorSetLayout> descriptor_sets_;	///< Descriptor sets.
-	std::vector<PushConstant> push_constants_;					///< Push constants.
-	DescriptorsCount combined_descriptors_count_;				///< Combined number of descriptors.
+	std::vector<std::unique_ptr<DescriptorSetLayout>> descriptor_sets_;	///< Descriptor sets.
+	std::vector<PushConstant> push_constants_;							///< Push constants.
+	DescriptorsCount combined_descriptors_count_;						///< Combined number of descriptors.
 
-	std::vector<VertexAttribute> attributes_;						///< Only for graphical pipelines.
+	std::vector<VertexAttribute> attributes_;							///< Only for graphical pipelines.
 
 	/**
 	 * @brief Perform shader reflection using spriv-cross.

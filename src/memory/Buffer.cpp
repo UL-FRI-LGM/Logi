@@ -1,4 +1,6 @@
 #include "memory/Buffer.h"
+#define VMA_IMPLEMENTATION
+#include <vk_mem_alloc.h>
 
 namespace vkr {
 
@@ -26,8 +28,8 @@ BufferView::~BufferView() {
 
 
 
-Buffer::Buffer(const vk::Device& device, const vk::Buffer& buffer, const BufferConfiguration& configuration)
-	: device_(device), buffer_(buffer), configuration_(configuration) {
+Buffer::Buffer(const vk::Device& device, VmaAllocator allocator, const VmaAllocation& allocation, const vk::Buffer& buffer, const BufferConfiguration& configuration)
+	: device_(device), allocator_(allocator), allocation_(allocation), buffer_(buffer), configuration_(configuration) {
 }
 
 BufferView* Buffer::createBufferView(vk::Format format, vk::DeviceSize offset, vk::DeviceSize range) {
@@ -50,9 +52,30 @@ void Buffer::destroyBufferView(BufferView* buffer_view) {
 	}
 }
 
+std::vector<unsigned char> Buffer::getData() {
+	vk::DeviceMemory memory = vk::DeviceMemory(allocation_->GetMemory());
+	void* mapped_memory = device_.mapMemory(memory, 0, configuration_.buffer_size);
 
-const vk::Buffer& Buffer::getVkBuffer() {
+	std::vector<unsigned char> data;
+	data.resize(configuration_.buffer_size);
+	std::memcpy(data.data(), mapped_memory, data.size());
+
+	device_.unmapMemory(memory);
+
+	return data;
+}
+
+
+const vk::Buffer& Buffer::getVkBuffer() const {
 	return buffer_;
+}
+
+const VmaAllocation& Buffer::getAllocation() const {
+	return allocation_;
+}
+
+const BufferConfiguration& Buffer::getBufferConfiguration() const {
+	return configuration_;
 }
 
 

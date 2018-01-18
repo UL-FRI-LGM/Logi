@@ -40,6 +40,7 @@ CommandPool* QueueFamily::createCommandPool(bool transistent, bool resetable_buf
 	}
 
 	command_pool_ = std::make_unique<CommandPool>(device_, family_index_, transistent, resetable_buffers);
+	return command_pool_.get();
 }
 
 CommandPool* QueueFamily::getCommandPool() {

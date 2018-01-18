@@ -13,7 +13,7 @@ public:
 	
 	const vk::CommandBuffer& getVkHandle() const;
 
-	void bindPipeline(const vk::Pipeline& pipeline, const vk::PipelineBindPoint& bind_point);
+	void bindPipeline(const vk::Pipeline& pipeline, vk::PipelineBindPoint bind_point);
 
 	void bindDescriptorSets(const vk::PipelineLayout& layout, const vk::PipelineBindPoint& bind_point, uint32_t first_set, const std::vector<vk::DescriptorSet>& descriptor_sets, const std::vector<uint32_t>& dynamic_offsets = {});
 

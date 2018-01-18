@@ -15,14 +15,14 @@ public:
 	 *
 	 * @return Shared pointer to the allocated secondary CommandBuffer.
 	 */
-	std::shared_ptr<PrimaryCommandBuffer> allocatePrimaryCommandBuffer();
+	std::unique_ptr<PrimaryCommandBuffer> allocatePrimaryCommandBuffer();
 
 	/**
 	 * @brief Allocates secondary CommandBuffer. Secondary command buffers cannot be called on their own but are called from the primary command buffers.
 	 *
 	 * @return Shared pointer to the allocated secondary CommandBuffer.
 	 */
-	std::shared_ptr<SecondaryCommmandBuffer> allocateSecondaryCommandBuffer();
+	std::unique_ptr<SecondaryCommmandBuffer> allocateSecondaryCommandBuffer();
 
 	/**
 	 * @brief Resets command pool. This effectively invalidates all CommandBuffers produced by this pool.
@@ -36,7 +36,7 @@ public:
 	 *
 	 * @param command_buffer CommandBuffer to be released.
 	 */
-	void freeCommandBuffer(const std::shared_ptr<CommandBuffer>& command_buffer);
+	void freeCommandBuffer(CommandBuffer*  command_buffer);
 
 	/**
 	 * @brief Returns true if the pool is transistent. Its command buffers are expected do be short lived.
@@ -58,7 +58,7 @@ public:
 	~CommandPool();
 
 protected:
-	vk::CommandBuffer allocateCommandBuffer(const vk::CommandBufferLevel&& level);
+	vk::CommandBuffer allocateCommandBuffer(vk::CommandBufferLevel level);
 private:
 	vk::Device device_;
 	vk::CommandPool cmd_pool_;

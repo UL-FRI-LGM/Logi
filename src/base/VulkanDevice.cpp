@@ -226,6 +226,10 @@ AllocationManager* VulkanDevice::getAllocationManager() {
 	return allocation_manager_.get();
 }
 
+void VulkanDevice::executeDescriptorsUpdate(const DescriptorsUpdate& update) const {
+	logical_device_.updateDescriptorSets(update.getWriteOperations(), update.getCopyOperations());
+}
+
 bool VulkanDevice::initialized() const {
 	return initialized_;
 }

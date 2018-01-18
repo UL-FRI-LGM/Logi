@@ -13,6 +13,8 @@
 #include "base/VulkanDevice.h"
 #include "util/helpers.h"
 #include "base/Types.h"
+#include "descriptors/DecriptorsUpdate.h"
+#include "examples/lodepng.h"
 
 namespace vkr {
 
@@ -75,7 +77,68 @@ ExampleA::ExampleA(std::vector<char *>& global_extensions, std::vector<char *>& 
 	// Select and initialize the device.
 	gpu_ = devices[selection].second;
 	gpu_->initialize(features, device_extensions, QueueConfig(0, 1, 0));
-	gpu_->getComputeFamily()->createCommandPool(false, false);
+}
+
+void ExampleA::run() {
+	// Load programs.
+	ProgramManager* prog_manager = gpu_->getProgramManager();
+	prog_manager->loadPrograms("./resources/shaders");
+
+	// Retrieve resource managers.
+	gpu_->createDescriptorPool(prog_manager->getDescriptorsCount());
+	DescriptorPool* desc_pool = gpu_->getDescriptorPool();
+	AllocationManager* alloc_manager = gpu_->getAllocationManager();
+
+	QueueFamily* compute_family = gpu_->getComputeFamily();
+	Queue* compute_queue = compute_family->getQueue(0);
+	CommandPool* cmd_pool = compute_family->createCommandPool(false, false);
+
+	// Fetch compute pipeline
+	ComputePipeline* compute_pipeline = prog_manager->getComputePipeline(prog_manager->getComputePipelineId("compute_test"));
+	const PipelineLayout* pipeline_layout = compute_pipeline->getPipelineLayout();
+
+	// Allocate buffer and descriptor set.
+	Buffer* buffer = alloc_manager->allocateBuffer(BufferConfiguration(WIDTH * HEIGHT * sizeof(Pixel), vk::BufferUsageFlagBits::eStorageBuffer, MemoryUsage::GPU_TO_CPU));
+	DescriptorSet* desc_set = desc_pool->createDescriptorSet(pipeline_layout->getDescriptorSetLayout(0));
+
+	// Record and execute descriptors updates.
+	DescriptorsUpdate desc_update;
+	desc_update.writeBufferToDescriptorSet(desc_set, 0, 0, buffer, 0, WIDTH * HEIGHT * sizeof(Pixel));
+	gpu_->executeDescriptorsUpdate(desc_update);
+
+	// Record command buffer.
+	std::unique_ptr<PrimaryCommandBuffer> cmd_buffer = cmd_pool->allocatePrimaryCommandBuffer();
+	cmd_buffer->beginCommandBuffer(vk::CommandBufferUsageFlagBits::eOneTimeSubmit);
+	cmd_buffer->bindPipeline(compute_pipeline->getVkHandle(), vk::PipelineBindPoint::eCompute);
+	cmd_buffer->bindDescriptorSets(pipeline_layout->getVkHandle(), vk::PipelineBindPoint::eCompute, 0, { desc_set->getVkDescriptorSet() }, {});
+	cmd_buffer->computeDispatch((uint32_t)ceil(WIDTH / float(WORKGROUP_SIZE)), (uint32_t)ceil(HEIGHT / float(WORKGROUP_SIZE)), 1);
+	cmd_buffer->endCommandBuffer();
+
+	// Submit command buffer and wait for it to finish
+	vk::SubmitInfo submit_info{};
+	submit_info.commandBufferCount = 1;
+	submit_info.pCommandBuffers = &cmd_buffer->getVkHandle();
+
+	Fence fence(gpu_->getLogicalDeviceHandle(), false);
+	compute_queue->submit({ submit_info }, &fence);
+	fence.wait(100000000000);
+
+	// Retrieve storage buffer from the device.
+	std::vector<unsigned char> data = buffer->getData();
+	Pixel* pixels = reinterpret_cast<Pixel*>(data.data());
+
+	// Save image
+	std::vector<unsigned char> image;
+	image.reserve(WIDTH * HEIGHT * 4);
+
+	for (int i = 0; i < data.size() / sizeof(Pixel); i++) {
+		image.push_back((unsigned char)(255.0f * (pixels[i].r)));
+		image.push_back((unsigned char)(255.0f * (pixels[i].g)));
+		image.push_back((unsigned char)(255.0f * (pixels[i].b)));
+		image.push_back((unsigned char)(255.0f * (pixels[i].a)));
+	}
+
+	unsigned error = lodepng::encode("mandelbrot.png", image, WIDTH, HEIGHT);
 }
 
 void ExampleA::runExample() {
@@ -84,18 +147,7 @@ void ExampleA::runExample() {
 	vk::PhysicalDeviceFeatures features;
 
 	ExampleA example(global_extensions, device_extensions, features);
-	ProgramManager* pm = example.gpu_->getProgramManager();
-	pm->loadPrograms("./resources/shaders");
-
-	example.gpu_->createDescriptorPool(pm->getDescriptorsCount());
-	DescriptorPool* dp = example.gpu_->getDescriptorPool();
-	
-	ComputePipeline* compute_pipeline = pm->getComputePipeline(pm->getComputePipelineId("compute_test"));
-
-	dp->createDescriptorSet(compute_pipeline->getPipelineLayout())
-
-	Buffer* buffer = example.gpu_->getAllocationManager()->allocateBuffer(BufferConfiguration(WIDTH * HEIGHT, vk::BufferUsageFlagBits::eStorageBuffer));
-	
+	example.run();
 
 	std::cout << "success" << std::endl;
 }

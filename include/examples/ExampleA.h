@@ -21,9 +21,15 @@ class ExampleA : public RendererBase {
 public:
 	ExampleA(std::vector<char *>& global_extensions, std::vector<char *>& device_extensions, vk::PhysicalDeviceFeatures& features);
 
+	void run();
+
 	static void runExample();
 
-//private:
+private:
+	struct Pixel {
+		float r, g, b, a;
+	};
+
 	VulkanDevice* gpu_;
 };
 

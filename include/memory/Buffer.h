@@ -48,11 +48,11 @@ public:
 	~BufferView();
 
 private:
-	vk::Device device_;						///< Vulkan logical device handle.
+	vk::Device device_;				///< Vulkan logical device handle.
 	vk::BufferView buffer_view_;	///< Buffer view Vulkan handle.
-	vk::Format format_;						///< Buffer view element format.
-	vk::DeviceSize offset_;				///< Buffer view offset from the start of the buffer in Bytes.
-	vk::DeviceSize range_;				///< Buffer view size (number of captured bytes from offset).
+	vk::Format format_;				///< Buffer view element format.
+	vk::DeviceSize offset_;			///< Buffer view offset from the start of the buffer in Bytes.
+	vk::DeviceSize range_;			///< Buffer view size (number of captured bytes from offset).
 };
 
 
@@ -61,7 +61,7 @@ public:
 	/**
 	 * @brief Wrap the given buffer and its configuration.
 	 */
-	Buffer(const vk::Device& device, const vk::Buffer& buffer, const BufferConfiguration& configuration);
+	Buffer(const vk::Device& device, VmaAllocator allocator, const VmaAllocation& allocation, const vk::Buffer& buffer, const BufferConfiguration& configuration);
 
 	/**
 	 * @brief Create buffer view for this buffer. Buffer must be texel based.
@@ -79,12 +79,23 @@ public:
 	 */
 	void destroyBufferView(BufferView* buffer_view);
 
+	std::vector<unsigned char> getData();
+
 	/**
 	 * @brief Get Vulkan buffer handle.
 	 *
 	 * @return Vulkan buffer handle.
 	 */
-	const vk::Buffer& getVkBuffer();
+	const vk::Buffer& getVkBuffer() const;
+
+	const VmaAllocation& getAllocation() const;
+
+	/**
+	 * @brief Retrieve buffer configuration.
+	 *
+	 * @return Buffer configuration.
+	 */
+	const BufferConfiguration& getBufferConfiguration() const;
 
 	/**
 	 * @brief Frees resources.
@@ -93,7 +104,10 @@ public:
 
 private:
 	vk::Device device_; ///< Vulkan logical device handle.
+	VmaAllocator allocator_;
+	VmaAllocation allocation_;
 	vk::Buffer buffer_; ///< Vulkan buffer handle.
+	
 	
 	BufferConfiguration configuration_; ///< Vulkan buffer configuration.
 	std::list<std::unique_ptr<BufferView>> buffer_views_; ///< Allocated buffer views..

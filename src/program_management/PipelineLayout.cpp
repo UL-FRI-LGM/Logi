@@ -363,23 +363,23 @@ PipelineLayout::PipelineLayout(const vk::Device& device, const std::string& name
 
 	// Bake descriptor sets.
 	for (auto& desc_set : descriptor_sets_) {
-		desc_set.bake();
+		desc_set->bake();
 	}
 
 	// Update descriptor count.
 	for (auto it = descriptor_sets_.begin(); it != descriptor_sets_.end(); it++) {
-		combined_descriptors_count_ += it->getDescriptorsCount();
+		combined_descriptors_count_ += (*it)->getDescriptorsCount();
 	}
 
 	// Build Vulkan pipeline layout.
 	buildVkPipelineLayout();
 }
 
-const std::string& PipelineLayout::getName() {
+const std::string& PipelineLayout::getName() const {
 	return name_;
 }
 
-PipelineType PipelineLayout::getPipelineType() {
+PipelineType PipelineLayout::getPipelineType() const {
 	return type_;
 }
 
@@ -395,12 +395,20 @@ std::vector<vk::PipelineShaderStageCreateInfo> PipelineLayout::getVkShaderHandle
 	return vk_shaders;
 }
 
-const vk::PipelineLayout& PipelineLayout::getVkHandle() {
+const vk::PipelineLayout& PipelineLayout::getVkHandle() const {
 	return vk_pipeline_layout_;
 }
 
-const DescriptorsCount& PipelineLayout::getDescriptorsCount() {
+const DescriptorsCount& PipelineLayout::getDescriptorsCount() const {
 	return combined_descriptors_count_;
+}
+
+const DescriptorSetLayout* PipelineLayout::getDescriptorSetLayout(size_t set) const {
+	return descriptor_sets_[set].get();
+}
+
+size_t PipelineLayout::getDescriptorSetCount() const {
+	return descriptor_sets_.size();
 }
 
 PipelineLayout::~PipelineLayout() {
@@ -445,12 +453,12 @@ void vkr::PipelineLayout::shaderReflection(const ShaderData* shader) {
 		uint32_t count = std::accumulate(resource_type.array.begin(), resource_type.array.end(), 1, std::multiplies<uint32_t>());
 
 		// If the set does not yet exist add a new one.
-		if (descriptor_sets_.size() <= set) {
-			descriptor_sets_.resize(set + 1, DescriptorSetLayout(device_));
+		while (descriptor_sets_.size() <= set) {
+			descriptor_sets_.emplace_back(std::make_unique<DescriptorSetLayout>(device_));
 		}
 		auto test = comp.get_storage_class(resource.id);
 
-		descriptor_sets_[set].addDescriptorBinding(DescriptorBindingLayout(resource.name, binding, type, count, stage));
+		descriptor_sets_[set]->addDescriptorBinding(DescriptorBindingLayout(resource.name, binding, type, count, stage));
 	};
 
 	// Look at: http://vulkan-spec-chunked.ahcox.com/ch13s01.html
@@ -537,8 +545,8 @@ void PipelineLayout::buildVkPipelineLayout() {
 	std::vector<vk::DescriptorSetLayout> vk_desc_set_layouts{};
 	vk_desc_set_layouts.reserve(descriptor_sets_.size());
 
-	for (DescriptorSetLayout& desc_set : descriptor_sets_) {
-		vk_desc_set_layouts.emplace_back(desc_set.getVkHandle());
+	for (std::unique_ptr<DescriptorSetLayout>& desc_set : descriptor_sets_) {
+		vk_desc_set_layouts.emplace_back(desc_set->getVkHandle());
 	}
 
 	// Build vulkan push constants.

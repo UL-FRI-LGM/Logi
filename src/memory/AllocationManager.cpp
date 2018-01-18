@@ -1,6 +1,4 @@
 #include "memory/AllocationManager.h"
-#define VMA_IMPLEMENTATION
-#include <vk_mem_alloc.h>
 
 namespace vkr {
 
@@ -52,24 +50,26 @@ Buffer* AllocationManager::allocateBuffer(const BufferConfiguration& configurati
 	// Allocate buffer.
 	VkBuffer buffer;
 	VmaAllocation allocation;
+	
 	if (vmaCreateBuffer(allocator_, &((VkBufferCreateInfo)buffer_info), &allocInfo, &buffer, &allocation, nullptr) != VK_SUCCESS) {
 		return nullptr;
 	}
 
-	allocated_buffers_.emplace_back(std::make_pair(allocation, std::make_unique<Buffer>(device_, vk::Buffer(buffer), configuration)));
+	allocated_buffers_.emplace_back(std::make_unique<Buffer>(device_, allocator_, allocation, vk::Buffer(buffer), configuration));
 
-	return allocated_buffers_.back().second.get();
+	return allocated_buffers_.back().get();
 }
 
 void AllocationManager::freeBuffer(Buffer* buffer) {
-	auto it = std::find_if(allocated_buffers_.begin(), allocated_buffers_.end(), [&buffer](const std::pair<VmaAllocation, std::unique_ptr<Buffer>>& entry) {
-		return entry.second.get() == buffer;
+	auto it = std::find_if(allocated_buffers_.begin(), allocated_buffers_.end(), [&buffer](std::unique_ptr<Buffer>& entry) {
+		return entry.get() == buffer;
 	});
 
 	// Free the buffer
 	if (it != allocated_buffers_.end()) {
-		it->second.reset();
-		vmaFreeMemory(allocator_, it->first);
+		VmaAllocation allocation = (*it)->getAllocation();
+		it->reset();
+		vmaFreeMemory(allocator_, allocation);
 		allocated_buffers_.erase(it);
 	}
 }
@@ -129,8 +129,9 @@ void AllocationManager::freeImage(Image* image) {
 AllocationManager::~AllocationManager() {
 	// Destroy buffers.
 	for (auto it = allocated_buffers_.begin(); it != allocated_buffers_.end(); it++) {
-		it->second.reset();
-		vmaFreeMemory(allocator_, it->first);
+		VmaAllocation allocation = (*it)->getAllocation();
+		it->reset();
+		vmaFreeMemory(allocator_, allocation);
 	}
 
 	// Destroy images.

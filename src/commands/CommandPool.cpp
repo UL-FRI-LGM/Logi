@@ -25,7 +25,7 @@ CommandPool::CommandPool(const vk::Device& device, uint32_t queue_family_index, 
 	cmd_pool_ = device.createCommandPool(pool_ci);
 }
 
-vk::CommandBuffer CommandPool::allocateCommandBuffer(const vk::CommandBufferLevel&& level) {
+vk::CommandBuffer CommandPool::allocateCommandBuffer(vk::CommandBufferLevel level) {
 	vk::CommandBufferAllocateInfo commandBufferAllocateInfo{};
 	commandBufferAllocateInfo.commandPool = cmd_pool_;
 	commandBufferAllocateInfo.level = level;
@@ -38,12 +38,12 @@ vk::CommandBuffer CommandPool::allocateCommandBuffer(const vk::CommandBufferLeve
 	return command_buffer;
 }
 
-std::shared_ptr<PrimaryCommandBuffer> CommandPool::allocatePrimaryCommandBuffer() {
-	return std::make_shared<PrimaryCommandBuffer>(allocateCommandBuffer(vk::CommandBufferLevel::ePrimary), resetable_buffers_);
+std::unique_ptr<PrimaryCommandBuffer> CommandPool::allocatePrimaryCommandBuffer() {
+	return std::make_unique<PrimaryCommandBuffer>(allocateCommandBuffer(vk::CommandBufferLevel::ePrimary), resetable_buffers_);
 }
 
-std::shared_ptr<SecondaryCommmandBuffer> CommandPool::allocateSecondaryCommandBuffer() {
-	return std::make_shared<SecondaryCommmandBuffer>(allocateCommandBuffer(vk::CommandBufferLevel::eSecondary), resetable_buffers_);
+std::unique_ptr<SecondaryCommmandBuffer> CommandPool::allocateSecondaryCommandBuffer() {
+	return std::make_unique<SecondaryCommmandBuffer>(allocateCommandBuffer(vk::CommandBufferLevel::eSecondary), resetable_buffers_);
 }
 
 void CommandPool::resetCommandPool(bool release_resources) {
@@ -55,7 +55,7 @@ void CommandPool::resetCommandPool(bool release_resources) {
 	}
 }
 
-void CommandPool::freeCommandBuffer(const std::shared_ptr<CommandBuffer>& command_buffer) {
+void CommandPool::freeCommandBuffer(CommandBuffer* command_buffer) {
 	device_.freeCommandBuffers(cmd_pool_, command_buffer->getVkHandle());
 }
 
