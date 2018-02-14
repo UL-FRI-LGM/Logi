@@ -65,6 +65,14 @@ std::vector<unsigned char> Buffer::getData() {
 	return data;
 }
 
+void Buffer::writeData(void* data, size_t size_bytes) {
+	vk::DeviceMemory memory = vk::DeviceMemory(allocation_->GetMemory());
+	void* mapped_memory = device_.mapMemory(memory, 0, configuration_.buffer_size);
+
+	std::memcpy(mapped_memory, data, size_bytes);
+	device_.unmapMemory(memory);
+}
+
 
 const vk::Buffer& Buffer::getVkBuffer() const {
 	return buffer_;

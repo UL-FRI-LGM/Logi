@@ -81,6 +81,8 @@ public:
 
 	std::vector<unsigned char> getData();
 
+	void writeData(void* data, size_t size_bytes);
+
 	/**
 	 * @brief Get Vulkan buffer handle.
 	 *

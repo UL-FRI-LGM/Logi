@@ -15,12 +15,21 @@
 #include "base/Types.h"
 #include "descriptors/DecriptorsUpdate.h"
 #include "examples/lodepng.h"
+#include <glm\glm.hpp>
+#include <chrono>
+#include <algorithm>
 
 namespace vkr {
 
-const int WIDTH = 3200;
-const int HEIGHT = 2400;
+const int WIDTH = 1920;
+const int HEIGHT = 1080;
 const int WORKGROUP_SIZE = 32;
+
+struct UniformBufferObject {
+	glm::vec2 mouse_pos;
+	float timestamp;
+	bool redraw;
+};
 
 ExampleA::ExampleA(std::vector<char *>& global_extensions, std::vector<char *>& device_extensions, vk::PhysicalDeviceFeatures& features) : RendererBase(global_extensions), gpu_(nullptr) {
 
@@ -94,21 +103,25 @@ void ExampleA::run() {
 	CommandPool* cmd_pool = compute_family->createCommandPool(false, false);
 
 	// Fetch compute pipeline
-	ComputePipeline* compute_pipeline = prog_manager->getComputePipeline(prog_manager->getComputePipelineId("compute_test"));
+	ComputePipeline* compute_pipeline = prog_manager->getComputePipeline(prog_manager->getComputePipelineId("pathtrace"));
 	const PipelineLayout* pipeline_layout = compute_pipeline->getPipelineLayout();
 
 	// Allocate buffer and descriptor set.
-	Buffer* buffer = alloc_manager->allocateBuffer(BufferConfiguration(WIDTH * HEIGHT * sizeof(Pixel), vk::BufferUsageFlagBits::eStorageBuffer, MemoryUsage::GPU_TO_CPU));
+	Buffer* bufferImage = alloc_manager->allocateBuffer(BufferConfiguration(WIDTH * HEIGHT * sizeof(Pixel), vk::BufferUsageFlagBits::eStorageBuffer, MemoryUsage::GPU_TO_CPU));
+	Buffer* bufferUBO = alloc_manager->allocateBuffer(BufferConfiguration(sizeof(UniformBufferObject), vk::BufferUsageFlagBits::eUniformBuffer, MemoryUsage::CPU_TO_GPU));
+
 	DescriptorSet* desc_set = desc_pool->createDescriptorSet(pipeline_layout->getDescriptorSetLayout(0));
 
 	// Record and execute descriptors updates.
+	// Image descriptor update.
 	DescriptorsUpdate desc_update;
-	desc_update.writeBufferToDescriptorSet(desc_set, 0, 0, buffer, 0, WIDTH * HEIGHT * sizeof(Pixel));
+	desc_update.writeBufferToDescriptorSet(desc_set, 0, 0, bufferImage, 0, WIDTH * HEIGHT * sizeof(Pixel));
+	desc_update.writeBufferToDescriptorSet(desc_set, 1, 0, bufferUBO, 0, sizeof(UniformBufferObject));
 	gpu_->executeDescriptorsUpdate(desc_update);
 
 	// Record command buffer.
 	std::unique_ptr<PrimaryCommandBuffer> cmd_buffer = cmd_pool->allocatePrimaryCommandBuffer();
-	cmd_buffer->beginCommandBuffer(vk::CommandBufferUsageFlagBits::eOneTimeSubmit);
+	cmd_buffer->beginCommandBuffer(vk::CommandBufferUsageFlagBits::eRenderPassContinue);
 	cmd_buffer->bindPipeline(compute_pipeline->getVkHandle(), vk::PipelineBindPoint::eCompute);
 	cmd_buffer->bindDescriptorSets(pipeline_layout->getVkHandle(), vk::PipelineBindPoint::eCompute, 0, { desc_set->getVkDescriptorSet() }, {});
 	cmd_buffer->computeDispatch((uint32_t)ceil(WIDTH / float(WORKGROUP_SIZE)), (uint32_t)ceil(HEIGHT / float(WORKGROUP_SIZE)), 1);
@@ -119,26 +132,50 @@ void ExampleA::run() {
 	submit_info.commandBufferCount = 1;
 	submit_info.pCommandBuffers = &cmd_buffer->getVkHandle();
 
+	typedef std::chrono::high_resolution_clock Time;
+	auto ref_ts = Time::now();
+
+	UniformBufferObject ubo{};
+	ubo.mouse_pos = glm::vec2(0.0f, 1.0f);
+	ubo.redraw = true;
+	ubo.timestamp = std::chrono::duration<float, std::micro>(Time::now() - ref_ts).count() / 1000000;
+	
+	bufferUBO->writeData(&ubo, sizeof(UniformBufferObject));
+
+	// RENDERING
 	Fence fence(gpu_->getLogicalDeviceHandle(), false);
-	compute_queue->submit({ submit_info }, &fence);
-	fence.wait(100000000000);
 
-	// Retrieve storage buffer from the device.
-	std::vector<unsigned char> data = buffer->getData();
-	Pixel* pixels = reinterpret_cast<Pixel*>(data.data());
+	for (int i = 1; i <= 1000; i++) {
+		compute_queue->submit({ submit_info }, &fence);
+		fence.wait(100000000000);
+		fence.reset();
+		
+		if (i % 1000 == 0) {
+			std::cout << i / 10 << "%" << std::endl;
 
-	// Save image
-	std::vector<unsigned char> image;
-	image.reserve(WIDTH * HEIGHT * 4);
+			// Retrieve storage buffer from the device.
+			std::vector<unsigned char> data = bufferImage->getData();
+			Pixel* pixels = reinterpret_cast<Pixel*>(data.data());
 
-	for (int i = 0; i < data.size() / sizeof(Pixel); i++) {
-		image.push_back((unsigned char)(255.0f * (pixels[i].r)));
-		image.push_back((unsigned char)(255.0f * (pixels[i].g)));
-		image.push_back((unsigned char)(255.0f * (pixels[i].b)));
-		image.push_back((unsigned char)(255.0f * (pixels[i].a)));
+			// Save image
+			std::vector<unsigned char> image;
+			image.reserve(WIDTH * HEIGHT * 4);
+
+			for (int j = 0; j < data.size() / sizeof(Pixel); j++) {
+				image.push_back((unsigned char)(255.0f * std::powf(std::fmin(1.0f, std::fmax(pixels[j].r / (i + 1), 0.0f)), 1.0f / 2.2f) ));
+				image.push_back((unsigned char)(255.0f * std::powf(std::fmin(1.0f, std::fmax(pixels[j].g / (i + 1), 0.0f)), 1.0f / 2.2f) ));
+				image.push_back((unsigned char)(255.0f * std::powf(std::fmin(1.0f, std::fmax(pixels[j].b / (i + 1), 0.0f)), 1.0f / 2.2f) ));
+				image.push_back((unsigned char)(255.0f));
+			}
+
+			unsigned error = lodepng::encode("img/" + std::to_string(i) + ".png", image, WIDTH, HEIGHT);
+		}
+
+		// Update UBO
+		ubo.redraw = false;
+		ubo.timestamp = std::chrono::duration<float, std::micro>(Time::now() - ref_ts).count() / 1000000;
+		bufferUBO->writeData(&ubo, sizeof(UniformBufferObject));
 	}
-
-	unsigned error = lodepng::encode("mandelbrot.png", image, WIDTH, HEIGHT);
 }
 
 void ExampleA::runExample() {
