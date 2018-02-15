@@ -1,4 +1,4 @@
-#include "..\..\include\synchronization\Semaphore.h"
+#include "synchronization/Semaphore.h"
 
 namespace vkr {
 

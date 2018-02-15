@@ -200,7 +200,7 @@ void SwapChain::create(uint32_t& width, uint32_t& height, bool vsync) {
 	swapchain_ci.minImageCount = num_swapchain_images;
 	swapchain_ci.imageFormat = color_format_;
 	swapchain_ci.imageColorSpace = color_space_;
-	swapchain_ci.imageExtent = { swapchain_extent.width, swapchain_extent.height };
+	swapchain_ci.imageExtent = vk::Extent2D(swapchain_extent.width, swapchain_extent.height);
 	swapchain_ci.imageUsage = vk::ImageUsageFlagBits::eColorAttachment;
 	swapchain_ci.preTransform = pre_transform;
 	swapchain_ci.imageArrayLayers = 1;

@@ -10,6 +10,7 @@
 #define DESCRIPTORS_DESCRIPTORS_UPDATE_H
 
 #include <vulkan/vulkan.hpp>
+#include <list>
 #include "descriptors/DescriptorPool.h"
 #include "memory/Buffer.h"
 

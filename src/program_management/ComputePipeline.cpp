@@ -1,4 +1,4 @@
-#include "program_management\ComputePipeline.h"
+#include "program_management/ComputePipeline.h"
 
 namespace vkr {
 

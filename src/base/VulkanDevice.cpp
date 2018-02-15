@@ -7,7 +7,6 @@
 */
 #include <vulkan/vulkan.hpp>
 #include "base/VulkanDevice.h"
-#include "..\..\include\base\VulkanDevice.h"
 
 namespace vkr {
 
@@ -71,7 +70,7 @@ void VulkanDevice::initialize(const vk::PhysicalDeviceFeatures& features, const 
 	if (queue_config.graphic_count > 0) {
 		// Make sure that device supports has graphic queue family and enough graphic queues available.
 		if (graphical_family_.get() == nullptr || graphical_family_->getMaxSupportedQueueCount() < queue_config.graphic_count) {
-			std::runtime_error("Device (" + std::string(device_properties_.deviceName) + ") does not provide enough graphic queues.");
+			throw std::runtime_error("Device (" + std::string(device_properties_.deviceName) + ") does not provide enough graphic queues.");
 		}
 
 		// Create QueueCreateInfo.
@@ -87,7 +86,7 @@ void VulkanDevice::initialize(const vk::PhysicalDeviceFeatures& features, const 
 	if (queue_config.compute_count > 0) {
 		// Make sure that device supports has compute queue family and enough compute queues available.
 		if (compute_family_.get() == nullptr || compute_family_->getMaxSupportedQueueCount() < queue_config.compute_count) {
-			std::runtime_error("Device (" + std::string(device_properties_.deviceName) + ") does not provide enough compute queues.");
+			throw std::runtime_error("Device (" + std::string(device_properties_.deviceName) + ") does not provide enough compute queues.");
 		}
 
 		// Create QueueCreateInfo.
@@ -103,7 +102,7 @@ void VulkanDevice::initialize(const vk::PhysicalDeviceFeatures& features, const 
 	if (queue_config.transfer_count > 0) {
 		// Make sure that device supports has transfer queue family and enough transfer queues available.
 		if (transfer_family_.get() == nullptr || transfer_family_->getMaxSupportedQueueCount() < queue_config.transfer_count) {
-			std::runtime_error("Device (" + std::string(device_properties_.deviceName) + ") does not provide enough transfer queues.");
+			throw std::runtime_error("Device (" + std::string(device_properties_.deviceName) + ") does not provide enough transfer queues.");
 		}
 
 		// Create QueueCreateInfo.
@@ -133,9 +132,15 @@ void VulkanDevice::initialize(const vk::PhysicalDeviceFeatures& features, const 
 	logical_device_ = physical_device_.createDevice(device_create_info);
 
 	// Initialize queues.
-	graphical_family_->initialize(logical_device_, queue_config.graphic_count);
-	compute_family_->initialize(logical_device_, queue_config.compute_count);
-	transfer_family_->initialize(logical_device_, queue_config.transfer_count);
+    if (graphical_family_) {
+        graphical_family_->initialize(logical_device_, queue_config.graphic_count);
+    }
+    if (compute_family_) {
+        compute_family_->initialize(logical_device_, queue_config.compute_count);
+    }
+    if (transfer_family_) {
+        transfer_family_->initialize(logical_device_, queue_config.transfer_count);
+    }
 
 	// Create allocation and program manager
 	allocation_manager_ = std::make_unique<AllocationManager>(physical_device_, logical_device_);

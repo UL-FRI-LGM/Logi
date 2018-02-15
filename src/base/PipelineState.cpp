@@ -1,5 +1,4 @@
-#include "..\..\include\base\PipelineState.h"
-#include <base/PipelineState.h>
+#include "base/PipelineState.h"
 
 namespace vkr {
 

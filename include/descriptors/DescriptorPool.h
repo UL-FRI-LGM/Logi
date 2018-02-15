@@ -12,6 +12,7 @@
 #include <vulkan/vulkan.hpp>
 #include "base/Types.h"
 #include <unordered_map>
+#include <list>
 #include "program_management/PipelineLayout.h"
 
 namespace vkr {

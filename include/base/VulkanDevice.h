@@ -9,7 +9,7 @@
 #ifndef VULKAN_DEVICE_H_
 #define VULKAN_DEVICE_H_
 
-#include <vulkan\vulkan.hpp>
+#include <vulkan/vulkan.hpp>
 #include <vector>
 #include <set>
 #include <map>
@@ -18,7 +18,7 @@
 #include "program_management/ProgramManager.h"
 #include "descriptors/DescriptorPool.h"
 #include "memory/AllocationManager.h"
-#include "descriptors\DecriptorsUpdate.h"
+#include "descriptors/DecriptorsUpdate.h"
 
 namespace vkr {
 

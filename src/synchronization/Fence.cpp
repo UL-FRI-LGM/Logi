@@ -1,4 +1,4 @@
-#include "..\..\include\synchronization\Fence.h"
+#include "synchronization/Fence.h"
 
 namespace vkr {
 
