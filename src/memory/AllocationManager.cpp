@@ -51,7 +51,7 @@ Buffer* AllocationManager::allocateBuffer(const BufferConfiguration& configurati
 	VkBuffer buffer;
 	VmaAllocation allocation;
 	
-	if (vmaCreateBuffer(allocator_, &((VkBufferCreateInfo)buffer_info), &allocInfo, &buffer, &allocation, nullptr) != VK_SUCCESS) {
+	if (vmaCreateBuffer(allocator_, reinterpret_cast<const VkBufferCreateInfo*>(&buffer_info), &allocInfo, &buffer, &allocation, nullptr) != VK_SUCCESS) {
 		return nullptr;
 	}
 
@@ -104,7 +104,7 @@ Image* AllocationManager::allocateImage(const ImageConfiguration& configuration)
 	// Allocate Image.
 	VkImage image;
 	VmaAllocation allocation;
-	if (vmaCreateImage(allocator_, &((VkImageCreateInfo) image_info), &allocInfo, &image, &allocation, nullptr) != VK_SUCCESS) {
+	if (vmaCreateImage(allocator_, reinterpret_cast<const VkImageCreateInfo*>(&image_info), &allocInfo, &image, &allocation, nullptr) != VK_SUCCESS) {
 		return nullptr;
 	}
 

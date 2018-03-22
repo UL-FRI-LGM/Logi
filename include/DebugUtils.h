@@ -17,7 +17,7 @@ namespace vkr {
 namespace debug_utils {
 
 // Validation constants:
-constexpr bool kEnableValidation{ true };
+const bool kEnableValidation = true;
 const std::vector<char *> kValidationLayers{
 	"VK_LAYER_LUNARG_standard_validation"
 };

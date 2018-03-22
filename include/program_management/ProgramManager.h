@@ -12,7 +12,12 @@
 #include <vector>
 #include <map>
 #include <vulkan/vulkan.hpp>
+#if defined(__GNUC__)
+#include <experimental/filesystem>
+#else
 #include <filesystem>
+#endif
+
 #include "program_management/ShaderManager.h"
 #include "program_management/PipelineLayout.h"
 #include "program_management/ComputePipeline.h"

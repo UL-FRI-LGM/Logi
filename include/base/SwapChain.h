@@ -66,7 +66,7 @@ public:
 	 *
 	 * @return Result of the queue presentation.
 	 */
-	vk::Result SwapChain::queuePresent(vk::Queue queue, uint32_t image_index, vk::Semaphore wait_semaphore = nullptr);
+	vk::Result queuePresent(vk::Queue queue, uint32_t image_index, vk::Semaphore wait_semaphore = nullptr);
 
 	/**
 	 * @brief Clean up swap chain data, surface data and disconnect from the device.
@@ -107,5 +107,4 @@ private:
 };
 
 }
-
 #endif SWAPCHAIN_H_

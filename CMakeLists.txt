@@ -1,5 +1,6 @@
 cmake_minimum_required (VERSION 3.6)
 
+# Metadata
 project(VulkanEngine)
 
 # C++ 17 SUPPORT
@@ -30,11 +31,11 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 set(LIB_DIR ${PROJECT_SOURCE_DIR}/libs)
 
 # GLFW Library
-set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-add_subdirectory(${LIB_DIR}/glfw)
-link_libraries(glfw ${GLFW_LIBRARIES})
+#set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+#set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+#set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+#add_subdirectory(${LIB_DIR}/glfw)
+#link_libraries(glfw ${GLFW_LIBRARIES})
 
 # GLM
 include_directories(${LIB_DIR}/glm)
@@ -61,9 +62,12 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 file(GLOB_RECURSE SRC_LIST "src/*.cpp")
 list(REMOVE_ITEM SRC_LIST "src/main.cpp")
 
+# Build VKR library
 add_library(vkr STATIC ${SRC_LIST})
+target_link_libraries(vkr ${VULKAN_LIBRARY} spirv-cross stdc++fs)
+
 add_executable(${PROJECT_NAME} "src/main.cpp")
-target_link_libraries(${PROJECT_NAME} ${VULKAN_LIBRARY} glfw spirv-cross vkr)
+target_link_libraries(${PROJECT_NAME} ${VULKAN_LIBRARY} spirv-cross vkr)
 
 ##########################################################
 ###################### RESOURCES #########################
@@ -73,6 +77,7 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/resources
         $<TARGET_FILE_DIR:${PROJECT_NAME}>/resources)
+
 
 ##########################################################
 ####################### DOXYGEN ##########################

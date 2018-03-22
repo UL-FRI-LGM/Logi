@@ -105,8 +105,9 @@ void RendererBase::setupDebugCallback(const vk::DebugReportFlagsEXT& flags, PFN_
 	}
 
 	// Generate callback create info
-	vk::DebugReportCallbackCreateInfoEXT createInfo{};
-	createInfo.flags = flags;
+	VkDebugReportCallbackCreateInfoEXT createInfo{};
+	createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
+	createInfo.flags = static_cast<VkDebugReportFlagsEXT>(flags);
 	createInfo.pfnCallback = callback;
 
 	// Setup callback.
@@ -118,7 +119,7 @@ void RendererBase::setupDebugCallback(const vk::DebugReportFlagsEXT& flags, PFN_
 	}
 
 	debug_callbacks_.push_back({});
-	setup_callback_fn((VkInstance) vk_instance_, &static_cast<VkDebugReportCallbackCreateInfoEXT>(createInfo), nullptr, (VkDebugReportCallbackEXT*) &debug_callbacks_.back());
+	setup_callback_fn((VkInstance) vk_instance_, &createInfo, nullptr, (VkDebugReportCallbackEXT*) &debug_callbacks_.back());
 }
 
 std::vector<std::pair<int32_t, VulkanDevice*>> RendererBase::retrieveDevices(const std::function<int32_t(VulkanDevice*)>& f_score) {

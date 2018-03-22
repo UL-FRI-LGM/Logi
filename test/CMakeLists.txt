@@ -10,5 +10,5 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 file(GLOB_RECURSE BASE_SRC_LIST "base/*.cpp")
 
 add_executable(base_test ${BASE_SRC_LIST})
-target_link_libraries(base_test gtest gtest_main ${VULKAN_LIBRARY} glfw spirv-cross vkr)
+target_link_libraries(base_test gtest gtest_main ${VULKAN_LIBRARY} spirv-cross vkr)
 add_test(NAME BaseTest COMMAND base_test)

@@ -17,11 +17,11 @@ namespace vkr {
 namespace global_config {
 
 	// Application meta data:
-	constexpr char* kEngineName{ "Vulkan Renderer" };
-	constexpr uint32_t kEngineVersion{ VK_MAKE_VERSION(0, 0, 1) };
+	const char* kEngineName = "Vulkan Renderer";
+	const uint32_t kEngineVersion{ VK_MAKE_VERSION(0, 0, 1) };
 
-	constexpr char* kAppName{ "Med3D" };
-	constexpr uint32_t kAppVersion{ VK_MAKE_VERSION(0, 0, 1) };
+	const char* kAppName = "Med3D";
+	const uint32_t kAppVersion{ VK_MAKE_VERSION(0, 0, 1) };
 
 }
 }

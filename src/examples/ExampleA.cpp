@@ -15,7 +15,7 @@
 #include "base/Types.h"
 #include "descriptors/DecriptorsUpdate.h"
 #include "examples/lodepng.h"
-#include <glm\glm.hpp>
+#include <glm/glm.hpp>
 #include <chrono>
 #include <algorithm>
 
@@ -162,9 +162,9 @@ void ExampleA::run() {
 			image.reserve(WIDTH * HEIGHT * 4);
 
 			for (int j = 0; j < data.size() / sizeof(Pixel); j++) {
-				image.push_back((unsigned char)(255.0f * std::powf(std::fmin(1.0f, std::fmax(pixels[j].r / (i + 1), 0.0f)), 1.0f / 2.2f) ));
-				image.push_back((unsigned char)(255.0f * std::powf(std::fmin(1.0f, std::fmax(pixels[j].g / (i + 1), 0.0f)), 1.0f / 2.2f) ));
-				image.push_back((unsigned char)(255.0f * std::powf(std::fmin(1.0f, std::fmax(pixels[j].b / (i + 1), 0.0f)), 1.0f / 2.2f) ));
+				image.push_back((unsigned char)(255.0f * std::pow(std::fmin(1.0f, std::fmax(pixels[j].r / (i + 1), 0.0f)), 1.0f / 2.2f) ));
+				image.push_back((unsigned char)(255.0f * std::pow(std::fmin(1.0f, std::fmax(pixels[j].g / (i + 1), 0.0f)), 1.0f / 2.2f) ));
+				image.push_back((unsigned char)(255.0f * std::pow(std::fmin(1.0f, std::fmax(pixels[j].b / (i + 1), 0.0f)), 1.0f / 2.2f) ));
 				image.push_back((unsigned char)(255.0f));
 			}
 
