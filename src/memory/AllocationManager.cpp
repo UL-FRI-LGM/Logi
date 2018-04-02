@@ -108,20 +108,21 @@ Image* AllocationManager::allocateImage(const ImageConfiguration& configuration)
 		return nullptr;
 	}
 
-	allocated_images_.emplace_back(std::make_pair(allocation, std::make_unique<Image>(device_, vk::Image(image), configuration)));
+	allocated_images_.emplace_back(std::make_unique<Image>(device_, allocator_, allocation, vk::Image(image), configuration));
 
-	return allocated_images_.back().second.get();
+	return allocated_images_.back().get();
 }
 
 void AllocationManager::freeImage(Image* image) {
 	
-	auto it = std::find_if(allocated_images_.begin(), allocated_images_.end(), [&image](const std::pair<VmaAllocation, std::unique_ptr<Image>>& entry) {
-		return entry.second.get() == image;
+	auto it = std::find_if(allocated_images_.begin(), allocated_images_.end(), [&image](const std::unique_ptr<Image>& entry) {
+		return entry.get() == image;
 	});
 
 	if (it != allocated_images_.end()) {
-		it->second.reset();
-		vmaFreeMemory(allocator_, it->first);
+		VmaAllocation allocation = (*it)->getAllocation();
+		it->reset();
+		vmaFreeMemory(allocator_, allocation);
 		allocated_images_.erase(it);
 	}
 }
@@ -136,8 +137,9 @@ AllocationManager::~AllocationManager() {
 
 	// Destroy images.
 	for (auto it = allocated_images_.begin(); it != allocated_images_.end(); it++) {
-		it->second.release();
-		vmaFreeMemory(allocator_, it->first);
+		VmaAllocation allocation = (*it)->getAllocation();
+		it->reset();
+		vmaFreeMemory(allocator_, allocation);
 	}
 
 	// Destroy the allocator.

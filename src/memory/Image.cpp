@@ -34,7 +34,7 @@ ImageView::~ImageView() {
 }
 
 
-Image::Image(const vk::Device& device, const vk::Image& image, const ImageConfiguration& configuration) : device_(device), image_(image), configuration_(configuration) {
+Image::Image(const vk::Device& device, VmaAllocator allocator, const VmaAllocation& allocation, const vk::Image& image, const ImageConfiguration& configuration) : device_(device), allocator_(allocator), allocation_(allocation), image_(image), configuration_(configuration) {
 }
 
 ImageView* Image::createImageView(vk::Format format, const vk::ComponentMapping& component_mapping, const vk::ImageAspectFlags& aspect_mask, uint32_t base_mip_level, uint32_t mip_level_count, uint32_t base_array_layer, uint32_t layer_count) {
@@ -54,9 +54,12 @@ void Image::destroyImageView(ImageView* image_view) {
 	}
 }
 
-
 const vk::Image& Image::getVkImage() {
 	return image_;
+}
+
+const VmaAllocation& Image::getAllocation() const {
+	return allocation_;
 }
 
 Image::~Image() {

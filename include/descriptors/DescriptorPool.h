@@ -13,7 +13,7 @@
 #include "base/Types.h"
 #include <unordered_map>
 #include <list>
-#include "program_management/PipelineLayout.h"
+#include "program/pipeline_layout/PipelineLayout.h"
 
 namespace vkr {
 

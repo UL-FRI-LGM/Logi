@@ -12,6 +12,11 @@
             "stage": "compute"
         },
         {
+            "id": "pathtrace_vol_comp",
+            "path": "./pathtrace_vol_comp.spv",
+            "stage": "compute"
+        },
+        {
             "id": "fibbonaci_comp",
             "path": "./fibbonaci_comp.spv",
             "stage": "compute"
@@ -30,6 +35,12 @@
             "id": "pathtrace",
             "shaders": [
                 "pathtrace_comp"
+            ]
+        },
+        {
+            "id": "pathtrace_vol",
+            "shaders": [
+                "pathtrace_vol_comp"
             ]
         },
         {

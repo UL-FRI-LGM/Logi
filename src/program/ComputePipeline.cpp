@@ -1,9 +1,9 @@
-#include "program_management/ComputePipeline.h"
+#include "program/ComputePipeline.h"
 
 namespace vkr {
 
 ComputePipeline::ComputePipeline(const vk::Device& device, PipelineLayout* pipeline_layout) : device_(device), pipeline_(nullptr), pipeline_layout_(pipeline_layout) {
-	if (pipeline_layout_->getPipelineType() != PipelineType::COMPUTE) {
+	if (pipeline_layout_->getPipelineType() != PipelineType::eCompute) {
 		throw std::runtime_error("Invalid pipeline layout type.");
 	}
 

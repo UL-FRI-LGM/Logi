@@ -70,7 +70,7 @@ private:
 
 class Image {
 public:
-	Image(const vk::Device& device, const vk::Image& image, const ImageConfiguration& configuration);
+	Image(const vk::Device& device, VmaAllocator allocator, const VmaAllocation& allocation, const vk::Image& image, const ImageConfiguration& configuration);
 
 	/**
 	 * @brief Create image view for this Image.
@@ -91,12 +91,17 @@ public:
 	*/
 	void destroyImageView(ImageView* image_view);
 
+
 	const vk::Image& getVkImage();
+
+	const VmaAllocation& getAllocation() const;
 
 	~Image();
 private:
 	vk::Device device_;	///< Vulkan logical device handle.
 	vk::Image image_;		///< Vulkan image handle.
+	VmaAllocator allocator_;
+	VmaAllocation allocation_;
 
 	ImageConfiguration configuration_;	///< Vulkan image configuration.
 	std::list<std::unique_ptr<ImageView>> image_views_; ///< Allocated buffer views..

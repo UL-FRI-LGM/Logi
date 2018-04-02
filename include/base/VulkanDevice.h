@@ -15,7 +15,7 @@
 #include <map>
 #include <string>
 #include "queues/QueueFamily.h"
-#include "program_management/ProgramManager.h"
+#include "program/ProgramManager.h"
 #include "descriptors/DescriptorPool.h"
 #include "memory/AllocationManager.h"
 #include "descriptors/DecriptorsUpdate.h"

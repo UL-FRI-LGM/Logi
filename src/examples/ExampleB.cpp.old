@@ -6,8 +6,8 @@
 * This code is licensed under the MIT license (MIT) (http://opensource.org/licenses/MIT)
 */
 
-#include "examples/ExampleA.h"
-#include "program/ProgramManager.h"
+#include "examples/ExampleB.h"
+#include "program_management/ProgramManager.h"
 #include <vector>
 #include <iostream>
 #include "base/VulkanDevice.h"
@@ -18,6 +18,8 @@
 #include <glm/glm.hpp>
 #include <chrono>
 #include <algorithm>
+#include <cstddef>
+#include <fstream>
 
 namespace vkr {
 
@@ -88,6 +90,18 @@ ExampleA::ExampleA(std::vector<char *>& global_extensions, std::vector<char *>& 
 	gpu_->initialize(features, device_extensions, QueueConfig(0, 1, 0));
 }
 
+std::vector<unsigned char> readVolume(const std::string& path) {
+	std::ifstream ifs(path, std::ios::binary | std::ios::ate);
+	std::ifstream::pos_type pos = ifs.tellg();
+
+	std::vector<unsigned char> volume(pos);
+
+	ifs.seekg(0, std::ios::beg);
+	ifs.read(reinterpret_cast<char*>(&volume[0]), pos);
+
+	return volume;
+}
+
 void ExampleA::run() {
 	// Load programs.
 	ProgramManager* prog_manager = gpu_->getProgramManager();
@@ -103,12 +117,18 @@ void ExampleA::run() {
 	CommandPool* cmd_pool = compute_family->createCommandPool(false, false);
 
 	// Fetch compute pipeline
-	ComputePipeline* compute_pipeline = prog_manager->getComputePipeline(prog_manager->getComputePipelineId("pathtrace"));
+	ComputePipeline* compute_pipeline = prog_manager->getComputePipeline(prog_manager->getComputePipelineId("pathtrace_vol"));
 	const PipelineLayout* pipeline_layout = compute_pipeline->getPipelineLayout();
 
 	// Allocate buffer and descriptor set.
 	Buffer* bufferImage = alloc_manager->allocateBuffer(BufferConfiguration(WIDTH * HEIGHT * sizeof(Pixel), vk::BufferUsageFlagBits::eStorageBuffer, MemoryUsage::GPU_TO_CPU));
 	Buffer* bufferUBO = alloc_manager->allocateBuffer(BufferConfiguration(sizeof(UniformBufferObject), vk::BufferUsageFlagBits::eUniformBuffer, MemoryUsage::CPU_TO_GPU));
+
+	// Load volume
+	std::vector<unsigned char> volume = readVolume("./resources/volumes/skull.raw");
+	Image* volume_img = alloc_manager->allocateImage(ImageConfiguration(vk::ImageCreateFlags(), vk::ImageType::e3D, vk::Format::eR8Uint, vk::Extent3D(256, 256, 256)));
+	volume_img->writeData(&volume[0], volume.size());
+
 
 	DescriptorSet* desc_set = desc_pool->createDescriptorSet(pipeline_layout->getDescriptorSetLayout(0));
 
@@ -139,7 +159,7 @@ void ExampleA::run() {
 	ubo.mouse_pos = glm::vec2(0.0f, 1.0f);
 	ubo.redraw = true;
 	ubo.timestamp = std::chrono::duration<float, std::micro>(Time::now() - ref_ts).count() / 1000000;
-	
+
 	bufferUBO->writeData(&ubo, sizeof(UniformBufferObject));
 
 	// RENDERING
@@ -149,7 +169,7 @@ void ExampleA::run() {
 		compute_queue->submit({ submit_info }, &fence);
 		fence.wait(100000000000);
 		fence.reset();
-		
+
 		if (i % 1000 == 0) {
 			std::cout << i / 10 << "%" << std::endl;
 
@@ -162,9 +182,9 @@ void ExampleA::run() {
 			image.reserve(WIDTH * HEIGHT * 4);
 
 			for (int j = 0; j < data.size() / sizeof(Pixel); j++) {
-				image.push_back((unsigned char)(255.0f * std::pow(std::fmin(1.0f, std::fmax(pixels[j].r / (i + 1), 0.0f)), 1.0f / 2.2f) ));
-				image.push_back((unsigned char)(255.0f * std::pow(std::fmin(1.0f, std::fmax(pixels[j].g / (i + 1), 0.0f)), 1.0f / 2.2f) ));
-				image.push_back((unsigned char)(255.0f * std::pow(std::fmin(1.0f, std::fmax(pixels[j].b / (i + 1), 0.0f)), 1.0f / 2.2f) ));
+				image.push_back((unsigned char)(255.0f * std::pow(std::fmin(1.0f, std::fmax(pixels[j].r / (i + 1), 0.0f)), 1.0f / 2.2f)));
+				image.push_back((unsigned char)(255.0f * std::pow(std::fmin(1.0f, std::fmax(pixels[j].g / (i + 1), 0.0f)), 1.0f / 2.2f)));
+				image.push_back((unsigned char)(255.0f * std::pow(std::fmin(1.0f, std::fmax(pixels[j].b / (i + 1), 0.0f)), 1.0f / 2.2f)));
 				image.push_back((unsigned char)(255.0f));
 			}
 

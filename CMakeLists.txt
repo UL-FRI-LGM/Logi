@@ -64,7 +64,7 @@ list(REMOVE_ITEM SRC_LIST "src/main.cpp")
 
 # Build VKR library
 add_library(vkr STATIC ${SRC_LIST})
-target_link_libraries(vkr ${VULKAN_LIBRARY} spirv-cross stdc++fs)
+target_link_libraries(vkr ${VULKAN_LIBRARY} spirv-cross)
 
 add_executable(${PROJECT_NAME} "src/main.cpp")
 target_link_libraries(${PROJECT_NAME} ${VULKAN_LIBRARY} spirv-cross vkr)

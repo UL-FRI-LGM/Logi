@@ -18,9 +18,9 @@
 #include <filesystem>
 #endif
 
-#include "program_management/ShaderManager.h"
-#include "program_management/PipelineLayout.h"
-#include "program_management/ComputePipeline.h"
+#include "program/ShaderManager.h"
+#include "program/pipeline_layout/PipelineLayout.h"
+#include "program/ComputePipeline.h"
 #include "base/Types.h"
 
 namespace vkr {

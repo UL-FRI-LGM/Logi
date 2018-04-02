@@ -1,4 +1,4 @@
-#include "program_management/ProgramManager.h"
+#include "program/ProgramManager.h"
 #include <fstream>
 #include <json.hpp>
 #include <vulkan/vulkan.hpp>
@@ -66,11 +66,11 @@ void ProgramManager::loadPrograms(const filesystem::path& shaders_dir) {
 		}
 
 		std::string id = pipeline["id"].get<std::string>();
-		std::vector<ShaderData*> pipeline_shaders{};
+		std::vector<Shader*> pipeline_shaders{};
 		
 		// Fetch shader indices.
 		for (auto& shader : pipeline["shaders"]) {
-			ShaderData* shader_data = shader_manager_->getShaderData(shader.get<std::string>());
+			Shader* shader_data = shader_manager_->getShaderData(shader.get<std::string>());
 
 			// Check if the shader was found.
 			if (shader_data == nullptr) {
@@ -84,7 +84,7 @@ void ProgramManager::loadPrograms(const filesystem::path& shaders_dir) {
 		pipeline_layouts_.emplace_back(std::make_unique<PipelineLayout>(device_, id, pipeline_shaders));
 	
 		// If the pipeline layout belongs to compute pipeline create it.
-		if (pipeline_layouts_.back()->getPipelineType() == PipelineType::COMPUTE) {
+		if (pipeline_layouts_.back()->getPipelineType() == PipelineType::eCompute) {
 			compute_pipelines_.emplace_back(std::make_unique<ComputePipeline>(device_, pipeline_layouts_.back().get()));
 		}
 	}
