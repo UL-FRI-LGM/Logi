@@ -24,19 +24,19 @@ public:
 	void setPrimitiveTopology(vk::PrimitiveTopology topology);
 	void setPrimitiveRestartEnable(bool enable);
 
-	vk::PrimitiveTopology getPrimitiveTopology();
-	bool getPrimitiveRestartEnable();
+	vk::PrimitiveTopology getPrimitiveTopology() const;
+	bool getPrimitiveRestartEnable() const;
 
 	// Tessellation state setters/getters.
 	void setPatchControlPoints(uint8_t count);
-	uint8_t getPatchControlPoints();
+	uint8_t getPatchControlPoints() const;
 
 	// Viewport and scissors state setters/getters.
 	void setViewportCount(uint8_t count);
 	void setScissorsCount(uint8_t count);
 
-	uint8_t getViewportCount();
-	uint8_t getScissorsCount();
+	uint8_t getViewportCount() const;
+	uint8_t getScissorsCount() const;
 
 	// Rasterizer state setters/getters.
 	void setDepthClampEnabled(bool enable);
@@ -47,17 +47,17 @@ public:
 	void setDepthBiasEnable(bool enable); // Note: if true depth bias values must be set dynamically.
 	void setDynamicLineWidth(bool enable);
 
-	bool getDepthClampEnabled();
-	bool getRasterizerDiscardEnabled();
-	vk::PolygonMode getPolygonMode();
-	vk::CullModeFlagBits getCullMode();
-	vk::FrontFace getFrontFace();
-	bool getDepthBiasEnable();
-	bool getDynamicLineWidth();
+	bool getDepthClampEnabled() const;
+	bool getRasterizerDiscardEnabled() const;
+	vk::PolygonMode getPolygonMode() const;
+	vk::CullModeFlagBits getCullMode() const;
+	vk::FrontFace getFrontFace() const;
+	bool getDepthBiasEnable() const;
+	bool getDynamicLineWidth() const;
 
 	// Multisampling state setters/getters.
 	void setMultisampleStateIndex(uint8_t index);
-	uint8_t getMultisampleStateIndex();
+	uint8_t getMultisampleStateIndex() const;
 
 	// Depth state setters/getters.
 	void setDepthTestEnable(bool enable);
@@ -65,10 +65,10 @@ public:
 	void setDepthCompareOp(vk::CompareOp op);
 	void setDepthBoundsTestEnable(bool enable);
 
-	bool getDepthTestEnable();
-	bool getDepthWriteEnable();
-	vk::CompareOp getDepthCompareOp();
-	bool getDepthBoundsTestEnable();
+	bool getDepthTestEnable() const;
+	bool getDepthWriteEnable() const;
+	vk::CompareOp getDepthCompareOp() const;
+	bool getDepthBoundsTestEnable() const;
 
 	// Stencil state setters/getters
 	void setStencilTestEnable(bool enable);
@@ -80,14 +80,14 @@ public:
 	void setStencilWriteMask(StencilState ss, uint8_t mask);
 	void setStencilReference(StencilState ss, uint8_t ref);
 
-	bool getStencilTestEnable();
-	vk::StencilOp getStencilFailOp(StencilState ss);
-	vk::StencilOp getStencilPassOp(StencilState ss);
-	vk::StencilOp getStencilDepthFailOp(StencilState ss);
-	vk::CompareOp getStencilCompareOp(StencilState ss);
-	uint8_t getStencilCompareMask(StencilState ss);
-	uint8_t getStencilWriteMask(StencilState ss);
-	uint8_t getStencilReference(StencilState ss);
+	bool getStencilTestEnable() const;
+	vk::StencilOp getStencilFailOp(StencilState ss) const;
+	vk::StencilOp getStencilPassOp(StencilState ss) const;
+	vk::StencilOp getStencilDepthFailOp(StencilState ss) const;
+	vk::CompareOp getStencilCompareOp(StencilState ss) const;
+	uint8_t getStencilCompareMask(StencilState ss) const;
+	uint8_t getStencilWriteMask(StencilState ss) const;
+	uint8_t getStencilReference(StencilState ss) const;
 	
 	// Color blend state setters/getters
 	void setBlendLogicOpEnable(bool enable);
@@ -106,21 +106,37 @@ public:
 	void setBlendMaskBlue(uint8_t attachment, bool enable);
 	void setBlendMaskAlpha(uint8_t attachment, bool enable);
 
-	bool getBlendLogicOpEnable();
-	vk::LogicOp getBlendLogicOp();
-	bool getDynamicBlendConstants();
-	uint8_t getNumAttachments();
-	bool getBlendEnable(uint8_t attachment);
-	vk::BlendFactor getSrcColorBlendFactor(uint8_t attachment);
-	vk::BlendFactor getDstColorBlendFactor(uint8_t attachment);
-	vk::BlendOp getColorBlendOp(uint8_t attachment);
-	vk::BlendFactor getSrcAlphaBlendFactor(uint8_t attachment);
-	vk::BlendFactor getDstAlphaBlendFactor(uint8_t attachment);
-	vk::BlendOp getAlphaBlendOp(uint8_t attachment);
-	bool getBlendMaskRed(uint8_t attachment);
-	bool getBlendMaskGreen(uint8_t attachment);
-	bool getBlendMaskBlue(uint8_t attachment);
-	bool getBlendMaskAlpha(uint8_t attachment);
+	bool getBlendLogicOpEnable() const;
+	vk::LogicOp getBlendLogicOp() const;
+	bool getDynamicBlendConstants() const;
+	uint8_t getNumAttachments() const;
+	bool getBlendEnable(uint8_t attachment) const;
+	vk::BlendFactor getSrcColorBlendFactor(uint8_t attachment) const;
+	vk::BlendFactor getDstColorBlendFactor(uint8_t attachment) const;
+	vk::BlendOp getColorBlendOp(uint8_t attachment) const;
+	vk::BlendFactor getSrcAlphaBlendFactor(uint8_t attachment) const;
+	vk::BlendFactor getDstAlphaBlendFactor(uint8_t attachment) const;
+	vk::BlendOp getAlphaBlendOp(uint8_t attachment) const;
+	bool getBlendMaskRed(uint8_t attachment) const;
+	bool getBlendMaskGreen(uint8_t attachment) const;
+	bool getBlendMaskBlue(uint8_t attachment) const;
+	bool getBlendMaskAlpha(uint8_t attachment) const;
+
+	vk::PipelineInputAssemblyStateCreateInfo getInputAssemblyState() const;
+
+	vk::PipelineTessellationStateCreateInfo getTesselationState() const;
+
+	vk::PipelineViewportStateCreateInfo getViewportState() const;
+
+	vk::PipelineRasterizationStateCreateInfo getRasterizationState() const;
+
+	vk::PipelineMultisampleStateCreateInfo getMultisampleState() const;
+
+	vk::PipelineDepthStencilStateCreateInfo getDepthStencilState() const;
+
+	vk::PipelineColorBlendStateCreateInfo getColorBlendState() const;
+
+	vk::PipelineDynamicStateCreateInfo getDynamicStateCreateInfo() const;
 
 private:
 	// Num attachments.

@@ -1,4 +1,4 @@
-#include "program/pipeline_layout/DescriptorBindingLayout.h"
+#include "program/layout/DescriptorBindingLayout.h"
 
 namespace vkr {
 namespace internal {

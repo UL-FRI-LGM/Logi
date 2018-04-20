@@ -1,4 +1,4 @@
-#include "program/pipeline_layout/DescriptorSetLayout.h"
+#include "program/layout/DescriptorSetLayout.h"
 
 namespace vkr {
 

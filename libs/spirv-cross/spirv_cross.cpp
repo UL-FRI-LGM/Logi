@@ -683,7 +683,7 @@ ShaderResources Compiler::get_shader_resources(const unordered_set<uint32_t> *ac
 			else
 				res.stage_inputs.push_back({ var.self, var.basetype, type.self, meta[var.self].decoration.alias });
 		}
-		// Subpass inputs
+		// SubpassLayout inputs
 		else if (var.storage == StorageClassUniformConstant && type.image.dim == DimSubpassData)
 		{
 			res.subpass_inputs.push_back({ var.self, var.basetype, type.self, meta[var.self].decoration.alias });

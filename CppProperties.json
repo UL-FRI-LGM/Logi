@@ -16,12 +16,12 @@
         "${projectRoot}\\libs\\json",
         "${projectRoot}\\test\\libs\\googletest\\googletest\\include"
       ],
-      "defines": [
-        "WIN32",
-        "_DEBUG",
-        "UNICODE",
-        "_UNICODE"
-      ],
+        "defines": [
+            "WIN32",
+            "_DEBUG",
+            "UNICODE",
+            "_UNICODE"
+        ],
       "intelliSenseMode": "msvc-x86"
     },
     {

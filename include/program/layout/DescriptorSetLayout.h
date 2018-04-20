@@ -1,9 +1,9 @@
-#ifndef PROGRAM_PIPELINE_LAYOUT_DESCRIPTOR_SET_LAYOUT_H
-#define PROGRAM_PIPELINE_LAYOUT_DESCRIPTOR_SET_LAYOUT_H
+#ifndef PROGRAM_LAYOUT_DESCRIPTOR_SET_LAYOUT_H
+#define PROGRAM_LAYOUT_DESCRIPTOR_SET_LAYOUT_H
 
 #include <vulkan/vulkan.hpp>
-#include "program/pipeline_layout/DescriptorCount.h"
-#include "program/pipeline_layout/DescriptorBindingLayout.h"
+#include "program/layout/DescriptorCount.h"
+#include "program/layout/DescriptorBindingLayout.h"
 
 namespace vkr {
 

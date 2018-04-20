@@ -19,7 +19,7 @@
 #endif
 
 #include "program/ShaderManager.h"
-#include "program/pipeline_layout/PipelineLayout.h"
+#include "program/layout/PipelineLayout.h"
 #include "program/ComputePipeline.h"
 #include "base/Types.h"
 

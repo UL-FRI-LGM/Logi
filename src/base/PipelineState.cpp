@@ -12,18 +12,18 @@ static const size_t kPatchControlPointsOffset = 5,  kPatchControlPointsNumBits =
 #pragma endregion
 
 #pragma region Viewport and scissors state bits.
-static const size_t	kViewportCountOffset = 13, kViewportCountNumBits = 4;
-static const size_t	 kScissorsCountOffset = 17, kScissorsCountNumBits = 4;
+static const size_t		kViewportCountOffset = 13, kViewportCountNumBits = 4;
+static const size_t		kScissorsCountOffset = 17, kScissorsCountNumBits = 4;
 #pragma endregion
 
 #pragma region Rasterizer state bits.
-static const size_t					   kDepthClampEnableBit = 21;
-static const size_t    kRasterizerDiscardEnabledBit = 22;
-static const size_t						   kPolygonModeOffset = 23, kPolygonModeNumBits = 2;
-static const size_t							    kCullModeOffset = 25,		 kCullModeNumBits = 2;
-static const size_t								    kFrontFaceBit = 27;
-static const size_t					    kDepthBiasEnableBit = 28; // Dynamically set depth bias.
-static const size_t					 kDynamicStateLineWidth = 29;
+static const size_t		kDepthClampEnableBit = 21;
+static const size_t		kRasterizerDiscardEnabledBit = 22;
+static const size_t		kPolygonModeOffset = 23, kPolygonModeNumBits = 2;
+static const size_t		kCullModeOffset = 25, kCullModeNumBits = 2;
+static const size_t		kFrontFaceBit = 27;
+static const size_t		kDepthBiasEnableBit = 28; // Dynamically set depth bias.
+static const size_t		kDynamicStateLineWidth = 29;
 #pragma endregion
 
 #pragma region Multisample state bits (Can index up to 256 configurations).
@@ -75,7 +75,7 @@ static const size_t kNumAttachmentsOffset = 123, kNumAttachmentsNumBits = 4;
 
 static const size_t kColorBlendAttachmentsOffset = 127;
 // Attachment config
-static const size_t			  kAttachmentStateSize = 37;
+static const size_t		  kAttachmentStateSize = 37;
 static const size_t            kBlendEnableBit = 0;
 static const size_t kSrcColorBlendFactorOffset = 1,		kSrcColorBlendFactorNumBits = 5;
 static const size_t kDstColorBlendFactorOffset = 6,		kDstColorBlendFactorNumBits = 5;
@@ -92,17 +92,17 @@ static const size_t				  kBlendMaskAlphaBit = 36;
 #pragma region Encoding/Decoding functions.
 inline uint64_t primitiveTopologyToBits(vk::PrimitiveTopology topology) {
 	switch (topology) {
-		case vk::PrimitiveTopology::ePointList:										return 0u;	break;
-		case vk::PrimitiveTopology::eLineList:										return 1u;	break;
-		case vk::PrimitiveTopology::eLineStrip:										return 2u;	break;
-		case vk::PrimitiveTopology::eTriangleList:								return 3u;	break;
-		case vk::PrimitiveTopology::eTriangleStrip:								return 4u;	break;
-		case vk::PrimitiveTopology::eTriangleFan:									return 5u;	break;
-		case vk::PrimitiveTopology::eLineListWithAdjacency:				return 6u;	break;
-		case vk::PrimitiveTopology::eLineStripWithAdjacency:			return 7u;	break;
+		case vk::PrimitiveTopology::ePointList:						return 0u;	break;
+		case vk::PrimitiveTopology::eLineList:						return 1u;	break;
+		case vk::PrimitiveTopology::eLineStrip:						return 2u;	break;
+		case vk::PrimitiveTopology::eTriangleList:					return 3u;	break;
+		case vk::PrimitiveTopology::eTriangleStrip:					return 4u;	break;
+		case vk::PrimitiveTopology::eTriangleFan:					return 5u;	break;
+		case vk::PrimitiveTopology::eLineListWithAdjacency:			return 6u;	break;
+		case vk::PrimitiveTopology::eLineStripWithAdjacency:		return 7u;	break;
 		case vk::PrimitiveTopology::eTriangleListWithAdjacency:		return 8u;	break;
 		case vk::PrimitiveTopology::eTriangleStripWithAdjacency:	return 9u;	break;
-		case vk::PrimitiveTopology::ePatchList:										return 10u; break;
+		case vk::PrimitiveTopology::ePatchList:						return 10u; break;
 
 		default: throw std::runtime_error("Tried to encode unsupported PrimitiveTopology."); break;
 	}
@@ -110,17 +110,17 @@ inline uint64_t primitiveTopologyToBits(vk::PrimitiveTopology topology) {
 
 inline vk::PrimitiveTopology bitsToPrimitiveTopology(uint64_t bits) {
 	switch (bits) {
-		case 0u:		return vk::PrimitiveTopology::ePointList;										break;
-		case 1u:		return vk::PrimitiveTopology::eLineList;										break;
-		case 2u:		return vk::PrimitiveTopology::eLineStrip;										break;
-		case 3u:		return vk::PrimitiveTopology::eTriangleList;								break;
-		case 4u:		return vk::PrimitiveTopology::eTriangleStrip;								break;
-		case 5u:		return vk::PrimitiveTopology::eTriangleFan;									break;
-		case 6u:		return vk::PrimitiveTopology::eLineListWithAdjacency;				break;
-		case 7u:		return vk::PrimitiveTopology::eLineStripWithAdjacency;			break;
-		case 8u:		return vk::PrimitiveTopology::eTriangleListWithAdjacency;		break;
+		case 0u:		return vk::PrimitiveTopology::ePointList;					break;
+		case 1u:		return vk::PrimitiveTopology::eLineList;					break;
+		case 2u:		return vk::PrimitiveTopology::eLineStrip;					break;
+		case 3u:		return vk::PrimitiveTopology::eTriangleList;				break;
+		case 4u:		return vk::PrimitiveTopology::eTriangleStrip;				break;
+		case 5u:		return vk::PrimitiveTopology::eTriangleFan;					break;
+		case 6u:		return vk::PrimitiveTopology::eLineListWithAdjacency;		break;
+		case 7u:		return vk::PrimitiveTopology::eLineStripWithAdjacency;		break;
+		case 8u:		return vk::PrimitiveTopology::eTriangleListWithAdjacency;	break;
 		case 9u:		return vk::PrimitiveTopology::eTriangleStripWithAdjacency;	break;
-		case 10u:		return vk::PrimitiveTopology::ePatchList;										break;
+		case 10u:		return vk::PrimitiveTopology::ePatchList;					break;
 
 		default: throw std::runtime_error("Failed to decode PrimitiveTopology."); break;
 	}
@@ -128,9 +128,9 @@ inline vk::PrimitiveTopology bitsToPrimitiveTopology(uint64_t bits) {
 
 inline uint64_t polygonModeToBits(vk::PolygonMode polymode) {
 	switch (polymode) {
-		case vk::PolygonMode::eFill:							return 0u; break;
-		case vk::PolygonMode::eLine:							return 1u; break;
-		case vk::PolygonMode::ePoint:							return 2u; break;
+		case vk::PolygonMode::eFill:				return 0u; break;
+		case vk::PolygonMode::eLine:				return 1u; break;
+		case vk::PolygonMode::ePoint:				return 2u; break;
 		case vk::PolygonMode::eFillRectangleNV:		return 3u; break;
 
 		default: throw std::runtime_error("Tried to encode unsupported PolygonMode."); break;
@@ -139,10 +139,10 @@ inline uint64_t polygonModeToBits(vk::PolygonMode polymode) {
 
 inline vk::PolygonMode bitsToPolygonMode(uint64_t bits) {
 	switch (bits) {
-		case 0u:							return vk::PolygonMode::eFill;	break;
-		case 1u:							return vk::PolygonMode::eLine;	break;
-		case 2u:							return vk::PolygonMode::ePoint; break;
-		case 3u:		return vk::PolygonMode::eFillRectangleNV; break;
+		case 0u:	return vk::PolygonMode::eFill;				break;
+		case 1u:	return vk::PolygonMode::eLine;				break;
+		case 2u:	return vk::PolygonMode::ePoint;				break;
+		case 3u:	return vk::PolygonMode::eFillRectangleNV;	break;
 
 		default: throw std::runtime_error("Failed to decode PolygonMode."); break;
 	}
@@ -150,9 +150,9 @@ inline vk::PolygonMode bitsToPolygonMode(uint64_t bits) {
 
 inline uint64_t cullModeFlagToBits(vk::CullModeFlagBits flag) {
 	switch (flag) {
-		case vk::CullModeFlagBits::eNone:					return 0u; break;
-		case vk::CullModeFlagBits::eFront:				return 1u; break;
-		case vk::CullModeFlagBits::eBack:					return 2u; break;
+		case vk::CullModeFlagBits::eNone:			return 0u; break;
+		case vk::CullModeFlagBits::eFront:			return 1u; break;
+		case vk::CullModeFlagBits::eBack:			return 2u; break;
 		case vk::CullModeFlagBits::eFrontAndBack:	return 3u; break;
 
 		default: throw std::runtime_error("Tried to encode unsupported CullModeFlag."); break;
@@ -161,9 +161,9 @@ inline uint64_t cullModeFlagToBits(vk::CullModeFlagBits flag) {
 
 inline vk::CullModeFlagBits bitsToCullModeFlag(uint64_t bits) {
 	switch (bits) {
-		case 0u: return vk::CullModeFlagBits::eNone;					break;
-		case 1u: return vk::CullModeFlagBits::eFront;					break;
-		case 2u: return vk::CullModeFlagBits::eBack;					break;
+		case 0u: return vk::CullModeFlagBits::eNone;			break;
+		case 1u: return vk::CullModeFlagBits::eFront;			break;
+		case 2u: return vk::CullModeFlagBits::eBack;			break;
 		case 3u: return vk::CullModeFlagBits::eFrontAndBack;	break;
 
 		default: throw std::runtime_error("Failed to decode CullModeFlag."); break;
@@ -172,14 +172,14 @@ inline vk::CullModeFlagBits bitsToCullModeFlag(uint64_t bits) {
 
 inline uint64_t compareOpToBits(vk::CompareOp op) {
 	switch (op) {
-		case vk::CompareOp::eNever:						return 0u; break;
-		case vk::CompareOp::eLess:						return 1u; break;
-		case vk::CompareOp::eEqual:						return 2u; break;
-		case vk::CompareOp::eLessOrEqual:			return 3u; break;
-		case vk::CompareOp::eGreater:					return 4u; break;
-		case vk::CompareOp::eNotEqual:				return 5u; break;
+		case vk::CompareOp::eNever:				return 0u; break;
+		case vk::CompareOp::eLess:				return 1u; break;
+		case vk::CompareOp::eEqual:				return 2u; break;
+		case vk::CompareOp::eLessOrEqual:		return 3u; break;
+		case vk::CompareOp::eGreater:			return 4u; break;
+		case vk::CompareOp::eNotEqual:			return 5u; break;
 		case vk::CompareOp::eGreaterOrEqual:	return 6u; break;
-		case vk::CompareOp::eAlways:					return 7u; break;
+		case vk::CompareOp::eAlways:			return 7u; break;
 
 		default: throw std::runtime_error("Tried to encode unsupported CompareOp."); break;
 	}
@@ -187,14 +187,14 @@ inline uint64_t compareOpToBits(vk::CompareOp op) {
 
 inline vk::CompareOp bitsToCompareOp(uint64_t bits) {
 	switch (bits) {
-		case 0u: return vk::CompareOp::eNever;					break;
-		case 1u: return vk::CompareOp::eLess;						break;
-		case 2u: return vk::CompareOp::eEqual;					break;
-		case 3u: return vk::CompareOp::eLessOrEqual;		break;
-		case 4u: return vk::CompareOp::eGreater;				break;
-		case 5u: return vk::CompareOp::eNotEqual;				break;
-		case 6u: return vk::CompareOp::eGreaterOrEqual; break;
-		case 7u: return vk::CompareOp::eAlways;					break;
+		case 0u: return vk::CompareOp::eNever;			break;
+		case 1u: return vk::CompareOp::eLess;			break;
+		case 2u: return vk::CompareOp::eEqual;			break;
+		case 3u: return vk::CompareOp::eLessOrEqual;	break;
+		case 4u: return vk::CompareOp::eGreater;		break;
+		case 5u: return vk::CompareOp::eNotEqual;		break;
+		case 6u: return vk::CompareOp::eGreaterOrEqual;	break;
+		case 7u: return vk::CompareOp::eAlways;			break;
 
 		default: throw std::runtime_error("Failed to decode CompareOp."); break;
 	}
@@ -202,12 +202,12 @@ inline vk::CompareOp bitsToCompareOp(uint64_t bits) {
 
 inline uint64_t stencilOpToBits(vk::StencilOp op) {
 	switch (op) {
-		case vk::StencilOp::eKeep:							return 0u; break;
-		case vk::StencilOp::eZero:							return 1u; break;
-		case vk::StencilOp::eReplace:						return 2u; break;
+		case vk::StencilOp::eKeep:				return 0u; break;
+		case vk::StencilOp::eZero:				return 1u; break;
+		case vk::StencilOp::eReplace:			return 2u; break;
 		case vk::StencilOp::eIncrementAndClamp:	return 3u; break;
 		case vk::StencilOp::eDecrementAndClamp:	return 4u; break;
-		case vk::StencilOp::eInvert:						return 5u; break;
+		case vk::StencilOp::eInvert:			return 5u; break;
 		case vk::StencilOp::eIncrementAndWrap:	return 6u; break;
 		case vk::StencilOp::eDecrementAndWrap:	return 7u; break;
 
@@ -217,12 +217,12 @@ inline uint64_t stencilOpToBits(vk::StencilOp op) {
 
 inline vk::StencilOp bitsToStencilOp(uint64_t bits) {
 	switch (bits) {
-		case 0u:	return vk::StencilOp::eKeep;							break;
-		case 1u:	return vk::StencilOp::eZero;							break;
-		case 2u:	return vk::StencilOp::eReplace;						break;
-		case 3u:	return vk::StencilOp::eIncrementAndClamp; break;
-		case 4u:	return vk::StencilOp::eDecrementAndClamp; break;
-		case 5u:	return vk::StencilOp::eInvert;						break;
+		case 0u:	return vk::StencilOp::eKeep;				break;
+		case 1u:	return vk::StencilOp::eZero;				break;
+		case 2u:	return vk::StencilOp::eReplace;				break;
+		case 3u:	return vk::StencilOp::eIncrementAndClamp;	break;
+		case 4u:	return vk::StencilOp::eDecrementAndClamp;	break;
+		case 5u:	return vk::StencilOp::eInvert;				break;
 		case 6u:	return vk::StencilOp::eIncrementAndWrap;	break;
 		case 7u:	return vk::StencilOp::eDecrementAndWrap;	break;
 
@@ -232,22 +232,22 @@ inline vk::StencilOp bitsToStencilOp(uint64_t bits) {
 
 inline uint64_t logicOpToBits(vk::LogicOp op) {
 	switch (op) {
-		case vk::LogicOp::eClear:					return 0u; break;
-		case vk::LogicOp::eAnd:						return 1u; break;
-		case vk::LogicOp::eAndReverse:		return 2u; break;
-		case vk::LogicOp::eCopy:					return 3u; break;
-		case vk::LogicOp::eAndInverted:		return 4u; break;
-		case vk::LogicOp::eNoOp:					return 5u; break;
-		case vk::LogicOp::eXor:						return 6u; break;
-		case vk::LogicOp::eOr:						return 7u; break;
-		case vk::LogicOp::eNor:						return 8u; break;
-		case vk::LogicOp::eEquivalent:		return 9u; break;
-		case vk::LogicOp::eInvert:				return 10u; break;
-		case vk::LogicOp::eOrReverse:			return 11u; break;
+		case vk::LogicOp::eClear:			return 0u;	break;
+		case vk::LogicOp::eAnd:				return 1u;	break;
+		case vk::LogicOp::eAndReverse:		return 2u;	break;
+		case vk::LogicOp::eCopy:			return 3u;	break;
+		case vk::LogicOp::eAndInverted:		return 4u;	break;
+		case vk::LogicOp::eNoOp:			return 5u;	break;
+		case vk::LogicOp::eXor:				return 6u;	break;
+		case vk::LogicOp::eOr:				return 7u;	break;
+		case vk::LogicOp::eNor:				return 8u;	break;
+		case vk::LogicOp::eEquivalent:		return 9u;	break;
+		case vk::LogicOp::eInvert:			return 10u; break;
+		case vk::LogicOp::eOrReverse:		return 11u; break;
 		case vk::LogicOp::eCopyInverted:	return 12u; break;
 		case vk::LogicOp::eOrInverted:		return 13u; break;
-		case vk::LogicOp::eNand:					return 14u; break;
-		case vk::LogicOp::eSet:						return 15u; break;
+		case vk::LogicOp::eNand:			return 14u; break;
+		case vk::LogicOp::eSet:				return 15u;	break;
 
 		default: throw std::runtime_error("Tried to encode unsupported LogicOp."); break;
 	}
@@ -255,22 +255,22 @@ inline uint64_t logicOpToBits(vk::LogicOp op) {
 
 inline vk::LogicOp bitsToLogicOp(uint64_t bits) {
 	switch (bits) {
-		case 0u:	return vk::LogicOp::eClear;				break;
-		case 1u:	return vk::LogicOp::eAnd;					break;
+		case 0u:	return vk::LogicOp::eClear;			break;
+		case 1u:	return vk::LogicOp::eAnd;			break;
 		case 2u:	return vk::LogicOp::eAndReverse;	break;
-		case 3u:	return vk::LogicOp::eCopy;				break;
+		case 3u:	return vk::LogicOp::eCopy;			break;
 		case 4u:	return vk::LogicOp::eAndInverted;	break;
-		case 5u:	return vk::LogicOp::eNoOp;				break;
-		case 6u:	return vk::LogicOp::eXor;					break;
-		case 7u:	return vk::LogicOp::eOr;					break;
-		case 8u:	return vk::LogicOp::eNor;					break;
+		case 5u:	return vk::LogicOp::eNoOp;			break;
+		case 6u:	return vk::LogicOp::eXor;			break;
+		case 7u:	return vk::LogicOp::eOr;			break;
+		case 8u:	return vk::LogicOp::eNor;			break;
 		case 9u:	return vk::LogicOp::eEquivalent;	break;
-		case 10u:	return vk::LogicOp::eInvert;			break;
+		case 10u:	return vk::LogicOp::eInvert;		break;
 		case 11u:	return vk::LogicOp::eOrReverse;		break;
-		case 12u:	return vk::LogicOp::eCopyInverted; break;
+		case 12u:	return vk::LogicOp::eCopyInverted;	break;
 		case 13u:	return vk::LogicOp::eOrInverted;	break;
-		case 14u:	return vk::LogicOp::eNand;				break;
-		case 15u:	return vk::LogicOp::eSet;					break;
+		case 14u:	return vk::LogicOp::eNand;			break;
+		case 15u:	return vk::LogicOp::eSet;			break;
 
 		default: throw std::runtime_error("Failed to decode LogicOp."); break;
 	}
@@ -278,25 +278,25 @@ inline vk::LogicOp bitsToLogicOp(uint64_t bits) {
 
 inline uint64_t blendFactorToBits(vk::BlendFactor factor) {
 	switch (factor) {
-		case vk::BlendFactor::eZero:									return 0u;	break;
-		case vk::BlendFactor::eOne:										return 1u;	break;
-		case vk::BlendFactor::eSrcColor:							return 2u;	break;
-		case vk::BlendFactor::eOneMinusSrcColor:			return 3u;	break;
-		case vk::BlendFactor::eDstColor:							return 4u;	break;
-		case vk::BlendFactor::eOneMinusDstColor:			return 5u;	break;
-		case vk::BlendFactor::eSrcAlpha:							return 6u;	break;
-		case vk::BlendFactor::eOneMinusSrcAlpha:			return 7u;	break;
-		case vk::BlendFactor::eDstAlpha:							return 8u;	break;
-		case vk::BlendFactor::eOneMinusDstAlpha:			return 9u;	break;
-		case vk::BlendFactor::eConstantColor:					return 10u; break;
+		case vk::BlendFactor::eZero:					return 0u;	break;
+		case vk::BlendFactor::eOne:						return 1u;	break;
+		case vk::BlendFactor::eSrcColor:				return 2u;	break;
+		case vk::BlendFactor::eOneMinusSrcColor:		return 3u;	break;
+		case vk::BlendFactor::eDstColor:				return 4u;	break;
+		case vk::BlendFactor::eOneMinusDstColor:		return 5u;	break;
+		case vk::BlendFactor::eSrcAlpha:				return 6u;	break;
+		case vk::BlendFactor::eOneMinusSrcAlpha:		return 7u;	break;
+		case vk::BlendFactor::eDstAlpha:				return 8u;	break;
+		case vk::BlendFactor::eOneMinusDstAlpha:		return 9u;	break;
+		case vk::BlendFactor::eConstantColor:			return 10u; break;
 		case vk::BlendFactor::eOneMinusConstantColor:	return 11u; break;
-		case vk::BlendFactor::eConstantAlpha:					return 12u; break;
+		case vk::BlendFactor::eConstantAlpha:			return 12u; break;
 		case vk::BlendFactor::eOneMinusConstantAlpha:	return 13u; break;
-		case vk::BlendFactor::eSrcAlphaSaturate:			return 14u; break;
-		case vk::BlendFactor::eSrc1Color:							return 15u; break;
-		case vk::BlendFactor::eOneMinusSrc1Color:			return 16u; break;
-		case vk::BlendFactor::eSrc1Alpha:							return 17u; break;
-		case vk::BlendFactor::eOneMinusSrc1Alpha:			return 18u; break;
+		case vk::BlendFactor::eSrcAlphaSaturate:		return 14u; break;
+		case vk::BlendFactor::eSrc1Color:				return 15u; break;
+		case vk::BlendFactor::eOneMinusSrc1Color:		return 16u; break;
+		case vk::BlendFactor::eSrc1Alpha:				return 17u; break;
+		case vk::BlendFactor::eOneMinusSrc1Alpha:		return 18u; break;
 
 		default: throw std::runtime_error("Tried to encode unsupported BlendFactor."); break;
 	}
@@ -304,25 +304,25 @@ inline uint64_t blendFactorToBits(vk::BlendFactor factor) {
 
 inline vk::BlendFactor bitsToBlendFactor(uint64_t bits) {
 	switch (bits) {
-		case  0u:	return vk::BlendFactor::eZero;									break;
-		case  1u:	return vk::BlendFactor::eOne;										break;
-		case  2u:	return vk::BlendFactor::eSrcColor;							break;
-		case  3u:	return vk::BlendFactor::eOneMinusSrcColor;			break;
-		case  4u:	return vk::BlendFactor::eDstColor;							break;
-		case  5u:	return vk::BlendFactor::eOneMinusDstColor;			break;
-		case  6u:	return vk::BlendFactor::eSrcAlpha;							break;
-		case  7u:	return vk::BlendFactor::eOneMinusSrcAlpha;			break;
-		case  8u:	return vk::BlendFactor::eDstAlpha;							break;
-		case  9u:	return vk::BlendFactor::eOneMinusDstAlpha;			break;
-		case 10u:	return vk::BlendFactor::eConstantColor;					break;
+		case  0u:	return vk::BlendFactor::eZero;					break;
+		case  1u:	return vk::BlendFactor::eOne;					break;
+		case  2u:	return vk::BlendFactor::eSrcColor;				break;
+		case  3u:	return vk::BlendFactor::eOneMinusSrcColor;		break;
+		case  4u:	return vk::BlendFactor::eDstColor;				break;
+		case  5u:	return vk::BlendFactor::eOneMinusDstColor;		break;
+		case  6u:	return vk::BlendFactor::eSrcAlpha;				break;
+		case  7u:	return vk::BlendFactor::eOneMinusSrcAlpha;		break;
+		case  8u:	return vk::BlendFactor::eDstAlpha;				break;
+		case  9u:	return vk::BlendFactor::eOneMinusDstAlpha;		break;
+		case 10u:	return vk::BlendFactor::eConstantColor;			break;
 		case 11u:	return vk::BlendFactor::eOneMinusConstantColor;	break;
-		case 12u:	return vk::BlendFactor::eConstantAlpha;					break;
+		case 12u:	return vk::BlendFactor::eConstantAlpha;			break;
 		case 13u:	return vk::BlendFactor::eOneMinusConstantAlpha;	break;
-		case 14u:	return vk::BlendFactor::eSrcAlphaSaturate;			break;
-		case 15u:	return vk::BlendFactor::eSrc1Color;							break;
-		case 16u:	return vk::BlendFactor::eOneMinusSrc1Color;			break;
-		case 17u:	return vk::BlendFactor::eSrc1Alpha;							break;
-		case 18u:	return vk::BlendFactor::eOneMinusSrc1Alpha;			break;
+		case 14u:	return vk::BlendFactor::eSrcAlphaSaturate;		break;
+		case 15u:	return vk::BlendFactor::eSrc1Color;				break;
+		case 16u:	return vk::BlendFactor::eOneMinusSrc1Color;		break;
+		case 17u:	return vk::BlendFactor::eSrc1Alpha;				break;
+		case 18u:	return vk::BlendFactor::eOneMinusSrc1Alpha;		break;
 
 		default: throw std::runtime_error("Failed to decode BlendFactor."); break;
 	}
@@ -331,10 +331,10 @@ inline vk::BlendFactor bitsToBlendFactor(uint64_t bits) {
 
 inline uint64_t blendOpToBits(vk::BlendOp op) {
 	switch (op) {
-		case vk::BlendOp::eAdd:				return 0u; break;
-		case vk::BlendOp::eSubtract:	return 1u; break;
-		case vk::BlendOp::eMin:				return 2u; break;
-		case vk::BlendOp::eMax:				return 3u; break;
+		case vk::BlendOp::eAdd:			return 0u;	break;
+		case vk::BlendOp::eSubtract:	return 1u;	break;
+		case vk::BlendOp::eMin:			return 2u;	break;
+		case vk::BlendOp::eMax:			return 3u;	break;
 
 		default: throw std::runtime_error("Tried to encode unsupported BlendOp."); break;
 	}
@@ -342,10 +342,10 @@ inline uint64_t blendOpToBits(vk::BlendOp op) {
 
 inline vk::BlendOp bitsToBlendOp(uint64_t bits) {
 	switch (bits) {
-		case 0u: return vk::BlendOp::eAdd;			break;
-		case 1u: return vk::BlendOp::eSubtract; break;
-		case 2u: return vk::BlendOp::eMin;			break;
-		case 3u: return vk::BlendOp::eMax;			break;
+		case 0u: return vk::BlendOp::eAdd;		break;
+		case 1u: return vk::BlendOp::eSubtract;	break;
+		case 2u: return vk::BlendOp::eMin;		break;
+		case 3u: return vk::BlendOp::eMax;		break;
 
 		default: throw std::runtime_error("Failed to decode BlendOp."); break;
 	}
@@ -383,11 +383,11 @@ void PipelineState::setPrimitiveRestartEnable(bool enable) {
 }
 
 
-vk::PrimitiveTopology PipelineState::getPrimitiveTopology() {
+vk::PrimitiveTopology PipelineState::getPrimitiveTopology() const {
 	return bitsToPrimitiveTopology(getBits<kPrimitiveTopologyNumBits>(state_, kPrimitiveTopologyOffset).to_ulong());
 }
 
-bool PipelineState::getPrimitiveRestartEnable() {
+bool PipelineState::getPrimitiveRestartEnable() const {
 	return state_[kPrimitiveRestartEnableBit];
 }
 
@@ -402,7 +402,7 @@ void PipelineState::setPatchControlPoints(uint8_t count) {
 }
 
 
-uint8_t PipelineState::getPatchControlPoints() {
+uint8_t PipelineState::getPatchControlPoints() const {
 	return static_cast<uint8_t>(getBits<kPatchControlPointsNumBits>(state_, kPatchControlPointsOffset).to_ulong());
 }
 
@@ -423,11 +423,11 @@ void PipelineState::setScissorsCount(uint8_t count) {
 }
 
 
-uint8_t PipelineState::getViewportCount() {
+uint8_t PipelineState::getViewportCount() const {
 	return static_cast<uint8_t>(getBits<kViewportCountNumBits>(state_, kViewportCountOffset).to_ulong());
 }
 
-uint8_t PipelineState::getScissorsCount() {
+uint8_t PipelineState::getScissorsCount() const {
 	return static_cast<uint8_t>(getBits<kScissorsCountNumBits>(state_, kScissorsCountOffset).to_ulong());
 }
 
@@ -473,31 +473,31 @@ void PipelineState::setDynamicLineWidth(bool enable) {
 }
 
 
-bool PipelineState::getDepthClampEnabled() {
+bool PipelineState::getDepthClampEnabled() const {
 	return state_[kDepthClampEnableBit];
 }
 
-bool PipelineState::getRasterizerDiscardEnabled() {
+bool PipelineState::getRasterizerDiscardEnabled() const {
 	return state_[kRasterizerDiscardEnabledBit];
 }
 
-vk::PolygonMode PipelineState::getPolygonMode() {
+vk::PolygonMode PipelineState::getPolygonMode() const {
 	return bitsToPolygonMode(getBits<kPolygonModeNumBits>(state_, kPolygonModeOffset).to_ulong());
 }
 
-vk::CullModeFlagBits PipelineState::getCullMode() {
+vk::CullModeFlagBits PipelineState::getCullMode() const {
 	return bitsToCullModeFlag(getBits<kCullModeNumBits>(state_, kCullModeOffset).to_ulong());
 }
 
-vk::FrontFace PipelineState::getFrontFace() {
+vk::FrontFace PipelineState::getFrontFace() const {
 	return (state_[kFrontFaceBit]) ? vk::FrontFace::eCounterClockwise : vk::FrontFace::eClockwise;
 }
 
-bool PipelineState::getDepthBiasEnable() {
+bool PipelineState::getDepthBiasEnable() const {
 	return state_[kDepthBiasEnableBit];
 }
 
-bool PipelineState::getDynamicLineWidth() {
+bool PipelineState::getDynamicLineWidth() const {
 	return state_[kDynamicStateLineWidth];
 }
 
@@ -511,7 +511,7 @@ void PipelineState::setMultisampleStateIndex(uint8_t index) {
 	dirty_ = true;
 }
 
-uint8_t PipelineState::getMultisampleStateIndex() {
+uint8_t PipelineState::getMultisampleStateIndex() const {
 	return static_cast<uint8_t>(getBits<kMultisampleStateIndexNumBits>(state_, kMultisampleStateIndexOffset).to_ulong());
 }
 
@@ -564,19 +564,19 @@ void PipelineState::setDepthBoundsTestEnable(bool enable) {
 	}
 }
 
-bool PipelineState::getDepthTestEnable() {
+bool PipelineState::getDepthTestEnable() const {
 	return state_[kDepthTestEnableBit];
 }
 
-bool PipelineState::getDepthWriteEnable() {
+bool PipelineState::getDepthWriteEnable() const {
 	return depth_state_[kDepthWriteEnableBit];
 }
 
-vk::CompareOp PipelineState::getDepthCompareOp() {
+vk::CompareOp PipelineState::getDepthCompareOp() const {
 	return bitsToCompareOp(getBits<kCompareOpNumBits>(depth_state_, kDepthCompareOpOffset).to_ulong());
 }
 
-bool PipelineState::getDepthBoundsTestEnable() {
+bool PipelineState::getDepthBoundsTestEnable() const {
 	return depth_state_[kDepthBoundsTestEnableBit];
 }
 
@@ -732,11 +732,11 @@ void PipelineState::setStencilReference(StencilState ss, uint8_t ref) {
 }
 
 
-bool PipelineState::getStencilTestEnable() {
+bool PipelineState::getStencilTestEnable() const {
 	return state_[kStencilTestEnableBit];
 }
 
-vk::StencilOp PipelineState::getStencilFailOp(StencilState ss) {
+vk::StencilOp PipelineState::getStencilFailOp(StencilState ss) const {
 	if (ss == StencilState::FRONT) {
 		return bitsToStencilOp(getBits<kStencilOpNumBits>(stencil_state_, kStencilFrontFailOpOffset).to_ulong());
 	}
@@ -747,7 +747,7 @@ vk::StencilOp PipelineState::getStencilFailOp(StencilState ss) {
 	throw std::runtime_error("Unknown stencil state.");
 }
 
-vk::StencilOp PipelineState::getStencilPassOp(StencilState ss) {
+vk::StencilOp PipelineState::getStencilPassOp(StencilState ss) const {
 	if (ss == StencilState::FRONT) {
 		return bitsToStencilOp(getBits<kStencilOpNumBits>(stencil_state_, kStencilFrontPassOpOffset).to_ulong());
 	}
@@ -758,7 +758,7 @@ vk::StencilOp PipelineState::getStencilPassOp(StencilState ss) {
 	throw std::runtime_error("Unknown stencil state.");
 }
 
-vk::StencilOp PipelineState::getStencilDepthFailOp(StencilState ss) {
+vk::StencilOp PipelineState::getStencilDepthFailOp(StencilState ss) const {
 	if (ss == StencilState::FRONT) {
 		return bitsToStencilOp(getBits<kStencilOpNumBits>(stencil_state_, kStencilFrontDepthFailOpOffset).to_ulong());
 	}
@@ -769,7 +769,7 @@ vk::StencilOp PipelineState::getStencilDepthFailOp(StencilState ss) {
 	throw std::runtime_error("Unknown stencil state.");
 }
 
-vk::CompareOp PipelineState::getStencilCompareOp(StencilState ss) {
+vk::CompareOp PipelineState::getStencilCompareOp(StencilState ss) const {
 	if (ss == StencilState::FRONT) {
 		return bitsToCompareOp(getBits<kCompareOpNumBits>(stencil_state_, kStencilFrontCompareOpOffset).to_ulong());
 	}
@@ -780,7 +780,7 @@ vk::CompareOp PipelineState::getStencilCompareOp(StencilState ss) {
 	throw std::runtime_error("Unknown stencil state.");
 }
 
-uint8_t PipelineState::getStencilCompareMask(StencilState ss) {
+uint8_t PipelineState::getStencilCompareMask(StencilState ss) const {
 	if (ss == StencilState::FRONT) {
 		return static_cast<uint8_t>(getBits<kStencilValueNumBits>(stencil_state_, kStencilFrontCompareMaskOffset).to_ulong());
 	}
@@ -791,7 +791,7 @@ uint8_t PipelineState::getStencilCompareMask(StencilState ss) {
 	throw std::runtime_error("Unknown stencil state.");
 }
 
-uint8_t PipelineState::getStencilWriteMask(StencilState ss) {
+uint8_t PipelineState::getStencilWriteMask(StencilState ss) const {
 	if (ss == StencilState::FRONT) {
 		return static_cast<uint8_t>(getBits<kStencilValueNumBits>(stencil_state_, kStencilFrontWriteMaskOffset).to_ulong());
 	}
@@ -802,7 +802,7 @@ uint8_t PipelineState::getStencilWriteMask(StencilState ss) {
 	throw std::runtime_error("Unknown stencil state.");
 }
 
-uint8_t PipelineState::getStencilReference(StencilState ss) {
+uint8_t PipelineState::getStencilReference(StencilState ss) const {
 	if (ss == StencilState::FRONT) {
 		return static_cast<uint8_t>(getBits<kStencilValueNumBits>(stencil_state_, kStencilFrontReferenceOffset).to_ulong());
 	}
@@ -1018,23 +1018,23 @@ void PipelineState::setBlendMaskAlpha(uint8_t attachment, bool enable) {
 }
 
 
-bool PipelineState::getBlendLogicOpEnable() {
+bool PipelineState::getBlendLogicOpEnable() const {
 	return state_[kBlendLogicOpEnableBit];
 }
 
-vk::LogicOp PipelineState::getBlendLogicOp() {
+vk::LogicOp PipelineState::getBlendLogicOp() const {
 	return bitsToLogicOp(blend_logic_op_.to_ulong());
 }
 
-bool PipelineState::getDynamicBlendConstants() {
+bool PipelineState::getDynamicBlendConstants() const {
 	return state_[kDynamicBlendConstants];
 }
 
-uint8_t PipelineState::getNumAttachments() {
+uint8_t PipelineState::getNumAttachments() const {
 	return static_cast<uint8_t>(getBits<kNumAttachmentsNumBits>(state_, kNumAttachmentsOffset).to_ulong());
 }
 
-bool PipelineState::getBlendEnable(uint8_t attachment) {
+bool PipelineState::getBlendEnable(uint8_t attachment) const {
 	if (attachment >= kMaxAttachments) {
 		throw std::runtime_error("Attachment out of range.");
 	}
@@ -1042,7 +1042,7 @@ bool PipelineState::getBlendEnable(uint8_t attachment) {
 	return attachment_states_[attachment][kBlendEnableBit];
 }
 
-vk::BlendFactor PipelineState::getSrcColorBlendFactor(uint8_t attachment) {
+vk::BlendFactor PipelineState::getSrcColorBlendFactor(uint8_t attachment) const {
 	if (attachment >= kMaxAttachments) {
 		throw std::runtime_error("Attachment out of range.");
 	}
@@ -1050,7 +1050,7 @@ vk::BlendFactor PipelineState::getSrcColorBlendFactor(uint8_t attachment) {
 	return bitsToBlendFactor(getBits<kSrcColorBlendFactorNumBits>(attachment_states_[attachment], kSrcColorBlendFactorOffset).to_ulong());
 }
 
-vk::BlendFactor PipelineState::getDstColorBlendFactor(uint8_t attachment) {
+vk::BlendFactor PipelineState::getDstColorBlendFactor(uint8_t attachment) const {
 	if (attachment >= kMaxAttachments) {
 		throw std::runtime_error("Attachment out of range.");
 	}
@@ -1058,7 +1058,7 @@ vk::BlendFactor PipelineState::getDstColorBlendFactor(uint8_t attachment) {
 	return bitsToBlendFactor(getBits<kDstColorBlendFactorNumBits>(attachment_states_[attachment], kDstColorBlendFactorOffset).to_ulong());
 }
 
-vk::BlendOp PipelineState::getColorBlendOp(uint8_t attachment) {
+vk::BlendOp PipelineState::getColorBlendOp(uint8_t attachment) const {
 	if (attachment >= kMaxAttachments) {
 		throw std::runtime_error("Attachment out of range.");
 	}
@@ -1066,7 +1066,7 @@ vk::BlendOp PipelineState::getColorBlendOp(uint8_t attachment) {
 	return bitsToBlendOp(getBits<kColorBlendOpNumBits>(attachment_states_[attachment], kColorBlendOpOffset).to_ulong());
 }
 
-vk::BlendFactor PipelineState::getSrcAlphaBlendFactor(uint8_t attachment) {
+vk::BlendFactor PipelineState::getSrcAlphaBlendFactor(uint8_t attachment) const {
 	if (attachment >= kMaxAttachments) {
 		throw std::runtime_error("Attachment out of range.");
 	}
@@ -1074,7 +1074,7 @@ vk::BlendFactor PipelineState::getSrcAlphaBlendFactor(uint8_t attachment) {
 	return bitsToBlendFactor(getBits<kSrcAlphaBlendFactorNumBits>(attachment_states_[attachment], kSrcAlphaBlendFactorOffset).to_ulong());
 }
 
-vk::BlendFactor PipelineState::getDstAlphaBlendFactor(uint8_t attachment) {
+vk::BlendFactor PipelineState::getDstAlphaBlendFactor(uint8_t attachment) const {
 	if (attachment >= kMaxAttachments) {
 		throw std::runtime_error("Attachment out of range.");
 	}
@@ -1082,7 +1082,7 @@ vk::BlendFactor PipelineState::getDstAlphaBlendFactor(uint8_t attachment) {
 	return bitsToBlendFactor(getBits<kDstAlphaBlendFactorNumBits>(attachment_states_[attachment], kDstAlphaBlendFactorOffset).to_ulong());
 }
 
-vk::BlendOp PipelineState::getAlphaBlendOp(uint8_t attachment) {
+vk::BlendOp PipelineState::getAlphaBlendOp(uint8_t attachment) const {
 	if (attachment >= kMaxAttachments) {
 		throw std::runtime_error("Attachment out of range.");
 	}
@@ -1090,7 +1090,7 @@ vk::BlendOp PipelineState::getAlphaBlendOp(uint8_t attachment) {
 	return bitsToBlendOp(getBits<kAlphaBlendOpNumBits>(attachment_states_[attachment], kAlphaBlendOpOffset).to_ulong());
 }
 
-bool PipelineState::getBlendMaskRed(uint8_t attachment) {
+bool PipelineState::getBlendMaskRed(uint8_t attachment) const {
 	if (attachment >= kMaxAttachments) {
 		throw std::runtime_error("Attachment out of range.");
 	}
@@ -1098,7 +1098,7 @@ bool PipelineState::getBlendMaskRed(uint8_t attachment) {
 	return attachment_states_[attachment][kBlendMaskRedBit];
 }
 
-bool PipelineState::getBlendMaskGreen(uint8_t attachment) {
+bool PipelineState::getBlendMaskGreen(uint8_t attachment) const {
 	if (attachment >= kMaxAttachments) {
 		throw std::runtime_error("Attachment out of range.");
 	}
@@ -1106,7 +1106,7 @@ bool PipelineState::getBlendMaskGreen(uint8_t attachment) {
 	return attachment_states_[attachment][kBlendMaskGreenBit];
 }
 
-bool PipelineState::getBlendMaskBlue(uint8_t attachment) {
+bool PipelineState::getBlendMaskBlue(uint8_t attachment) const {
 	if (attachment >= kMaxAttachments) {
 		throw std::runtime_error("Attachment out of range.");
 	}
@@ -1114,12 +1114,44 @@ bool PipelineState::getBlendMaskBlue(uint8_t attachment) {
 	return attachment_states_[attachment][kBlendMaskBlueBit];
 }
 
-bool PipelineState::getBlendMaskAlpha(uint8_t attachment) {
+bool PipelineState::getBlendMaskAlpha(uint8_t attachment) const {
 	if (attachment >= kMaxAttachments) {
 		throw std::runtime_error("Attachment out of range.");
 	}
 
 	return attachment_states_[attachment][kBlendMaskAlphaBit];
+}
+
+vk::PipelineInputAssemblyStateCreateInfo PipelineState::getInputAssemblyState() const {
+	return vk::PipelineInputAssemblyStateCreateInfo(vk::PipelineInputAssemblyStateCreateFlags(), getPrimitiveTopology(), getPrimitiveRestartEnable());
+}
+
+vk::PipelineTessellationStateCreateInfo PipelineState::getTesselationState() const {
+	return vk::PipelineTessellationStateCreateInfo(vk::PipelineTessellationStateCreateFlags(), static_cast<uint32_t>(getPatchControlPoints()));
+}
+
+vk::PipelineViewportStateCreateInfo PipelineState::getViewportState() const {
+	return vk::PipelineViewportStateCreateInfo(vk::PipelineViewportStateCreateFlags(), static_cast<uint32_t>(getViewportCount()), nullptr, static_cast<uint32_t>(getScissorsCount()), nullptr);
+}
+
+vk::PipelineRasterizationStateCreateInfo PipelineState::getRasterizationState() const {
+	return vk::PipelineRasterizationStateCreateInfo(vk::PipelineRasterizationStateCreateFlags(), getDepthClampEnabled(), getRasterizerDiscardEnabled(), getPolygonMode(), getCullMode(), getFrontFace(), getDepthBiasEnable(), getBia)
+}
+
+vk::PipelineMultisampleStateCreateInfo PipelineState::getMultisampleState() const {
+
+}
+
+vk::PipelineDepthStencilStateCreateInfo PipelineState::getDepthStencilState() const {
+
+}
+
+vk::PipelineColorBlendStateCreateInfo PipelineState::getColorBlendState() const {
+
+}
+
+vk::PipelineDynamicStateCreateInfo PipelineState::getDynamicStateCreateInfo() const {
+
 }
 
 }

@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <vulkan/vulkan.hpp>
-#include "program/pipeline_layout/PipelineLayout.h"
+#include "program/layout/PipelineLayout.h"
 
 namespace vkr {
 

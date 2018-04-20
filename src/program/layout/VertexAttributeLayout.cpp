@@ -1,4 +1,4 @@
-#include "program/pipeline_layout/VertexAttributeLayout.h"
+#include "program/layout/VertexAttributeLayout.h"
 
 namespace vkr {
 

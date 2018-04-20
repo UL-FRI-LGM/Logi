@@ -1,5 +1,5 @@
-#ifndef PROGRAM_PIPELINE_LAYOUT_SHADER_H
-#define PROGRAM_PIPELINE_LAYOUT_SHADER_H
+#ifndef PROGRAM_LAYOUT_SHADER_H
+#define PROGRAM_LAYOUT_SHADER_H
 
 #include <vulkan/vulkan.hpp>
 #include <string>

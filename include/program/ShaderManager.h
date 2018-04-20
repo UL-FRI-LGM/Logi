@@ -5,7 +5,7 @@
 #include <string>
 #include <unordered_map>
 #include <vulkan/vulkan.hpp>
-#include "program/pipeline_layout/Shader.h"
+#include "program/layout/Shader.h"
 
 namespace vkr {
 

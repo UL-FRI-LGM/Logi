@@ -1,14 +1,14 @@
-#ifndef PROGRAM_PIPELINE_LAYOUT_PIPELINE_LAYOUT_H
-#define PROGRAM_PIPELINE_LAYOUT_PIPELINE_LAYOUT_H
+#ifndef PROGRAM_LAYOUT_PIPELINE_LAYOUT_H
+#define PROGRAM_LAYOUT_PIPELINE_LAYOUT_H
 
 #include <vector>
 #include <unordered_map>
 #include <vulkan/vulkan.hpp>
 #include "program/ShaderManager.h"
 #include "base/Types.h"
-#include "program/pipeline_layout/DescriptorSetLayout.h"
-#include "program/pipeline_layout/VertexAttributeLayout.h"
-#include "program/pipeline_layout/PushConstantRange.h"
+#include "program/layout/DescriptorSetLayout.h"
+#include "program/layout/VertexAttributeLayout.h"
+#include "program/layout/PushConstantRange.h"
 
 namespace vkr {
 
