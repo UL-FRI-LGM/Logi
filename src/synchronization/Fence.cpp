@@ -2,45 +2,37 @@
 
 namespace vkr {
 
-Fence::Fence(const vk::Device& device, bool initialy_signaled) : device_(device) {
-	vk::FenceCreateInfo fence_ci{};
-	
-	if (initialy_signaled) {
-		fence_ci.flags = vk::FenceCreateFlagBits::eSignaled;
-	}
+Fence::Fence(const std::shared_ptr<ManagedVkFence>& vk_fence) : vk_fence_(vk_fence) {}
 
-	fence_ = device_.createFence(fence_ci);
+bool Fence::getStatus() const {
+	return vk_fence_->getOwner().getFenceStatus(vk_fence_->get()) == vk::Result::eSuccess;
 }
 
-bool Fence::getStatus() {
-	return device_.getFenceStatus(fence_) == vk::Result::eSuccess;
+void Fence::reset() const {
+	vk_fence_->getOwner().resetFences({ vk_fence_->get() });
 }
 
-void Fence::reset() {
-	device_.resetFences({ fence_ });
+vk::Result Fence::wait(uint64_t timeout) const {
+	return vk_fence_->getOwner().waitForFences({ vk_fence_->get() }, true, timeout);
 }
 
-vk::Result Fence::wait(uint64_t timeout) {
-	return device_.waitForFences({ fence_ }, true, timeout);
-}
-
-vk::Result Fence::wait(const std::vector<Fence*>& fences, bool wait_all, uint64_t timeout) {
+vk::Result Fence::wait(const std::vector<Fence>& fences, bool wait_all, uint64_t timeout) {
 	std::vector<vk::Fence> vk_fences{};
 	vk_fences.reserve(fences.size());
 
-	for (auto it = fences.begin(); it != fences.end(); it++) {
-		vk_fences.emplace_back((*it)->getVkHandle());
+	for (auto it = fences.begin(); it != fences.end(); ++it) {
+		vk_fences.emplace_back((*it).getVkHandle());
 	}
 
-	return fences[0]->device_.waitForFences(vk_fences, true, timeout);
+	return fences[0].vk_fence_->getOwner().waitForFences(vk_fences, true, timeout);
 }
 
 const vk::Fence& Fence::getVkHandle() const {
-	return fence_;
+	return vk_fence_->get();
 }
 
-Fence::~Fence() {
-	device_.destroyFence(fence_);
+void Fence::destroy() const {
+	vk_fence_->destroy();
 }
 
 }

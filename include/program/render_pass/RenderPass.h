@@ -9,11 +9,14 @@ namespace vkr {
 
 class RenderPass {
 public:
-	RenderPass(VulkanDevice* device, RenderPassLayout& layout);
+	RenderPass(const vk::Device& device, RenderPassLayout& layout);
 
+	vk::Extent2D getRenderAreaGranularity() const;
+
+	~RenderPass();
 
 private:
-	VulkanDevice* device_;
+	vk::Device device_;
 	vk::RenderPass vk_render_pass_;
 };
 

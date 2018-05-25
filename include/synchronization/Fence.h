@@ -2,30 +2,32 @@
 #define SYNCHRONIZATION_FENCE_H_
 
 #include <vulkan/vulkan.hpp>
+#include "base/ManagedResource.h"
 
 namespace vkr {
+
+using ManagedVkFence = ManagedResource<vk::Device, vk::Fence, vk::DispatchLoaderStatic, &vk::Device::destroyFence>;
 
 class Fence {
 public:
 	/**
-	 * @brief Allocate the fence from the given device.
+	 * @brief	Handle used to access Fence resource.
 	 *
-	 * @param device Device associated with the fence.
-	 * @param initially_signaled If true the fence will be initialized with signaled state.
+	 * @param	vk_fence	Managed Vulkan Fence object.
 	 */
-	Fence(const vk::Device& device, bool initially_signaled);
+	explicit Fence(const std::shared_ptr<ManagedVkFence>& vk_fence);
 
 	/**
 	 * @brief Return true if the fence is signaled.
 	 *
 	 * @return True if the fence is signaled.
 	 */
-	bool getStatus();
+	bool getStatus() const;
 
 	/**
-	 * @brief Resets state to unsignaled.
+	 * @brief Resets the state to unsignaled.
 	 */
-	void reset();
+	void reset() const;
 
 	/**
 	 * @brief Wait for the fence to be signaled.
@@ -33,33 +35,34 @@ public:
 	 * @param timeout Timeout time in nanoseconds.
 	 * @return Vulkan operation result.
 	 */
-	vk::Result wait(uint64_t timeout);
+	vk::Result wait(uint64_t timeout) const;
 
 	/**
 	 * @brief Wait for the fences to be signaled.
 	 * @note All fences must originate from the same device!
+	 * TODO(plavric): Change this so that the fences wont have to orignate from the same device.
 	 *
-	 * @param timeout Timeout time in nanoseconds.
-	 * @param wait_all If true the operation will block until all fences are signaled, otherwise until the first fence is signaled.
-	 * @return Vulkan operation result.
+	 * @param	fences		Vector containing the fences.
+	 * @param	timeout		Timeout time in nanoseconds.
+	 * @param	wait_all	If true the operation will block until all fences are signaled, otherwise until the first fence is signaled.
+	 * @return	Vulkan wait result.
 	 */
-	static vk::Result wait(const std::vector<Fence*>& fences, bool wait_all, uint64_t timeout);
+	static vk::Result wait(const std::vector<Fence>& fences, bool wait_all, uint64_t timeout);
 
 	/**
-	 * @brief Retrieve Vulkan fence handle.
+	 * @brief Retrieve vk::Fence handle.
 	 *
-	 * @return Vulkan fence handle.
+	 * @return vk::Fence handle.
 	 */
 	const vk::Fence& getVkHandle() const;
 
 	/**
-	 * @brief Free Vulkan fence.
+	 * @brief Free Vulkan fence resources.
 	 */
-	~Fence();
+	void destroy() const;
 
 private:
-	vk::Device device_; ///< Vulkan logical device.
-	vk::Fence fence_; ///< Vulkan fence handle.
+	std::shared_ptr<ManagedVkFence> vk_fence_;
 };
 
 }

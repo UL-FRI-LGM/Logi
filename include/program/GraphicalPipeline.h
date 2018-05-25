@@ -4,7 +4,7 @@
 #include <vector>
 #include <vulkan/vulkan.hpp>
 #include "program/layout/PipelineLayout.h"
-#include "base/PipelineState.h"
+#include "program/layout/PipelineState.h"
 
 namespace vkr {
 

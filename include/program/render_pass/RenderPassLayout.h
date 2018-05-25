@@ -3,144 +3,106 @@
 
 #include <vulkan/vulkan.hpp>
 #include <vector>
-#include <map>
-#include <tuple>
-#include <limits>
 #include "base/Types.h"
 #include "program/render_pass/SubpassLayout.h"
 
 namespace vkr {
 
-/**   
- * @brief	TODO:
+/**
+ *	@brief Class used to build RenderPass configuration.
  */
 class RenderPassLayout {
 public:
 	/**
-	 * @brief	Add an AttachmentDescription to the RenderPassLayout.
-	 *
-	 * @param	format				Specifies the format of the image that will be used for the attachment.
-	 * @param	samples				Specifies sample counts supported for an image used for storage operations
-	 * @param	load_op				Specifies how the contents of color and depth components of the attachment are treated at the beginning of the subpass.
-	 * @param	store_op			Specifies how the contents of color and depth components of the attachment are treated at the end of the subpass.
-	 * @param	stencil_load_op 	Specifies how the contents of stencil components of the attachment are treated at the beginning of the subpass.
-	 * @param	stencil_store_op	Specifies how the contents of stencil components of the attachment are treated at the end of the last subpass.
-	 * @param	initial_layout  	Layout the attachment image sub-resource will be in when a render pass instance begins.
-	 * @param	final_layout		Layout the attachment image sub-resource will be transitioned to when a render pass instance ends.
-	 * @param	flags				Used to specify additional properties of an attachment
-	 *
-	 * @return	AttachmentDescription index.
+	 * @brief	Create new RenderPassLayout with attachment_count attachments and subpass_count sub passes.
+	 * 
+	 * @param	attachment_count	Number of attachments. 
+	 * @param	subpass_count		Number of sub passes.
 	 */
-	attachment_index_t addAttachmentDescription(vk::Format format, vk::SampleCountFlagBits samples,
-		vk::AttachmentLoadOp load_op, vk::AttachmentStoreOp store_op, vk::AttachmentLoadOp stencil_load_op, 
-		vk::AttachmentStoreOp stencil_store_op, vk::ImageLayout initial_layout, vk::ImageLayout final_layout, const vk::AttachmentDescriptionFlags& flags);
+	RenderPassLayout(size_t attachment_count, size_t subpass_count);
 
 	/**
-	 * @brief	Remove the last added AttachmentDescription.
+	 * @brief	Set the configuration for the attachment with the given index.
+	 * 
+	 * @param	index			Attachment index.
+	 * @param	attachment_desc	Attachment description.
 	 */
-	void popAttachmentDescription();
+	void setAttachmentDescription(attachment_index_t index, const vk::AttachmentDescription& attachment_desc);
 
 	/**
-	 * @brief	Retrievs attachment description with the given index.
-	 *
-	 * @param	index	Attachment description index.
-	 *
-	 * @return	Const reference to AttachmentDescription. Adding new or poping attachment description invalidates the reference.
+	 * @brief	Retrieve pointer to the description of the attachment with the given index.
+	 * 
+	 * @param	index	Attachment index.
+	 * @return	Pointer to the attachment description,
 	 */
-	const vk::AttachmentDescription& getAttachmentDescription(attachment_index_t index) const;
+	vk::AttachmentDescription* getAttachmentDescription(attachment_index_t index);
 
 	/**
-	 * @brief	Retrieve number of attachments.
-	 *
-	 * @return	Attachment count.
+	 * @brief	Set sub pass layout for the sub pass with the given index.
+	 * 
+	 * @param	index			Sub pass index.
+	 * @param	subpass_layout	Sub pass layout.
 	 */
-	attachment_index_t attachmentDescriptionCount() const;
+	void setSubpassLayout(subpass_index_t index, const SubpassLayout& subpass_layout);
 
 	/**
-	 * @brief	Add a new SubpassLayout to the RenderPassLayout.
-	 *
-	 * @return	Tuple containing index of the created SubpassLayout and a pointer to it.
+	 * @brief	Retrieve pointer to the layout of the sub pass with the given index.
+	 * 
+	 * @param	index	Sub pass index.
+	 * @return	Pointer to the sub pass layout.
 	 */
-	std::tuple<subpass_index_t, SubpassLayout*> addSubpassLayout();
+	SubpassLayout* getSubpassLayout(subpass_index_t index);
 
 	/**
-	 * @brief	Retrieve a SubpassLayout with the given index.
-	 *
-	 * @param	index	SubpassLayout index.
-	 *
-	 * @return	Pointer to the requested SubpassLayout.
-	 */
-	SubpassLayout* getSubpass(subpass_index_t index);
-
-	/**
-	 * @brief	Removes last added SubpassLayout and all its dependencies.
-	 */
-	void popSubpass();
-
-	/**
-	 * @brief	Introduce a dependency between the given source and destination subpass. 
-	 * 			https://www.khronos.org/registry/vulkan/specs/1.0/html/vkspec.html#synchronization-pipeline-stages-masks
-	 *
-	 * @param	src_subpass			Pointer to source SubpassLayout.
-	 * @param	dst_subpass			Pointer to destination SubpassLayout.
+	 * @brief	Create dependency between two sub passes or between a sub pass and external synchronization point.
+	 * 
+	 * @param	src					Index of the source sub pass [0, subpass_count) or VK_SUBPASS_EXTERNAL if external synchronization point.
+	 * @param	dst					Index of the destination sub pass [0, subpass_count) or VK_SUBPASS_EXTERNAL if external synchronization point.
 	 * @param	src_stage_mask  	Source stage mask.
 	 * @param	dst_stage_mask  	Destination stage mask.
 	 * @param	src_access_mask 	Source access mask.
 	 * @param	dst_access_mask 	Destination access mask.
 	 * @param	dependency_flags	Bitmask specifying how execution and memory dependencies are formed.
-	 *
-	 * @return	Id of the subpass dependency.
 	 */
-	dependency_id_t addSubpassDependency(const SubpassLayout* src_subpass, const SubpassLayout* dst_subpass, const vk::PipelineStageFlags& src_stage_mask, const vk::PipelineStageFlags& dst_stage_mask,
-		const vk::AccessFlags& src_access_mask, const vk::AccessFlags& dst_access_mask, const vk::DependencyFlags& dependency_flags);
-	
-	/**
-	 * @brief	Introduce a dependency between the given source and destination subpass.
-	 * 			https://www.khronos.org/registry/vulkan/specs/1.0/html/vkspec.html#synchronization-pipeline-stages-masks
-	 *
-	 * @param	src_subpass_index	Index of the source SubpassLayout.
-	 * @param	dst_subpass_index	Index of the destination SubpassLayout.
-	 * @param	src_stage_mask  	Source stage mask.
-	 * @param	dst_stage_mask  	Destination stage mask.
-	 * @param	src_access_mask 	Source access mask.
-	 * @param	dst_access_mask 	Destination access mask.
-	 * @param	dependency_flags	Bitmask specifying how execution and memory dependencies are formed.
-	 *
-	 * @return	Id of the subpass dependency.
-	 */
-	dependency_id_t addSubpassDependency(subpass_index_t src_subpass_index, subpass_index_t dst_subpass_index, const vk::PipelineStageFlags& src_stage_mask, const vk::PipelineStageFlags& dst_stage_mask,
-		const vk::AccessFlags& src_access_mask, const vk::AccessFlags& dst_access_mask, const vk::DependencyFlags& dependency_flags);
+	void addDependency(subpass_index_t src, subpass_index_t dst, vk::PipelineStageFlags src_stage_mask, vk::PipelineStageFlags dst_stage_mask, vk::AccessFlags src_access_mask, vk::AccessFlags dst_access_mask, vk::DependencyFlags dependency_flags);
 
 	/**
-	 * @brief	Retrieve SubpassDependency with the given id.
+	 * @brief	Retrieve pointer to the dependency between source and destination sub pass.
 	 *
-	 * @param	id	SubpassDependency id.
-	 *
-	 * @return	Const reference to the requested SubpassDependency.
+	 * @param	src	Index of the source sub pass [0, subpass_count) or VK_SUBPASS_EXTERNAL if external synchronization point.
+	 * @param	dst Index of the destination sub pass [0, subpass_count) or VK_SUBPASS_EXTERNAL if external synchronization point.
+	 * @return	Pointer to the sub pass dependency.
 	 */
-	const vk::SubpassDependency& getSubpassDependency(dependency_id_t id) const;
+	vk::SubpassDependency* getDependency(subpass_index_t src, subpass_index_t dst);
 
 	/**
-	 * @brief	Removes the SubpassDependency with the given id.
-	 *
-	 * @param	id	SubpassDependency identifier.
+	 * @brief	Remove dependency between source and destination sub passes.
+	 * 
+	 * @param	src	Index of the source sub pass [0, subpass_count) or VK_SUBPASS_EXTERNAL if external synchronization point.
+	 * @param	dst Index of the destination sub pass [0, subpass_count) or VK_SUBPASS_EXTERNAL if external synchronization point.
 	 */
-	void removeSubpassDependency(dependency_id_t id);
+	void removeDependency(subpass_index_t src, subpass_index_t dst);
 
 	/**
-	 * @brief TODO:
+	 * @brief	Build create info from the aggregated configuration.
+	 * @note	Modifying or copying RenderPassLayout object makes generated structure invalid.
+	 *
+	 * @return	Pointer to the built render pass create info structure.
 	 */
-	void validate() const;
-
-
-	vk::RenderPass buildRenderPass(vk::Device device) const;
+	vk::RenderPassCreateInfo* buildCreateInfo();
 
 private:
-	std::vector<std::unique_ptr<vk::AttachmentDescription>> attachment_descriptions_;	///< Render pass attachment descriptions.
-	std::vector<std::unique_ptr<SubpassLayout>> subpasses_;								///< Render pass subpasses.
-	std::map<dependency_id_t, vk::SubpassDependency> subpass_dependencies_;				///< Render pass dependencies.
+	std::vector<vk::AttachmentDescription> attachments_;	/// Vector of attachment descriptions.
+	std::vector<SubpassLayout> subpasses_;					/// Vector of sub pass layouts.
+	std::vector<vk::SubpassDependency> dependencies_;		/// Vector of sub pass dependencies.
+
+	// TODO(Primoz): Add extension structures.
+
+	std::vector<vk::SubpassDescription> vk_subpasses_;		/// Vector of built sub pass descriptions.
+	vk::RenderPassCreateInfo vk_create_info_;
 };
 
-};
+
+}
 
 #endif ///!	HEADER_GUARD

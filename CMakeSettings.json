@@ -8,7 +8,8 @@
         "buildRoot": "${workspaceRoot}\\build\\${name}",
         "cmakeCommandArgs": "",
         "buildCommandArgs": "-m -v:minimal",
-        "ctestCommandArgs": ""
+        "ctestCommandArgs": "",
+        "intelliSenseMode": "windows-msvc-x86"
       },
       {
         "name": "x86-Release",
@@ -17,7 +18,8 @@
         "buildRoot": "${workspaceRoot}\\build\\${name}",
         "cmakeCommandArgs": "",
         "buildCommandArgs": "-m -v:minimal",
-        "ctestCommandArgs": ""
+        "ctestCommandArgs": "",
+        "intelliSenseMode": "windows-msvc-x86"
       },
       {
         "name": "x64-Debug",
@@ -26,7 +28,8 @@
         "buildRoot": "${workspaceRoot}\\build\\${name}",
         "cmakeCommandArgs": "",
         "buildCommandArgs": "-m -v:minimal",
-        "ctestCommandArgs": ""
+        "ctestCommandArgs": "",
+        "intelliSenseMode": "windows-msvc-x64"
       },
       {
         "name": "x64-Release",
@@ -35,7 +38,8 @@
         "buildRoot": "${workspaceRoot}\\build\\${name}",
         "cmakeCommandArgs": "",
         "buildCommandArgs": "-m -v:minimal",
-        "ctestCommandArgs": ""
+        "ctestCommandArgs": "",
+        "intelliSenseMode": "windows-msvc-x64"
       }
     ]
 }

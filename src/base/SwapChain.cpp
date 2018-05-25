@@ -12,33 +12,13 @@
 namespace vkr {
 
 SwapChain::SwapChain() : instance_(nullptr), device_(nullptr), surface_(nullptr), present_family_(nullptr),
-swapchain_(nullptr), color_format_(vk::Format::eUndefined), color_space_(), image_count_(0), images_(), image_views_() {
+swapchain_(nullptr), color_format_(vk::Format::eUndefined), color_space_(), images_(), image_views_() {
 }
 
-void SwapChain::connect(vk::Instance& instance, VulkanDevice* device) {
+void SwapChain::connect(const vk::Instance& instance, VulkanDevice* device) {
 	// Store instance and device pointer.
 	instance_ = instance;
-	device_ = device_;
-
-	// Acquire function pointers.
-	fpGetPhysicalDeviceSurfaceSupportKHR = reinterpret_cast<PFN_vkGetPhysicalDeviceSurfaceSupportKHR>(instance_.getProcAddr("vkGetPhysicalDeviceSurfaceSupportKHR"));
-	assert(fpGetPhysicalDeviceSurfaceSupportKHR != nullptr);
-	fpGetPhysicalDeviceSurfaceCapabilitiesKHR = reinterpret_cast<PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR>(instance_.getProcAddr("vkGetPhysicalDeviceSurfaceCapabilitiesKHR"));
-	assert(fpGetPhysicalDeviceSurfaceCapabilitiesKHR != nullptr);
-	fpGetPhysicalDeviceSurfaceFormatsKHR = reinterpret_cast<PFN_vkGetPhysicalDeviceSurfaceFormatsKHR>(instance_.getProcAddr("vkGetPhysicalDeviceSurfaceFormatsKHR"));
-	assert(fpGetPhysicalDeviceSurfaceFormatsKHR != nullptr);
-	fpGetPhysicalDeviceSurfacePresentModesKHR = reinterpret_cast<PFN_vkGetPhysicalDeviceSurfacePresentModesKHR>(instance_.getProcAddr("vkGetPhysicalDeviceSurfacePresentModesKHR"));
-	assert(fpGetPhysicalDeviceSurfacePresentModesKHR != nullptr);
-	fpCreateSwapchainKHR = reinterpret_cast<PFN_vkCreateSwapchainKHR>(instance_.getProcAddr("vkCreateSwapchainKHR"));
-	assert(fpCreateSwapchainKHR != nullptr);
-	fpDestroySwapchainKHR = reinterpret_cast<PFN_vkDestroySwapchainKHR>(instance_.getProcAddr("vkDestroySwapchainKHR"));
-	assert(fpDestroySwapchainKHR != nullptr);
-	fpGetSwapchainImagesKHR = reinterpret_cast<PFN_vkGetSwapchainImagesKHR>(instance_.getProcAddr("vkGetSwapchainImagesKHR"));
-	assert(fpGetSwapchainImagesKHR != nullptr);
-	fpAcquireNextImageKHR = reinterpret_cast<PFN_vkAcquireNextImageKHR>(instance_.getProcAddr("vkAcquireNextImageKHR"));
-	assert(fpAcquireNextImageKHR != nullptr);
-	fpQueuePresentKHR = reinterpret_cast<PFN_vkQueuePresentKHR>(instance_.getProcAddr("vkQueuePresentKHR"));
-	assert(fpQueuePresentKHR != nullptr);
+	device_ = device;
 };
 
 void SwapChain::init(vk::SurfaceKHR surface) {
@@ -50,7 +30,7 @@ void SwapChain::init(vk::SurfaceKHR surface) {
 
 	for (QueueFamily* family : queue_families) {
 		if (family != nullptr) {
-			fpGetPhysicalDeviceSurfaceSupportKHR((VkPhysicalDevice)device_->getPhysicalDeviceHandle(), family->getFamilyIndex(), (VkSurfaceKHR) surface, &present_support);
+			device_->getPhysicalDeviceHandle().getSurfaceSupportKHR(family->getFamilyIndex(), surface, &present_support);
 
 			if (present_support) {
 				present_family_ = family;
@@ -65,18 +45,14 @@ void SwapChain::init(vk::SurfaceKHR surface) {
 	}
 
 	// Get list of supported surface formats
-	uint32_t format_count;
-	fpGetPhysicalDeviceSurfaceFormatsKHR((VkPhysicalDevice)device_->getPhysicalDeviceHandle(), (VkSurfaceKHR)surface, &format_count, NULL);
+	std::vector<vk::SurfaceFormatKHR> surface_formats = device_->getPhysicalDeviceHandle().getSurfaceFormatsKHR(surface_);
 
-	if (format_count == 0) {
+	if (surface_formats.empty()) {
 		throw std::runtime_error("Failed to retrieve supported surface formats.");
 	}
 
-	std::vector<vk::SurfaceFormatKHR> surface_formats(format_count);
-	fpGetPhysicalDeviceSurfaceFormatsKHR((VkPhysicalDevice)device_->getPhysicalDeviceHandle(), (VkSurfaceKHR)surface, &format_count, (VkSurfaceFormatKHR*)surface_formats.data());
-
 	// If the surface format list only includes one entry with VK_FORMAT_UNDEFINED, there is no preferred format, so we assume VK_FORMAT_B8G8R8A8_UNORM.
-	if ((format_count == 1) && (surface_formats[0].format == vk::Format::eUndefined)) {
+	if ((surface_formats.size() == 1) && (surface_formats[0].format == vk::Format::eUndefined)) {
 		color_format_ = vk::Format::eB8G8R8A8Unorm;
 		color_space_ = vk::ColorSpaceKHR(surface_formats[0].colorSpace);
 	}
@@ -105,23 +81,19 @@ void SwapChain::create(uint32_t& width, uint32_t& height, bool vsync) {
 		std::runtime_error("Tried to create SwapChain with uninitialized device.");
 	}
 
+	vk::PhysicalDevice physical_device = device_->getPhysicalDeviceHandle();
+	vk::Device logical_device = device_->getLogicalDeviceHandle();
 	vk::SwapchainKHR old_swapchain = swapchain_;
 
 	// Get physical device surface properties and formats.
-	vk::SurfaceCapabilitiesKHR surface_capabilites;
-	fpGetPhysicalDeviceSurfaceCapabilitiesKHR((VkPhysicalDevice)device_->getPhysicalDeviceHandle(), (VkSurfaceKHR)surface_, (VkSurfaceCapabilitiesKHR*)&surface_capabilites);
+	vk::SurfaceCapabilitiesKHR surface_capabilites = physical_device.getSurfaceCapabilitiesKHR(surface_);
 
 	// Get supported present modes.
-	uint32_t present_mode_count;
-	fpGetPhysicalDeviceSurfacePresentModesKHR((VkPhysicalDevice)device_->getPhysicalDeviceHandle(), (VkSurfaceKHR)surface_, &present_mode_count, nullptr);
+	std::vector<vk::PresentModeKHR> present_modes = physical_device.getSurfacePresentModesKHR(surface_);
 
-	if (present_mode_count == 0) {
+	if (present_modes.empty()) {
 		throw std::runtime_error("Failed to retrieve supported present modes.");
 	}
-
-	std::vector<vk::PresentModeKHR> present_modes(present_mode_count);
-	fpGetPhysicalDeviceSurfacePresentModesKHR((VkPhysicalDevice)device_->getPhysicalDeviceHandle(), (VkSurfaceKHR)surface_, &present_mode_count, (VkPresentModeKHR*)present_modes.data());
-
 
 	// Create SwapChain extent.
 	vk::Extent2D swapchain_extent{};
@@ -145,7 +117,7 @@ void SwapChain::create(uint32_t& width, uint32_t& height, bool vsync) {
 
 	// If v-sync is not requested, try to find a mailbox mode. It's the lowest latency non-tearing present mode available
 	if (!vsync) {
-		for (size_t i = 0; i < present_mode_count; i++) {
+		for (size_t i = 0; i < present_modes.size(); i++) {
 			if (present_modes[i] == vk::PresentModeKHR::eMailbox) {
 				swapchain_present_mode = vk::PresentModeKHR::eMailbox;
 				break;
@@ -225,31 +197,29 @@ void SwapChain::create(uint32_t& width, uint32_t& height, bool vsync) {
 
 	// Set additional usage flag for blitting from the swapchain images if supported
 	vk::FormatProperties format_properties;
-	device_->getPhysicalDeviceHandle().getFormatProperties(color_format_, &format_properties);
+	physical_device.getFormatProperties(color_format_, &format_properties);
+
 	if ((format_properties.optimalTilingFeatures & vk::FormatFeatureFlagBits::eTransferSrcKHR) || (format_properties.optimalTilingFeatures & vk::FormatFeatureFlagBits::eBlitSrc)) {
 		swapchain_ci.imageUsage |= vk::ImageUsageFlagBits::eTransferSrc;
 	}
 
 	// Create SwapChain.
-	fpCreateSwapchainKHR((VkDevice)device_->getLogicalDeviceHandle(), (VkSwapchainCreateInfoKHR*)&swapchain_ci, nullptr, (VkSwapchainKHR*)&swapchain_);
+	swapchain_ = logical_device.createSwapchainKHR(swapchain_ci);
 
 	// If an existing swap chain is re-created, destroy the old swap chain
 	// This also cleans up all the presentable images
 	if (old_swapchain) {
-		for (uint32_t i = 0; i < image_count_; i++) {
+		for (uint32_t i = 0; i < images_.size(); i++) {
 			device_->getLogicalDeviceHandle().destroyImageView(image_views_[i]);
 		}
-		fpDestroySwapchainKHR((VkDevice)device_->getLogicalDeviceHandle(), (VkSwapchainKHR)old_swapchain, nullptr);
+		logical_device.destroySwapchainKHR(old_swapchain);
 	}
-	fpGetSwapchainImagesKHR((VkDevice)device_->getLogicalDeviceHandle(), (VkSwapchainKHR)swapchain_, &image_count_, NULL);
 
-	// Get the swap chain images
-	images_.resize(image_count_);
-	fpGetSwapchainImagesKHR((VkDevice)device_->getLogicalDeviceHandle(), (VkSwapchainKHR)swapchain_, &image_count_, (VkImage*)images_.data());
+	images_ = logical_device.getSwapchainImagesKHR(swapchain_);
 
 	// Get the swap chain buffers containing the image and imageview
 	image_views_.clear();
-	for (uint32_t i = 0; i < image_count_; i++) {
+	for (uint32_t i = 0; i < images_.size(); i++) {
 		vk::ImageViewCreateInfo color_attachment_view_ci{};
 		color_attachment_view_ci.pNext = NULL;
 		color_attachment_view_ci.format = color_format_;
@@ -273,18 +243,17 @@ void SwapChain::create(uint32_t& width, uint32_t& height, bool vsync) {
 
 void SwapChain::cleanup() {
 	if (swapchain_) {
-		for (uint32_t i = 0; i < image_count_; i++) {
+		for (uint32_t i = 0; i < images_.size(); i++) {
 			device_->getLogicalDeviceHandle().destroyImageView(image_views_[i]);
 		}
 
 		// Clear images
-		image_count_ = 0;
 		image_views_.clear();
 		images_.clear();
 	}
 
 	if (surface_) {
-		fpDestroySwapchainKHR((VkDevice)device_->getLogicalDeviceHandle(), (VkSwapchainKHR)swapchain_, nullptr);
+		device_->getLogicalDeviceHandle().destroySwapchainKHR(swapchain_);
 	}
 
 	present_family_ = nullptr;
@@ -294,11 +263,10 @@ void SwapChain::cleanup() {
 	instance_ = nullptr;
 }
 
-std::tuple<vk::Result, uint32_t> SwapChain::acquireNextImage(vk::Semaphore present_complete_semaphore) {
-	uint32_t index;
-	vk::Result result = (vk::Result) fpAcquireNextImageKHR((VkDevice)device_->getLogicalDeviceHandle(), (VkSwapchainKHR)swapchain_, UINT64_MAX, (VkSemaphore)present_complete_semaphore, (VkFence)nullptr, &index);
+vk::ResultValue<uint32_t> SwapChain::acquireNextImage(vk::Semaphore present_complete_semaphore) {
+	device_->getLogicalDeviceHandle().acquireNextImageKHR(swapchain_, UINT64_MAX, present_complete_semaphore, nullptr);
 
-	return std::make_tuple(result, index);
+	return device_->getLogicalDeviceHandle().acquireNextImageKHR(swapchain_, UINT64_MAX, present_complete_semaphore, nullptr);
 }
 
 vk::Result SwapChain::queuePresent(vk::Queue queue, uint32_t image_index, vk::Semaphore wait_semaphore) {
@@ -313,11 +281,10 @@ vk::Result SwapChain::queuePresent(vk::Queue queue, uint32_t image_index, vk::Se
 		present_info.waitSemaphoreCount = 1;
 	}
 
-	return (vk::Result) fpQueuePresentKHR((VkQueue)queue, (VkPresentInfoKHR*)&present_info);
+	return queue.presentKHR(present_info);
 }
 
 SwapChain::~SwapChain() {
-	cleanup();
 }
 
 }

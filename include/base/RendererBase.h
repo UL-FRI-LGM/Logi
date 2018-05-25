@@ -19,7 +19,9 @@ namespace vkr {
 
 class RendererBase {
 public:
-	RendererBase(std::vector<char *>& global_extensions);
+	RendererBase() = default;
+
+	void initVulkanInstance(std::vector<const char *>& global_extensions);
 
 	/**
 	* @brief Check if the given validation layers are supported.
@@ -30,6 +32,8 @@ public:
 	static bool checkValidationLayerSupport(const std::vector<char*>& layers);
 
 	void setupDebugCallback(const vk::DebugReportFlagsEXT& flags, PFN_vkDebugReportCallbackEXT callback);
+
+
 
 	~RendererBase();
 
@@ -42,6 +46,8 @@ protected:
 	 * @return Vector of pairs containing the assigned score and the pointer to the VulkanDevice.
 	 */
 	std::vector<std::pair<int32_t, VulkanDevice*>> retrieveDevices(const std::function<int(VulkanDevice*)>& f_score);
+
+	const vk::Instance& getVulkanInstance() const;
 
 private:
 	vk::Instance vk_instance_;

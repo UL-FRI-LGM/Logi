@@ -13,7 +13,7 @@
 
 namespace vkr {
 
-RendererBase::RendererBase(std::vector<char *>& global_extensions) {
+void RendererBase::initVulkanInstance(std::vector<const char *>& global_extensions) {
 	// Create ApplicationInfo using the global configuration.
 	vk::ApplicationInfo appInfo{};
 	appInfo.pApplicationName = global_config::kAppName;
@@ -137,6 +137,10 @@ std::vector<std::pair<int32_t, VulkanDevice*>> RendererBase::retrieveDevices(con
 	std::sort(devices_p.begin(), devices_p.end(), [](const std::pair<int32_t, VulkanDevice*> &a, const std::pair<int32_t, VulkanDevice*> &b) { return a.first > b.first; });
 
 	return devices_p;
+}
+
+const vk::Instance& RendererBase::getVulkanInstance() const {
+	return vk_instance_;
 }
 
 RendererBase::~RendererBase() {

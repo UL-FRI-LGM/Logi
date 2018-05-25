@@ -5,6 +5,7 @@ namespace vkr {
 
 typedef size_t id_t;
 
+typedef id_t state_id_t;
 typedef id_t compute_id_t;
 typedef id_t descset_id_t;
 typedef id_t layout_id_t;

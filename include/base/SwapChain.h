@@ -26,10 +26,9 @@ public:
 	/**
 	 * @beiwf Set instance and device that will be used by the SwapChain and get all required function pointers
 	 *
-	 * @param instance Vulkan instance,
-	 * @param device Pointer to vulkan device.
+
 	 */
-	void connect(vk::Instance& instance, VulkanDevice* device);
+	void connect(const vk::Instance& instance, VulkanDevice* device);
 
 	/**
 	 * @brief Store surface and initialize the SwapChain. Selects the present queue, color format and color space.
@@ -55,7 +54,7 @@ public:
 	 * @param present_complete_semaphore (Optional) Semaphore that is signaled when the image is ready for use.
 	 * @return Tuple containing the result of the operation and index of the next image (valid if the operation was successful)
 	 */
-	std::tuple<vk::Result, uint32_t> acquireNextImage(vk::Semaphore present_complete_semaphore = nullptr);
+	vk::ResultValue<uint32_t> acquireNextImage(vk::Semaphore present_complete_semaphore = nullptr);
 
 	/**
 	 * @brief Queue an image for presentation.
@@ -90,20 +89,8 @@ private:
 	vk::ColorSpaceKHR color_space_; ///< Selected swap chain color space.
 
 	// Color attachment images
-	uint32_t image_count_; ///< Number of images inside the swap chain
 	std::vector<vk::Image> images_; ///< Swap chain images.
 	std::vector<vk::ImageView> image_views_; ///< Views of swap chain images
-
-	// Function pointers.
-	PFN_vkGetPhysicalDeviceSurfaceSupportKHR fpGetPhysicalDeviceSurfaceSupportKHR;
-	PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR fpGetPhysicalDeviceSurfaceCapabilitiesKHR;
-	PFN_vkGetPhysicalDeviceSurfaceFormatsKHR fpGetPhysicalDeviceSurfaceFormatsKHR;
-	PFN_vkGetPhysicalDeviceSurfacePresentModesKHR fpGetPhysicalDeviceSurfacePresentModesKHR;
-	PFN_vkCreateSwapchainKHR fpCreateSwapchainKHR;
-	PFN_vkDestroySwapchainKHR fpDestroySwapchainKHR;
-	PFN_vkGetSwapchainImagesKHR fpGetSwapchainImagesKHR;
-	PFN_vkAcquireNextImageKHR fpAcquireNextImageKHR;
-	PFN_vkQueuePresentKHR fpQueuePresentKHR;
 };
 
 }
