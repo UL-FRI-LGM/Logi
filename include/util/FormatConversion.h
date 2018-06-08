@@ -12,7 +12,7 @@
 #include <vulkan/vulkan.hpp>
 #include <spirv_cross.hpp>
 
-namespace vkr {
+namespace logi {
 
 /**
  * @brief Determines VkFormat based on SPIRType retrieved from the vertex shader code.

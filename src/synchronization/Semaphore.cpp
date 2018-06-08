@@ -1,25 +1,26 @@
 #include "synchronization/Semaphore.h"
 
-namespace vkr {
+namespace logi {
 
-Semaphore::Semaphore(const vk::Device& device, const vk::PipelineStageFlags& wait_stages) : device_(device), semaphore_(nullptr) {
-	semaphore_ = device_.createSemaphore(vk::SemaphoreCreateInfo{});
+Semaphore::Semaphore(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const vk::SemaphoreCreateFlags& flags)
+	: DependentDestroyableHandle(owner), vk_semaphore_(nullptr) {
+	vk::SemaphoreCreateInfo semaphore_ci{};
+	semaphore_ci.flags = flags;
+
+	vk_semaphore_ = std::make_shared<ManagedVkSemaphore>(device, device.createSemaphore(semaphore_ci));
 }
+
 
 const vk::Semaphore& Semaphore::getVkHandle() const {
-	return semaphore_;
+	if (!alive()) {
+		throw std::runtime_error("Called 'getVkHandle' on destroyed Semaphore object.");
+	}
+
+	return vk_semaphore_->get();
 }
 
-void Semaphore::setWaitStages(const vk::PipelineStageFlags& wait_stages) {
-	wait_stages_ = wait_stages;
-}
-
-const vk::PipelineStageFlags& Semaphore::getWaitStages() const {
-	return wait_stages_;
-}
-
-Semaphore::~Semaphore() {
-	device_.destroySemaphore(semaphore_);
+void Semaphore::free() {
+	vk_semaphore_->destroy();
 }
 
 }

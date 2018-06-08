@@ -9,13 +9,10 @@
 #include "base/SwapChain.h"
 #include <assert.h>
 
-namespace vkr {
+namespace logi {
 
-SwapChain::SwapChain() : instance_(nullptr), device_(nullptr), surface_(nullptr), present_family_(nullptr),
-swapchain_(nullptr), color_format_(vk::Format::eUndefined), color_space_(), images_(), image_views_() {
-}
-
-void SwapChain::connect(const vk::Instance& instance, VulkanDevice* device) {
+SwapChain::SwapChain(std::weak_ptr<HandleManager>& owner, const vk::Device& device, vk::SurfaceKHR& surface, uint32_t present_family, const std::vector<uint32_t>& concurrent_families)
+	: DependentDestroyableHandle(owner), device_(device){
 	// Store instance and device pointer.
 	instance_ = instance;
 	device_ = device;
@@ -98,7 +95,7 @@ void SwapChain::create(uint32_t& width, uint32_t& height, bool vsync) {
 	// Create SwapChain extent.
 	vk::Extent2D swapchain_extent{};
 	// If width (and height) equals the special value 0xFFFFFFFF, the size of the surface will be set by the SwapChain.
-	if (surface_capabilites.currentExtent.width == (uint32_t)-1) {
+	if (surface_capabilites.currentExtent.width == static_cast<uint32_t>(-1)) {
 		// If the surface size is undefined, the size is set to the size of the images requested.
 		swapchain_extent.width = width;
 		swapchain_extent.height = height;
@@ -127,7 +124,6 @@ void SwapChain::create(uint32_t& width, uint32_t& height, bool vsync) {
 			}
 		}
 	}
-
 
 	// Determine the number of images
 	uint32_t num_swapchain_images = surface_capabilites.minImageCount + 1;
@@ -260,7 +256,6 @@ void SwapChain::cleanup() {
 	surface_ = nullptr;
 	swapchain_ = nullptr;
 	device_ = nullptr;
-	instance_ = nullptr;
 }
 
 vk::ResultValue<uint32_t> SwapChain::acquireNextImage(vk::Semaphore present_complete_semaphore) {

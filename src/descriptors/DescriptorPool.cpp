@@ -1,50 +1,43 @@
 #include "descriptors/DescriptorPool.h"
 
-namespace vkr {
+namespace logi {
 
-DescriptorSet::DescriptorSet(const vk::DescriptorSet& descriptor_set, const DescriptorSetLayout* descriptor_set_layout)
-	: descriptor_set_(descriptor_set), layout_(descriptor_set_layout) {
-}
+DescriptorPool::DescriptorPool() : DependentDestroyableHandle({}, false) {}
 
-const vk::DescriptorSet& DescriptorSet::getVkDescriptorSet() const {
-	return descriptor_set_;
-}
-
-const DescriptorSetLayout* DescriptorSet::getLayout() const {
-	return layout_;
-}
-
-DescriptorPool::DescriptorPool(const vk::Device& device, const DescriptorsCount& pool_sizes, bool releasable_sets) : device_(device), pool_sizes_(pool_sizes), releasable_sets_(false), pool_(nullptr), allocated_descriptor_sets_() {
+DescriptorPool::DescriptorPool(std::weak_ptr<HandleManager>& owner, const vk::Device& device, const DescriptorsCount& pool_sizes, const vk::DescriptorPoolCreateFlags& flags)
+	: DependentDestroyableHandle(owner), data_(std::make_shared<DescriptorPoolData>(pool_sizes, flags)), vk_descriptor_pool_(nullptr), handle_manager_(std::make_shared<HandleManager>()) {
 	std::vector<vk::DescriptorPoolSize> vk_pool_sizes = pool_sizes.getVkDescriptorPoolSizes();
 
 	// Descriptor pool configuration.
-	vk::DescriptorPoolCreateInfo pool_info{};
-	pool_info.maxSets = pool_sizes.num_sets;
-	pool_info.pPoolSizes = vk_pool_sizes.data();
-	pool_info.poolSizeCount = vk_pool_sizes.size();
-
-	if (releasable_sets) {
-		pool_info.flags = vk::DescriptorPoolCreateFlagBits::eFreeDescriptorSet;
-	}
+	vk::DescriptorPoolCreateInfo descriptor_pool_ci{};
+	descriptor_pool_ci.maxSets = pool_sizes.num_sets;
+	descriptor_pool_ci.pPoolSizes = vk_pool_sizes.data();
+	descriptor_pool_ci.poolSizeCount = vk_pool_sizes.size();
+	descriptor_pool_ci.flags = flags;
 
 	// Create descriptor pool.
-	pool_ = device_.createDescriptorPool(pool_info);
+	vk_descriptor_pool_ = std::make_shared<ManagedVkDescriptorPool>(device, device.createDescriptorPool(descriptor_pool_ci));
 }
 
-DescriptorSet* DescriptorPool::createDescriptorSet(const DescriptorSetLayout* set_layout) {
+DescriptorSet DescriptorPool::createDescriptorSet(const DescriptorSetLayout& set_layout) const {
 	// Allocate descriptor set.
 	vk::DescriptorSetAllocateInfo set_alloc_info{};
-	set_alloc_info.descriptorPool = pool_;
+	set_alloc_info.descriptorPool = vk_descriptor_pool_->get();
 	set_alloc_info.descriptorSetCount = 1;
-	set_alloc_info.pSetLayouts = &set_layout->getVkHandle();
+	set_alloc_info.pSetLayouts = &set_layout.getVkHandle();
 
-	allocated_descriptor_sets_.emplace_back(std::make_unique<DescriptorSet>(device_.allocateDescriptorSets(set_alloc_info)[0], set_layout));
-
-	return allocated_descriptor_sets_.back().get();
+	return handle_manager_->createHandle<DescriptorSet>(vk_descriptor_pool_->getOwner().allocateDescriptorSets(set_alloc_info)[0], set_layout);
 }
 
-DescriptorPool::~DescriptorPool() {
-	device_.destroyDescriptorPool(pool_);
+void DescriptorPool::free() {
+	// Destroy dependent handles and descriptor pool.
+	handle_manager_->destroyAllHandles();
+	vk_descriptor_pool_->destroy();
+
+	DependentDestroyableHandle::free();
 }
+
+DescriptorPool::DescriptorPoolData::DescriptorPoolData(const DescriptorsCount& pool_sizes, const vk::DescriptorPoolCreateFlags& flags)
+	: pool_sizes(pool_sizes), flags(flags) {}
 
 }

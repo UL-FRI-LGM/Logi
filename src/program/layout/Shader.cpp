@@ -1,39 +1,34 @@
 #include "program/layout/Shader.h"
 
-namespace vkr {
+namespace logi {
 
-Shader::Shader(const vk::Device& device, const std::string& id, vk::ShaderStageFlagBits stage, const std::vector<uint32_t>& code, const std::string& entry_point) : device_(device), id_(id), stage_(stage), code_(code), entry_point_(entry_point), shader_module_(nullptr), shader_stage_() {
+ShaderData::ShaderData(vk::ShaderStageFlagBits stage, const std::vector<uint32_t>& code, const std::string& entry_point)
+	:  stage(stage), code(code), entry_point(entry_point) {}
+
+Shader::Shader(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const ShaderData& shader_data)
+	: DependentDestroyableHandle(owner), shader_data_(std::make_shared<ShaderData>(shader_data)), vk_shader_module_(nullptr) {
 	// Create shader
 	vk::ShaderModuleCreateInfo shader_ci{};
-	shader_ci.pCode = code_.data();
-	shader_ci.codeSize = code_.size() * 4;
+	shader_ci.pCode = shader_data_->code.data();
+	shader_ci.codeSize = shader_data_->code.size() * 4;
 
-	shader_module_ = device.createShaderModule(shader_ci);
-
-	// Stage create info.
-	shader_stage_.stage = stage_;
-	shader_stage_.module = shader_module_;
-	shader_stage_.pName = entry_point_.c_str();
-}
-
-const std::string & Shader::getId() const {
-	return id_;
+	vk_shader_module_ = std::make_shared<ManagedVkShaderModule>(device, device.createShaderModule(shader_ci));
 }
 
 vk::ShaderStageFlagBits Shader::getStage() const {
-	return stage_;
+	return shader_data_->stage;
 }
 
 const std::vector<uint32_t>& Shader::getCode() const {
-	return code_;
+	return shader_data_->code;
 }
 
 vk::PipelineShaderStageCreateInfo Shader::getVkHandle() const {
-	return shader_stage_;
+	return vk::PipelineShaderStageCreateInfo(vk::PipelineShaderStageCreateFlags(), shader_data_->stage, vk_shader_module_->get(), shader_data_->entry_point.c_str());
 }
 
-Shader::~Shader() {
-	device_.destroyShaderModule(shader_module_);
+void Shader::free() {
+	vk_shader_module_->destroy();
 }
 
-} ///!	namespace vkr
+} ///!	namespace logi

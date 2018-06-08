@@ -1,79 +1,53 @@
 #include "queues/QueueFamily.h"
 
-namespace vkr {
-
-Queue::Queue(const vk::Queue& queue) : queue_(queue) {
-}
-
-void Queue::submit(const std::vector<vk::SubmitInfo>& submit_infos, Fence* fence) {
-	if (fence == nullptr) {
-		queue_.submit(submit_infos, nullptr);
-	}
-	else {
-		queue_.submit(submit_infos, fence->getVkHandle());
-	}
-}
-
-void Queue::waitIdle() {
-	queue_.waitIdle();
-}
+namespace logi {
 
 
-QueueFamily::QueueFamily(uint32_t family_index, vk::QueueFlags queue_flags, size_t max_queue_count, uint32_t timestamp_valid_bits, vk::Extent3D min_image_transfer_granularity)
-	: family_index_(family_index), queue_flags_(queue_flags), max_queue_count_(max_queue_count), timestamp_valid_bits_(timestamp_valid_bits), min_image_transfer_granularity_(min_image_transfer_granularity), device_(nullptr), initialized_(false), queues_(), command_pool_(nullptr) {
-}
+QueueFamilyProperties::QueueFamilyProperties(const uint32_t family_index, const vk::QueueFamilyProperties& properties, const bool supports_present)
+	: family_index(family_index), queue_flags(properties.queueFlags), max_queue_count(properties.queueCount), timestamp_valid_bits(properties.timestampValidBits),
+	min_image_transfer_granularity(properties.minImageTransferGranularity), supports_present(supports_present) {}
 
-void QueueFamily::initialize(const vk::Device& device, uint32_t queue_count) {
-	device_ = device;
+void QueueFamilyProperties::configure(const uint32_t queue_count, const vk::DeviceQueueCreateFlags& create_flags, std::optional<const std::vector<float>> queue_priorities) {
+	this->create_flags = create_flags;
+	this->queue_count = queue_count;
 
-	// Fetch queues.
-	queues_.reserve(queue_count);
-
-	for (size_t i = 0; i < queue_count; i++) {
-		queues_.emplace_back(std::make_unique<Queue>(device_.getQueue(family_index_, i)));
+	// If queue properties are not provided set all to 0.
+	if (queue_priorities.has_value()) {
+		this->queue_priorities = queue_priorities.value();
+	} else {
+		this->queue_priorities = std::vector<float>(queue_count, 0.0f);
 	}
 }
 
-CommandPool* QueueFamily::createCommandPool(bool transistent, bool resetable_buffers) {
-	if (command_pool_.get() != nullptr) {
-		throw std::runtime_error("Command pool is already created.");
+
+QueueFamily::QueueFamily(const vk::Device device, const QueueFamilyProperties& configuration)
+	: data_(std::make_shared<QueueFamilyData>(device, configuration)) {
+
+	// Create queues.
+	data_->queues.reserve(configuration.queue_count);
+	for (size_t i = 0; i < configuration.queue_count; i++) {
+		data_->queues.emplace_back(data_->handle_manager.createHandle<Queue>(data_->vk_device.getQueue(configuration.family_index, i)));
 	}
-
-	command_pool_ = std::make_unique<CommandPool>(device_, family_index_, transistent, resetable_buffers);
-	return command_pool_.get();
 }
 
-CommandPool* QueueFamily::getCommandPool() {
-	return command_pool_.get();
+CommandPool QueueFamily::createCommandPool(const vk::CommandPoolCreateFlags& flags) const {
+	return data_->handle_manager.createHandle<CommandPool>(data_->vk_device, data_->configuration.family_index, flags);
 }
 
-uint32_t QueueFamily::getFamilyIndex() const {
-	return family_index_;
+const QueueFamilyProperties& QueueFamily::properties() const {
+	return data_->configuration;
 }
 
-uint32_t QueueFamily::getTimestampValidBits() const {
-	return timestamp_valid_bits_;
+Queue QueueFamily::getQueue(const size_t index) const {
+	return data_->queues[index];
 }
 
-const vk::Extent3D& QueueFamily::getMinImageTransferGranularity() const {
-	return min_image_transfer_granularity_;
+void QueueFamily::free() {
+	data_->handle_manager.destroyAllHandles();
+	Handle::free();
 }
 
-const uint32_t QueueFamily::getMaxSupportedQueueCount() const {
-	return max_queue_count_;
-}
-
-size_t QueueFamily::queueCount() {
-	return queues_.size();
-}
-
-Queue* QueueFamily::getQueue(size_t index) {
-	return queues_[index].get();
-}
-
-QueueFamily::~QueueFamily() {
-	queues_.clear();
-	command_pool_.reset();
-}
+QueueFamily::QueueFamilyData::QueueFamilyData(const vk::Device& vk_device, const QueueFamilyProperties& configuration)
+	: vk_device(vk_device), configuration(configuration) { }
 
 }

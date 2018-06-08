@@ -1,6 +1,6 @@
 #include "program/render_pass/SubpassLayout.h"
 
-namespace vkr {
+namespace logi {
 
 SubpassLayout::SubpassLayout()
 	: pipeline_bind_point_(vk::PipelineBindPoint::eGraphics), input_attachments_(), color_attachments_(), resolve_attachments_(), depth_stencil_attachment_(), preserve_attachments_() {

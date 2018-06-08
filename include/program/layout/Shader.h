@@ -1,33 +1,45 @@
 #ifndef PROGRAM_LAYOUT_SHADER_H
 #define PROGRAM_LAYOUT_SHADER_H
 
+#include "base/ManagedResource.h"
 #include <vulkan/vulkan.hpp>
 #include <string>
 #include <vector>
+#include "base/Handle.h"
 
-namespace vkr {
+namespace logi {
+
+/**
+ * @brief	Structure that contains the data required to instantiate a Shader.
+ */
+struct ShaderData {
+	/**
+	 * @brief	Populates ShaderData structure.
+	 *
+	 * @param	stage			 Shader stage.
+	 * @param	code			 Shader code.
+	 * @param	entry_point		 Shader entry point.	
+	 */
+	ShaderData(vk::ShaderStageFlagBits stage, const std::vector<uint32_t>& code, const std::string& entry_point = "main");
+
+	vk::ShaderStageFlagBits stage;		///< Shader stage.
+	std::vector<uint32_t> code;			///< Shader code.
+	std::string entry_point;			///< Shader entry point.
+};
 
 /**
  * @brief	Encapsulates shader data.
  */
-class Shader {
+class Shader : public DependentDestroyableHandle {
 public:
 	/**
-	 * @brief	Create new shader data with the given id from the given code and stage.
+	 * @brief	Creates Shader handle.
 	 *
-	 * @param	device	Logical device.
-	 * @param	id		Shader identifier.
-	 * @param	stage	Shader stage.
-	 * @param	code	Shader code.
+	 * @param	owner		Pointer to a HandleManager responsible for this handle.
+	 * @param	device		Device to which the shader belongs.
+	 * @param	shader_data	ShaderData structure
 	 */
-	Shader(const vk::Device& device, const std::string& id, vk::ShaderStageFlagBits stage, const std::vector<uint32_t>& code, const std::string& entry_point = "main");
-
-	/**
-	 * @brief	Get shader unique identifier.
-	 *
-	 * @return	Shader unique identifier.
-	 */
-	const std::string& getId() const;
+	Shader(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const ShaderData& shader_data);
 
 	/**
 	 * @brief	Get shader stage.
@@ -50,21 +62,19 @@ public:
 	 */
 	vk::PipelineShaderStageCreateInfo getVkHandle() const;
 
+protected:
 	/**
-	 * @brief	Free resources.
+	 * @brief	Destroys shader module.
 	 */
-	~Shader();
+	void free() override;
 
 private:
-	vk::Device device_;									///< Logical device.
-	std::string id_;									///< Shader identifier.
-	vk::ShaderStageFlagBits stage_;						///< Shader stage.
-	std::vector<uint32_t> code_;						///< Shader code.
-	std::string entry_point_;							///< Shader entry point.
-	vk::ShaderModule shader_module_;					///< Vulkan shader module.
-	vk::PipelineShaderStageCreateInfo shader_stage_;	///< Vulkan shader stage handle
+	using ManagedVkShaderModule = ManagedResource<vk::Device, vk::ShaderModule, vk::DispatchLoaderStatic, &vk::Device::destroyShaderModule>;
+
+	std::shared_ptr<ShaderData> shader_data_;
+	std::shared_ptr<ManagedVkShaderModule> vk_shader_module_;
 };
 
-} ///!	namespace vkr
+} ///!	namespace logi
 
 #endif ///!	HEADER_GUARD

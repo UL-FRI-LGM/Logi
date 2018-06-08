@@ -6,7 +6,7 @@
 #include "base/Types.h"
 #include "program/render_pass/SubpassLayout.h"
 
-namespace vkr {
+namespace logi {
 
 /**
  *	@brief Class used to build RenderPass configuration.

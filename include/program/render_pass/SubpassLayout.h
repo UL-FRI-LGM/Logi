@@ -7,7 +7,7 @@
 #include <functional>
 #include "base/Types.h"
 
-namespace vkr {
+namespace logi {
 
 /** @brief	Provides interface to accumulate and validate the vk::SubpassDescription data. */
 class SubpassLayout {

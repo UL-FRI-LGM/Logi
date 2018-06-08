@@ -4,7 +4,7 @@
 #include <vulkan/vulkan.hpp>
 #include <vector>
 
-namespace vkr {
+namespace logi {
 
 /**
 * @brief	Holds the number of descriptor sets and the numbers of each descriptor types.
@@ -82,6 +82,6 @@ struct DescriptorsCount {
 	std::vector<vk::DescriptorPoolSize> getVkDescriptorPoolSizes() const;
 };
 
-}	///! namespace vkr
+}	///! namespace logi
 
 #endif ///!	HEADER_GUARD

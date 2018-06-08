@@ -1,41 +1,17 @@
 #include "program/layout/VertexAttributeLayout.h"
 
-namespace vkr {
+namespace logi {
 
-VertexAttributeLayout::VertexAttributeLayout(uint32_t location, uint32_t binding, vk::Format format, uint32_t offset, uint32_t stride, vk::VertexInputRate input_rate)
-	: location_(location), binding_(binding), format_(format), offset_(offset), stride_(stride), input_rate_(input_rate) {
+VertexAttributeLayout::VertexAttributeLayout(const uint32_t location, const uint32_t binding, const vk::Format format, const uint32_t offset, const uint32_t stride, const vk::VertexInputRate input_rate)
+	: location(location), binding(binding), format(format), offset(offset), stride(stride), input_rate(input_rate) {
 }
 
 vk::VertexInputBindingDescription VertexAttributeLayout::getVkBindingDescription() const {
-	return vk::VertexInputBindingDescription(binding_, stride_, input_rate_);
+	return vk::VertexInputBindingDescription(binding, stride, input_rate);
 }
 
 vk::VertexInputAttributeDescription VertexAttributeLayout::getVkAttributeDescription() const {
-	return vk::VertexInputAttributeDescription(location_, binding_, format_, offset_);
+	return vk::VertexInputAttributeDescription(location, binding, format, offset);
 }
 
-uint32_t VertexAttributeLayout::getLocation() const {
-	return location_;
-}
-
-uint32_t VertexAttributeLayout::getBinding() const {
-	return binding_;
-}
-
-vk::Format VertexAttributeLayout::getFormat() const {
-	return format_;
-}
-
-uint32_t VertexAttributeLayout::getOffset() const {
-	return offset_;
-}
-
-uint32_t VertexAttributeLayout::getStride() const {
-	return stride_;
-}
-
-vk::VertexInputRate VertexAttributeLayout::getInputRate() const {
-	return input_rate_;
-}
-
-} ///!	namespace vkr
+} ///!	namespace logi

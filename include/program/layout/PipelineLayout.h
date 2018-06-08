@@ -2,44 +2,44 @@
 #define PROGRAM_LAYOUT_PIPELINE_LAYOUT_H
 
 #include <vector>
-#include <unordered_map>
 #include <vulkan/vulkan.hpp>
-#include "program/ShaderManager.h"
-#include "base/Types.h"
+#include "base/ManagedResource.h"
+#include "program/layout/Shader.h"
 #include "program/layout/DescriptorSetLayout.h"
 #include "program/layout/VertexAttributeLayout.h"
 #include "program/layout/PushConstantRange.h"
 
-namespace vkr {
+namespace logi {
 
 /**
  * @brief	Used to specify pipeline type that can be either graphical or compute.
  */
 enum class PipelineType {
 	eGraphical = 0u,
-	eCompute
+	eCompute,
+	eUndefined
 };
+
+using ManagedVkPipelineLayout = ManagedResource<vk::Device, vk::PipelineLayout, vk::DispatchLoaderStatic, &vk::Device::destroyPipelineLayout>;
 
 /**
  * @brief	Wraps the data required to create VkPipelineLayout. It retrieves the data from the given shaders by performing shader reflection using spriv-cross.
  */
-class PipelineLayout {
+class PipelineLayout : public DependentDestroyableHandle {
 public:
+	/**
+	 * @brief	Default placeholder constructor.
+	 */
+	PipelineLayout();
+
 	/**
 	 * @brief Creates and initializes PipelineLayout from the given shaders.
 	 *
+	 * @param	owner	Pointer to HandleManager responsible for this handle.
 	 * @param	device	Vulkan logical device handle.
-	 * @param	name	Pipeline layout name.
 	 * @param	shaders	Vector of shaders that form a pipeline.
 	 */
-	PipelineLayout(const vk::Device& device, const std::string& name, const std::vector<Shader*>& shaders);
-
-	/**
-	 * @brief	Retrieve PipelineLayout string identifier.
-	 *
-	 * @return	String identifier.
-	 */
-	const std::string& getName() const;
+	PipelineLayout(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const std::vector<Shader>& shaders);
 
 	/**
 	 * @brief	Retrieve Pipeline type eCompute/eGraphical.
@@ -53,7 +53,7 @@ public:
 	 *
 	 * @return	Vector containing shader handles.
 	 */
-	const std::vector<vk::PipelineShaderStageCreateInfo>& getVkShaderHandles() const;
+	std::vector<vk::PipelineShaderStageCreateInfo> getVkShaderHandles() const;
 
 	/**
 	 * @brief	Retrieve Vulkan layout handle.
@@ -75,7 +75,9 @@ public:
 	 * @param	set	Set index.
 	 * @return	Pointer to DescriptorSetLayout.
 	 */
-	const DescriptorSetLayout* getDescriptorSetLayout(size_t set) const;
+	const DescriptorSetLayout& getDescriptorSetLayout(size_t set) const;
+
+	const std::vector<VertexAttributeLayout>& getAttributeLayouts() const;
 
 	/**
 	 * @brief	Get number of descriptor sets.
@@ -84,36 +86,35 @@ public:
 	 */
 	size_t getDescriptorSetCount() const;
 
-	/**
-	 * @brief	Free resources.
-	 */
-	~PipelineLayout();
-
 protected:
 	/**
 	* @brief	Perform shader reflection using spriv-cross.
 	*/
-	void shaderReflection();
+	void shaderReflection(const vk::Device& device) const;
 
 	/**
 	* @brief	Builds vulkan pipeline layout.
 	*/
-	void buildVkPipelineLayout();
+	void buildVkPipelineLayout(const vk::Device& device);
 
 private:
-	vk::Device device_;													///< Logical device.
-	vk::PipelineLayout vk_pipeline_layout_;								///< Pipeline layout handle.
-	std::vector<vk::PipelineShaderStageCreateInfo> vk_shaders_;			///< Vulkan shader handles.
+	struct PipelineLayoutConfig {
+		PipelineLayoutConfig(const std::vector<Shader>& shaders)
+			: type(PipelineType::eUndefined), shaders(shaders) { }
 
-	std::string name_;													///< Layout name.
-	PipelineType type_;													///< Pipeline type (graphical or compute).
-	std::vector<Shader*> shaders_;										///< Pipeline shaders.
-	std::vector<std::unique_ptr<DescriptorSetLayout>> descriptor_sets_;	///< Descriptor sets.
-	std::vector<PushConstantRange> push_constants_;						///< Push constants.
-	DescriptorsCount combined_descriptors_count_;						///< Combined number of descriptors.
-	std::vector<VertexAttributeLayout> attributes_;						///< Only for graphical pipelines.
+		PipelineType type;												///< Pipeline type (graphical or compute).
+		std::vector<Shader> shaders;									///< Pipeline shaders.
+		std::vector<DescriptorSetLayout> descriptor_sets;				///< Descriptor sets.
+		std::vector<PushConstantRange> push_constants;					///< Push constants.
+		std::vector<VertexAttributeLayout> attributes;					///< Only for graphical pipelines.
+		DescriptorsCount combined_descriptors_count;					///< Combined number of descriptors.
+	};
+
+	std::shared_ptr<PipelineLayoutConfig> config_;
+	std::shared_ptr<ManagedVkPipelineLayout> vk_pipeline_layout_;
+	std::shared_ptr<HandleManager> descriptor_set_hm_;
 };
 
-} ///!	namespace vkr
+} ///!	namespace logi
 
 #endif ///! HEADER_GUARD

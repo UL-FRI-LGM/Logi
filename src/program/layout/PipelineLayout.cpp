@@ -7,99 +7,104 @@
 #include <spirv_cross.hpp>
 #include "util/FormatConversion.h"
 
-namespace vkr {
+namespace logi {
 
-PipelineLayout::PipelineLayout(const vk::Device& device, const std::string& name, const std::vector<Shader*>& shaders) : device_(device), vk_pipeline_layout_(), vk_shaders_(), name_(name), shaders_(shaders), descriptor_sets_(), push_constants_(), combined_descriptors_count_(), attributes_() {
+PipelineLayout::PipelineLayout() : DependentDestroyableHandle({}, false), config_(nullptr), vk_pipeline_layout_(nullptr), descriptor_set_hm_(nullptr) { }
+
+PipelineLayout::PipelineLayout(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const std::vector<Shader>& shaders) 
+	: DependentDestroyableHandle(owner), config_(std::make_shared<PipelineLayoutConfig>(shaders)), vk_pipeline_layout_(nullptr),
+	  descriptor_set_hm_(std::make_shared<HandleManager>()) {
+
 	// Sort the shaders in the same order as they come in the pipeline.
-	std::sort(shaders_.begin(), shaders_.end(), [](Shader* a, Shader* b) { return a->getStage() < b->getStage(); });
+	std::sort(config_->shaders.begin(), config_->shaders.end(), [](Shader a, Shader b) { return a.getStage() < b.getStage(); });
 
-	// Validate
+	// Validate stages.
 	vk::ShaderStageFlags stages{};
-	for (auto it = shaders.begin(); it != shaders.end(); it++) {
-		if (stages & (*it)->getStage()) {
+	for (auto it = config_->shaders.begin(); it != config_->shaders.end(); ++it) {
+		if (stages & it->getStage()) {
 			throw std::runtime_error("Multiple shaders with same stage.");
 		}
 
-		stages |= (*it)->getStage();
+		stages |= it->getStage();
 	}
 
 	// Determine pipeline type.
 	if (stages & vk::ShaderStageFlagBits::eCompute) {
-		if (shaders.size() > 1) {
+		if (config_->shaders.size() > 1) {
 			throw std::runtime_error("Invalid shader configuration.");
 		}
 
-		type_ = PipelineType::eCompute;
+		config_->type = PipelineType::eCompute;
 	}
 	else if ((stages & vk::ShaderStageFlagBits::eVertex) && (stages & vk::ShaderStageFlagBits::eFragment)) {
-		type_ = PipelineType::eGraphical;
+		config_->type = PipelineType::eGraphical;
 	}
 	else {
 		throw std::runtime_error("Invalid shader configuration.");
 	}
 
-	// Store shader handles
-	vk_shaders_.reserve(shaders_.size());
-
-	// Build or retrieve cached shader modules.
-	for (Shader* shader : shaders_) {
-		vk_shaders_.emplace_back(shader->getVkHandle());
-	}
-
 	// Perform shader reflection.
-	shaderReflection();
+	shaderReflection(device);
 
 	// Update descriptor count.
-	for (auto it = descriptor_sets_.begin(); it != descriptor_sets_.end(); it++) {
-		combined_descriptors_count_ += (*it)->getDescriptorsCount();
+	for (auto it = config_->descriptor_sets.begin(); it != config_->descriptor_sets.end(); ++it) {
+		config_->combined_descriptors_count += it->getDescriptorsCount();
 	}
 
 	// Build Vulkan pipeline layout.
-	buildVkPipelineLayout();
-}
-
-const std::string& PipelineLayout::getName() const {
-	return name_;
+	buildVkPipelineLayout(device);
 }
 
 PipelineType PipelineLayout::getPipelineType() const {
-	return type_;
+	return config_->type;
 }
 
-const std::vector<vk::PipelineShaderStageCreateInfo>& PipelineLayout::getVkShaderHandles() const {
-	return vk_shaders_;
+std::vector<vk::PipelineShaderStageCreateInfo> PipelineLayout::getVkShaderHandles() const {
+	std::vector<vk::PipelineShaderStageCreateInfo> vk_shaders;
+	vk_shaders.reserve(config_->shaders.size());
+
+	// Fetch ShaderStageCreateInfo-s.
+	for (auto& shader : config_->shaders) {
+		vk_shaders.emplace_back(shader.getVkHandle());
+	}
+
+	return vk_shaders;
 }
 
 const vk::PipelineLayout& PipelineLayout::getVkHandle() const {
-	return vk_pipeline_layout_;
+	if (!alive()) {
+		throw std::runtime_error("Called getVkHandle on destroyed PipelineLayout.");
+	}
+
+	return vk_pipeline_layout_->get();
 }
 
 const DescriptorsCount& PipelineLayout::getDescriptorsCount() const {
-	return combined_descriptors_count_;
+	return config_->combined_descriptors_count;
 }
 
-const DescriptorSetLayout* PipelineLayout::getDescriptorSetLayout(size_t set) const {
-	return descriptor_sets_[set].get();
+const DescriptorSetLayout& PipelineLayout::getDescriptorSetLayout(size_t set) const {
+	return config_->descriptor_sets[set];
+}
+
+const std::vector<VertexAttributeLayout>& PipelineLayout::getAttributeLayouts() const {
+	return config_->attributes;
 }
 
 size_t PipelineLayout::getDescriptorSetCount() const {
-	return descriptor_sets_.size();
+	return config_->descriptor_sets.size();
 }
 
-PipelineLayout::~PipelineLayout() {
-	device_.destroyPipelineLayout(vk_pipeline_layout_);
-}
-
-void vkr::PipelineLayout::shaderReflection() {
+void PipelineLayout::shaderReflection(const vk::Device& device) const {
 	std::vector<std::vector<internal::DescriptorBindingInitializer>> desc_sets_initializers{};
 	std::vector<internal::PushConstantRangeInitializer> push_consts_initializers{};
 
-	for (Shader* shader : shaders_) {
-		spirv_cross::Compiler comp(shader->getCode());
+	for (Shader& shader : config_->shaders) {
+		spirv_cross::Compiler comp(shader.getCode());
 
 		// The SPIR-V is now parsed, and we can perform reflection on it.
 		spirv_cross::ShaderResources resources = comp.get_shader_resources();
-		vk::ShaderStageFlagBits stage = shader->getStage();
+		vk::ShaderStageFlagBits stage = shader.getStage();
 
 #pragma region VertexAttributes
 		// Parse attributes if it's a vertex shader.
@@ -107,16 +112,16 @@ void vkr::PipelineLayout::shaderReflection() {
 
 			// Parse attribute configuration.
 			for (auto& resource : resources.stage_inputs) {
-				uint32_t binding = comp.get_decoration(resource.id, spv::DecorationBinding);
-				uint32_t location = comp.get_decoration(resource.id, spv::DecorationLocation);
-				auto resource_type = comp.get_type_from_variable(resource.id);
-				uint32_t offset = 0;
-				vk::Format format = getVertexBufferFormat(resource_type);
-				uint32_t stride = (resource_type.width * resource_type.vecsize * resource_type.columns) / 8; // Size of the single element in bytes.
-				vk::VertexInputRate input_rate = vk::VertexInputRate::eVertex;
+				const uint32_t binding = comp.get_decoration(resource.id, spv::DecorationBinding);
+				const uint32_t location = comp.get_decoration(resource.id, spv::DecorationLocation);
+				const auto resource_type = comp.get_type_from_variable(resource.id);
+				const uint32_t offset = 0;
+				const vk::Format format = getVertexBufferFormat(resource_type);
+				const uint32_t stride = (resource_type.width * resource_type.vecsize * resource_type.columns) / 8; // Size of the single element in bytes.
+				const vk::VertexInputRate input_rate = vk::VertexInputRate::eVertex;
 
 				// Add attribute description
-				attributes_.emplace_back(VertexAttributeLayout(location, binding, format, offset, stride, input_rate));
+				config_->attributes.emplace_back(VertexAttributeLayout(location, binding, format, offset, stride, input_rate));
 			}
 		}
 #pragma endregion
@@ -233,7 +238,8 @@ void vkr::PipelineLayout::shaderReflection() {
 
 	// Initialize descriptor sets.
 	for (const std::vector<internal::DescriptorBindingInitializer>& set : desc_sets_initializers) {
-		descriptor_sets_.emplace_back(std::make_unique<DescriptorSetLayout>(device_, set));
+		DescriptorSetLayout descriptor_set = descriptor_set_hm_->createHandle<DescriptorSetLayout>(device, set);
+		config_->descriptor_sets.emplace_back(descriptor_set);
 	}
 
 	// Initialize push constants.
@@ -243,24 +249,24 @@ void vkr::PipelineLayout::shaderReflection() {
 			throw std::runtime_error("Push constant overlap.");
 		}
 
-		push_constants_.emplace_back(PushConstantRange(push_consts_initializers[i]));
+		config_->push_constants.emplace_back(PushConstantRange(push_consts_initializers[i]));
 	}
 }
 
-void PipelineLayout::buildVkPipelineLayout() {
+void PipelineLayout::buildVkPipelineLayout(const vk::Device& device) {
 	// Retrieve descriptor set vulkan handles
 	std::vector<vk::DescriptorSetLayout> vk_desc_set_layouts{};
-	vk_desc_set_layouts.reserve(descriptor_sets_.size());
+	vk_desc_set_layouts.reserve(config_->descriptor_sets.size());
 
-	for (std::unique_ptr<DescriptorSetLayout>& desc_set : descriptor_sets_) {
-		vk_desc_set_layouts.emplace_back(desc_set->getVkHandle());
+	for (const DescriptorSetLayout& desc_set : config_->descriptor_sets) {
+		vk_desc_set_layouts.emplace_back(desc_set.getVkHandle());
 	}
 
 	// Build vulkan push constants.
 	std::vector<vk::PushConstantRange> vk_push_constants{};
-	vk_push_constants.reserve(push_constants_.size());
+	vk_push_constants.reserve(config_->push_constants.size());
 
-	for (PushConstantRange& push_constant : push_constants_) {
+	for (PushConstantRange& push_constant : config_->push_constants) {
 		vk_push_constants.emplace_back(push_constant.getVkHandle());
 	}
 
@@ -270,7 +276,7 @@ void PipelineLayout::buildVkPipelineLayout() {
 	layout_ci.pPushConstantRanges = vk_push_constants.data();
 	layout_ci.pushConstantRangeCount = vk_push_constants.size();
 
-	vk_pipeline_layout_ = device_.createPipelineLayout(layout_ci);
+	vk_pipeline_layout_ = std::make_shared<ManagedVkPipelineLayout>(device, device.createPipelineLayout(layout_ci));
 }
 
 #pragma endregion

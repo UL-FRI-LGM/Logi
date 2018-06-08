@@ -1,8 +1,11 @@
 #include <gtest/gtest.h>
 #include <vulkan/vulkan.hpp>
+#include "memory/AllocationManager.h"
 
 /* this is a test that can pass*/
 TEST(AddTest, CanPass) {
+	system("pause");
+
 	/*
 	vkr::PipelineState test_state;
 	test_state.setPrimitiveTopology(vk::PrimitiveTopology::eTriangleFan);

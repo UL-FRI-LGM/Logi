@@ -1,6 +1,6 @@
 #include "util/helpers.h"
 
-namespace vkr {
+namespace logi {
 
 bool hasRequestedFeatures(const vk::PhysicalDeviceFeatures& super, const vk::PhysicalDeviceFeatures& sub) {
 	return (!(sub.robustBufferAccess) || super.robustBufferAccess) &&

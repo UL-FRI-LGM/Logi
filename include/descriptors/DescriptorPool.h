@@ -10,43 +10,50 @@
 #define DESCRIPTORS_DESCRIPTOR_POOL_H
 
 #include <vulkan/vulkan.hpp>
-#include "base/Types.h"
-#include <unordered_map>
-#include <list>
+
 #include "program/layout/PipelineLayout.h"
+#include "base/ManagedResource.h"
+#include "descriptors/DescriptorSet.h"
+#include "base/Handle.h"
 
-namespace vkr {
 
-class DescriptorSet {
+namespace logi {
+
+
+
+class DescriptorPool : public DependentDestroyableHandle {
 public:
-	DescriptorSet(const vk::DescriptorSet& descriptor_set, const DescriptorSetLayout* descriptor_set_layout);
+	DescriptorPool();
 
-	const vk::DescriptorSet& getVkDescriptorSet() const;
+	DescriptorPool(std::weak_ptr<HandleManager>& owner, const vk::Device& device, const DescriptorsCount& pool_sizes, const vk::DescriptorPoolCreateFlags& flags);
 
-	const DescriptorSetLayout* getLayout() const;
+	DescriptorSet createDescriptorSet(const DescriptorSetLayout& set_layout) const;
+
+protected:
+	void free() override;
 
 private:
-	vk::DescriptorSet descriptor_set_;	///< Descriptor set Vulkan handle.
-	const DescriptorSetLayout* layout_;	///< Vulkan device layout.
-};
+	using ManagedVkDescriptorPool = ManagedResource<vk::Device, vk::DescriptorPool, vk::DispatchLoaderStatic, &vk::Device::destroyDescriptorPool>;
 
-class DescriptorPool {
-public:
-	DescriptorPool(const vk::Device& device, const DescriptorsCount& pool_sizes, bool releasable_sets);
+	/**
+	* @brief	Contains configuration for DescriptorPool.
+	*/
+	struct DescriptorPoolData {
+		/**
+		 * @brief	Default constructor. Initializes values to defaults.
+		 *
+		 * @param	pool_sizes	Specifies required pool size for each descriptor type.
+		 * @param	flags		A bitmask of vk::DescriptorPoolCreateFlagBits describing additional parameters of the DescriptorPool.
+		 */
+		DescriptorPoolData(const DescriptorsCount& pool_sizes, const vk::DescriptorPoolCreateFlags& flags);
 
-	DescriptorSet* createDescriptorSet(const DescriptorSetLayout* set_layout);
+		DescriptorsCount pool_sizes;			///< Specifies required pool size for each descriptor type.
+		vk::DescriptorPoolCreateFlags flags;	///< A bitmask of vk::DescriptorPoolCreateFlagBits describing additional parameters of the DescriptorPool.
+	};
 
-	~DescriptorPool();
-private:
-	// Device reference
-	vk::Device device_;
-
-	// Configuration
-	DescriptorsCount pool_sizes_;
-
-	bool releasable_sets_;
-	vk::DescriptorPool pool_; ///< Descriptor pool object.
-	std::list<std::unique_ptr<DescriptorSet>> allocated_descriptor_sets_;
+	std::shared_ptr<DescriptorPoolData> data_;						///< Contains descriptor pool data.
+	std::shared_ptr<ManagedVkDescriptorPool> vk_descriptor_pool_;	///< Vulkan DescriptorPool handle.
+	std::shared_ptr<HandleManager> handle_manager_;			///< Manages DescriptorSet handles.
 };
 
 }

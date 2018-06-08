@@ -1,5 +1,5 @@
 #include "util/FormatConversion.h"
-namespace vkr {
+namespace logi {
 
 vk::Format getVertexBufferFormat(const spirv_cross::SPIRType& format_info) {
 	

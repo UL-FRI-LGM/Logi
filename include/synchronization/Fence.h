@@ -2,20 +2,21 @@
 #define SYNCHRONIZATION_FENCE_H_
 
 #include <vulkan/vulkan.hpp>
+#include "base/Handle.h"
 #include "base/ManagedResource.h"
 
-namespace vkr {
+namespace logi {
 
-using ManagedVkFence = ManagedResource<vk::Device, vk::Fence, vk::DispatchLoaderStatic, &vk::Device::destroyFence>;
-
-class Fence {
+class Fence : public DependentDestroyableHandle {
 public:
 	/**
-	 * @brief	Handle used to access Fence resource.
-	 *
-	 * @param	vk_fence	Managed Vulkan Fence object.
-	 */
-	explicit Fence(const std::shared_ptr<ManagedVkFence>& vk_fence);
+	* @brief	Create a handle used to access Vulkan fence object.
+	*
+	* @param	owner	HandleManager responsible for this handle.
+	* @param	device	Vulkan device handle.
+	* @param	flags	Used to specify additional Semaphore properties.
+	*/
+	Fence(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const vk::FenceCreateFlags& flags);
 
 	/**
 	 * @brief Return true if the fence is signaled.
@@ -40,14 +41,14 @@ public:
 	/**
 	 * @brief Wait for the fences to be signaled.
 	 * @note All fences must originate from the same device!
-	 * TODO(plavric): Change this so that the fences wont have to orignate from the same device.
+	 * TODO(plavric): Change this so that the fences wont have to originate from the same device.
 	 *
 	 * @param	fences		Vector containing the fences.
 	 * @param	timeout		Timeout time in nanoseconds.
 	 * @param	wait_all	If true the operation will block until all fences are signaled, otherwise until the first fence is signaled.
 	 * @return	Vulkan wait result.
 	 */
-	static vk::Result wait(const std::vector<Fence>& fences, bool wait_all, uint64_t timeout);
+	//static vk::Result wait(const std::vector<Fence>& fences, bool wait_all, uint64_t timeout);
 
 	/**
 	 * @brief Retrieve vk::Fence handle.
@@ -56,12 +57,12 @@ public:
 	 */
 	const vk::Fence& getVkHandle() const;
 
-	/**
-	 * @brief Free Vulkan fence resources.
-	 */
-	void destroy() const;
+protected:
+	void free() override;
 
 private:
+	using ManagedVkFence = ManagedResource<vk::Device, vk::Fence, vk::DispatchLoaderStatic, &vk::Device::destroyFence>;
+
 	std::shared_ptr<ManagedVkFence> vk_fence_;
 };
 

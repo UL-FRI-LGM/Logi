@@ -9,78 +9,103 @@
 #ifndef PROGRAM_MANAGER_H
 #define PROGRAM_MANAGER_H
 
-#include <vector>
-#include <map>
-#include <vulkan/vulkan.hpp>
 #if defined(__GNUC__)
 #include <experimental/filesystem>
 #else
 #include <filesystem>
 #endif
+#include <vector>
+#include <vulkan/vulkan.hpp>
 
-#include "program/ShaderManager.h"
+#include "base/Handle.h"
 #include "program/layout/PipelineLayout.h"
-#include "program/ComputePipeline.h"
-#include "base/Types.h"
+#include "program/layout/Shader.h"
+#include "render_pass/RenderPass.h"
 
-namespace vkr {
+namespace logi {
 namespace filesystem = std::experimental::filesystem;  ///< todo(plavric): Change when the filesystem will no longer be experimental.
 
-class ProgramManager {
+struct GraphicalPipelineCreateInfo {
+	GraphicalPipelineCreateInfo() : render_pass(), subpass_index(), layout(), state() {}
+
+	GraphicalPipelineCreateInfo(const RenderPass& render_pass, const uint32_t subpass_index, const PipelineLayout& layout, const PipelineState& state)
+		: render_pass(render_pass), subpass_index(subpass_index), layout(layout), state(state) { }
+
+	RenderPass render_pass;
+	uint32_t subpass_index;
+	PipelineLayout layout;
+	PipelineState state;
+};
+
+class ProgramManager : public Handle {
 public:
 	/**
-	 * @brief Default constructor.
+	 * @brief	Default placeholder constructor.
+	 */
+	ProgramManager();
+
+	/**
+	 * @brief	Default constructor.
 	 *
-	 * @param device Logical device handle.
+	 * @param	device	Vulkan logical device handle.
 	 */
 	ProgramManager(const vk::Device& device);
 
 	/**
-	 * @bref Loads shader programs and pipeline layouts from the given directory.
+	 * @brief	Creates pipeline layout that consist of the given shaders. Shader reflection is performed to extract the PipelineLayout data.
 	 *
-	 * @param shaders_dir Path to the shader directories.
+	 * @param	shaders	Vector containing Shader handles.
+	 * @return	PipelineLayout handle.
 	 */
-	void loadPrograms(const filesystem::path& shaders_dir);
-
-	PipelineLayout* getPipelineLayout(const std::string& name);
+	PipelineLayout createPipelineLayout(const std::vector<Shader>& shaders);
 
 	/**
-	 * @brief Creates compute pipeline using the pipeline layout with the given id.
+	 * @brief	Creates Shader handle object and populates it with the given ShaderData.
 	 *
-	 * @param pipeline_id Pipeline layout identifier.
-	 * @return Compute pipeline.
+	 * @param	shader_data	Shader data.
+	 * @return	Shader handle.
 	 */
-	ComputePipeline* getComputePipeline(compute_id_t id);
-
-	compute_id_t getComputePipelineId(const std::string& name);
+	Shader createShader(const ShaderData& shader_data);
 
 	/**
-	 * @brief Returns descriptors count for all pipeline layouts.
+	 * @brief	Loads shader code from the file located on the given path and creates and populates Shader handle with loaded data.
 	 *
-	 * @return DescriptorCount object.
+	 * @param	shader_path	Path to the shader file.
+	 * @param	stage		Shader stage.
+	 * @param	entry_point Shader entry point.
+	 * @return	Shader handle.
 	 */
-	DescriptorsCount getDescriptorsCount();
+	Shader loadShader(const std::string& shader_path, vk::ShaderStageFlagBits stage, const std::string& entry_point = "main");
 
 	/**
-	 * @brief Free resources.
+	 * @brief	TODO
+	 *
+	 * @param	layout 
+	 * @return	
 	 */
-	~ProgramManager();
+	RenderPass createRenderPass(const RenderPassLayout& layout) const;
+
+	std::vector<GraphicalPipeline> createGraphicalPipelines(std::vector<GraphicalPipelineCreateInfo>& create_infos) const;
+
+protected:
+	/**
+	 * @brief	Destroys all Shader and PipelineLayout handles.
+	 */
+	void free() override;
 
 private:
 	vk::Device device_;
-
-	std::unique_ptr<ShaderManager> shader_manager_;
-	std::vector<std::unique_ptr<PipelineLayout>> pipeline_layouts_;
-	std::vector<std::unique_ptr<ComputePipeline>> compute_pipelines_;
+	std::shared_ptr<HandleManager> handle_manager_;
 
 	/**
 	* @brief Read raw data from the SPIRV shader file located on the given path.
-	* @throw std::runtime_error if something hoes wrong while reading the shader file.
+	* @throw std::runtime_error if something goes wrong while reading the shader file.
 	*
 	* @param path Path to the SPIRV shader file.
 	* @return Raw SPIRV shader data.
 	*/
-	std::vector<uint32_t> readShaderFile(const filesystem::path& path);
+	static std::vector<uint32_t> readShaderFile(const std::string& path);
+
 };
 
 }

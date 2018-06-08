@@ -3,116 +3,83 @@
 
 #include <vulkan/vulkan.hpp>
 #include <vk_mem_alloc.h>
-#include <list>
+#include "base/ManagedResource.h"
+#include "memory/BufferView.h"
 #include "memory/MemoryUsage.h"
 
+namespace logi {
 
-namespace vkr {
-
+/**
+ * @brief	Contains configuration for the Buffer.
+ */
 struct BufferConfiguration {
-	vk::DeviceSize buffer_size;
-	vk::BufferUsageFlags usage;
-	MemoryUsage memory_usage;
-	bool concurrent;
-	std::vector<uint32_t> concurrent_queue_families;
+	/**
+	 * @brief	Default constructor. Initializes values to defaults.
+	 *
+	 * @param	flags						A bitmask of vk::BufferCreateFlagBits describing additional parameters of the buffer.
+	 * @param	size						Size in bytes of the buffer.
+	 * @param	usage						Intended usage of the image.
+	 * @param	concurrent_queue_families	Vector of QueueFamily indices. These QueueFamilies will be allowed to concurrently use the image.
+	 */
+	explicit BufferConfiguration(vk::BufferCreateFlags flags = vk::BufferCreateFlags(), vk::DeviceSize size = 0, vk::BufferUsageFlags usage = vk::BufferUsageFlags(), MemoryUsage memory_usage = MemoryUsage::GPU_ONLY, std::vector<uint32_t> concurrent_queue_families = {});
 
-	BufferConfiguration(vk::DeviceSize buffer_size = 0, vk::BufferUsageFlags usage = vk::BufferUsageFlags(), MemoryUsage memory_usage = MemoryUsage::GPU_ONLY,  bool concurrent = false, std::vector<uint32_t> concurrent_queue_families = {});
+	vk::BufferCreateFlags flags;						///< A bitmask of vk::BufferCreateFlagBits describing additional parameters of the buffer.
+	vk::DeviceSize size;								///< Size in bytes of the buffer.
+	vk::BufferUsageFlags usage;							///< Intended usage of the image.
+	MemoryUsage memory_usage;							///< Specifies who can use the allocated buffer (CPU/GPU).
+	std::vector<uint32_t> concurrent_queue_families;	///< Vector of QueueFamily indices. These QueueFamilies will be allowed to concurrently use the image.
 };
 
 /**
- * @brief Buffer view wrapper.
+ * @brief	Handle used to access Vulkan Buffer resource.
  */
-class BufferView {
+class Buffer : public DependentDestroyableHandle {
 public:
 	/**
-	 * @brief Create new BufferView.
+	 * @brief	Create handle used to access Vulkan Buffer resource.
 	 *
-	 * @param device Vulkan logical device handle.
-	 * @param buffer Referenced buffer.
-	 * @param format Buffer view element format.
-	 * @parma offset Buffer view offset from the start of the buffer in Bytes.
-	 * @param range Buffer view size (number of captured bytes from offset).
+	 * @param	owner			Pointer to a HandleManager responsible for this handle.
+	 * @param	device			Device to which the buffer belongs.
+	 * @param	buffer			Vulkan buffer handle.
+	 * @param	allocator		Pointer to the Vulkan memory allocator.
+	 * @param	allocation		Pointer to the structure containing the allocation meta data.
+	 * @param	configuration	Buffer configuration.
 	 */
-	BufferView(const vk::Device& device, const vk::Buffer& buffer, vk::Format format, vk::DeviceSize offset, vk::DeviceSize range);
+	Buffer(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const vk::Buffer& buffer, VmaAllocator allocator, VmaAllocation allocation, const BufferConfiguration& configuration);
 
 	/**
-	 * @brief Retrieve Vulkan BufferView handle.
+	 * @brief	Create BufferView for this Buffer.
 	 *
-	 * @return Vulkan BufferView handle.
+	 * @param	configuration	ImageView configuration.
+	 * @return	BufferView handle.
 	 */
-	const vk::BufferView& getVkBufferView();
+	BufferView createBufferView(const BufferViewConfiguration& configuration) const;
 
-	/**
-	 * @brief Free resources.
-	 */
-	~BufferView();
+	//std::vector<unsigned char> getData();
 
-private:
-	vk::Device device_;				///< Vulkan logical device handle.
-	vk::BufferView buffer_view_;	///< Buffer view Vulkan handle.
-	vk::Format format_;				///< Buffer view element format.
-	vk::DeviceSize offset_;			///< Buffer view offset from the start of the buffer in Bytes.
-	vk::DeviceSize range_;			///< Buffer view size (number of captured bytes from offset).
-};
-
-
-class Buffer {
-public:
-	/**
-	 * @brief Wrap the given buffer and its configuration.
-	 */
-	Buffer(const vk::Device& device, VmaAllocator allocator, const VmaAllocation& allocation, const vk::Buffer& buffer, const BufferConfiguration& configuration);
-
-	/**
-	 * @brief Create buffer view for this buffer. Buffer must be texel based.
-	 *
-	 * @param format Buffer view element format.
-	 * @param offset Buffer view offset from the start of the buffer in Bytes.
-	 * @param range Buffer view size (number of captured bytes from offset).
-	 */
-	BufferView* createBufferView(vk::Format format, vk::DeviceSize offset, vk::DeviceSize range);
-
-	/**
-	 * @brief Destroy the given buffer view.
-	 *
-	 * @param buffer_view Buffer view that will be destroyed..
-	 */
-	void destroyBufferView(BufferView* buffer_view);
-
-	std::vector<unsigned char> getData();
-
-	void writeData(void* data, size_t size_bytes);
+	//void writeData(void* data, size_t size_bytes);
 
 	/**
 	 * @brief Get Vulkan buffer handle.
 	 *
 	 * @return Vulkan buffer handle.
 	 */
-	const vk::Buffer& getVkBuffer() const;
+	const vk::Buffer& getVkHandle() const;
 
-	const VmaAllocation& getAllocation() const;
-
+protected:
 	/**
-	 * @brief Retrieve buffer configuration.
-	 *
-	 * @return Buffer configuration.
+	 * @brief	Destroys owned BufferView resoucres, destroys Vulkan Buffer handle and frees the memory.
 	 */
-	const BufferConfiguration& getBufferConfiguration() const;
-
-	/**
-	 * @brief Frees resources.
-	 */
-	~Buffer();
+	void free() override;
 
 private:
-	vk::Device device_; ///< Vulkan logical device handle.
-	VmaAllocator allocator_;
-	VmaAllocation allocation_;
-	vk::Buffer buffer_; ///< Vulkan buffer handle.
-	
-	
-	BufferConfiguration configuration_; ///< Vulkan buffer configuration.
-	std::list<std::unique_ptr<BufferView>> buffer_views_; ///< Allocated buffer views..
+	using ManagedVkBuffer = ManagedResource<vk::Device, vk::Buffer, vk::DispatchLoaderStatic, &vk::Device::destroyBuffer>;
+
+	VmaAllocator allocator_;								///< Pointer to the responsible allocator.
+	VmaAllocation allocation_;								///< Pointer to the allocation.
+	std::shared_ptr<BufferConfiguration> configuration_;	///< Buffer configuration.
+	std::shared_ptr<ManagedVkBuffer> vk_buffer_;			///< Vulkan buffer handle.
+	std::shared_ptr<HandleManager> buffer_view_hm_;			///< Buffer view handle manager.
 };
 
 }

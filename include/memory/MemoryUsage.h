@@ -1,13 +1,16 @@
 #ifndef MEMORY_MEMORY_USAGE_H
 #define MEMORY_MEMORY_USAGE_H
+#include <vk_mem_alloc.h>
+
+namespace logi {
 
 enum class MemoryUsage {
-	GPU_ONLY,
-	CPU_ONLY,
-	CPU_TO_GPU,
-	GPU_TO_CPU
+	GPU_ONLY = VMA_MEMORY_USAGE_GPU_ONLY,
+	CPU_ONLY = VMA_MEMORY_USAGE_CPU_ONLY,
+	CPU_TO_GPU = VMA_MEMORY_USAGE_CPU_TO_GPU,
+	GPU_TO_CPU = VMA_MEMORY_USAGE_GPU_TO_CPU
 };
 
-#endif // !MEMORY_MEMORY_USAGE_H
+}
 
-
+#endif

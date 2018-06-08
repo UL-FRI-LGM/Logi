@@ -2,49 +2,38 @@
 #define SYNCHRONIZATION_SEMAPHORE_H_
 
 #include <vulkan/vulkan.hpp>
+#include "base/ManagedResource.h"
+#include "base/Handle.h"
 
-namespace vkr {
+namespace logi {
 
-class Semaphore {
+class Semaphore : public DependentDestroyableHandle {
 public:
 	/**
-	 * @brief Allocate the semaphore from the given device.
+	 * @brief	Create a handle used to access Vulkan semaphore object.
 	 *
-	 * @param device Device associated with the semaphore.
-	 * @param wait_stages Stages at which the semaphore will wait.
+	 * @param	owner	HandleManager responsible for this handle.
+	 * @param	device	Vulkan device handle.
+	 * @param	flags	Used to specify additional Semaphore properties.
 	 */
-	Semaphore(const vk::Device& device, const vk::PipelineStageFlags& wait_stages);
+	Semaphore(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const vk::SemaphoreCreateFlags& flags = {});
 
 	/**
-	 * @brief Retrieve Vulkan semaphore handle.
+	 * @brief	Retrieve Vulkan semaphore handle.
 	 *
-	 * @return Vulkan semaphore handle.
+	 * @return	Vulkan semaphore handle.
 	 */
 	const vk::Semaphore& getVkHandle() const;
 
+protected:
 	/**
-	 * @brief Set stages at which the semaphore will wait for signal. Overwrites current configuration.
-	 *
-	 * @param wait_stages Stages at which the semaphore should wait for signal.
+	 * @brief	Destroy the wrapped Vulkan semaphore handle.
 	 */
-	void setWaitStages(const vk::PipelineStageFlags& wait_stages);
-
-	/**
-	 * @brief Get stages at which the semaphore will wait for signal.
-	 *
-	 * @return Stages at which the semaphore should wait for signal.
-	 */
-	const vk::PipelineStageFlags& getWaitStages() const;
-
-	/**
-	 * @brief Free Vulkan semaphore.
-	 */
-	~Semaphore();
+	void free() override;
 
 private:
-	vk::Device device_; ///< Vulkan logical device.
-	vk::Semaphore semaphore_; ///< Vulkan semaphore handle.
-	vk::PipelineStageFlags wait_stages_; ///< Stages at which the semaphore will wait.
+	using ManagedVkSemaphore = ManagedResource<vk::Device, vk::Semaphore, vk::DispatchLoaderStatic, &vk::Device::destroySemaphore>;
+	std::shared_ptr<ManagedVkSemaphore> vk_semaphore_;
 };
 
 }

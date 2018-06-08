@@ -1,6 +1,6 @@
 #include "program/layout/DescriptorCount.h"
 
-namespace vkr {
+namespace logi {
 
 DescriptorsCount::DescriptorsCount(uint32_t num_sets, uint32_t samplers, uint32_t combined_image_samplers, uint32_t sampled_images, uint32_t storage_images, uint32_t uniform_texel_buffers,
 	uint32_t storage_texel_buffers, uint32_t uniform_buffers, uint32_t storage_buffers, uint32_t uniform_buffers_dynamic, uint32_t storage_buffers_dynamic, uint32_t input_attachments)

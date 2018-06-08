@@ -3,7 +3,7 @@
 
 #include <vulkan/vulkan.hpp>
 
-namespace vkr {
+namespace logi {
 namespace internal {
 
 /**
@@ -73,6 +73,6 @@ private:
 	vk::PushConstantRange vk_handle_;	///< Vulkan handle.
 };
 
-} ///!	namespace vkr 
+} ///!	namespace logi 
 
 #endif ///!	HEADER_GUARD

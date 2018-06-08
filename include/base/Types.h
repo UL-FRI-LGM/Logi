@@ -1,7 +1,7 @@
 #ifndef BASE_TYPES_H
 #define BASE_TYPES_H
 
-namespace vkr {
+namespace logi {
 
 typedef size_t id_t;
 

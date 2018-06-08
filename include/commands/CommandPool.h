@@ -2,69 +2,90 @@
 #define COMMANDS_COMMAND_POOL_H
 #include <vulkan/vulkan.hpp>
 #include "commands/CommandBuffer.h"
-#include <list>
+#include "base/Handle.h"
+#include "base/ManagedResource.h"
 
-namespace vkr {
+namespace logi {
 
-class CommandPool {
+
+
+class CommandPool : public DependentDestroyableHandle {
 public:
-	CommandPool(const vk::Device& device, uint32_t queue_family_index, bool transistent, bool resetable_buffers);
+	/**
+	 * @brief	Creates and initializes Vulkan CommandPool handle.
+	 *
+	 * @param	owner				Pointer to HandleManager responsible for this CommandPool handle.
+	 * @param	device				Vulkan device handle.
+	 * @param	queue_family_index	Index of the queue family.
+	 * @param	flags				Flags indicating usage behavior for the pool and command buffers allocated from it.
+	 */
+	CommandPool(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, uint32_t queue_family_index, const vk::CommandPoolCreateFlags& flags);
 	
 	/**
-	 * @brief Allocates primary CommandBuffer. Primary command buffers cannot be called on their own but are called from the primary command buffers.
+	 * @brief	Allocates Vulkan primary CommandBuffer from the pool and returns a PrimaryCommandBuffer handle that is used to access the buffer.
 	 *
-	 * @return Shared pointer to the allocated secondary CommandBuffer.
+	 * @return	PrimaryCommandBuffer handle.
 	 */
-	std::unique_ptr<PrimaryCommandBuffer> allocatePrimaryCommandBuffer();
+	PrimaryCommandBuffer createPrimaryCommandBuffer() const;
 
 	/**
-	 * @brief Allocates secondary CommandBuffer. Secondary command buffers cannot be called on their own but are called from the primary command buffers.
+	 * @brief	Allocates Vulkan primary CommandBuffer from the pool and returns a PrimaryCommandBuffer handle that is used to access the buffer.
 	 *
-	 * @return Shared pointer to the allocated secondary CommandBuffer.
+	 * @return	SecondaryCommandBuffer handle.
 	 */
-	std::unique_ptr<SecondaryCommmandBuffer> allocateSecondaryCommandBuffer();
+	SecondaryCommmandBuffer createSecondaryCommandBuffer() const;
 
 	/**
-	 * @brief Resets command pool. This effectively invalidates all CommandBuffers produced by this pool.
+	 * @brief	Resets command pool. This frees resources of all CommandBuffers allocated from this pool and puts them in the INITIAL state.
 	 *
-	 * @param release_resources If true the allocated resources will be released too.
+	 * @param	flags	Flags used to control reset operation
 	 */
-	void resetCommandPool(bool release_resources);
+	void reset(const vk::CommandPoolResetFlags& flags) const;
 
 	/**
 	 * @brief Release the given command buffer.
 	 *
 	 * @param command_buffer CommandBuffer to be released.
 	 */
-	void freeCommandBuffer(CommandBuffer*  command_buffer);
+	//void freeCommandBuffer(CommandBuffer*  command_buffer);
 
 	/**
-	 * @brief Returns true if the pool is transistent. Its command buffers are expected do be short lived.
+	 * @brief	Retrieve flags with which the CommandPool has been instantiated.
 	 *
-	 * @raturn True if the buffers are allowed to be reset.
+	 * @return	Command pool flags.
 	 */
-	bool isTransistent() const;
-	
-	/**
-	 * @brief Returns true if the buffers are allowed to be reset.
-	 *
-	 * @raturn True if the buffers are allowed to be reset.
-	 */
-	bool allowsBufferReset() const;
+	const vk::CommandPoolCreateFlags& flags() const;
+
+
+
+protected:
+	std::vector<vk::CommandBuffer> allocateCommandBuffers(vk::CommandBufferLevel level, uint32_t count) const;
 
 	/**
 	 * @brief Free resources.
 	 */
-	~CommandPool();
+	void free() override;
 
-protected:
-	vk::CommandBuffer allocateCommandBuffer(vk::CommandBufferLevel level);
 private:
-	vk::Device device_;
-	vk::CommandPool cmd_pool_;
+	using ManagedVkCommandPool = ManagedResource<vk::Device, vk::CommandPool, vk::DispatchLoaderStatic, &vk::Device::destroyCommandPool>;
 
-	bool transistent_;
-	bool resetable_buffers_;
+	/**
+	 * @brief	Structure containing CommandPool handle data.
+	 */
+	struct CommandPoolData {
+		/**
+		 * @brief	Initializes CommandPoolData members.
+		 *
+		 * @param	flags	Flags indicating usage behavior for the pool and command buffers allocated from it. 
+		 */
+		explicit CommandPoolData(const vk::CommandPoolCreateFlags& flags);
+
+		vk::CommandPoolCreateFlags flags;	///< Flags indicating usage behavior for the pool and command buffers allocated from it.
+	};
+
+	std::shared_ptr<CommandPoolData> data_;				///< CommandPool data.
+	std::shared_ptr<ManagedVkCommandPool> vk_cmd_pool_;	///< Managed vulkan CommandPool handle.
+	std::shared_ptr<HandleManager> handle_manager_;	///< Command buffer handle manager.
 };
 
 }

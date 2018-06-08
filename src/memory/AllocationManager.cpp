@@ -1,149 +1,108 @@
 #include "memory/AllocationManager.h"
 
-namespace vkr {
+namespace logi {
 
-VmaMemoryUsage memoryUsageToVma(const MemoryUsage& usage) {
-	switch (usage) {
-	case MemoryUsage::GPU_ONLY:
-		return VmaMemoryUsage::VMA_MEMORY_USAGE_GPU_ONLY;
-		break;
-	case MemoryUsage::CPU_ONLY:
-		return VmaMemoryUsage::VMA_MEMORY_USAGE_CPU_ONLY;
-		break;
-	case MemoryUsage::CPU_TO_GPU:
-		return VmaMemoryUsage::VMA_MEMORY_USAGE_CPU_TO_GPU;
-		break;
-	case MemoryUsage::GPU_TO_CPU:
-		return VmaMemoryUsage::VMA_MEMORY_USAGE_GPU_TO_CPU;
-		break;
-	}
+
+AllocationManager::AllocationManager() : Handle(false), vk_device_(nullptr), allocator_(nullptr), allocation_handles_(nullptr) {
 }
 
-AllocationManager::AllocationManager(const vk::PhysicalDevice& physical_device, const vk::Device& logical_device) : device_(logical_device), allocated_buffers_(), allocated_images_() {
+AllocationManager::AllocationManager(const vk::PhysicalDevice& physical_device, const vk::Device& logical_device)
+	: vk_device_(logical_device), allocator_(nullptr), allocation_handles_(std::make_shared<HandleManager>()) {
+
 	// Create VMA for the given device.
-	VmaAllocatorCreateInfo allocatorInfo = {};
-	allocatorInfo.physicalDevice = (VkPhysicalDevice) physical_device;
-	allocatorInfo.device = (VkDevice) logical_device;
+	VmaAllocatorCreateInfo allocator_info = {};
+	allocator_info.physicalDevice = static_cast<VkPhysicalDevice>(physical_device);
+	allocator_info.device = static_cast<VkDevice>(logical_device);
 
-	vmaCreateAllocator(&allocatorInfo, &allocator_);
+	vmaCreateAllocator(&allocator_info, &allocator_);
 }
 
-Buffer* AllocationManager::allocateBuffer(const BufferConfiguration& configuration) {
-	vk::BufferCreateInfo buffer_info{};
-	buffer_info.size = configuration.buffer_size;
-	buffer_info.usage = configuration.usage;
+Buffer AllocationManager::createBuffer(const BufferConfiguration& configuration) {
+	// Make sure that AllocationManager is still alive.
+	if (!alive()) {
+		throw std::runtime_error("Tried to allocate image using destroyed AllocationManager.");
+	}
+
+	// Build buffer create info.
+	vk::BufferCreateInfo buffer_ci{};
+	buffer_ci.flags = configuration.flags;
+	buffer_ci.size = configuration.size;
+	buffer_ci.usage = configuration.usage;
 
 	// If the buffer is required to be concurrent add concurrent queue families.
-	if (configuration.concurrent) {
-		buffer_info.sharingMode = vk::SharingMode::eConcurrent;
-		buffer_info.pQueueFamilyIndices = configuration.concurrent_queue_families.data();
-		buffer_info.queueFamilyIndexCount = configuration.concurrent_queue_families.size();
-	}
-	else {
-		buffer_info.sharingMode = vk::SharingMode::eExclusive;
-	}
-
-	// High level usage type.
-	VmaAllocationCreateInfo allocInfo = {};
-	allocInfo.usage = memoryUsageToVma(configuration.memory_usage);
-	
-	// Allocate buffer.
-	VkBuffer buffer;
-	VmaAllocation allocation;
-	
-	if (vmaCreateBuffer(allocator_, reinterpret_cast<const VkBufferCreateInfo*>(&buffer_info), &allocInfo, &buffer, &allocation, nullptr) != VK_SUCCESS) {
-		return nullptr;
-	}
-
-	allocated_buffers_.emplace_back(std::make_unique<Buffer>(device_, allocator_, allocation, vk::Buffer(buffer), configuration));
-
-	return allocated_buffers_.back().get();
-}
-
-void AllocationManager::freeBuffer(Buffer* buffer) {
-	auto it = std::find_if(allocated_buffers_.begin(), allocated_buffers_.end(), [&buffer](std::unique_ptr<Buffer>& entry) {
-		return entry.get() == buffer;
-	});
-
-	// Free the buffer
-	if (it != allocated_buffers_.end()) {
-		VmaAllocation allocation = (*it)->getAllocation();
-		it->reset();
-		vmaFreeMemory(allocator_, allocation);
-		allocated_buffers_.erase(it);
-	}
-}
-
-Image* AllocationManager::allocateImage(const ImageConfiguration& configuration) {
-	// Build image create info.
-	vk::ImageCreateInfo image_info{};
-	image_info.flags = configuration.create_flags;
-	image_info.imageType = configuration.type;
-	image_info.format = configuration.format;
-	image_info.extent = configuration.extent;
-	image_info.mipLevels = configuration.mip_levels;
-	image_info.arrayLayers = configuration.array_layers;
-	image_info.samples = configuration.samples;
-	image_info.tiling = configuration.tiling;
-	image_info.initialLayout = configuration.initial_layout;
-
-	// If the image is required to be concurrent add concurrent queue families.
-	if (configuration.concurrent) {
-		image_info.sharingMode = vk::SharingMode::eConcurrent;
-		image_info.pQueueFamilyIndices = configuration.concurrent_queue_families.data();
-		image_info.queueFamilyIndexCount = configuration.concurrent_queue_families.size();
-	}
-	else {
-		image_info.sharingMode = vk::SharingMode::eExclusive;
+	if (configuration.concurrent_queue_families.size() <= 1u) {
+		buffer_ci.sharingMode = vk::SharingMode::eConcurrent;
+		buffer_ci.pQueueFamilyIndices = configuration.concurrent_queue_families.data();
+		buffer_ci.queueFamilyIndexCount = configuration.concurrent_queue_families.size();
+	} else {
+		buffer_ci.sharingMode = vk::SharingMode::eExclusive;
 	}
 
 	// High level usage type.
-	VmaAllocationCreateInfo allocInfo = {};
-	allocInfo.usage = memoryUsageToVma(configuration.memory_usage);
+	VmaAllocationCreateInfo alloc_info = {};
+	alloc_info.usage = static_cast<VmaMemoryUsage>(configuration.memory_usage);
 
 	// Allocate Image.
-	VkImage image;
+	vk::Buffer buffer;
 	VmaAllocation allocation;
-	if (vmaCreateImage(allocator_, reinterpret_cast<const VkImageCreateInfo*>(&image_info), &allocInfo, &image, &allocation, nullptr) != VK_SUCCESS) {
-		return nullptr;
+	if (vmaCreateBuffer(allocator_, reinterpret_cast<const VkBufferCreateInfo*>(&buffer_ci), &alloc_info, reinterpret_cast<VkBuffer*>(&buffer), &allocation, nullptr) != VK_SUCCESS) {
+		throw std::runtime_error("vmaCreateBuffer failed. TODO: Handle this.");
 	}
 
-	allocated_images_.emplace_back(std::make_unique<Image>(device_, allocator_, allocation, vk::Image(image), configuration));
-
-	return allocated_images_.back().get();
+	// Create and register Buffer handle.
+	return allocation_handles_->createHandle<Buffer>(vk_device_, buffer, allocator_, allocation, configuration);
 }
 
-void AllocationManager::freeImage(Image* image) {
-	
-	auto it = std::find_if(allocated_images_.begin(), allocated_images_.end(), [&image](const std::unique_ptr<Image>& entry) {
-		return entry.get() == image;
-	});
-
-	if (it != allocated_images_.end()) {
-		VmaAllocation allocation = (*it)->getAllocation();
-		it->reset();
-		vmaFreeMemory(allocator_, allocation);
-		allocated_images_.erase(it);
+Image AllocationManager::createImage(const ImageConfiguration& configuration) {
+	// Make sure that AllocationManager is still alive.
+	if (!alive()) {
+		throw std::runtime_error("Tried to allocate image using destroyed AllocationManager.");
 	}
+
+	// Build image create info.
+	vk::ImageCreateInfo image_ci{};
+	image_ci.flags = configuration.create_flags;
+	image_ci.imageType = configuration.type;
+	image_ci.format = configuration.format;
+	image_ci.extent = configuration.extent;
+	image_ci.mipLevels = configuration.mip_levels;
+	image_ci.arrayLayers = configuration.array_layers;
+	image_ci.samples = configuration.samples;
+	image_ci.tiling = configuration.tiling;
+	image_ci.usage = configuration.usage;
+	image_ci.initialLayout = configuration.initial_layout;
+
+	// If the image is required to be concurrent add concurrent queue families.
+	if (configuration.concurrent_queue_families.size() <= 1u) {
+		image_ci.sharingMode = vk::SharingMode::eConcurrent;
+		image_ci.pQueueFamilyIndices = configuration.concurrent_queue_families.data();
+		image_ci.queueFamilyIndexCount = configuration.concurrent_queue_families.size();
+	} else {
+		image_ci.sharingMode = vk::SharingMode::eExclusive;
+	}
+
+
+	// High level usage type.
+	VmaAllocationCreateInfo alloc_info = {};
+	alloc_info.usage = static_cast<VmaMemoryUsage>(configuration.memory_usage);
+
+	// Allocate Image.
+	vk::Image image;
+	VmaAllocation allocation;
+	if (vmaCreateImage(allocator_, reinterpret_cast<const VkImageCreateInfo*>(&image_ci), &alloc_info, reinterpret_cast<VkImage*>(&image), &allocation, nullptr) != VK_SUCCESS) {
+		throw std::runtime_error("vmaCreateImage failed. TODO: Handle this.");
+	}
+
+	// Create and register Image handle.
+	return allocation_handles_->createHandle<Image>(vk_device_, image, allocator_, allocation, configuration);
 }
 
-AllocationManager::~AllocationManager() {
-	// Destroy buffers.
-	for (auto it = allocated_buffers_.begin(); it != allocated_buffers_.end(); it++) {
-		VmaAllocation allocation = (*it)->getAllocation();
-		it->reset();
-		vmaFreeMemory(allocator_, allocation);
+void AllocationManager::free() {
+	if (alive()) {
+		allocation_handles_->destroyAllHandles();
+		vmaDestroyAllocator(allocator_);
+		Handle::free();
 	}
-
-	// Destroy images.
-	for (auto it = allocated_images_.begin(); it != allocated_images_.end(); it++) {
-		VmaAllocation allocation = (*it)->getAllocation();
-		it->reset();
-		vmaFreeMemory(allocator_, allocation);
-	}
-
-	// Destroy the allocator.
-	vmaDestroyAllocator(allocator_);
 }
 
 }

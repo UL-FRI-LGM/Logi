@@ -10,25 +10,24 @@
 #define SWAPCHAIN_H_
 
 #include <vulkan/vulkan.hpp>
-#include <tuple>
 #include "base/VulkanDevice.h"
 #include "queues/QueueFamily.h"
 
-namespace vkr {
+namespace logi {
 
-class SwapChain {
+class SwapChain : public DependentDestroyableHandle {
 public:
 	/**
 	 * @brief Default constructor that initializes SwapChain members to default values.
 	 */
-	SwapChain();
+	SwapChain(std::weak_ptr<HandleManager>& owner, const vk::Device& device, vk::SurfaceKHR& surface, uint32_t present_family, const std::vector<uint32_t>& concurrent_families);
 
 	/**
 	 * @beiwf Set instance and device that will be used by the SwapChain and get all required function pointers
 	 *
 
 	 */
-	void connect(const vk::Instance& instance, VulkanDevice* device);
+	void connect(const vk::Instance& instance, VulkanDevice device);
 
 	/**
 	 * @brief Store surface and initialize the SwapChain. Selects the present queue, color format and color space.
@@ -78,19 +77,18 @@ public:
 	~SwapChain();
 
 private:
-	vk::Instance instance_; ///< Vulkan instance.
-	VulkanDevice* device_; ///< Vulkan device.
+	struct SwapchainData {
+		vk::Device device;
+		vk::SurfaceKHR surface;					///< Surface.
+		vk::SwapchainKHR swapchain;
+		vk::Format color_format;				///< Selected swap chain color format.
+		vk::ColorSpaceKHR color_space;			///< Selected swap chain color space.
 
-	vk::SurfaceKHR surface_; ///< Surface.
-	QueueFamily* present_family_; ///< Family with presentation support.
+		std::vector<vk::Image> images;			///< Swap chain images.
+		std::vector<vk::ImageView> image_views;	///< Views of swap chain images
+	};
 
-	vk::SwapchainKHR swapchain_; ///< Swap chain object.
-	vk::Format color_format_; /// Selected swap chain color format.
-	vk::ColorSpaceKHR color_space_; ///< Selected swap chain color space.
-
-	// Color attachment images
-	std::vector<vk::Image> images_; ///< Swap chain images.
-	std::vector<vk::ImageView> image_views_; ///< Views of swap chain images
+	std::shared_ptr<SwapchainData> data_;
 };
 
 }

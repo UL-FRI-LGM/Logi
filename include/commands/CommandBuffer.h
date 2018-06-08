@@ -2,47 +2,60 @@
 #define COMMANDS_COMMAND_BUFFER_H
 
 #include <vulkan/vulkan.hpp>
+#include "base/Handle.h"
 
-namespace vkr {
+namespace logi {
 
-class CommandBuffer {
+
+class CommandBuffer : public DependentDestroyableHandle {
 public:
-	CommandBuffer(const vk::CommandBuffer& command_buffer, bool resetable);
-
-	virtual ~CommandBuffer() = 0;
+	CommandBuffer(const std::weak_ptr<HandleManager>& owner, const vk::Device& vk_device, const vk::CommandPool& vk_cmd_pool, const vk::CommandBuffer& vk_cmd_buffer, bool resetable);
 	
 	const vk::CommandBuffer& getVkHandle() const;
 
-	void bindPipeline(const vk::Pipeline& pipeline, vk::PipelineBindPoint bind_point);
+	bool isResetable() const;
 
-	void bindDescriptorSets(const vk::PipelineLayout& layout, const vk::PipelineBindPoint& bind_point, uint32_t first_set, const std::vector<vk::DescriptorSet>& descriptor_sets, const std::vector<uint32_t>& dynamic_offsets = {});
+	void destroy() const override;
 
-	void computeDispatch(uint32_t group_count_x, uint32_t group_count_y, uint32_t group_count_z);
-
-	void endCommandBuffer();
-
-	bool isResetable();
+	virtual ~CommandBuffer() = 0;
 
 protected:
-	vk::CommandBuffer command_buffer_;
+	/**
+	 * @brief	Structure used to hold CommandBuffer data.
+	 */
+	struct CommandBufferData {
+		/**
+		 * @brief	Populates CommandBufferData.
+		 *
+		 * @param	vk_device		Vulkan Device handle.
+		 * @param	vk_cmd_pool		Vulkan CommandPool handle.
+		 * @param	vk_cmd_buffer	Vulkan CommandBuffer handle.
+		 * @param	resetable			If true CommandBuffer may be reset.
+		 */
+		CommandBufferData(const vk::Device& vk_device, const vk::CommandPool& vk_cmd_pool, const vk::CommandBuffer& vk_cmd_buffer, bool resetable);
+
+		vk::Device vk_device;				///< Vulkan Device handle.
+		vk::CommandPool vk_cmd_pool;		///< Vulkan CommandPool handle.
+		vk::CommandBuffer vk_cmd_buffer;	///< Vulkan CommandBuffer handle.
+		bool resetable;						///< If true CommandBuffer may be reset.
+	};
+
+	const CommandBufferData& cmdBufferData() const;
 
 private:
-	bool resetable_;
+	std::shared_ptr<CommandBufferData> data_;
 };
 
 
 class PrimaryCommandBuffer : public CommandBuffer {
 public:
-	PrimaryCommandBuffer(const vk::CommandBuffer& command_buffer, bool resetable);
-
-	void beginCommandBuffer(vk::CommandBufferUsageFlags usage_flags);
-
+	PrimaryCommandBuffer(const std::weak_ptr<HandleManager>& owner, const vk::Device& vk_device, const vk::CommandPool& vk_cmd_pool, const vk::CommandBuffer& vk_cmd_buffer, bool resetable);
 };
 
 
 class SecondaryCommmandBuffer : public CommandBuffer {
 public:
-	SecondaryCommmandBuffer(const vk::CommandBuffer& command_buffer, bool resetable);
+	SecondaryCommmandBuffer(const std::weak_ptr<HandleManager>& owner, const vk::Device& vk_device, const vk::CommandPool& vk_cmd_pool, const vk::CommandBuffer& vk_cmd_buffer, bool resetable);
 };
 
 }

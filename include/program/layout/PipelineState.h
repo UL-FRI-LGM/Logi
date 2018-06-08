@@ -7,7 +7,7 @@
 #include <memory>
 #include <optional>
 
-namespace vkr {
+namespace logi {
 
 /**
  * @brief	Used to build the pipeline assembly state configuration.

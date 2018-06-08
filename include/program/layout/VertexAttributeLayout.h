@@ -3,13 +3,12 @@
 
 #include <vulkan/vulkan.hpp>
 
-namespace vkr {
+namespace logi {
 
 /**
  * @brief	Encapsulates vertex attribute layout data.
  */
-class VertexAttributeLayout {
-public:
+struct VertexAttributeLayout {
 	/**
 	 * @brief	Default constructor. Initialize data members.
 	 *
@@ -36,57 +35,14 @@ public:
 	 */
 	vk::VertexInputAttributeDescription getVkAttributeDescription() const;
 
-	/**
-	 * @brief	Retrieve attribute location.
-	 *
-	 * @return	Attribute location.
-	 */
-	uint32_t getLocation() const;
-
-	/**
-	 * @brief	Retrieve attribute binding.
-	 *
-	 * @return	Attribute binding.
-	 */
-	uint32_t getBinding() const;
-
-	/**
-	 * @brief	Retrieve attribute data format.
-	 *
-	 * @return	Attribute data format.
-	 */
-	vk::Format getFormat() const;
-
-	/**
-	 * @brief	Retrieve attribute offset.
-	 *
-	 * @return	Attribute offset.
-	 */
-	uint32_t getOffset() const;
-
-	/**
-	 * @brief	Retrieve attribute stride.
-	 *
-	 * @return	Attribute stride.
-	 */
-	uint32_t getStride() const;
-
-	/**
-	 * @brief	Retrieve attribute input rate.
-	 *
-	 * @return	Attribute location.
-	 */
-	vk::VertexInputRate getInputRate() const;
-
-private:
-	uint32_t location_;					///< Attribute location index.
-	uint32_t binding_;					///< Attribute binding index.
-	vk::Format format_;					///< Attribute data format.
-	uint32_t offset_;					///< Offset in bytes relative to the start of element.
-	uint32_t stride_;					///< Distance in bytes between two consecutive elements.
-	vk::VertexInputRate input_rate_;	///< Per vertex or per instance.
+	uint32_t location;				///< Attribute location index.
+	uint32_t binding;				///< Attribute binding index.
+	vk::Format format;				///< Attribute data format.
+	uint32_t offset;				///< Offset in bytes relative to the start of element.
+	uint32_t stride;				///< Distance in bytes between two consecutive elements.
+	vk::VertexInputRate input_rate;	///< Per vertex or per instance.
 };
 
-} ///!	namespace vkr
+} ///!	namespace logi
 
 #endif ///!	HEADER_GUARD

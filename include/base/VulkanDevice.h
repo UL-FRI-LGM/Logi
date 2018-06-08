@@ -6,53 +6,32 @@
 * This code is licensed under the MIT license (MIT) (http://opensource.org/licenses/MIT)
 */
 
-#ifndef VULKAN_DEVICE_H_
-#define VULKAN_DEVICE_H_
+#ifndef BASE_VULKAN_DEVICE_H_
+#define BASE_VULKAN_DEVICE_H_
 
 #include <vulkan/vulkan.hpp>
 #include <vector>
-#include <set>
-#include <map>
-#include <string>
 #include "queues/QueueFamily.h"
 #include "program/ProgramManager.h"
 #include "descriptors/DescriptorPool.h"
 #include "memory/AllocationManager.h"
 #include "descriptors/DecriptorsUpdate.h"
 
-namespace vkr {
+namespace logi {
 
 /**
-* @brief Structure used to specify queues configuration during initialization of VulkanDevice.
-*/
-struct QueueConfig {
-	const uint32_t graphic_count;  ///< Number of graphic queues.
-	const uint32_t compute_count;  ///< Number of compute queues.
-	const uint32_t transfer_count; ///< Number of transfer queues.
-
-	/**
-	 * @brief Default constructor.
-	 *
-	 * @param graphic_count Number of graphic queues.
-	 * @param compute_count Number of compute queues.
-	 * @param transfer_count Number of transfer queues.
-	 */
-	QueueConfig(uint32_t graphic_count = 0, uint32_t compute_count = 0, uint32_t transfer_count = 0);
-};
-
-
-/**
- * @brief Wraps Vulkan physical and logical device.
+ * @brief	Creates VulkanDevice handle used to manage resources of the given Vulkan physical device.
  */
-class VulkanDevice {
+class VulkanDevice : public DependentDestroyableHandle {
 public:
-#pragma region INITIALIZATION
+	VulkanDevice();
+
 	/**
-	 * @brief Default constructor. Wraps the given physical device and queries its properties.
+	 * @brief	Creates VulkanDevice handle used to manage resources of the given Vulkan physical device.
 	 *
-	 * @param device Physical device that is to be used.
+	 * @param	device	Vulkan PhysicalDevice handle.
 	 */
-	VulkanDevice(vk::PhysicalDevice& device);
+	VulkanDevice(const std::weak_ptr<HandleManager>& owner, vk::PhysicalDevice& device);
 
 	/**
 	 * @brief Initialize Vulkan logical device with the given features and extensions enabled and initialize queues based
@@ -61,103 +40,60 @@ public:
 	 *
 	 * @param features Requested features.
 	 * @param extensions Requested extensions.
-	 * @param queue_config Queue configuration.
+	 * @param queue_counts Queue configuration.
 	 */
-	void initialize(const vk::PhysicalDeviceFeatures& features, const std::vector<char*>& extensions, const QueueConfig& queue_config);
-#pragma endregion
+	void initialize(const vk::PhysicalDeviceFeatures& features, const std::vector<const char*>& extensions, const std::vector<QueueFamilyProperties>& queue_family_configs) const;
 
-#pragma region META DATA GETTERS
 	/**
-	 * @brief Check if the extension is supported by the wrapped physical device.
+	 * @brief	Retrieve extensions supported by this device.
 	 *
-	 * @param Name of the extension.
-	 * @return True if the extension is supported.
+	 * @return	Vector of supported extensions.
 	 */
-	bool extensionSupported(const std::string& extension_name) const;
+	std::vector<vk::ExtensionProperties> supportedExtensions() const;
 
 	/**
-	 * @brief Retrieve device base properties.
+	 * @brief	Retrieve device properties.
 	 *
-	 * @return Device base properties.
+	 * @return	Device properties.
 	 */
-	const vk::PhysicalDeviceProperties& properties() const;
+	vk::PhysicalDeviceProperties properties() const;
 
 	/**
-	 * @brief Retrieve device features.
+	 * @brief	Retrieve device features.
 	 *
-	 * @return Device features.
+	 * @return	Device features.
 	 */
-	const vk::PhysicalDeviceFeatures& features() const;
+	vk::PhysicalDeviceFeatures features() const;
 
 	/**
-	 * @brief Retrieve device memory properties.
+	 * @brief	Retrieve device memory properties.
 	 *
-	 * @return Device memory properties.
+	 * @return	Device memory properties.
 	 */
-	const vk::PhysicalDeviceMemoryProperties& memoryProperties() const;
+	vk::PhysicalDeviceMemoryProperties memoryProperties() const;
 
 	/**
-	* @brief Get number of dedicated graphical queues.
-	* @note Graphical queues also support both compute and transfer operations.
-	*
-	* @return Number of dedicated graphical queues.
-	*/
-	uint32_t getGraphicsQueueCount() const;
-
-	/**
-	* @brief Get number of dedicated compute queues.
-	* @note Compute queues also support transfer operations.
-	*
-	* @return Number of dedicated graphical queues.
-	*/
-	uint32_t getComputeQueueCount() const;
-
-	/**
-	* @brief Get number of dedicated transfer queues.
-	*
-	* @return Number of dedicated transfer queues.
-	*/
-	uint32_t getTransferQueueCount() const;
-#pragma endregion
-
-#pragma region QUEUE FAMILIES
-	/**
-	 * @brief Retrieves dedicated graphic family.
+	 * @brief	Retrieve configurable queue family properties.
 	 *
-	 * @return Pointer to the dedicated graphic family or nullptr if the family is not supported.
+	 * @return	Vector containing configurable queue family properties for all queue families.
 	 */
-	QueueFamily* getGraphicalFamily();
+	std::vector<QueueFamilyProperties> queueFamilyProperties(const vk::SurfaceKHR& surface = {}) const;
 
 	/**
-	 * @brief Retrieves dedicated compute family.
+	 * @brief	Get queue family with the given index.
 	 *
-	 * @return Pointer to the dedicated compute family or nullptr if the family is not supported.
+	 * @param	index	Index of the queue family.
+	 * @return	QueueFamily handle.
 	 */
-	QueueFamily* getComputeFamily();
+	const QueueFamily& getQueueFamily(uint32_t index) const;
 
-	/**
-	 * @brief Retrieves dedicated transfer family.
-	 *
-	 * @return Pointer to the dedicated transfer family or nullptr if the family is not supported.
-	 */
-	QueueFamily* getTransferFamily();
-#pragma endregion
-
-#pragma region DESCRIPTOR POOL
 	/**
 	 * @brief Creates descriptor pool. Allocates enough memory to support creation of as many descriptors of a given type as specified in pool_sizes.
 	 *
 	 * @param pool_sizes Contains number of sets and descriptors of different types.
 	 * @param releasable_sets If true the allocated descriptor sets can be released.
 	 */
-	void createDescriptorPool(const DescriptorsCount& pool_sizes, bool releasable_sets = false);
-
-	/**
-	 * @brief Returns pointer to the descriptor pool. Returns nullptr if descriptor pool was not yet created
-	 *
-	 */
-	DescriptorPool* getDescriptorPool();
-#pragma endregion
+	DescriptorPool createDescriptorPool(const DescriptorsCount& pool_sizes, const vk::DescriptorPoolCreateFlags& flags = {});
 
 	void executeDescriptorsUpdate(const DescriptorsUpdate& update) const;
 
@@ -166,9 +102,9 @@ public:
 	 */
 	bool initialized() const;
 
-	ProgramManager* getProgramManager();
+	const ProgramManager& getProgramManager() const;
 
-	AllocationManager* getAllocationManager();
+	const AllocationManager&  getAllocationManager() const;
 
 	/**
 	 * @brief Retrieve physical device handle.
@@ -187,34 +123,29 @@ public:
 	/**
 	 * @brief Frees resources.
 	 */
-	~VulkanDevice();
+	void free() override;
 
 private:
-	// Vulkan device handles.
-	vk::PhysicalDevice physical_device_; ///< Physical device handle.
-	vk::Device logical_device_; ///< Logical device handle.
+	struct DeviceData {
+		DeviceData(const vk::PhysicalDevice& physical_device);
 
-	// Device properties.
-	vk::PhysicalDeviceProperties device_properties_; ///< Structure specifying physical device properties.
-	vk::PhysicalDeviceFeatures device_features_; ///< Structure describing the fine-grained features that can be supported by an implementation.
-	vk::PhysicalDeviceMemoryProperties memory_properties_; ///< Structure specifying physical device memory properties.
-	std::set<std::string> available_extensions_; ///< List of supported extensions.
+		vk::PhysicalDevice physical_device;				///< Physical device handle.
+		vk::Device logical_device{ nullptr };			///< Logical device handle.
+		vk::PhysicalDeviceFeatures enabled_features{};	///< Enabled features.
+		std::vector<const char*> enabled_extensions{};	///< Enabled extensions.
 
-	// Enabled features.
-	vk::PhysicalDeviceFeatures enabled_features_; ///< Features enabled during logical device creation.
+		ProgramManager program_manager{};
+		AllocationManager allocation_manager{};
+		std::vector<QueueFamily> queue_families_{};		///< Vector of queue families.
 
-	// Dedicated queue families.
-	std::unique_ptr<QueueFamily> graphical_family_;
-	std::unique_ptr<QueueFamily> compute_family_;
-	std::unique_ptr<QueueFamily> transfer_family_;
+		bool initialized_{ false };						///< Is device initialized.
+	};
 
-	std::unique_ptr<ProgramManager> program_manager_;
-	std::unique_ptr<DescriptorPool> descriptor_pool_;
-	std::unique_ptr<AllocationManager> allocation_manager_;
+	std::shared_ptr<DeviceData> data_;
+	std::shared_ptr<HandleManager> handle_manager_;
 
-	bool initialized_; ///< Is device initialized.
 };
 
-} /// !namespace vkr
+} /// !namespace logi
 
 #endif // !VULKAN_DEVICE_H_

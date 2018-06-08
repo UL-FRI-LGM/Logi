@@ -1,6 +1,6 @@
 #include "program/render_pass/RenderPassLayout.h"
 
-namespace vkr {
+namespace logi {
 
 RenderPassLayout::RenderPassLayout(size_t attachment_count, size_t subpass_count) : attachments_(attachment_count, vk::AttachmentDescription()), subpasses_(subpass_count, SubpassLayout()), vk_subpasses_(), dependencies_() {
 

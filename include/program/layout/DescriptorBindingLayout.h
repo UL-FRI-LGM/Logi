@@ -2,8 +2,9 @@
 #define PROGRAM_LAYOUT_DESCRIPTOR_BINDING_LAYOUT_H
 
 #include <vulkan/vulkan.hpp>
+#include "base/ManagedResource.h"
 
-namespace vkr {
+namespace logi {
 namespace internal {
 
 /**
@@ -31,8 +32,7 @@ struct DescriptorBindingInitializer {
 /**
  * @brief	Wraps Vulkan DescriptorBindingLayout data.
  */
-class DescriptorBindingLayout {
-public:
+struct DescriptorBindingLayout final {
 	/**
 	 * @brief	Initializes members with the given values.
 	 *
@@ -41,48 +41,18 @@ public:
 	DescriptorBindingLayout(const internal::DescriptorBindingInitializer& binding_initializer);
 
 	/**
-	 * @brief	Retrieve binding index.
-	 *
-	 * @return	Binding index.
-	 */
-	uint32_t getBinding() const;
-
-	/**
-	 * @brief	Retrieve binding descriptor type.
-	 *
-	 * @return	Binding descriptor type.
-	 */
-	vk::DescriptorType getDescriptorType() const;
-
-	/**
-	 * @brief	Retrieve binding count.
-	 *
-	 * @return	Binding count.
-	 */
-	uint32_t getCount() const;
-
-	/**
-	 * @brief	Retrieve stages in which the binding will be available.
-	 *
-	 * @return	Binding stages.
-	 */
-	const vk::ShaderStageFlags& getShaderStages() const;
-
-	/**
 	 * @brief	Build Vulkan binding structure from the data.
 	 *
 	 * @return	Vulkan binding structure.
 	 */
-	const vk::DescriptorSetLayoutBinding& getVkHandle() const;
+	vk::DescriptorSetLayoutBinding createVkBinding() const;
 
-private:
-	uint32_t binding_;							///< Binding index.
-	vk::DescriptorType type_;					///< Binding descriptor type.
-	uint32_t count_;							///< Number of array entries.
-	vk::ShaderStageFlags stages_;				///< Stages in which the binding should be available.
-	vk::DescriptorSetLayoutBinding vk_handle_;	///< Vulkan handle.
+	const uint32_t binding;				///< Binding index.
+	const vk::DescriptorType type;		///< Binding descriptor type.
+	const uint32_t	count;				///< Number of array entries.
+	const vk::ShaderStageFlags stages;	///< Stages in which the binding should be available.
 };
 
-} ///!	namespace vkr
+} ///!	namespace logi
 
 #endif ///!	HEADER_GUARD

@@ -1,6 +1,6 @@
 #include "program/layout/PushConstantRange.h"
 
-namespace vkr {
+namespace logi {
 namespace internal {
 
 PushConstantRangeInitializer::PushConstantRangeInitializer(uint32_t offset, uint32_t size, vk::ShaderStageFlags stages) : offset(offset), size(size), stages(stages) {

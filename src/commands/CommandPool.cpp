@@ -2,73 +2,58 @@
 #include "commands/CommandBuffer.h"
 #include <vulkan/vulkan.hpp>
 
-namespace vkr {
+namespace logi {
 
-CommandPool::CommandPool(const vk::Device& device, uint32_t queue_family_index, bool transistent, bool resetable_buffers) : device_(device), cmd_pool_(nullptr), transistent_(transistent), resetable_buffers_(resetable_buffers) {
-	vk::CommandPoolCreateFlags flags{};
+CommandPool::CommandPool(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const uint32_t queue_family_index, const vk::CommandPoolCreateFlags& flags) 
+	: DependentDestroyableHandle(owner), data_(std::make_shared<CommandPoolData>(flags)), handle_manager_(std::make_shared<HandleManager>()) {
 
-	// Transistent bit indicates that command buffers allocated from the pool will be short - lived.
-	if (transistent) {
-		flags |= vk::CommandPoolCreateFlagBits::eTransient;
-	}
-
-	// Allows any command buffer allocated from a pool to be individually reset to the initial state.
-	if (resetable_buffers) {
-		flags |= vk::CommandPoolCreateFlagBits::eResetCommandBuffer;
-	}
-	
 	// Create command pool.
 	vk::CommandPoolCreateInfo pool_ci{};
-	pool_ci.flags = flags;
+	pool_ci.flags = data_->flags;
 	pool_ci.queueFamilyIndex = queue_family_index;
 	
-	cmd_pool_ = device.createCommandPool(pool_ci);
+	vk_cmd_pool_ = std::make_shared<ManagedVkCommandPool>(device, device.createCommandPool(pool_ci));
 }
 
-vk::CommandBuffer CommandPool::allocateCommandBuffer(vk::CommandBufferLevel level) {
-	vk::CommandBufferAllocateInfo commandBufferAllocateInfo{};
-	commandBufferAllocateInfo.commandPool = cmd_pool_;
-	commandBufferAllocateInfo.level = level;
-	commandBufferAllocateInfo.commandBufferCount = 1;
+std::vector<vk::CommandBuffer> CommandPool::allocateCommandBuffers(const vk::CommandBufferLevel level, const uint32_t count) const {
+	vk::CommandBufferAllocateInfo allocate_info{};
+	allocate_info.commandPool = vk_cmd_pool_->get();
+	allocate_info.level = level;
+	allocate_info.commandBufferCount = count;
 
-	// Allocate the buffer from the pool.
-	vk::CommandBuffer command_buffer;
-	device_.allocateCommandBuffers(&commandBufferAllocateInfo, &command_buffer);
-
-	return command_buffer;
+	// Allocate buffers from the pool.
+	return vk_cmd_pool_->getOwner().allocateCommandBuffers(allocate_info);
 }
 
-std::unique_ptr<PrimaryCommandBuffer> CommandPool::allocatePrimaryCommandBuffer() {
-	return std::make_unique<PrimaryCommandBuffer>(allocateCommandBuffer(vk::CommandBufferLevel::ePrimary), resetable_buffers_);
+PrimaryCommandBuffer CommandPool::createPrimaryCommandBuffer() const {
+	vk::CommandBuffer buffer = allocateCommandBuffers(vk::CommandBufferLevel::ePrimary, 1u)[0];
+
+	return handle_manager_->createHandle<PrimaryCommandBuffer>(vk_cmd_pool_->getOwner(), vk_cmd_pool_->get(), buffer, static_cast<bool>(data_->flags & vk::CommandPoolCreateFlagBits::eResetCommandBuffer));
 }
 
-std::unique_ptr<SecondaryCommmandBuffer> CommandPool::allocateSecondaryCommandBuffer() {
-	return std::make_unique<SecondaryCommmandBuffer>(allocateCommandBuffer(vk::CommandBufferLevel::eSecondary), resetable_buffers_);
+SecondaryCommmandBuffer CommandPool::createSecondaryCommandBuffer() const {
+	vk::CommandBuffer buffer = allocateCommandBuffers(vk::CommandBufferLevel::eSecondary, 1u)[0];
+
+	return handle_manager_->createHandle<SecondaryCommmandBuffer>(vk_cmd_pool_->getOwner(), vk_cmd_pool_->get(), buffer, static_cast<bool>(data_->flags & vk::CommandPoolCreateFlagBits::eResetCommandBuffer));
 }
 
-void CommandPool::resetCommandPool(bool release_resources) {
-	if (release_resources) {
-		device_.resetCommandPool(cmd_pool_, vk::CommandPoolResetFlagBits::eReleaseResources);
+void CommandPool::reset(const vk::CommandPoolResetFlags& flags) const {
+	if (!alive()) {
+		throw std::runtime_error("Called 'reset' on destroyed CommandPool.");
 	}
-	else {
-		device_.resetCommandPool(cmd_pool_, vk::CommandPoolResetFlags());
-	}
+
+	vk_cmd_pool_->getOwner().resetCommandPool(vk_cmd_pool_->get(), flags);
 }
 
-void CommandPool::freeCommandBuffer(CommandBuffer* command_buffer) {
-	device_.freeCommandBuffers(cmd_pool_, command_buffer->getVkHandle());
+const vk::CommandPoolCreateFlags& CommandPool::flags() const {
+	return data_->flags;
 }
 
-bool CommandPool::isTransistent() const {
-	return transistent_;
+void CommandPool::free() {
+	handle_manager_->destroyAllHandles();
+	vk_cmd_pool_->destroy();
 }
 
-bool CommandPool::allowsBufferReset() const {
-	return resetable_buffers_;
-}
-
-CommandPool::~CommandPool() {
-	device_.destroyCommandPool(cmd_pool_);
-}
+CommandPool::CommandPoolData::CommandPoolData(const vk::CommandPoolCreateFlags& flags) : flags(flags) {}
 
 } /// !namespace vkr

@@ -10,19 +10,18 @@
 #define DESCRIPTORS_DESCRIPTORS_UPDATE_H
 
 #include <vulkan/vulkan.hpp>
-#include <list>
 #include "descriptors/DescriptorPool.h"
 #include "memory/Buffer.h"
 
-namespace vkr {
+namespace logi {
 
 class DescriptorsUpdate {
 public:
 	DescriptorsUpdate();
 
-	void copyDescriptorSet(const DescriptorSet* src_set, uint32_t src_binding, uint32_t src_array_element, const DescriptorSet* dst_set, uint32_t dst_binding, uint32_t dst_array_element, uint32_t descriptor_count);
+	void copyDescriptorSet(const DescriptorSet& src_set, uint32_t src_binding, uint32_t src_array_element, const DescriptorSet& dst_set, uint32_t dst_binding, uint32_t dst_array_element, uint32_t descriptor_count);
 
-	void writeBufferToDescriptorSet(const DescriptorSet* dst_set, uint32_t dst_binding, uint32_t dst_array_element, Buffer* buffer, vk::DeviceSize offset, vk::DeviceSize range);
+	void writeBufferToDescriptorSet(const DescriptorSet& dst_set, uint32_t dst_binding, uint32_t dst_array_element, const Buffer& buffer, vk::DeviceSize offset, vk::DeviceSize range);
 
 	const std::vector<vk::CopyDescriptorSet>& getCopyOperations() const;
 

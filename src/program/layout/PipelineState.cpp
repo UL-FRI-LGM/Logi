@@ -1,6 +1,6 @@
 #include "program/layout/PipelineState.h"
 
-namespace vkr {
+namespace logi {
 
 #pragma region InputAssemblyState
 
@@ -333,8 +333,22 @@ bool ColorBlendState::operator==(const ColorBlendState& other) const {
 	return enable_logic_op == other.enable_logic_op && logic_op == other.logic_op && attachment_states == other.attachment_states && blend_constants == other.blend_constants;
 }
 
-vk::PipelineColorBlendStateCreateInfo * ColorBlendState::buildCreateInfo() {
-	return nullptr;
+vk::PipelineColorBlendStateCreateInfo* ColorBlendState::buildCreateInfo() {
+	vk_create_info_.logicOpEnable = enable_logic_op;
+	vk_create_info_.logicOp = logic_op;
+	vk_create_info_.attachmentCount = attachment_states.size();
+	vk_create_info_.pAttachments = attachment_states.data();
+	std::copy(vk_create_info_.blendConstants, vk_create_info_.blendConstants + 4, blend_constants.data());
+
+	const void** next = &vk_create_info_.pNext;
+
+	if (advanced_state.has_value()) {
+		vk::PipelineColorBlendAdvancedStateCreateInfoEXT* advanced_state_p = advanced_state.value().buildCreateInfo();
+		*next = static_cast<const void*>(advanced_state_p);
+		next = &advanced_state_p->pNext;
+	}
+
+	return &vk_create_info_;
 }
 
 #pragma endregion

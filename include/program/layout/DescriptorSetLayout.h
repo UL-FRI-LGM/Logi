@@ -4,19 +4,21 @@
 #include <vulkan/vulkan.hpp>
 #include "program/layout/DescriptorCount.h"
 #include "program/layout/DescriptorBindingLayout.h"
+#include "base/ManagedResource.h"
+#include "base/Handle.h"
 
-namespace vkr {
+namespace logi {
 
 /**
  * @brief	Wraps Vulkan DescriptorBindingLayout data.
  */
-class DescriptorSetLayout {
+class DescriptorSetLayout : public Handle {
 public:
 	/**
 	 * @brief	Default constructor.
 	 *
 	 * @param	device					Logical device.
-	 * @param	binding_initializers	Structures used to populate DescriptorBindingLayouts.
+	 * @param	binding_intializers	Structures used to populate DescriptorBindingLayouts.
 	 */
 	DescriptorSetLayout(const vk::Device& device, const std::vector<internal::DescriptorBindingInitializer>& binding_intializers);
 
@@ -26,7 +28,7 @@ public:
 	 * @param	binding	Binding index.
 	 * @return	Pointer to the DescriptorBindingLayout or nullptr if the DescriptorBindingLayout with the give binding index does not exist.
 	 */
-	const DescriptorBindingLayout* getDescriptorBinding(uint32_t binding) const;
+	const DescriptorBindingLayout& getDescriptorBinding(uint32_t binding) const;
 
 	/**
 	 * @brief	Get DescriptorSetLayout
@@ -40,26 +42,23 @@ public:
 	 */
 	const DescriptorsCount& getDescriptorsCount() const;
 
-	/**
-	 * @brief	Free Vulkan resources.
-	 */
-	~DescriptorSetLayout();
-
 protected:
 	/**
 	 * @brief	Increment descriptor count of a given type.
 	 *
 	 * @param	type	Descriptor type.
 	 */
-	void incrementDescriptorCount(const vk::DescriptorType& type);
+	void incrementDescriptorCount(const vk::DescriptorType& type) const;
 
+	void free() override;
 private:
-	vk::Device device_;													///< Logical device.
-	vk::DescriptorSetLayout vk_handle_;									///< Vulkan descriptor set layout handle.
-	std::vector<std::unique_ptr<DescriptorBindingLayout>> bindings_;	///< Descriptor bindings in this set (bindings may be defined sparsely).
-	DescriptorsCount descriptors_count_;								///< Descriptor count
+	using ManagedVkDescriptorSetLayout = ManagedResource<vk::Device, vk::DescriptorSetLayout, vk::DispatchLoaderStatic, &vk::Device::destroyDescriptorSetLayout>;
+
+	std::shared_ptr<ManagedVkDescriptorSetLayout> vk_descriptor_set_layout_ = nullptr;
+	std::shared_ptr<std::vector<DescriptorBindingLayout>> bindings_;			///< Descriptor bindings in this set (bindings may be defined sparsely).
+	std::shared_ptr<DescriptorsCount> descriptors_count_;						///< Descriptor count
 };
 
-}	///!	namespace vkr
+}	///!	namespace logi
 
 #endif ///!	HEADER_GUARD
