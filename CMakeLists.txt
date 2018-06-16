@@ -1,12 +1,15 @@
 cmake_minimum_required (VERSION 3.6)
 
 # Metadata
-project(VulkanEngine)
+project(Logi VERSION 0.1 LANGUAGES CXX)
 
 # C++ 17 SUPPORT
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Add path to CMake custom modules.
+list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_SOURCE_DIR}/cmake_modules")
 
 # C++ Google Test
 set(BUILD_TESTS ON)
@@ -17,57 +20,17 @@ endif(MSVC)
 
 option(BUILD_DOC "Build documentation" ON)
 
-##########################################################
-##################### CMAKE MODULES ######################
-##########################################################
-
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
-
-##########################################################
-####################### LIBRARIES ########################
-##########################################################
-
-# Libraries path
-set(LIB_DIR ${PROJECT_SOURCE_DIR}/libs)
-
-# GLFW Library
-set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-add_subdirectory(${LIB_DIR}/glfw)
-link_libraries(glfw ${GLFW_LIBRARIES})
-
-# GLM
-include_directories(${LIB_DIR}/glm)
+##############################################
+# DEPENDENCIES
+##############################################
 
 # Vulkan
 find_package(Vulkan REQUIRED)
 include_directories(${VULKAN_INCLUDE_DIR})
 
-# Json
-include_directories(${LIB_DIR}/json)
-
-# VMA - Vulkan Memory Allocator
-include_directories(${LIB_DIR}/vma)
-
-include_directories(${LIB_DIR}/spirv-cross)
-add_subdirectory(${LIB_DIR}/spirv-cross)
-
-##########################################################
-####################### SOURCES ##########################
-##########################################################
-
-include_directories(${PROJECT_SOURCE_DIR}/include)
-
-file(GLOB_RECURSE SRC_LIST "src/*.cpp")
-list(REMOVE_ITEM SRC_LIST "src/main.cpp")
-
-# Build VKR library
-add_library(vkr STATIC ${SRC_LIST})
-target_link_libraries(vkr ${VULKAN_LIBRARY} spirv-cross)
-
-add_executable(${PROJECT_NAME} "src/main.cpp")
-target_link_libraries(${PROJECT_NAME} ${VULKAN_LIBRARY} vkr glfw)
+# Libraries path
+add_subdirectory(${PROJECT_SOURCE_DIR}/libs)
+add_subdirectory(${PROJECT_SOURCE_DIR}/src)
 
 ##########################################################
 ###################### RESOURCES #########################
