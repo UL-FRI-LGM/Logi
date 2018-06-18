@@ -16,68 +16,27 @@
 #include "descriptors/DescriptorPool.h"
 #include "memory/AllocationManager.h"
 #include "descriptors/DecriptorsUpdate.h"
+#include "base/SwapChain.h"
 
 namespace logi {
 
 /**
  * @brief	Creates VulkanDevice handle used to manage resources of the given Vulkan physical device.
  */
-class VulkanDevice : public DependentDestroyableHandle {
+class LogicalDevice : public DependentDestroyableHandle {
 public:
-	VulkanDevice();
+	LogicalDevice();
 
 	/**
 	 * @brief	Creates VulkanDevice handle used to manage resources of the given Vulkan physical device.
 	 *
-	 * @param	device	Vulkan PhysicalDevice handle.
+	 * @param	owner			Handle owner.
+	 * @param	device			Vulkan PhysicalDevice handle.
+	 * @param	qfamily_configs	Vector containing configurations for queue families.
+	 * @param	extensions		Requested extensions.
+	 * @param	features		Requested features.
 	 */
-	VulkanDevice(const std::weak_ptr<HandleManager>& owner, vk::PhysicalDevice& device);
-
-	/**
-	 * @brief Initialize Vulkan logical device with the given features and extensions enabled and initialize queues based
-	 * on the given configuration.
-	 * @throw std::runtime_error if anything goes wrong during initialization.
-	 *
-	 * @param features Requested features.
-	 * @param extensions Requested extensions.
-	 * @param queue_counts Queue configuration.
-	 */
-	void initialize(const vk::PhysicalDeviceFeatures& features, const std::vector<const char*>& extensions, const std::vector<QueueFamilyProperties>& queue_family_configs) const;
-
-	/**
-	 * @brief	Retrieve extensions supported by this device.
-	 *
-	 * @return	Vector of supported extensions.
-	 */
-	std::vector<vk::ExtensionProperties> supportedExtensions() const;
-
-	/**
-	 * @brief	Retrieve device properties.
-	 *
-	 * @return	Device properties.
-	 */
-	vk::PhysicalDeviceProperties properties() const;
-
-	/**
-	 * @brief	Retrieve device features.
-	 *
-	 * @return	Device features.
-	 */
-	vk::PhysicalDeviceFeatures features() const;
-
-	/**
-	 * @brief	Retrieve device memory properties.
-	 *
-	 * @return	Device memory properties.
-	 */
-	vk::PhysicalDeviceMemoryProperties memoryProperties() const;
-
-	/**
-	 * @brief	Retrieve configurable queue family properties.
-	 *
-	 * @return	Vector containing configurable queue family properties for all queue families.
-	 */
-	std::vector<QueueFamilyProperties> queueFamilyProperties(const vk::SurfaceKHR& surface = {}) const;
+	LogicalDevice(const std::weak_ptr<HandleManager>& owner, vk::PhysicalDevice& device, std::vector<QueueFamilyConfig>& qfamily_configs, const std::vector<const char*>& extensions, const vk::PhysicalDeviceFeatures& features);
 
 	/**
 	 * @brief	Get queue family with the given index.
@@ -93,14 +52,9 @@ public:
 	 * @param pool_sizes Contains number of sets and descriptors of different types.
 	 * @param releasable_sets If true the allocated descriptor sets can be released.
 	 */
-	DescriptorPool createDescriptorPool(const DescriptorsCount& pool_sizes, const vk::DescriptorPoolCreateFlags& flags = {});
+	DescriptorPool createDescriptorPool(const DescriptorsCount& pool_sizes, const vk::DescriptorPoolCreateFlags& flags = {}) const;
 
 	void executeDescriptorsUpdate(const DescriptorsUpdate& update) const;
-
-	/**
-	 * @brief Check if the device is initialized.
-	 */
-	bool initialized() const;
 
 	const ProgramManager& getProgramManager() const;
 
@@ -120,6 +74,17 @@ public:
 	 */
 	const vk::Device& getLogicalDeviceHandle() const;
 
+	SwapChain createSwapchain(const vk::SurfaceKHR& surface, uint32_t present_family, const std::vector<uint32_t>& concurrent_families = {}) const;
+
+	Semaphore createSemaphore(const vk::SemaphoreCreateFlags& flags = {}) const;
+
+	Fence createFence(const vk::FenceCreateFlags& flags = {}) const;
+
+	void waitIdle() const;
+
+	vk::Result waitForFences(const std::vector<Fence>& fences, bool wait_all, uint64_t timeout) const;
+
+protected:
 	/**
 	 * @brief Frees resources.
 	 */
@@ -127,23 +92,20 @@ public:
 
 private:
 	struct DeviceData {
-		DeviceData(const vk::PhysicalDevice& physical_device);
+		DeviceData(const vk::PhysicalDevice& physical_device, const std::vector<const char*>& enabled_extensions, const vk::PhysicalDeviceFeatures& enabled_features);
 
 		vk::PhysicalDevice physical_device;				///< Physical device handle.
 		vk::Device logical_device{ nullptr };			///< Logical device handle.
-		vk::PhysicalDeviceFeatures enabled_features{};	///< Enabled features.
 		std::vector<const char*> enabled_extensions{};	///< Enabled extensions.
+		vk::PhysicalDeviceFeatures enabled_features{};	///< Enabled features.
 
 		ProgramManager program_manager{};
 		AllocationManager allocation_manager{};
 		std::vector<QueueFamily> queue_families_{};		///< Vector of queue families.
-
-		bool initialized_{ false };						///< Is device initialized.
 	};
 
 	std::shared_ptr<DeviceData> data_;
 	std::shared_ptr<HandleManager> handle_manager_;
-
 };
 
 } /// !namespace logi

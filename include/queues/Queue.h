@@ -18,6 +18,9 @@ namespace logi {
 
 class Queue : public Handle {
 public:
+	// TODO: Fix this. .alive() should return false when instantiated with default constructor.
+	Queue() = default;
+
 	/**
 	* @brief	Default constructor.
 	*
@@ -44,6 +47,8 @@ public:
 	* @brief	Wait for the queue to finish.
 	*/
 	void waitIdle() const;
+
+	const vk::Queue& getVkHandle() const;
 
 private:
 	vk::Queue queue_;	///< Vulkan queue handle.

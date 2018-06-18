@@ -10,31 +10,23 @@
 #define SWAPCHAIN_H_
 
 #include <vulkan/vulkan.hpp>
-#include "base/VulkanDevice.h"
-#include "queues/QueueFamily.h"
+#include "synchronization/Semaphore.h"
+#include "memory/ImageView.h"
+#include "queues/Queue.h"
 
 namespace logi {
 
 class SwapChain : public DependentDestroyableHandle {
 public:
 	/**
+	 * @brief	Default placeholder constructor.
+	 */
+	SwapChain();
+
+	/**
 	 * @brief Default constructor that initializes SwapChain members to default values.
 	 */
-	SwapChain(std::weak_ptr<HandleManager>& owner, const vk::Device& device, vk::SurfaceKHR& surface, uint32_t present_family, const std::vector<uint32_t>& concurrent_families);
-
-	/**
-	 * @beiwf Set instance and device that will be used by the SwapChain and get all required function pointers
-	 *
-
-	 */
-	void connect(const vk::Instance& instance, VulkanDevice device);
-
-	/**
-	 * @brief Store surface and initialize the SwapChain. Selects the present queue, color format and color space.
-	 *
-	 * @param surface Vulkan KHR surface.
-	 */
-	void init(vk::SurfaceKHR surface);
+	SwapChain(std::weak_ptr<HandleManager>& owner, const vk::PhysicalDevice& physical_device, const vk::Device& device, const vk::SurfaceKHR& surface, uint32_t present_family, const std::vector<uint32_t>& concurrent_families);
 
 	/**
 	 * @brief Create the SwapChain and retrieve images with the given width and height. Width and height may change to meet
@@ -44,7 +36,7 @@ public:
 	 * @param height Requested SwapChain height.
 	 * @param vsync Should v-sync be enabled.
 	 */
-	void create(uint32_t& width, uint32_t& height, bool vsync = false);
+	void create(uint32_t& width, uint32_t& height, bool vsync = false) const;
 	
 	/**
 	 * @brief Acquires the next image in the swap chain.
@@ -53,7 +45,9 @@ public:
 	 * @param present_complete_semaphore (Optional) Semaphore that is signaled when the image is ready for use.
 	 * @return Tuple containing the result of the operation and index of the next image (valid if the operation was successful)
 	 */
-	vk::ResultValue<uint32_t> acquireNextImage(vk::Semaphore present_complete_semaphore = nullptr);
+	vk::ResultValue<uint32_t> acquireNextImage(const Semaphore&  present_complete_semaphore = {}) const;
+
+	const std::vector<ImageView>& getImageViews() const;
 
 	/**
 	 * @brief Queue an image for presentation.
@@ -64,31 +58,38 @@ public:
 	 *
 	 * @return Result of the queue presentation.
 	 */
-	vk::Result queuePresent(vk::Queue queue, uint32_t image_index, vk::Semaphore wait_semaphore = nullptr);
+	vk::Result queuePresent(const Queue& queue, const Semaphore& wait_semaphore = {}) const;
 
+	vk::Format getColorFormat() const;
+
+protected:
 	/**
 	 * @brief Clean up swap chain data, surface data and disconnect from the device.
 	 */
-	void cleanup();
-
-	/**
-	 * @brief Default destructor that calls cleanup.
-	 */
-	~SwapChain();
+	void free() override;
 
 private:
 	struct SwapchainData {
+		SwapchainData(const vk::PhysicalDevice& physical_device, const vk::Device& device, const vk::SurfaceKHR& surface,
+			uint32_t present_family, std::vector<uint32_t> concurrent_families);
+
+		vk::PhysicalDevice physical_device;
 		vk::Device device;
 		vk::SurfaceKHR surface;					///< Surface.
-		vk::SwapchainKHR swapchain;
-		vk::Format color_format;				///< Selected swap chain color format.
-		vk::ColorSpaceKHR color_space;			///< Selected swap chain color space.
+		uint32_t present_family;
+		std::vector<uint32_t> concurrent_families;
 
-		std::vector<vk::Image> images;			///< Swap chain images.
-		std::vector<vk::ImageView> image_views;	///< Views of swap chain images
+		vk::SwapchainKHR swapchain{};
+		vk::Format color_format{};				///< Selected swap chain color format.
+		vk::ColorSpaceKHR color_space{};		///< Selected swap chain color space.
+
+		std::vector<vk::Image> images{};		///< Swap chain images.
+		std::vector<ImageView> image_views{};	///< Views of swap chain images
+		uint32_t acquired_image_index{};
 	};
 
 	std::shared_ptr<SwapchainData> data_;
+	std::shared_ptr<HandleManager> image_view_hm;
 };
 
 }

@@ -3,38 +3,31 @@
 namespace logi {
 
 
-QueueFamilyProperties::QueueFamilyProperties(const uint32_t family_index, const vk::QueueFamilyProperties& properties, const bool supports_present)
+QueueFamilyProperties::QueueFamilyProperties(const uint32_t family_index, const vk::QueueFamilyProperties& properties)
 	: family_index(family_index), queue_flags(properties.queueFlags), max_queue_count(properties.queueCount), timestamp_valid_bits(properties.timestampValidBits),
-	min_image_transfer_granularity(properties.minImageTransferGranularity), supports_present(supports_present) {}
-
-void QueueFamilyProperties::configure(const uint32_t queue_count, const vk::DeviceQueueCreateFlags& create_flags, std::optional<const std::vector<float>> queue_priorities) {
-	this->create_flags = create_flags;
-	this->queue_count = queue_count;
-
-	// If queue properties are not provided set all to 0.
-	if (queue_priorities.has_value()) {
-		this->queue_priorities = queue_priorities.value();
-	} else {
-		this->queue_priorities = std::vector<float>(queue_count, 0.0f);
-	}
-}
+	min_image_transfer_granularity(properties.minImageTransferGranularity) {}
 
 
-QueueFamily::QueueFamily(const vk::Device device, const QueueFamilyProperties& configuration)
-	: data_(std::make_shared<QueueFamilyData>(device, configuration)) {
+QueueFamilyConfig::QueueFamilyConfig(const QueueFamilyProperties& properties, uint32_t queue_count, const std::vector<float>& priorities, const vk::DeviceQueueCreateFlags& flags)
+	: properties(properties), flags(flags), queue_count(queue_count), priorities(priorities) {}
+
+
+
+QueueFamily::QueueFamily(const vk::Device device, const QueueFamilyConfig& configuration)
+	: data_(std::make_shared<QueueFamilyData>(device, configuration)), handle_manager_(std::make_shared<HandleManager>()) {
 
 	// Create queues.
 	data_->queues.reserve(configuration.queue_count);
 	for (size_t i = 0; i < configuration.queue_count; i++) {
-		data_->queues.emplace_back(data_->handle_manager.createHandle<Queue>(data_->vk_device.getQueue(configuration.family_index, i)));
+		data_->queues.emplace_back(handle_manager_->createHandle<Queue>(data_->vk_device.getQueue(data_->configuration.properties.family_index, i)));
 	}
 }
 
 CommandPool QueueFamily::createCommandPool(const vk::CommandPoolCreateFlags& flags) const {
-	return data_->handle_manager.createHandle<CommandPool>(data_->vk_device, data_->configuration.family_index, flags);
+	return handle_manager_->createHandle<CommandPool>(data_->vk_device, data_->configuration.properties.family_index, flags);
 }
 
-const QueueFamilyProperties& QueueFamily::properties() const {
+const QueueFamilyConfig& QueueFamily::configuration() const {
 	return data_->configuration;
 }
 
@@ -43,11 +36,11 @@ Queue QueueFamily::getQueue(const size_t index) const {
 }
 
 void QueueFamily::free() {
-	data_->handle_manager.destroyAllHandles();
+	handle_manager_->destroyAllHandles();
 	Handle::free();
 }
 
-QueueFamily::QueueFamilyData::QueueFamilyData(const vk::Device& vk_device, const QueueFamilyProperties& configuration)
-	: vk_device(vk_device), configuration(configuration) { }
+QueueFamily::QueueFamilyData::QueueFamilyData(const vk::Device& vk_device, const QueueFamilyConfig& config)
+	: vk_device(vk_device), configuration(config) { }
 
 }

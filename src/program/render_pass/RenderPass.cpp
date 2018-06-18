@@ -1,5 +1,5 @@
+#include <utility>
 #include "program/render_pass/RenderPass.h"
-#include "program/render_pass/GraphicalPipeline.h"
 
 namespace logi {
 
@@ -14,6 +14,11 @@ vk::Extent2D RenderPass::renderAreaGranularity() const {
 	return data_->vk_render_pass.getOwner().getRenderAreaGranularity(data_->vk_render_pass.get());
 }
 
+Framebuffer RenderPass::createFramebuffer(const std::vector<ImageView>& attachments, uint32_t width, uint32_t height,
+	uint32_t layers, const vk::FramebufferCreateFlags& flags) const {
+	return handle_manager_->createHandle<Framebuffer>(data_->vk_render_pass.getOwner(), data_->vk_render_pass.get(), attachments, width, height, layers, flags);
+}
+
 vk::RenderPass RenderPass::getVkHandle() const {
 	return data_->vk_render_pass.get();
 }
@@ -22,7 +27,7 @@ GraphicalPipeline RenderPass::addGraphicalPipeline(const vk::Pipeline& pipeline,
 	return handle_manager_->createHandle<GraphicalPipeline>(data_->vk_render_pass.getOwner(), pipeline, layout, state);
 }
 
-RenderPass::RenderPassData::RenderPassData(const RenderPassLayout& layout)
-	: layout(layout) { }
+RenderPass::RenderPassData::RenderPassData(RenderPassLayout layout)
+	: layout(std::move(layout)) { }
 
 }

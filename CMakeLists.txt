@@ -1,7 +1,8 @@
 cmake_minimum_required (VERSION 3.6)
+cmake_policy(SET CMP0048 NEW)
 
 # Metadata
-project(Logi VERSION 0.1 LANGUAGES CXX)
+project(Logi VERSION 0.1.0 LANGUAGES CXX)
 
 # C++ 17 SUPPORT
 set(CMAKE_CXX_STANDARD 17)
@@ -12,35 +13,27 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_SOURCE_DIR}/cmake_modules")
 
 # C++ Google Test
-set(BUILD_TESTS ON)
+option(BUILD_TESTS "Build tests." ON)
+option(BUILD_DOC "Build documentation" ON)
+option(BUILD_EXAMPLES "Build examples" ON)
 
 if(MSVC)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
 endif(MSVC)
 
-option(BUILD_DOC "Build documentation" ON)
-
 ##############################################
-# DEPENDENCIES
-##############################################
-
-# Vulkan
-find_package(Vulkan REQUIRED)
-include_directories(${VULKAN_INCLUDE_DIR})
+# BUILD LOGI LIBRARY
+############################################## 
 
 # Libraries path
 add_subdirectory(${PROJECT_SOURCE_DIR}/libs)
+
+include_directories(${PROJECT_SOURCE_DIR}/include)
 add_subdirectory(${PROJECT_SOURCE_DIR}/src)
 
-##########################################################
-###################### RESOURCES #########################
-##########################################################
-
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_SOURCE_DIR}/resources
-        $<TARGET_FILE_DIR:${PROJECT_NAME}>/resources)
-
+if (BUILD_EXAMPLES)
+	add_subdirectory(examples)
+endif (BUILD_EXAMPLES)
 
 ##########################################################
 ####################### DOXYGEN ##########################
@@ -70,9 +63,10 @@ if (BUILD_DOC)
 	endif (DOXYGEN_FOUND)
 endif (BUILD_DOC)
 
-##########################################################
-####################### DOXYGEN ##########################
-##########################################################
+##############################################
+# TESTS
+##############################################
+
 if (BUILD_TESTS)
 	enable_testing()
 	add_subdirectory(test)

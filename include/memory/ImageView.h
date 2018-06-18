@@ -24,14 +24,14 @@ struct ImageViewConfiguration {
 	 * @param	base_array_layer	First array layer accessible to the view.
 	 * @param	layer_count			Number of array layers (starting from base_array_layer) accessible to the view.
 	 */
-	ImageViewConfiguration(const vk::ImageViewType view_type, const vk::Format format, const vk::ComponentMapping& component_mapping,
-	                       vk::ImageAspectFlags& aspect_mask, const uint32_t base_mip_level, const uint32_t mip_level_count,
-	                       const uint32_t base_array_layer, const uint32_t layer_count);
+	ImageViewConfiguration(vk::ImageViewType view_type = {}, vk::Format format = {}, vk::ComponentMapping component_mapping = {},
+	                       vk::ImageAspectFlags aspect_mask = {}, uint32_t base_mip_level = {}, uint32_t mip_level_count = {},
+	                       uint32_t base_array_layer = {}, uint32_t layer_count = {});
 
 	vk::ImageViewType view_type;			///< Image view type.
 	vk::Format format;						///< Image view element format.
 	vk::ComponentMapping component_mapping;	///< Specifies remapping of color components.
-	vk::ImageAspectFlags& aspect_mask;		///< Specifies which aspect(s) of the image are included in the view.
+	vk::ImageAspectFlags aspect_mask;		///< Specifies which aspect(s) of the image are included in the view.
 	uint32_t base_mip_level;				///< First mipmap level accessible to the view.
 	uint32_t mip_level_count;				///< Number of mipmap levels (starting from base_mip_level) accessible to the view.
 	uint32_t base_array_layer;				///< First array layer accessible to the view.

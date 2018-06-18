@@ -49,6 +49,7 @@ struct ImageConfiguration {
 	std::vector<uint32_t> concurrent_queue_families;	///< Vector of QueueFamily indices. These QueueFamilies will be allowed to concurrently use the image.
 };
 
+
 /**
  * @brief	Handle used to access Vulkan Image resource.
  */

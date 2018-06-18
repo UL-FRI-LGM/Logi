@@ -2,6 +2,8 @@
 
 namespace logi {
 
+Semaphore::Semaphore() : DependentDestroyableHandle({}, false), vk_semaphore_(nullptr) {}
+
 Semaphore::Semaphore(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const vk::SemaphoreCreateFlags& flags)
 	: DependentDestroyableHandle(owner), vk_semaphore_(nullptr) {
 	vk::SemaphoreCreateInfo semaphore_ci{};
@@ -9,7 +11,6 @@ Semaphore::Semaphore(const std::weak_ptr<HandleManager>& owner, const vk::Device
 
 	vk_semaphore_ = std::make_shared<ManagedVkSemaphore>(device, device.createSemaphore(semaphore_ci));
 }
-
 
 const vk::Semaphore& Semaphore::getVkHandle() const {
 	if (!alive()) {

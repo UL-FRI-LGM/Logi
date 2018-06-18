@@ -13,7 +13,7 @@
 #include <memory>
 #include <vector>
 #include <functional>
-#include "base/VulkanDevice.h"
+#include "base/PhysicalDevice.h"
 
 namespace logi {
 
@@ -41,13 +41,13 @@ public:
 
 	VulkanInstance(const ApplicationInfo& application_info, const InstanceConfiguration& configuration);
 
-	void setupDebugCallback(const vk::DebugReportFlagsEXT& flags, PFN_vkDebugReportCallbackEXT callback);
+	void setupDebugCallback(const vk::DebugReportFlagsEXT& flags, PFN_vkDebugReportCallbackEXT callback) const;
 
 	const ApplicationInfo& applicationInfo() const;
 
 	const InstanceConfiguration& configuration() const;
 
-	const std::vector<VulkanDevice>& devices() const;
+	const std::vector<PhysicalDevice>& devices() const;
 
 	const vk::Instance& getVkHandle() const;
 
@@ -69,7 +69,7 @@ private:
 		vk::Instance vk_instance{};
 		ApplicationInfo application_info;
 		InstanceConfiguration configuration;
-		std::vector<VulkanDevice> devices{};
+		std::vector<PhysicalDevice> physical_devices{};
 		std::vector<vk::DebugReportCallbackEXT> debug_callbacks{};
 	};
 

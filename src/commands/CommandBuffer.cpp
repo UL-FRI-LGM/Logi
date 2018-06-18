@@ -2,9 +2,10 @@
 
 namespace logi {
 
+CommandBuffer::CommandBuffer() : DependentDestroyableHandle({}, false) {}
+
 CommandBuffer::CommandBuffer(const std::weak_ptr<HandleManager>& owner, const vk::Device& vk_device, const vk::CommandPool& vk_cmd_pool, const vk::CommandBuffer& vk_cmd_buffer, bool resetable)
 	: DependentDestroyableHandle(owner), data_(std::make_shared<CommandBufferData>(vk_device, vk_cmd_pool, vk_cmd_buffer, resetable)) { }
-
 
 CommandBuffer::CommandBufferData::CommandBufferData(const vk::Device& vk_device, const vk::CommandPool& vk_cmd_pool, const vk::CommandBuffer& vk_cmd_buffer, bool resetable)
 	: vk_device(vk_device), vk_cmd_pool(vk_cmd_pool), vk_cmd_buffer(vk_cmd_buffer), resetable(resetable) { }

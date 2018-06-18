@@ -6,43 +6,24 @@
 * This code is licensed under the MIT license (MIT) (http://opensource.org/licenses/MIT)
 */
 
+#include <utility>
 #include "base/SwapChain.h"
-#include <assert.h>
 
 namespace logi {
 
-SwapChain::SwapChain(std::weak_ptr<HandleManager>& owner, const vk::Device& device, vk::SurfaceKHR& surface, uint32_t present_family, const std::vector<uint32_t>& concurrent_families)
-	: DependentDestroyableHandle(owner), device_(device){
-	// Store instance and device pointer.
-	instance_ = instance;
-	device_ = device;
-};
+SwapChain::SwapChain() : DependentDestroyableHandle({}, false) {}
 
-void SwapChain::init(vk::SurfaceKHR surface) {
-	// Store surface.
-	surface_ = surface;
-
-	VkBool32 present_support = false;
-	std::vector<QueueFamily*> queue_families = { device_->getGraphicalFamily(), device_->getComputeFamily(), device_->getTransferFamily() };
-
-	for (QueueFamily* family : queue_families) {
-		if (family != nullptr) {
-			device_->getPhysicalDeviceHandle().getSurfaceSupportKHR(family->getFamilyIndex(), surface, &present_support);
-
-			if (present_support) {
-				present_family_ = family;
-				break;
-			}
-		}
-	}
+SwapChain::SwapChain(std::weak_ptr<HandleManager>& owner, const vk::PhysicalDevice& physical_device, const vk::Device& device, const vk::SurfaceKHR& surface, const uint32_t present_family, const std::vector<uint32_t>& concurrent_families)
+	: DependentDestroyableHandle(owner), data_(std::make_shared<SwapchainData>(physical_device, device, surface, present_family, concurrent_families)), image_view_hm(std::make_shared<HandleManager>()) {
 
 	// Check if family with present support was found.
+	const bool present_support = physical_device.getSurfaceSupportKHR(present_family, surface);
 	if (!present_support) {
-		throw std::runtime_error("Failed to find queue family with present support.");
+		throw std::runtime_error("Given present family does not support presentation on the given surface.");
 	}
 
 	// Get list of supported surface formats
-	std::vector<vk::SurfaceFormatKHR> surface_formats = device_->getPhysicalDeviceHandle().getSurfaceFormatsKHR(surface_);
+	std::vector<vk::SurfaceFormatKHR> surface_formats = physical_device.getSurfaceFormatsKHR(surface);
 
 	if (surface_formats.empty()) {
 		throw std::runtime_error("Failed to retrieve supported surface formats.");
@@ -50,16 +31,16 @@ void SwapChain::init(vk::SurfaceKHR surface) {
 
 	// If the surface format list only includes one entry with VK_FORMAT_UNDEFINED, there is no preferred format, so we assume VK_FORMAT_B8G8R8A8_UNORM.
 	if ((surface_formats.size() == 1) && (surface_formats[0].format == vk::Format::eUndefined)) {
-		color_format_ = vk::Format::eB8G8R8A8Unorm;
-		color_space_ = vk::ColorSpaceKHR(surface_formats[0].colorSpace);
+		data_->color_format = vk::Format::eB8G8R8A8Unorm;
+		data_->color_space = vk::ColorSpaceKHR(surface_formats[0].colorSpace);
 	}
 	else {
 		// Try to find the preferred VK_FORMAT_B8G8R8A8_UNORM format.
 		bool found_B8G8R8A8_UNORM = false;
 		for (auto& surface_format : surface_formats) {
 			if (surface_format.format == vk::Format::eB8G8R8A8Unorm) {
-				color_format_ = surface_format.format;
-				color_space_ = surface_format.colorSpace;
+				data_->color_format = surface_format.format;
+				data_->color_space = surface_format.colorSpace;
 				found_B8G8R8A8_UNORM = true;
 				break;
 			}
@@ -67,33 +48,25 @@ void SwapChain::init(vk::SurfaceKHR surface) {
 
 		// If VK_FORMAT_B8G8R8A8_UNORM format is not available select the first available color format.
 		if (!found_B8G8R8A8_UNORM) {
-			color_format_ = surface_formats[0].format;
-			color_space_ = surface_formats[0].colorSpace;
+			data_->color_format = surface_formats[0].format;
+			data_->color_space = surface_formats[0].colorSpace;
 		}
 	}
-}
+};
 
-void SwapChain::create(uint32_t& width, uint32_t& height, bool vsync) {
-	if (!device_->initialized()) {
-		std::runtime_error("Tried to create SwapChain with uninitialized device.");
-	}
 
-	vk::PhysicalDevice physical_device = device_->getPhysicalDeviceHandle();
-	vk::Device logical_device = device_->getLogicalDeviceHandle();
-	vk::SwapchainKHR old_swapchain = swapchain_;
+void SwapChain::create(uint32_t& width, uint32_t& height, const bool vsync) const {
+
+	const vk::PhysicalDevice& physical_device = data_->physical_device;
+	const vk::SurfaceKHR& surface = data_->surface;
+	const vk::Device& device = data_->device;
+	const vk::SwapchainKHR old_swapchain = data_->swapchain;
 
 	// Get physical device surface properties and formats.
-	vk::SurfaceCapabilitiesKHR surface_capabilites = physical_device.getSurfaceCapabilitiesKHR(surface_);
-
-	// Get supported present modes.
-	std::vector<vk::PresentModeKHR> present_modes = physical_device.getSurfacePresentModesKHR(surface_);
-
-	if (present_modes.empty()) {
-		throw std::runtime_error("Failed to retrieve supported present modes.");
-	}
+	const vk::SurfaceCapabilitiesKHR surface_capabilites = physical_device.getSurfaceCapabilitiesKHR(surface);
 
 	// Create SwapChain extent.
-	vk::Extent2D swapchain_extent{};
+	vk::Extent2D swapchain_extent;
 	// If width (and height) equals the special value 0xFFFFFFFF, the size of the surface will be set by the SwapChain.
 	if (surface_capabilites.currentExtent.width == static_cast<uint32_t>(-1)) {
 		// If the surface size is undefined, the size is set to the size of the images requested.
@@ -107,19 +80,20 @@ void SwapChain::create(uint32_t& width, uint32_t& height, bool vsync) {
 		height = surface_capabilites.currentExtent.height;
 	}
 
-
 	// Select a present mode for the SwapChain.
 	// The VK_PRESENT_MODE_FIFO_KHR mode must always be present as per spec. This mode waits for the vertical blank ("v-sync")
 	vk::PresentModeKHR swapchain_present_mode = vk::PresentModeKHR::eFifo;
 
 	// If v-sync is not requested, try to find a mailbox mode. It's the lowest latency non-tearing present mode available
 	if (!vsync) {
-		for (size_t i = 0; i < present_modes.size(); i++) {
-			if (present_modes[i] == vk::PresentModeKHR::eMailbox) {
+		std::vector<vk::PresentModeKHR> present_modes = physical_device.getSurfacePresentModesKHR(surface);
+
+		for (auto& present_mode : present_modes) {
+			if (present_mode == vk::PresentModeKHR::eMailbox) {
 				swapchain_present_mode = vk::PresentModeKHR::eMailbox;
 				break;
 			}
-			else if (present_modes[i] == vk::PresentModeKHR::eImmediate) {
+			if (present_mode == vk::PresentModeKHR::eImmediate) {
 				swapchain_present_mode = vk::PresentModeKHR::eImmediate;
 			}
 		}
@@ -160,126 +134,134 @@ void SwapChain::create(uint32_t& width, uint32_t& height, bool vsync) {
 		};
 	}
 
-
 	// Swapchain creation
 	vk::SwapchainCreateInfoKHR swapchain_ci = {};
 	swapchain_ci.pNext = nullptr;
-	swapchain_ci.surface = surface_;
+	swapchain_ci.surface = surface;
 	swapchain_ci.minImageCount = num_swapchain_images;
-	swapchain_ci.imageFormat = color_format_;
-	swapchain_ci.imageColorSpace = color_space_;
+	swapchain_ci.imageFormat = data_->color_format;
+	swapchain_ci.imageColorSpace = data_->color_space;
 	swapchain_ci.imageExtent = vk::Extent2D(swapchain_extent.width, swapchain_extent.height);
 	swapchain_ci.imageUsage = vk::ImageUsageFlagBits::eColorAttachment;
 	swapchain_ci.preTransform = pre_transform;
 	swapchain_ci.imageArrayLayers = 1;
 
-	if (present_family_ == device_->getGraphicalFamily()) {
+	if (data_->concurrent_families.size() == 1u) {
 		swapchain_ci.imageSharingMode = vk::SharingMode::eExclusive;
 		swapchain_ci.queueFamilyIndexCount = 0;
-		swapchain_ci.pQueueFamilyIndices = NULL;
+		swapchain_ci.pQueueFamilyIndices = nullptr;
 	}
 	else {
-		uint32_t family_indices[] = { device_->getGraphicalFamily()->getFamilyIndex(), present_family_->getFamilyIndex() };
 		swapchain_ci.imageSharingMode = vk::SharingMode::eConcurrent;
-		swapchain_ci.queueFamilyIndexCount = 2;
-		swapchain_ci.pQueueFamilyIndices = family_indices;
+		swapchain_ci.queueFamilyIndexCount = data_->concurrent_families.size();
+		swapchain_ci.pQueueFamilyIndices = data_->concurrent_families.data();
 	}
 
 	swapchain_ci.presentMode = swapchain_present_mode;
 	swapchain_ci.oldSwapchain = old_swapchain;
 	// Setting clipped to VK_TRUE allows the implementation to discard rendering outside of the surface area
-	swapchain_ci.clipped = VK_TRUE;
+	swapchain_ci.clipped = true;
 	swapchain_ci.compositeAlpha = composite_alpha;
 
 	// Set additional usage flag for blitting from the swapchain images if supported
-	vk::FormatProperties format_properties;
-	physical_device.getFormatProperties(color_format_, &format_properties);
+	const vk::FormatProperties format_properties = physical_device.getFormatProperties(data_->color_format);
 
 	if ((format_properties.optimalTilingFeatures & vk::FormatFeatureFlagBits::eTransferSrcKHR) || (format_properties.optimalTilingFeatures & vk::FormatFeatureFlagBits::eBlitSrc)) {
 		swapchain_ci.imageUsage |= vk::ImageUsageFlagBits::eTransferSrc;
 	}
 
 	// Create SwapChain.
-	swapchain_ = logical_device.createSwapchainKHR(swapchain_ci);
+	data_->swapchain = device.createSwapchainKHR(swapchain_ci);
 
 	// If an existing swap chain is re-created, destroy the old swap chain
 	// This also cleans up all the presentable images
 	if (old_swapchain) {
-		for (uint32_t i = 0; i < images_.size(); i++) {
-			device_->getLogicalDeviceHandle().destroyImageView(image_views_[i]);
-		}
-		logical_device.destroySwapchainKHR(old_swapchain);
+		// Destroy old image views.
+		image_view_hm->destroyAllHandles();
+		device.destroySwapchainKHR(old_swapchain);
 	}
 
-	images_ = logical_device.getSwapchainImagesKHR(swapchain_);
+	data_->images = device.getSwapchainImagesKHR(data_->swapchain);
 
 	// Get the swap chain buffers containing the image and imageview
-	image_views_.clear();
-	for (uint32_t i = 0; i < images_.size(); i++) {
-		vk::ImageViewCreateInfo color_attachment_view_ci{};
-		color_attachment_view_ci.pNext = NULL;
-		color_attachment_view_ci.format = color_format_;
-		color_attachment_view_ci.components = {
+	data_->image_views.clear();
+	for (const vk::Image& image : data_->images) {
+		ImageViewConfiguration iv_config{};
+		iv_config.format = data_->color_format;
+		iv_config.component_mapping = {
 			vk::ComponentSwizzle::eR,
 			vk::ComponentSwizzle::eG,
 			vk::ComponentSwizzle::eB,
 			vk::ComponentSwizzle::eA
 		};
-		color_attachment_view_ci.subresourceRange.aspectMask = vk::ImageAspectFlagBits::eColor;
-		color_attachment_view_ci.subresourceRange.baseMipLevel = 0;
-		color_attachment_view_ci.subresourceRange.levelCount = 1;
-		color_attachment_view_ci.subresourceRange.baseArrayLayer = 0;
-		color_attachment_view_ci.subresourceRange.layerCount = 1;
-		color_attachment_view_ci.viewType = vk::ImageViewType::e2D;
-		color_attachment_view_ci.image = images_[i];
-
-		image_views_.push_back(device_->getLogicalDeviceHandle().createImageView(color_attachment_view_ci));
-	}
-}
-
-void SwapChain::cleanup() {
-	if (swapchain_) {
-		for (uint32_t i = 0; i < images_.size(); i++) {
-			device_->getLogicalDeviceHandle().destroyImageView(image_views_[i]);
-		}
-
-		// Clear images
-		image_views_.clear();
-		images_.clear();
+		iv_config.aspect_mask = vk::ImageAspectFlagBits::eColor;
+		iv_config.base_mip_level = 0;
+		iv_config.mip_level_count = 1;
+		iv_config.base_array_layer = 0;
+		iv_config.layer_count = 1;
+		iv_config.view_type = vk::ImageViewType::e2D;
+		
+		data_->image_views.push_back(image_view_hm->createHandle<ImageView>(device, image, iv_config));
 	}
 
-	if (surface_) {
-		device_->getLogicalDeviceHandle().destroySwapchainKHR(swapchain_);
+	// Set image index out of range.
+	data_->acquired_image_index = data_->image_views.size();
+}
+
+void SwapChain::free() {
+	if (data_->swapchain) {
+		image_view_hm->destroyAllHandles();
+		data_->device.destroySwapchainKHR(data_->swapchain);
 	}
 
-	present_family_ = nullptr;
-	surface_ = nullptr;
-	swapchain_ = nullptr;
-	device_ = nullptr;
+	DependentDestroyableHandle::free();
 }
 
-vk::ResultValue<uint32_t> SwapChain::acquireNextImage(vk::Semaphore present_complete_semaphore) {
-	device_->getLogicalDeviceHandle().acquireNextImageKHR(swapchain_, UINT64_MAX, present_complete_semaphore, nullptr);
+vk::ResultValue<uint32_t> SwapChain::acquireNextImage(const Semaphore& present_complete_semaphore) const {
+	const vk::ResultValue<uint32_t> index = data_->device.acquireNextImageKHR(data_->swapchain, UINT64_MAX, present_complete_semaphore.getVkHandle(), nullptr);
 
-	return device_->getLogicalDeviceHandle().acquireNextImageKHR(swapchain_, UINT64_MAX, present_complete_semaphore, nullptr);
+	// If image was successfully acqiured, store image index.
+	if (index.result == vk::Result::eSuccess) {
+		data_->acquired_image_index = index.value;
+	}
+
+	return index;
 }
 
-vk::Result SwapChain::queuePresent(vk::Queue queue, uint32_t image_index, vk::Semaphore wait_semaphore) {
+const std::vector<ImageView>& SwapChain::getImageViews() const {
+	return data_->image_views;
+}
+
+vk::Result SwapChain::queuePresent(const Queue& queue, const Semaphore& wait_semaphore) const {
+	if (data_->acquired_image_index >= data_->image_views.size()) {
+		throw std::runtime_error("Tried to get ImageView before successfully acquiring image.");
+	}
+
 	vk::PresentInfoKHR present_info{};
-	present_info.pNext = NULL;
 	present_info.swapchainCount = 1;
-	present_info.pSwapchains = &swapchain_;
-	present_info.pImageIndices = &image_index;
+	present_info.pSwapchains = &data_->swapchain;
+	present_info.pImageIndices = &data_->acquired_image_index;
 	// Check if a wait semaphore has been specified to wait for before presenting the image
 	if (wait_semaphore) {
-		present_info.pWaitSemaphores = &wait_semaphore;
+		present_info.pWaitSemaphores = &wait_semaphore.getVkHandle();
 		present_info.waitSemaphoreCount = 1;
 	}
 
-	return queue.presentKHR(present_info);
+	return queue.getVkHandle().presentKHR(present_info);
 }
 
-SwapChain::~SwapChain() {
+vk::Format SwapChain::getColorFormat() const {
+	return data_->color_format;
+}
+
+SwapChain::SwapchainData::SwapchainData(const vk::PhysicalDevice& physical_device, const vk::Device& device, 
+	const vk::SurfaceKHR& surface, uint32_t present_family, std::vector<uint32_t> concurrent_families)
+	: physical_device(physical_device), device(device), surface(surface), present_family(present_family), concurrent_families(std::move(concurrent_families)) {
+
+	// If present family is not among concurrent families add it.
+	if (std::find(this->concurrent_families.begin(), this->concurrent_families.end(), present_family) == this->concurrent_families.end()) {
+		this->concurrent_families.emplace_back(present_family);
+	}
 }
 
 }

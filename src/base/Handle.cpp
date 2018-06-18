@@ -35,7 +35,7 @@ DestroyableHandle::DestroyableHandle(bool alive)
 	: Handle(true) { }
 
 void DestroyableHandle::destroy() {
-	Handle::free();
+	free();
 }
 
 DependentDestroyableHandle::DependentDestroyableHandle(std::weak_ptr<HandleManager> owner, const bool alive) : Handle(alive), owner_(std::move(owner)) {}
@@ -57,7 +57,7 @@ void HandleManager::destroyHandle(const Handle& handle) {
 	// If the handle was found free its resources and erase it. TODO(plavric): Is this check necessary?
 	auto it = handles_.find(handle.id());
 	if (it != handles_.end()) {
-		it->second.free();
+		it->second->free();
 		handles_.erase(it);
 	}
 }
@@ -67,7 +67,7 @@ void HandleManager::destroyAllHandles() {
 
 	// Remove all handles.
 	for (auto& handle : handles_) {
-		handle.second.free();
+		handle.second->free();
 	}
 	handles_.clear();
 }

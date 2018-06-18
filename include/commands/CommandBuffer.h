@@ -9,8 +9,11 @@ namespace logi {
 
 class CommandBuffer : public DependentDestroyableHandle {
 public:
+	CommandBuffer();
+
 	CommandBuffer(const std::weak_ptr<HandleManager>& owner, const vk::Device& vk_device, const vk::CommandPool& vk_cmd_pool, const vk::CommandBuffer& vk_cmd_buffer, bool resetable);
-	
+
+
 	const vk::CommandBuffer& getVkHandle() const;
 
 	bool isResetable() const;
@@ -49,12 +52,16 @@ private:
 
 class PrimaryCommandBuffer : public CommandBuffer {
 public:
+	PrimaryCommandBuffer() = default;
+
 	PrimaryCommandBuffer(const std::weak_ptr<HandleManager>& owner, const vk::Device& vk_device, const vk::CommandPool& vk_cmd_pool, const vk::CommandBuffer& vk_cmd_buffer, bool resetable);
 };
 
 
 class SecondaryCommmandBuffer : public CommandBuffer {
 public:
+	SecondaryCommmandBuffer() = default;
+
 	SecondaryCommmandBuffer(const std::weak_ptr<HandleManager>& owner, const vk::Device& vk_device, const vk::CommandPool& vk_cmd_pool, const vk::CommandBuffer& vk_cmd_buffer, bool resetable);
 };
 

@@ -10,6 +10,11 @@ namespace logi {
 class Fence : public DependentDestroyableHandle {
 public:
 	/**
+	 * @brief	Default placeholder constructor.
+	 */
+	Fence();
+
+	/**
 	* @brief	Create a handle used to access Vulkan fence object.
 	*
 	* @param	owner	HandleManager responsible for this handle.

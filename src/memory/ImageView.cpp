@@ -2,11 +2,11 @@
 
 namespace logi {
 
-ImageViewConfiguration::ImageViewConfiguration(const vk::ImageViewType view_type, const vk::Format format, const vk::ComponentMapping& component_mapping,
-											   vk::ImageAspectFlags& aspect_mask, const uint32_t base_mip_level,
+ImageViewConfiguration::ImageViewConfiguration(const vk::ImageViewType view_type, const vk::Format format, const vk::ComponentMapping component_mapping,
+											   vk::ImageAspectFlags aspect_mask, const uint32_t base_mip_level,
 											   const uint32_t mip_level_count, const uint32_t base_array_layer, 
 											   const uint32_t layer_count)
-	: view_type(view_type), format(format), component_mapping(component_mapping), aspect_mask(aspect_mask),
+	: view_type(view_type), format(format), component_mapping(std::move(component_mapping)), aspect_mask(std::move(aspect_mask)),
 	base_mip_level(base_mip_level), mip_level_count(mip_level_count), base_array_layer(base_array_layer), layer_count(layer_count) {}
 
 

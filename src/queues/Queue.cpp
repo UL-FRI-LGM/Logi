@@ -28,5 +28,9 @@ void Queue::waitIdle() const {
 	queue_.waitIdle();
 }
 
+const vk::Queue& Queue::getVkHandle() const {
+	return queue_;
+}
+
 
 }

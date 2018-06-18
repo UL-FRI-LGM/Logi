@@ -382,6 +382,11 @@ vk::PipelineDynamicStateCreateInfo* DynamicState::buildCreateInfo() {
 	if (ext_discard_rectangle) { dynamic_states_.emplace_back(vk::DynamicState::eDiscardRectangleEXT); }
 	if (ext_sample_locations) { dynamic_states_.emplace_back(vk::DynamicState::eSampleLocationsEXT); }
 
+	// If no dynamic states are present nullptr should be returned.
+	if (dynamic_states_.empty()) {
+		return nullptr;
+	}
+
 	vk_create_info_ = vk::PipelineDynamicStateCreateInfo(vk::PipelineDynamicStateCreateFlags(), dynamic_states_.size(), (dynamic_states_.empty()) ? nullptr : &dynamic_states_[0]);
 	return &vk_create_info_;
 }

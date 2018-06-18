@@ -39,18 +39,6 @@ VulkanInstance::VulkanInstance(const ApplicationInfo& application_info, const In
 
 	vk::InstanceCreateInfo instance_ci{};
 	instance_ci.pApplicationInfo = &vk_app_info;
-
-
-
-	// Initialize requested extensions.
-	// Add debug report extension if the validation is enabled.
-	if (config.enable_validation) {
-		// Add debug report extension if not present.
-		if (std::find(config.extensions.begin(), config.extensions.end(), VK_EXT_DEBUG_REPORT_EXTENSION_NAME) == config.extensions.end()) {
-			config.extensions.push_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
-		}
-	}
-
 	instance_ci.enabledExtensionCount = static_cast<uint32_t>(config.extensions.size());
 	instance_ci.ppEnabledExtensionNames = config.extensions.data();
 
@@ -59,7 +47,7 @@ VulkanInstance::VulkanInstance(const ApplicationInfo& application_info, const In
 		std::vector<const char*>& layers = config.validation_layers;
 
 		// Check if the requested validation layers are supported.
-		if (config.enable_validation && !checkValidationLayerSupport(layers)) {
+		if (!checkValidationLayerSupport(layers)) {
 			throw std::runtime_error("Requested validation layers are not supported!");
 		}
 
@@ -78,21 +66,17 @@ VulkanInstance::VulkanInstance(const ApplicationInfo& application_info, const In
 
 	// Create Vulkan device handles.
 	for (vk::PhysicalDevice& p_dev : physical_devices) {
-		data_->devices.emplace_back(handle_manager_->createHandle<VulkanDevice>(p_dev));
+		data_->physical_devices.emplace_back(handle_manager_->createHandle<PhysicalDevice>(p_dev));
 	}
 }
 
-void VulkanInstance::setupDebugCallback(const vk::DebugReportFlagsEXT& flags, PFN_vkDebugReportCallbackEXT callback) {
-	// Validation must be enabled in order to setup a debug callback.
-	if (!vkr::debug_utils::kEnableValidation) {
-		return;
-	}
+void VulkanInstance::setupDebugCallback(const vk::DebugReportFlagsEXT& flags, PFN_vkDebugReportCallbackEXT callback) const {
 
 	// Generate callback create info
-	VkDebugReportCallbackCreateInfoEXT createInfo{};
-	createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
-	createInfo.flags = static_cast<VkDebugReportFlagsEXT>(flags);
-	createInfo.pfnCallback = callback;
+	VkDebugReportCallbackCreateInfoEXT create_info{};
+	create_info.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
+	create_info.flags = static_cast<VkDebugReportFlagsEXT>(flags);
+	create_info.pfnCallback = callback;
 
 	// Setup callback.
 	auto setup_callback_fn = reinterpret_cast<PFN_vkCreateDebugReportCallbackEXT>(data_->vk_instance.getProcAddr("vkCreateDebugReportCallbackEXT"));
@@ -103,7 +87,7 @@ void VulkanInstance::setupDebugCallback(const vk::DebugReportFlagsEXT& flags, PF
 	}
 
 	data_->debug_callbacks.push_back({});
-	setup_callback_fn(static_cast<VkInstance>(data_->vk_instance), &createInfo, nullptr, reinterpret_cast<VkDebugReportCallbackEXT*>(&data_->debug_callbacks.back()));
+	setup_callback_fn(static_cast<VkInstance>(data_->vk_instance), &create_info, nullptr, reinterpret_cast<VkDebugReportCallbackEXT*>(&data_->debug_callbacks.back()));
 }
 
 const ApplicationInfo& VulkanInstance::applicationInfo() const {
@@ -114,8 +98,8 @@ const InstanceConfiguration& VulkanInstance::configuration() const {
 	return data_->configuration;
 }
 
-const std::vector<VulkanDevice>& VulkanInstance::devices() const {
-	return data_->devices;
+const std::vector<PhysicalDevice>& VulkanInstance::devices() const {
+	return data_->physical_devices;
 }
 
 const vk::Instance& VulkanInstance::getVkHandle() const {
@@ -123,25 +107,21 @@ const vk::Instance& VulkanInstance::getVkHandle() const {
 }
 
 bool VulkanInstance::checkValidationLayerSupport(const std::vector<const char*>& layers) {
-	uint32_t layerCount;
-	vk::enumerateInstanceLayerProperties(&layerCount, nullptr);
-
 	// Fetch validation layers
-	std::vector<vk::LayerProperties> availableLayers(layerCount);
-	vk::enumerateInstanceLayerProperties(&layerCount, availableLayers.data());
+	std::vector<vk::LayerProperties> available_layers = vk::enumerateInstanceLayerProperties();
 
 	// Check if all requested validation layers are present among the available layers.
-	for (const char* layerName : layers) {
-		bool layerFound = false;
+	for (const char* layer : layers) {
+		bool found = false;
 
-		for (const auto& layerProperties : availableLayers) {
-			if (strcmp(layerName, layerProperties.layerName) == 0) {
-				layerFound = true;
+		for (const auto& layerProperties : available_layers) {
+			if (strcmp(layer, layerProperties.layerName) == 0) {
+				found = true;
 				break;
 			}
 		}
 
-		if (!layerFound) {
+		if (!found) {
 			return false;
 		}
 	}
@@ -153,18 +133,16 @@ void VulkanInstance::free() {
 	if (alive()) {
 		handle_manager_->destroyAllHandles();
 
-		if (vkr::debug_utils::kEnableValidation) {
-			// Clear debug callbacks.
-			const auto destroy_callback_fn = reinterpret_cast<PFN_vkDestroyDebugReportCallbackEXT>(data_->vk_instance.getProcAddr("vkDestroyDebugReportCallbackEXT"));
+		// Clear debug callbacks.
+		const auto destroy_callback_fn = reinterpret_cast<PFN_vkDestroyDebugReportCallbackEXT>(data_->vk_instance.getProcAddr("vkDestroyDebugReportCallbackEXT"));
 
-			// Check if the destroy callback function was successfully retrieved.
-			if (destroy_callback_fn == nullptr) {
-				throw std::runtime_error("Failed to destroy debug callbacks!");
-			}
+		// Check if the destroy callback function was successfully retrieved.
+		if (destroy_callback_fn == nullptr) {
+			throw std::runtime_error("Failed to destroy debug callbacks!");
+		}
 
-			for (auto& callback : data_->debug_callbacks) {
-				destroy_callback_fn(static_cast<VkInstance>(data_->vk_instance), static_cast<VkDebugReportCallbackEXT>(callback), nullptr);
-			}
+		for (auto& callback : data_->debug_callbacks) {
+			destroy_callback_fn(static_cast<VkInstance>(data_->vk_instance), static_cast<VkDebugReportCallbackEXT>(callback), nullptr);
 		}
 
 		Handle::free();

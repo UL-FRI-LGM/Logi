@@ -7,10 +7,10 @@
 
 namespace logi {
 
-
-
 class CommandPool : public DependentDestroyableHandle {
 public:
+	CommandPool();
+
 	/**
 	 * @brief	Creates and initializes Vulkan CommandPool handle.
 	 *

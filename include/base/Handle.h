@@ -172,7 +172,7 @@ public:
 
 private:
 	std::mutex resources_lock_;						/// Mutex used to synchronize Handle creation and destruction.
-	std::unordered_map<size_t, Handle> handles_;	/// Map that maps Handle identifier to Handle.
+	std::unordered_map<size_t, std::unique_ptr<Handle>> handles_;	/// Map that maps Handle identifier to Handle.
 };
 
 template <typename T, class ... Args, typename std::enable_if<std::is_base_of<DependentDestroyableHandle, T>::value>::type*>
@@ -181,7 +181,7 @@ T HandleManager::createHandle(Args&&... args) {
 	T handle = T(std::weak_ptr<HandleManager>(shared_from_this()), std::forward<Args>(args)...);
 
 	std::lock_guard<std::mutex> guard(resources_lock_);
-	handles_.emplace(std::make_pair(handle.id(), handle));
+	handles_.emplace(std::make_pair(handle.id(), std::make_unique<T>(handle)));
 	return handle;
 }
 
@@ -191,7 +191,7 @@ T HandleManager::createHandle(Args&&... args) {
 	T handle = T(std::forward<Args>(args)...);
 
 	std::lock_guard<std::mutex> guard(resources_lock_);
-	handles_.emplace(std::make_pair(handle.id(), handle));
+	handles_.emplace(std::make_pair(handle.id(), std::make_unique<T>(handle)));
 	return handle;
 }
 

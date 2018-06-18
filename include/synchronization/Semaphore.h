@@ -10,6 +10,11 @@ namespace logi {
 class Semaphore : public DependentDestroyableHandle {
 public:
 	/**
+	 * @brief	Default placeholder constructor.
+	 */
+	Semaphore();
+
+	/**
 	 * @brief	Create a handle used to access Vulkan semaphore object.
 	 *
 	 * @param	owner	HandleManager responsible for this handle.

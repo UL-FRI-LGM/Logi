@@ -2,8 +2,6 @@
 #include <fstream>
 #include <json.hpp>
 #include <vulkan/vulkan.hpp>
-#include <spirv_cross.hpp>
-#include "util/FormatConversion.h"
 
 namespace logi {
 

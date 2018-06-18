@@ -12,7 +12,7 @@
 #include <vulkan/vulkan.hpp>
 #include "commands/CommandPool.h"
 #include "queues/Queue.h"
-#include <optional>
+#include <vector>
 
 namespace logi {
 
@@ -25,29 +25,34 @@ struct QueueFamilyProperties {
 	 *
 	 * @param	family_index		Index of the queue family.
 	 * @param	properties			Queue family properties.
-	 * @param	supports_present	If true QueueFamily can present on the tested surface.
 	 */
-	QueueFamilyProperties(uint32_t family_index, const vk::QueueFamilyProperties& properties, bool supports_present = false);
-
-	/**
-	 * @brief	Specifies queue family configuration for VulkanDevice initialization.
-	 *
-	 * @param	queue_count			Number of queues that should be created.
-	 * @param	create_flags		Bitmask indicating the behavior of the queues.
-	 * @param	queue_priorities	Vector of normalized floating point values, specifying priorities of work that will be submitted to each created queue.
-	 */
-	void configure(uint32_t queue_count, const vk::DeviceQueueCreateFlags& create_flags = {}, std::optional<const std::vector<float>> queue_priorities = {});
+	QueueFamilyProperties(uint32_t family_index, const vk::QueueFamilyProperties& properties);
 
 	const uint32_t family_index;						///< Index of the queue family.
 	const vk::QueueFlags queue_flags;					///< Bitmask indicating capabilities of the queues in this queue family.
 	const uint32_t max_queue_count;						///< Number of available queues.
 	const uint32_t timestamp_valid_bits;				///< Count of meaningful bits in the timestamps.
 	const vk::Extent3D min_image_transfer_granularity;	///< Minimum granularity supported for image transfer operations.
-	const bool supports_present;						///< If true QueueFamily can present on the tested surface.
+};
 
-	vk::DeviceQueueCreateFlags create_flags{};			///< Bitmask indicating the behavior of the queues.
-	uint32_t queue_count{ 0u };							///< Number of queues. Should be less than max_queue_count.
-	std::vector<float> queue_priorities{};				///< Vector of normalized floating point values, specifying priorities of work that will be submitted to each created queue.
+/**
+ * @brief	Structure used to specify QueueFamily configuration during LogicalDevice creation.
+ */
+struct QueueFamilyConfig {
+	/**
+	 * @brief	Populates QueueFamilyConfig with the given values.
+	 *
+	 * @param	properties	Queue family properties.
+	 * @param	queue_count	Number of queues that should be instantiated.
+	 * @param	priorities	Vector containing queue priorities.
+	 * @param	flags		Specify behaviour of the queues.
+	 */
+	explicit QueueFamilyConfig(const QueueFamilyProperties& properties, uint32_t queue_count = 0u, const std::vector<float>& priorities = {}, const vk::DeviceQueueCreateFlags& flags = {});
+
+	QueueFamilyProperties properties;	///< Queue family properties.
+	vk::DeviceQueueCreateFlags flags;	///< Specify behaviour of the queues.
+	uint32_t queue_count;				///< Number of queues that should be instantiated.
+	std::vector<float> priorities;		///< Vector containing queue priorities.
 };
 
 
@@ -59,10 +64,10 @@ public:
 	/**
 	 * @brief Initialize members of QueueFamily and fetches the queues from the device.
 	 * 
-	 * @param	device		Vulkan logical device handle.
-	 * @param	properties	Queue family properties.
+	 * @param	device			Vulkan logical device handle.
+	 * @param	configuration	Queue family configuration.
 	 */
-	QueueFamily(const vk::Device device, const QueueFamilyProperties& properties);
+	QueueFamily(const vk::Device device, const QueueFamilyConfig& configuration);
 
 	/**
 	 * @brief	Create Vulkan CommandPool for the QueueFamily and retrieve CommandPool handle.
@@ -70,14 +75,14 @@ public:
 	 * @param	flags	Flags indicating usage behavior for the pool and command buffers allocated from it.
 	 * @return	CommandPool handle.
 	 */
-	CommandPool createCommandPool(const vk::CommandPoolCreateFlags& flags) const;
+	CommandPool createCommandPool(const vk::CommandPoolCreateFlags& flags = {})  const;
 
 	/**
 	 * @brief	Retrieve QueueFamily properties.
 	 *
 	 * @return	QueueFamily configuration.
 	 */
-	const QueueFamilyProperties& properties() const;
+	const QueueFamilyConfig& configuration() const;
 
 	/**
 	 * @brief	Retrieve handle for the queue with the given index.
@@ -94,15 +99,15 @@ protected:
 
 private:
 	struct QueueFamilyData {
-		QueueFamilyData(const vk::Device& vk_device, const QueueFamilyProperties& configuration);
+		QueueFamilyData(const vk::Device& vk_device, const QueueFamilyConfig& config);
 
-		vk::Device				vk_device;			///< Vulkan logical device handle.
-		QueueFamilyProperties	configuration;		///< Queue family configuration.
-		std::vector<Queue>		queues{};			///< Vector of instantiated Queues.
-		HandleManager			handle_manager{};	///< Used to manage Queue and CommandPool handles.
+		vk::Device			vk_device;			///< Vulkan logical device handle.
+		QueueFamilyConfig	configuration;		///< Queue family configuration.
+		std::vector<Queue>	queues{};			///< Vector of instantiated Queues.
 	};
 
-	std::shared_ptr<QueueFamilyData> data_;	///< QueueFamily internal data.
+	std::shared_ptr<QueueFamilyData> data_;	///< QueueFamily internal data
+	std::shared_ptr<HandleManager> handle_manager_;	///< Used to manage Queue and CommandPool handles.
 };
 
 }

@@ -2,6 +2,8 @@
 
 namespace logi {
 
+Fence::Fence() : DependentDestroyableHandle({}, false), vk_fence_(nullptr) {}
+
 Fence::Fence(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const vk::FenceCreateFlags& flags) : DependentDestroyableHandle(owner), vk_fence_(nullptr) {
 	vk::FenceCreateInfo fence_ci{};
 	fence_ci.flags = flags;

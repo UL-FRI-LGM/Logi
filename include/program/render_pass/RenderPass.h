@@ -6,6 +6,7 @@
 #include "program/render_pass/RenderPassLayout.h"
 #include "program/layout/PipelineState.h"
 #include "program/render_pass/GraphicalPipeline.h"
+#include "memory/Framebuffer.h"
 
 namespace logi {
 
@@ -20,6 +21,8 @@ public:
 
 	vk::Extent2D renderAreaGranularity() const;
 
+	Framebuffer createFramebuffer(const std::vector<ImageView>& attachments, uint32_t width, uint32_t height, uint32_t layers, const vk::FramebufferCreateFlags& flags = {}) const;
+
 	vk::RenderPass getVkHandle() const;
 
 protected:
@@ -30,7 +33,7 @@ private:
 
 	struct RenderPassData {
 
-		explicit RenderPassData(const RenderPassLayout& layout);
+		explicit RenderPassData(RenderPassLayout layout);
 
 		ManagedVkRenderPass vk_render_pass{};
 		RenderPassLayout layout;

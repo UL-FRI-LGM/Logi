@@ -4,6 +4,8 @@
 
 namespace logi {
 
+CommandPool::CommandPool() : DependentDestroyableHandle({}, false), data_(nullptr), handle_manager_(nullptr) {}
+
 CommandPool::CommandPool(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const uint32_t queue_family_index, const vk::CommandPoolCreateFlags& flags) 
 	: DependentDestroyableHandle(owner), data_(std::make_shared<CommandPoolData>(flags)), handle_manager_(std::make_shared<HandleManager>()) {
 
