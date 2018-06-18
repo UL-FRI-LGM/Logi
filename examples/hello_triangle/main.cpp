@@ -35,7 +35,7 @@ public:
 		logi::InstanceConfiguration instance_config{};
 		instance_config.extensions = getRequiredExtensions();
 		instance_config.extensions.emplace_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
-		instance_config.validation_layers = { "VK_LAYER_LUNARG_standard_validation", "VK_LAYER_RENDERDOC_Capture" };
+		instance_config.validation_layers = { "VK_LAYER_LUNARG_standard_validation" };
 		instance_config.enable_validation = true;
 
 		instance = logi::VulkanInstance(app_info, instance_config);
@@ -59,6 +59,13 @@ public:
 
 		for (auto it = devices.begin(); it != devices.end(); ++it) {
 			if (it->properties().deviceType == vk::PhysicalDeviceType::eDiscreteGpu) {
+				physical_device = *it;
+				return;
+			}
+		}
+		
+		for (auto it = devices.begin(); it != devices.end(); ++it) {
+			if (it->properties().deviceType == vk::PhysicalDeviceType::eIntegratedGpu) {
 				physical_device = *it;
 				return;
 			}

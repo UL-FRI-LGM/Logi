@@ -9,7 +9,9 @@
 #ifndef BASE_HANDLE_H
 #define BASE_HANDLE_H
 
+#include <utility>
 #include <mutex>
+#include <memory>
 #include <iostream>
 #include <atomic>
 #include <unordered_map>
@@ -178,7 +180,8 @@ private:
 template <typename T, class ... Args, typename std::enable_if<std::is_base_of<DependentDestroyableHandle, T>::value>::type*>
 T HandleManager::createHandle(Args&&... args) {
 	// Construct handle, register and return it.
-	T handle = T(std::weak_ptr<HandleManager>(shared_from_this()), std::forward<Args>(args)...);
+	std::weak_ptr<HandleManager> this_weak_ptr = std::weak_ptr<HandleManager>(shared_from_this());
+	T handle = T(this_weak_ptr, std::forward<Args>(args)...);
 
 	std::lock_guard<std::mutex> guard(resources_lock_);
 	handles_.emplace(std::make_pair(handle.id(), std::make_unique<T>(handle)));
@@ -208,4 +211,4 @@ T HandleManager::getHandle(size_t id) const {
 
 }
 
-#endif BASE_HANDLE_H
+#endif
