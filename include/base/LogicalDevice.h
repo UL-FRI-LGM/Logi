@@ -17,6 +17,7 @@
 #include "memory/AllocationManager.h"
 #include "descriptors/DecriptorsUpdate.h"
 #include "base/SwapChain.h"
+#include "memory/Sampler.h"
 
 namespace logi {
 
@@ -83,6 +84,8 @@ public:
 	void waitIdle() const;
 
 	vk::Result waitForFences(const std::vector<Fence>& fences, bool wait_all, uint64_t timeout) const;
+
+	Sampler createSampler(const SamplerConfiguration& config) const;
 
 protected:
 	/**

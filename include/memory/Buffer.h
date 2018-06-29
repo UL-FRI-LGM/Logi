@@ -16,12 +16,12 @@ struct BufferConfiguration {
 	/**
 	 * @brief	Default constructor. Initializes values to defaults.
 	 *
-	 * @param	flags						A bitmask of vk::BufferCreateFlagBits describing additional parameters of the buffer.
 	 * @param	size						Size in bytes of the buffer.
 	 * @param	usage						Intended usage of the image.
 	 * @param	concurrent_queue_families	Vector of QueueFamily indices. These QueueFamilies will be allowed to concurrently use the image.
+	 * @param	flags						A bitmask of vk::BufferCreateFlagBits describing additional parameters of the buffer.
 	 */
-	explicit BufferConfiguration(vk::BufferCreateFlags flags = vk::BufferCreateFlags(), vk::DeviceSize size = 0, vk::BufferUsageFlags usage = vk::BufferUsageFlags(), MemoryUsage memory_usage = MemoryUsage::GPU_ONLY, std::vector<uint32_t> concurrent_queue_families = {});
+	explicit BufferConfiguration(vk::DeviceSize size = 0, vk::BufferUsageFlags usage = vk::BufferUsageFlags(), MemoryUsage memory_usage = MemoryUsage::GPU_ONLY, std::vector<uint32_t> concurrent_queue_families = {}, vk::BufferCreateFlags flags = vk::BufferCreateFlags());
 
 	vk::BufferCreateFlags flags;						///< A bitmask of vk::BufferCreateFlagBits describing additional parameters of the buffer.
 	vk::DeviceSize size;								///< Size in bytes of the buffer.
@@ -35,6 +35,8 @@ struct BufferConfiguration {
  */
 class Buffer : public DependentDestroyableHandle {
 public:
+	Buffer();
+
 	/**
 	 * @brief	Create handle used to access Vulkan Buffer resource.
 	 *
@@ -65,6 +67,8 @@ public:
 	 * @return Vulkan buffer handle.
 	 */
 	const vk::Buffer& getVkHandle() const;
+
+	void writeData(void* data, size_t size_bytes);
 
 protected:
 	/**

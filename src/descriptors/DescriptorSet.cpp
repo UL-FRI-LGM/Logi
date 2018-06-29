@@ -2,7 +2,9 @@
 
 namespace logi {
 
-	
+
+DescriptorSet::DescriptorSet() : DependentDestroyableHandle({}, false) {
+}
 
 DescriptorSet::DescriptorSet(const std::weak_ptr<HandleManager>& owner, const vk::DescriptorSet& vk_descriptor_set, const DescriptorSetLayout& descriptor_set_layout) 
 	: DependentDestroyableHandle(owner), vk_descriptor_set_(std::make_shared<vk::DescriptorSet>(vk_descriptor_set)), layout_(std::make_shared<DescriptorSetLayout>(descriptor_set_layout)) {}

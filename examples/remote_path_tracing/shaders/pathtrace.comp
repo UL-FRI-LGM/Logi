@@ -12,19 +12,13 @@ struct Pixel{
   vec4 value;
 };
 
-layout(std140, binding = 0) buffer buf {
-  Pixel imageData[];
-};
+layout (binding = 0, rgba8) uniform image2D result_image;
 
 layout(std140, binding = 1) uniform UniformBufferObject {
 	vec2 mouse_pos;
 	float timestamp;
 	bool redraw;
 } ubo;
-
-layout(std140, binding = 2) buffer volume {
-  uint volData[];
-};
 
 #define MAXDEPTH 10
 #define ENABLE_NEXT_EVENT_PREDICTION
@@ -181,7 +175,7 @@ void main() {
 
   vec2 uv = 2 * (vec2(gl_GlobalInvocationID.xy) + vec2(0.5f, 0.5f)) / vec2(WIDTH, HEIGHT) - 1.;
 
-  vec3 camPos = vec3((vec2(WIDTH, HEIGHT) / vec2(WIDTH, HEIGHT) - 1.) * vec2(48., 40.) + vec2(50., 40.8), 169.);
+  vec3 camPos = vec3((vec2(WIDTH, HEIGHT) / vec2(WIDTH, HEIGHT) - 1.) * vec2(48., 40.) + vec2(50., 40.8) * ubo.mouse_pos * 2, 169.);
 	
   vec3 cz = normalize(vec3(50., 40., 81.6) - camPos);
   vec3 cx = vec3(1., 0., 0.);
@@ -190,9 +184,9 @@ void main() {
 
   // store to the storage buffer:
   if (ubo.redraw) {
-	imageData[WIDTH * (HEIGHT - gl_GlobalInvocationID.y) + gl_GlobalInvocationID.x].value = vec4(color, 1.);
+	imageStore(result_image, ivec2(gl_GlobalInvocationID.xy), vec4(color, 1.0));
   }
   else {
-	imageData[WIDTH * (HEIGHT - gl_GlobalInvocationID.y) + gl_GlobalInvocationID.x].value += vec4(color, 1.);
+	imageStore(result_image, ivec2(gl_GlobalInvocationID.xy), imageLoad(result_image, ivec2(gl_GlobalInvocationID.xy)) + vec4(color, 1.0));
   }
 }

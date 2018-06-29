@@ -1,8 +1,24 @@
 #include "base/VulkanInstance.h"
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 #include "base/SwapChain.h"
 #include "memory/Framebuffer.h"
+#include <algorithm>
+
+struct Pixel {
+	float r, g, b, a;
+};
+
+struct PathtracerInput {
+	glm::vec2 mouse_pos;
+	float timestamp;
+	bool redraw;
+};
+
+struct GraphicInput {
+	float frame_count;
+};
 
 class HelloTriangle {
 public:
@@ -35,12 +51,12 @@ public:
 		logi::InstanceConfiguration instance_config{};
 		instance_config.extensions = getRequiredExtensions();
 		instance_config.extensions.emplace_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
-		instance_config.validation_layers = { "VK_LAYER_LUNARG_standard_validation", "VK_LAYER_RENDERDOC_Capture" };
+		instance_config.validation_layers = { "VK_LAYER_LUNARG_standard_validation" };
 		instance_config.enable_validation = true;
 
 		instance = logi::VulkanInstance(app_info, instance_config);
 
-		instance.setupDebugCallback(vk::DebugReportFlagBitsEXT::eError | vk::DebugReportFlagBitsEXT::eDebug | vk::DebugReportFlagBitsEXT::eWarning , debugCallback);
+		instance.setupDebugCallback(vk::DebugReportFlagBitsEXT::eError | vk::DebugReportFlagBitsEXT::eDebug | vk::DebugReportFlagBitsEXT::eWarning, debugCallback);
 	}
 
 	void initSurface() {
@@ -123,7 +139,7 @@ public:
 			swapchain = gpu.createSwapchain(surface, present_family_index, { render_family_index, present_family_index });
 		}
 
-		swapchain.create(swapchain_extent.width, swapchain_extent.height);
+		swapchain.create(swapchain_extent.width, swapchain_extent.height, false);
 	}
 
 	void createRenderPass() {
@@ -164,8 +180,8 @@ public:
 		vk::Viewport viewport{};
 		viewport.x = 0.0f;
 		viewport.y = 0.0f;
-		viewport.width = swapchain_extent.width;
-		viewport.height = swapchain_extent.height;
+		viewport.width = static_cast<float>(swapchain_extent.width);
+		viewport.height = static_cast<float>(swapchain_extent.height);
 		viewport.minDepth = 0.0f;
 		viewport.maxDepth = 1.0f;
 
@@ -205,6 +221,45 @@ public:
 		graphic_pipeline = program_manager.createGraphicalPipelines(create_info)[0];
 	}
 
+	void createComputePipeline() {
+		const logi::Shader compute_shader = program_manager.loadShader("./shaders/pathtrace.comp.spv", vk::ShaderStageFlagBits::eCompute);
+		const logi::PipelineLayout pipeline_layout = program_manager.createPipelineLayout({ compute_shader });
+
+		compute_pipeline = program_manager.createComputePipelines({ logi::ComputePipelineCreateInfo(pipeline_layout) })[0];
+	}
+
+	void initBuffersAndDescriptorSets() {
+
+		// Initialize texture.
+		texture.image = allocation_manager.createImage(logi::ImageConfiguration(vk::ImageType::e2D, vk::Format::eR32G32B32A32Sfloat, vk::Extent3D(width, height, 1), 1, 1,
+			vk::SampleCountFlagBits::e1, vk::ImageTiling::eOptimal, vk::ImageUsageFlagBits::eSampled | vk::ImageUsageFlagBits::eStorage, logi::MemoryUsage::GPU_ONLY, vk::ImageLayout::eUndefined));
+
+		logi::SamplerConfiguration sampler_config(vk::Filter::eLinear, vk::Filter::eLinear, vk::SamplerMipmapMode::eLinear, vk::SamplerAddressMode::eClampToBorder, vk::SamplerAddressMode::eClampToBorder,
+			vk::SamplerAddressMode::eClampToBorder, 0.0f, false, 1.0f, false, vk::CompareOp::eNever, 0.0f, 0.0f, vk::BorderColor::eFloatOpaqueWhite, false);
+
+		texture.sampler = gpu.createSampler(sampler_config);
+
+		logi::ImageViewConfiguration image_view_config(vk::ImageViewType::e2D, vk::Format::eR32G32B32A32Sfloat, vk::ComponentMapping(vk::ComponentSwizzle::eR, vk::ComponentSwizzle::eG, vk::ComponentSwizzle::eB, vk::ComponentSwizzle::eA), vk::ImageAspectFlagBits::eColor, 0, 1, 0, 1);
+
+		texture.image_view = texture.image.createImageView(image_view_config);
+
+		graphic_input_buffer = allocation_manager.createBuffer(logi::BufferConfiguration(sizeof(GraphicInput), vk::BufferUsageFlagBits::eUniformBuffer, logi::MemoryUsage::CPU_TO_GPU));
+		compute_input_buffer = allocation_manager.createBuffer(logi::BufferConfiguration(sizeof(PathtracerInput), vk::BufferUsageFlagBits::eUniformBuffer, logi::MemoryUsage::CPU_TO_GPU));
+
+		descriptor_pool = gpu.createDescriptorPool(graphic_pipeline.layout().getDescriptorsCount() + compute_pipeline.layout().getDescriptorsCount());
+
+		compute_desc_set = descriptor_pool.createDescriptorSet(compute_pipeline.layout().getDescriptorSetLayout(0));
+		graphic_desc_set = descriptor_pool.createDescriptorSet(graphic_pipeline.layout().getDescriptorSetLayout(0));
+
+		logi::DescriptorsUpdate desc_update;
+		desc_update.writeImageToDescriptorSet(compute_desc_set, 0, 0, texture.sampler, texture.image_view, vk::ImageLayout::eGeneral);
+		desc_update.writeBufferToDescriptorSet(compute_desc_set, 1, 0, compute_input_buffer, 0, sizeof(PathtracerInput));
+		desc_update.writeImageToDescriptorSet(graphic_desc_set, 0, 0, texture.sampler, texture.image_view, vk::ImageLayout::eGeneral);
+		desc_update.writeBufferToDescriptorSet(graphic_desc_set, 1, 0, graphic_input_buffer, 0, sizeof(GraphicInput));
+		
+		gpu.executeDescriptorsUpdate(desc_update);
+	}
+
 	void createFramebuffers() {
 		for (const logi::ImageView& image_view : swapchain.getImageViews()) {
 			framebuffers.emplace_back(render_pass.createFramebuffer({ image_view }, swapchain_extent.width, swapchain_extent.height, 1));
@@ -212,6 +267,15 @@ public:
 	}
 
 	void buildCommandBuffers() {
+		// Create compute command buffers.
+		compute_cmd_buffer = command_pool.createPrimaryCommandBuffer();
+		compute_cmd_buffer.begin(vk::CommandBufferUsageFlagBits::eRenderPassContinue);
+		compute_cmd_buffer.bindPipeline(compute_pipeline);
+		compute_cmd_buffer.bindDescriptorSets(vk::PipelineBindPoint::eCompute, compute_pipeline.layout(), 0, { compute_desc_set });
+		compute_cmd_buffer.dispatch((uint32_t)ceil(width / float(32)), (uint32_t)ceil(height / float(32)), 1);
+		compute_cmd_buffer.end();
+
+		// Create graphical command buffers.
 		for (const logi::Framebuffer& framebuffer : framebuffers) {
 			cmd_buffers.emplace_back(command_pool.createPrimaryCommandBuffer());
 			logi::PrimaryCommandBuffer& cmd_buffer = cmd_buffers.back();
@@ -222,13 +286,16 @@ public:
 			const std::vector<vk::ClearValue> clear_values = { vk::ClearValue(vk::ClearColorValue(std::array<float, 4>{ 0.0f, 0.0f, 0.0f, 1.0f })) };
 			cmd_buffer.beginRenderPass(render_pass, framebuffer, vk::Rect2D(vk::Offset2D(), swapchain_extent), clear_values);
 			cmd_buffer.bindPipeline(graphic_pipeline);
+			cmd_buffer.bindDescriptorSets(vk::PipelineBindPoint::eGraphics, graphic_pipeline.layout(), 0, { graphic_desc_set });
 			cmd_buffer.draw(3);
 			cmd_buffer.endRenderPass();
 			cmd_buffer.end();
-		}	
+		}
 	}
 
 	void buildSyncObjects() {
+		compute_fence = gpu.createFence();
+
 		for (size_t i = 0; i < max_frames_in_flight; i++) {
 			image_available_semaphores.emplace_back(gpu.createSemaphore());
 			render_finished_semaphores.emplace_back(gpu.createSemaphore());
@@ -237,6 +304,15 @@ public:
 	}
 
 	void drawFrame() {
+		vk::SubmitInfo submit_info_compute;
+		submit_info_compute.commandBufferCount = 1;
+		submit_info_compute.pCommandBuffers = &compute_cmd_buffer.getVkHandle();
+
+		render_queue.submit({ submit_info_compute }, compute_fence);
+		compute_fence.wait(100000000000);
+		compute_fence.reset();
+
+
 		in_flight_fences[current_frame].wait(std::numeric_limits<uint64_t>::max());
 		in_flight_fences[current_frame].reset();
 
@@ -258,14 +334,35 @@ public:
 		render_queue.submit({ submit_info }, in_flight_fences[current_frame]);
 
 		swapchain.queuePresent(present_queue, render_finished_semaphores[current_frame]);
-		
+
 		current_frame = (current_frame + 1) % max_frames_in_flight;
 	}
 
 	void mainLoop() {
+		auto ref_ts = Time::now();
+		graphic_input.frame_count = 1;
+
 		while (!glfwWindowShouldClose(window)) {
+			input_ubo.timestamp = std::chrono::duration<float, std::micro>(Time::now() - ref_ts).count() / 1000000;
+			compute_input_buffer.writeData(&input_ubo, sizeof(PathtracerInput));
+			graphic_input_buffer.writeData(&graphic_input, sizeof(GraphicInput));
+
 			glfwPollEvents();
 			drawFrame();
+
+			graphic_input.frame_count++;
+
+			if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+				double x, y;
+				glfwGetCursorPos(window, &x, &y);
+
+				input_ubo.mouse_pos.x = std::min(std::max(0.0, x), (double)width) / width;
+				input_ubo.mouse_pos.y = 1 - std::min(std::max(0.0, y), (double)height) / height;
+				input_ubo.redraw = true;
+				graphic_input.frame_count = 1;
+			} else {
+				input_ubo.redraw = false;
+			}
 		}
 
 		gpu.waitIdle();
@@ -280,6 +377,10 @@ public:
 		initializeSwapchain();
 		createRenderPass();
 		createGraphicPipeline();
+
+		createComputePipeline();
+		initBuffersAndDescriptorSets();
+
 		createFramebuffers();
 		buildCommandBuffers();
 		buildSyncObjects();
@@ -287,6 +388,14 @@ public:
 	}
 
 private:
+	using Time = std::chrono::high_resolution_clock;
+	
+	struct Texture {
+		logi::Image image{};
+		logi::ImageView image_view{};
+		logi::Sampler sampler{};
+	};
+
 	GLFWwindow* window;
 	vk::SurfaceKHR surface;
 
@@ -299,10 +408,22 @@ private:
 	logi::LogicalDevice gpu{};
 	logi::ProgramManager program_manager{};
 	logi::AllocationManager allocation_manager{};
+	logi::DescriptorPool descriptor_pool{};
 	logi::CommandPool command_pool{};
 
 	logi::GraphicalPipeline graphic_pipeline{};
 	logi::RenderPass render_pass{};
+
+	logi::ComputePipeline compute_pipeline{};
+
+	Texture texture{};
+	logi::Buffer graphic_input_buffer{};
+	logi::Buffer compute_input_buffer{};
+	logi::DescriptorSet compute_desc_set{};
+	PathtracerInput input_ubo{};
+	GraphicInput graphic_input{};
+
+	logi::DescriptorSet graphic_desc_set{};
 
 	uint32_t render_family_index;
 	logi::Queue render_queue{};
@@ -314,7 +435,9 @@ private:
 
 	std::vector<logi::Framebuffer> framebuffers{};
 	std::vector<logi::PrimaryCommandBuffer> cmd_buffers{};
+	logi::PrimaryCommandBuffer compute_cmd_buffer{};
 
+	logi::Fence compute_fence;
 	std::vector<logi::Fence> in_flight_fences;
 	std::vector<logi::Semaphore> image_available_semaphores;
 	std::vector<logi::Semaphore> render_finished_semaphores;

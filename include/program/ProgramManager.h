@@ -21,21 +21,32 @@
 #include "program/layout/PipelineLayout.h"
 #include "program/layout/Shader.h"
 #include "render_pass/RenderPass.h"
+#include "render_pass/ComputePipeline.h"
 
 namespace logi {
 namespace filesystem = std::experimental::filesystem;  ///< todo(plavric): Change when the filesystem will no longer be experimental.
 
 struct GraphicalPipelineCreateInfo {
-	GraphicalPipelineCreateInfo() : render_pass(), subpass_index(), layout(), state() {}
+	GraphicalPipelineCreateInfo() = default;
 
 	GraphicalPipelineCreateInfo(const RenderPass& render_pass, const uint32_t subpass_index, const PipelineLayout& layout, const PipelineState& state)
 		: render_pass(render_pass), subpass_index(subpass_index), layout(layout), state(state) { }
 
-	RenderPass render_pass;
-	uint32_t subpass_index;
-	PipelineLayout layout;
-	PipelineState state;
+	RenderPass render_pass{};
+	uint32_t subpass_index{};
+	PipelineLayout layout{};
+	PipelineState state{};
 };
+
+struct ComputePipelineCreateInfo {
+	explicit ComputePipelineCreateInfo(const PipelineLayout& layout = {}, const vk::PipelineCreateFlags& flags = {})
+		: layout(layout), flags(flags) { }
+
+	PipelineLayout layout;
+	vk::PipelineCreateFlags flags;
+};
+
+
 
 class ProgramManager : public Handle {
 public:
@@ -86,6 +97,8 @@ public:
 	RenderPass createRenderPass(const RenderPassLayout& layout) const;
 
 	std::vector<GraphicalPipeline> createGraphicalPipelines(std::vector<GraphicalPipelineCreateInfo>& create_infos) const;
+
+	std::vector<ComputePipeline> createComputePipelines(const std::vector<ComputePipelineCreateInfo>& create_infos) const;
 
 protected:
 	/**

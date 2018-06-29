@@ -16,7 +16,6 @@ struct ImageConfiguration {
 	/**
 	 * @brief	Default constructor. Initializes values to defaults.
 	 *
-	 * @param	create_flags				A bitmask of vk::ImageCreateFlagBits describing additional parameters of the image.
 	 * @param	type						Specifies the basic dimensionality of the image.
 	 * @param	format						Describes the format and type of the data elements that will be contained in the image.
 	 * @param	extent						Describes the number of data elements in each dimension of the base level.
@@ -28,11 +27,12 @@ struct ImageConfiguration {
 	 * @param	memory_usage				Specifies who can use the allocated image.
 	 * @param	initial_layout				Specifying the initial vk::ImageLayout of all image subresources of the image
 	 * @param	concurrent_queue_families	Vector of QueueFamily indices. These QueueFamilies will be allowed to concurrently use the image.
+	 * @param	create_flags				A bitmask of vk::ImageCreateFlagBits describing additional parameters of the image.
 	 */
-	ImageConfiguration(const vk::ImageCreateFlags& create_flags = vk::ImageCreateFlags(), vk::ImageType type = vk::ImageType::e1D, vk::Format format = vk::Format::eUndefined, 
+	ImageConfiguration(vk::ImageType type = vk::ImageType::e1D, vk::Format format = vk::Format::eUndefined, 
 					   const vk::Extent3D& extent = vk::Extent3D(), uint32_t mip_levels = 0, uint32_t array_layers = 0, vk::SampleCountFlagBits samples = vk::SampleCountFlagBits::e1, 
 					   vk::ImageTiling tiling = vk::ImageTiling::eOptimal, const vk::ImageUsageFlags& usage = vk::ImageUsageFlags(), MemoryUsage memory_usage = MemoryUsage::GPU_ONLY, vk::ImageLayout initial_layout = vk::ImageLayout::eGeneral,
-					   const std::vector<uint32_t>& concurrent_queue_families = {});
+					   const std::vector<uint32_t>& concurrent_queue_families = {}, const vk::ImageCreateFlags& create_flags = vk::ImageCreateFlags());
 
 
 	vk::ImageCreateFlags create_flags;					///< A bitmask of vk::ImageCreateFlagBits describing additional parameters of the image.
@@ -55,6 +55,8 @@ struct ImageConfiguration {
  */
 class Image : public DependentDestroyableHandle {
 public:
+	Image();
+
 	/**
 	 * @brief	Create handle used to access Vulkan Image resource.
 	 *

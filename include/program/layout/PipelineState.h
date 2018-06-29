@@ -269,7 +269,7 @@ private:
 struct MultisampleState {
 	MultisampleState(vk::SampleCountFlagBits rasterization_samples = vk::SampleCountFlagBits::e1,
 		bool enable_sample_shading = false, float min_sample_shading = 0,
-		const vk::SampleMask& sample_mask = {0xFFFFFF}, bool enable_alpha_to_coverage = false,
+		const vk::SampleMask& sample_mask = {0xFFFFFFFF}, bool enable_alpha_to_coverage = false,
 		bool enable_alpha_to_one = false, 
 		const std::optional<NvidiaCoverageModulationState>& coverage_modulation_state = {},
 		const std::optional<NvidiaCoverageToColorState>& coverage_to_color_state = {},

@@ -10,6 +10,9 @@ ImageViewConfiguration::ImageViewConfiguration(const vk::ImageViewType view_type
 	base_mip_level(base_mip_level), mip_level_count(mip_level_count), base_array_layer(base_array_layer), layer_count(layer_count) {}
 
 
+ImageView::ImageView() : DependentDestroyableHandle({}, false) {
+}
+
 ImageView::ImageView(const std::weak_ptr<HandleManager>& owner, const vk::Device& vk_device, const vk::Image& vk_image, const ImageViewConfiguration& configuration)
 	: DependentDestroyableHandle(owner), configuration_(std::make_shared<ImageViewConfiguration>(configuration)), vk_image_view_(nullptr) {
 

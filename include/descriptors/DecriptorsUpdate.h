@@ -12,8 +12,12 @@
 #include <vulkan/vulkan.hpp>
 #include "descriptors/DescriptorPool.h"
 #include "memory/Buffer.h"
+#include "memory/ImageView.h"
+#include "memory/Image.h"
+#include "memory/Sampler.h"
 
 namespace logi {
+class Sampler;
 
 class DescriptorsUpdate {
 public:
@@ -22,6 +26,8 @@ public:
 	void copyDescriptorSet(const DescriptorSet& src_set, uint32_t src_binding, uint32_t src_array_element, const DescriptorSet& dst_set, uint32_t dst_binding, uint32_t dst_array_element, uint32_t descriptor_count);
 
 	void writeBufferToDescriptorSet(const DescriptorSet& dst_set, uint32_t dst_binding, uint32_t dst_array_element, const Buffer& buffer, vk::DeviceSize offset, vk::DeviceSize range);
+
+	void writeImageToDescriptorSet(const DescriptorSet& descriptor_set, uint32_t dst_binding, uint32_t dst_array_element, const Sampler& sampler, const ImageView& image_view, vk::ImageLayout layout);
 
 	const std::vector<vk::CopyDescriptorSet>& getCopyOperations() const;
 

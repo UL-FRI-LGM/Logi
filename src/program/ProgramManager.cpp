@@ -87,6 +87,26 @@ std::vector<GraphicalPipeline> ProgramManager::createGraphicalPipelines(std::vec
 	return pipeline_handles;
 }
 
+std::vector<ComputePipeline> ProgramManager::createComputePipelines(const std::vector<ComputePipelineCreateInfo>& create_infos) const {
+	std::vector<vk::ComputePipelineCreateInfo> vk_create_infos;
+	vk_create_infos.reserve(create_infos.size());
+
+	for (const ComputePipelineCreateInfo& ci : create_infos) {
+		vk_create_infos.emplace_back(ci.flags, ci.layout.getVkShaderHandles()[0], ci.layout.getVkHandle());
+	}
+
+	std::vector<vk::Pipeline> vk_pipelines = device_.createComputePipelines({}, vk_create_infos);
+	std::vector<ComputePipeline> pipeline_handles;
+	pipeline_handles.reserve(vk_pipelines.size());
+
+	// Create handles.
+	for (size_t i = 0; i < vk_pipelines.size(); ++i) {
+		pipeline_handles.emplace_back(handle_manager_->createHandle<ComputePipeline>(device_, vk_pipelines[i], create_infos[i].layout));
+	}
+
+	return pipeline_handles;
+}
+
 void ProgramManager::free() {
 	handle_manager_->destroyAllHandles();
 }

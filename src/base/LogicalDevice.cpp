@@ -128,6 +128,10 @@ vk::Result LogicalDevice::waitForFences(const std::vector<Fence>& fences, bool w
 	return data_->logical_device.waitForFences(vk_fences, wait_all, timeout);
 }
 
+Sampler LogicalDevice::createSampler(const SamplerConfiguration& config) const {
+	return handle_manager_->createHandle<Sampler>(data_->logical_device, config);
+}
+
 void LogicalDevice::free() {
 	handle_manager_->destroyAllHandles();
 	data_->logical_device.destroy();

@@ -3,12 +3,16 @@
 namespace logi {
 
 
-ImageConfiguration::ImageConfiguration(const vk::ImageCreateFlags& create_flags, vk::ImageType type, vk::Format format,
-	const vk::Extent3D& extent, uint32_t mip_levels, uint32_t array_layers, vk::SampleCountFlagBits samples,
-	vk::ImageTiling tiling, const vk::ImageUsageFlags& usage, MemoryUsage memory_usage, vk::ImageLayout initial_layout,
-	const std::vector<uint32_t>& concurrent_queue_families)
+ImageConfiguration::ImageConfiguration(vk::ImageType type, vk::Format format, const vk::Extent3D& extent, uint32_t mip_levels,
+	uint32_t array_layers, vk::SampleCountFlagBits samples, vk::ImageTiling tiling, const vk::ImageUsageFlags& usage,
+	 MemoryUsage memory_usage, vk::ImageLayout initial_layout, const std::vector<uint32_t>& concurrent_queue_families,
+	 const vk::ImageCreateFlags& create_flags)
 	: create_flags(create_flags), type(type), format(format), extent(extent), mip_levels(mip_levels), array_layers(array_layers),
 	  samples(samples), tiling(tiling), usage(usage), memory_usage(memory_usage), initial_layout(initial_layout), concurrent_queue_families(concurrent_queue_families) {}
+
+Image::Image()
+	: DependentDestroyableHandle({}, false), allocator_(nullptr), allocation_(nullptr) {
+}
 
 Image::Image(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const vk::Image& image, VmaAllocator allocator, VmaAllocation allocation, const ImageConfiguration& configuration)
 	: DependentDestroyableHandle(owner), allocator_(allocator), allocation_(allocation), configuration_(std::make_shared<ImageConfiguration>(configuration)),

@@ -43,6 +43,8 @@ struct ImageViewConfiguration {
  */
 class ImageView : public DependentDestroyableHandle {
 public:
+	ImageView();
+
 	/**
 	 * @brief	Create handle used to access ImageView resource.
 	 *

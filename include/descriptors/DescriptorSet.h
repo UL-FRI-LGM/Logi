@@ -17,6 +17,8 @@ namespace logi {
 
 class DescriptorSet : public DependentDestroyableHandle {
 public:
+	DescriptorSet();
+
 	DescriptorSet(const std::weak_ptr<HandleManager>& owner, const vk::DescriptorSet& vk_descriptor_set, const DescriptorSetLayout& descriptor_set_layout);
 
 	const vk::DescriptorSet& getVkHandle() const;

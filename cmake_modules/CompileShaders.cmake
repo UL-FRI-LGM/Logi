@@ -17,9 +17,9 @@ macro(compile_shaders target_name shaders_path)
 	  list(APPEND SPIRV_BINARY_FILES ${SPIRV})
 	endforeach(GLSL)
 
-	add_custom_target(shaders DEPENDS ${SPIRV_BINARY_FILES})
+	add_custom_target(${target_name}_shaders DEPENDS ${SPIRV_BINARY_FILES})
 
-	add_dependencies(${target_name} shaders)
+	add_dependencies(${target_name} ${target_name}_shaders)
 
 	add_custom_command(TARGET ${target_name} POST_BUILD
 		COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:${target_name}>/${shaders_path}/"

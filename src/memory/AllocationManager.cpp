@@ -31,16 +31,17 @@ Buffer AllocationManager::createBuffer(const BufferConfiguration& configuration)
 
 	// If the buffer is required to be concurrent add concurrent queue families.
 	if (configuration.concurrent_queue_families.size() <= 1u) {
+		buffer_ci.sharingMode = vk::SharingMode::eExclusive;
+	} else {
 		buffer_ci.sharingMode = vk::SharingMode::eConcurrent;
 		buffer_ci.pQueueFamilyIndices = configuration.concurrent_queue_families.data();
 		buffer_ci.queueFamilyIndexCount = configuration.concurrent_queue_families.size();
-	} else {
-		buffer_ci.sharingMode = vk::SharingMode::eExclusive;
 	}
 
 	// High level usage type.
 	VmaAllocationCreateInfo alloc_info = {};
 	alloc_info.usage = static_cast<VmaMemoryUsage>(configuration.memory_usage);
+	
 
 	// Allocate Image.
 	vk::Buffer buffer;
@@ -74,11 +75,11 @@ Image AllocationManager::createImage(const ImageConfiguration& configuration) {
 
 	// If the image is required to be concurrent add concurrent queue families.
 	if (configuration.concurrent_queue_families.size() <= 1u) {
+		image_ci.sharingMode = vk::SharingMode::eExclusive;
+	} else {
 		image_ci.sharingMode = vk::SharingMode::eConcurrent;
 		image_ci.pQueueFamilyIndices = configuration.concurrent_queue_families.data();
 		image_ci.queueFamilyIndexCount = configuration.concurrent_queue_families.size();
-	} else {
-		image_ci.sharingMode = vk::SharingMode::eExclusive;
 	}
 
 

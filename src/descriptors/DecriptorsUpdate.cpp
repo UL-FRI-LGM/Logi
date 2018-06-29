@@ -32,6 +32,21 @@ void DescriptorsUpdate::writeBufferToDescriptorSet(const DescriptorSet& dst_set,
 	write_operations_.push_back(write_ds);
 }
 
+void DescriptorsUpdate::writeImageToDescriptorSet(const DescriptorSet& descriptor_set, uint32_t dst_binding, uint32_t dst_array_element, const Sampler& sampler, const ImageView& image_view, vk::ImageLayout layout) {
+	image_infos_.emplace_back(std::make_unique<vk::DescriptorImageInfo>(sampler.getVkHandle(), image_view.getVkHandle(), layout));
+	
+	vk::WriteDescriptorSet write_ds{};
+	write_ds.descriptorCount = 1u;
+	write_ds.dstSet = descriptor_set.getVkHandle();
+	write_ds.dstBinding = dst_binding;
+	write_ds.dstArrayElement = dst_array_element;
+	write_ds.descriptorType = descriptor_set.getLayout().getDescriptorBinding(dst_binding).type;
+
+	write_ds.pImageInfo = image_infos_.back().get();
+
+	write_operations_.push_back(write_ds);
+}
+
 const std::vector<vk::CopyDescriptorSet>& DescriptorsUpdate::getCopyOperations() const {
 	return copy_operations_;
 }
