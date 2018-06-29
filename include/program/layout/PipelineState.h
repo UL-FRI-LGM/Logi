@@ -88,7 +88,7 @@ struct TessellationState {
 	 * @param	patch_control_points		Number of control points per patch.
 	 * @param	domain_origin				Controls the origin of the tessellation domain space.
 	 */
-	TessellationState::TessellationState(uint32_t patch_control_points = 0, const std::optional<TessellationDomainOriginState>& domain_origin = {});
+	TessellationState(uint32_t patch_control_points = 0, const std::optional<TessellationDomainOriginState>& domain_origin = {});
 
 	/**
 	 * @brief	Compare TessellationStates if they are contain equivalent configuration.
@@ -114,7 +114,7 @@ private:
 };
 
 struct NvidiaViewportSwizzleState {
-	NvidiaViewportSwizzleState::NvidiaViewportSwizzleState(const std::vector<vk::ViewportSwizzleNV>& swizzle_states = {});
+	NvidiaViewportSwizzleState(const std::vector<vk::ViewportSwizzleNV>& swizzle_states = {});
 
 	bool operator==(const NvidiaViewportSwizzleState& other) const;
 
@@ -128,7 +128,7 @@ private:
 
 struct NvidiaViewportWScalingState {
 
-	NvidiaViewportWScalingState::NvidiaViewportWScalingState(bool enable_w_scaling = true, const std::vector<vk::ViewportWScalingNV>& w_scalings = {});
+	NvidiaViewportWScalingState(bool enable_w_scaling = true, const std::vector<vk::ViewportWScalingNV>& w_scalings = {});
 	
 	bool operator==(const NvidiaViewportWScalingState& other) const;
 
