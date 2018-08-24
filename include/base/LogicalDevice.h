@@ -55,7 +55,7 @@ public:
 	 */
 	DescriptorPool createDescriptorPool(const DescriptorsCount& pool_sizes, const vk::DescriptorPoolCreateFlags& flags = {}) const;
 
-	void executeDescriptorsUpdate(const DescriptorsUpdate& update) const;
+	void executeDescriptorsUpdate(const DescriptorSetUpdate& update) const;
 
 	const ProgramManager& getProgramManager() const;
 

@@ -15,22 +15,67 @@
 namespace logi {
 
 
-class DescriptorSet : public DependentDestroyableHandle {
+/**
+ * @brief	Handle wrapping the Vulkan descriptor set.
+ */
+class DescriptorSet : public Handle {
 public:
+    /**
+     * @brief   Default placeholder consturctor.
+     */
 	DescriptorSet();
 
-	DescriptorSet(const std::weak_ptr<HandleManager>& owner, const vk::DescriptorSet& vk_descriptor_set, const DescriptorSetLayout& descriptor_set_layout);
+    /**
+	 * @brief   Store the descriptor set and layout.	
+	 *
+	 * @param	vk_descriptor_set       Vulkan descriptor set.
+	 * @param	descriptor_set_layout   Vulkan descriptor set layout.
+	 */
+	DescriptorSet(const vk::DescriptorSet& vk_descriptor_set, const DescriptorSetLayout& descriptor_set_layout);
 
+    /**
+	 * @brief   Retrieve Vulkan DescriptorSet handle.	
+	 *
+	 * @return	Vulkan DescriptorSet handle.	
+	 */
 	const vk::DescriptorSet& getVkHandle() const;
 
+    /**
+	 * @brief	Retrieve layout of this DescriptorSet.
+	 *
+	 * @return	DescriptorSet layout.
+	 */
 	const DescriptorSetLayout& getLayout() const;
 
-	// TODO: Free DescriptorSet
-	void destroy() const override;
-
 private:
-	std::shared_ptr<vk::DescriptorSet> vk_descriptor_set_;	///< Descriptor set Vulkan handle.
-	std::shared_ptr<DescriptorSetLayout> layout_;			///< Vulkan device layout.
+    /**
+     * @brief   Structure containing DescriptorSet data.
+     */
+    struct DescriptorSetData {
+        /**
+         * @brief	Populates DescriptorSetData.
+         *
+         * @param	vk_descriptor_set   Vulkan DescriptorSet handle.
+         * @param	layout              Descriptor set layout.
+         */
+        DescriptorSetData(const vk::DescriptorSet& vk_descriptor_set, const DescriptorSetLayout& layout)
+            : vk_descriptor_set(vk_descriptor_set), layout(layout) {}
+
+        /**
+         * Vulkan DescriptorSet handle.
+         */
+		vk::DescriptorSet vk_descriptor_set;
+
+        /**
+         * Descriptor set layout.
+         */
+		DescriptorSetLayout layout;
+    };
+
+    /**
+     * Descriptor set data shared among handle instances.
+     */
+	std::shared_ptr<DescriptorSetData> data_;
 };
 
 

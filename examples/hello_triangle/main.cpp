@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include "base/SwapChain.h"
 #include "memory/Framebuffer.h"
+#include "base/ExtensionObject.h"
 
 class HelloTriangle {
 public:
@@ -327,6 +328,7 @@ private:
 	std::vector<logi::Semaphore> render_finished_semaphores;
 	size_t current_frame = 0u;
 };
+
 
 int main() {
 	{

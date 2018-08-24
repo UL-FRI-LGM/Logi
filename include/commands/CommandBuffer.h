@@ -3,7 +3,6 @@
 
 #include <vulkan/vulkan.hpp>
 #include "base/Handle.h"
-#include "base/ConfigExtension.h"
 #include "program/render_pass/RenderPass.h"
 #include "program/render_pass/ComputePipeline.h"
 #include "descriptors/DescriptorSet.h"
@@ -64,11 +63,11 @@ public:
 
 	void end() const;
 
-	template <typename... Extensions>
+    template <typename... Extensions>
 	void beginRenderPass(const RenderPass& render_pass, const Framebuffer& framebuffer, const vk::Rect2D& render_area,
 	                     std::vector<vk::ClearValue> clear_values,
 	                     const vk::SubpassContents contents = vk::SubpassContents::eInline,
-	                     const Extensions&... extensions) const {
+	                     Extensions&... extensions) const {
 
 		// Basic info.
 		vk::RenderPassBeginInfo begin_info;
@@ -78,7 +77,7 @@ public:
 		begin_info.pClearValues = clear_values.data();
 		begin_info.clearValueCount = clear_values.size();
 
-		addNextExtensions(&begin_info.pNext, extensions...);
+		begin_info.pNext = ExtensionObject::buildExtensions(extensions...);
 
 		data_->vk_cmd_buffer.beginRenderPass(begin_info, contents);
 	}

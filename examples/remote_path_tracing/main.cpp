@@ -5,6 +5,7 @@
 #include "base/SwapChain.h"
 #include "memory/Framebuffer.h"
 #include <algorithm>
+#include "base/ExtensionObject.h"
 
 struct Pixel {
 	float r, g, b, a;
@@ -51,7 +52,7 @@ public:
 		logi::InstanceConfiguration instance_config{};
 		instance_config.extensions = getRequiredExtensions();
 		instance_config.extensions.emplace_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
-		instance_config.validation_layers = { "VK_LAYER_LUNARG_standard_validation" };
+		instance_config.validation_layers = { "VK_LAYER_LUNARG_standard_validation", "VK_LAYER_RENDERDOC_Capture" };
 		instance_config.enable_validation = true;
 
 		instance = logi::VulkanInstance(app_info, instance_config);
@@ -248,14 +249,14 @@ public:
 
 		descriptor_pool = gpu.createDescriptorPool(graphic_pipeline.layout().getDescriptorsCount() + compute_pipeline.layout().getDescriptorsCount());
 
-		compute_desc_set = descriptor_pool.createDescriptorSet(compute_pipeline.layout().getDescriptorSetLayout(0));
-		graphic_desc_set = descriptor_pool.createDescriptorSet(graphic_pipeline.layout().getDescriptorSetLayout(0));
+		compute_desc_set = descriptor_pool.allocateDescriptorSet(compute_pipeline.layout().getDescriptorSetLayout(0));
+		graphic_desc_set = descriptor_pool.allocateDescriptorSet(graphic_pipeline.layout().getDescriptorSetLayout(0));
 
-		logi::DescriptorsUpdate desc_update;
-		desc_update.writeImageToDescriptorSet(compute_desc_set, 0, 0, texture.sampler, texture.image_view, vk::ImageLayout::eGeneral);
-		desc_update.writeBufferToDescriptorSet(compute_desc_set, 1, 0, compute_input_buffer, 0, sizeof(PathtracerInput));
-		desc_update.writeImageToDescriptorSet(graphic_desc_set, 0, 0, texture.sampler, texture.image_view, vk::ImageLayout::eGeneral);
-		desc_update.writeBufferToDescriptorSet(graphic_desc_set, 1, 0, graphic_input_buffer, 0, sizeof(GraphicInput));
+		logi::DescriptorSetUpdate desc_update;
+		desc_update.writeImage(compute_desc_set, 0, 0, texture.sampler, texture.image_view, vk::ImageLayout::eGeneral);
+		desc_update.writeBuffer(compute_desc_set, 1, 0, compute_input_buffer, 0, sizeof(PathtracerInput));
+		desc_update.writeImage(graphic_desc_set, 0, 0, texture.sampler, texture.image_view, vk::ImageLayout::eGeneral);
+		desc_update.writeBuffer(graphic_desc_set, 1, 0, graphic_input_buffer, 0, sizeof(GraphicInput));
 		
 		gpu.executeDescriptorsUpdate(desc_update);
 	}
@@ -445,6 +446,14 @@ private:
 };
 
 int main() {
+	logi::TessellationState tessellation_state;
+	tessellation_state.addExtension(logi::TessellationDomainOriginState());
+
+	logi::TessellationState copy = tessellation_state;
+	copy.getExtension<logi::TessellationDomainOriginState>()->domain_origin = vk::TessellationDomainOrigin::eLowerLeftKHR;
+
+	std::cout << (copy == tessellation_state) << std::endl;
+
 	{
 		HelloTriangle example;
 		example.start();

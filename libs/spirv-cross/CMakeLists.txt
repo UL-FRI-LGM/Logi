@@ -1,9 +1,9 @@
 cmake_minimum_required (VERSION 3.6)
 
-file(GLOB SOURCES "src/*.cpp")
-file(GLOB HEADERS "include/*.hpp" "include/*.h")
+file(GLOB SRC "src/*.cpp")
 
-add_library(spirv-cross STATIC ${SOURCES})
+add_library(spirv-cross STATIC ${SRC})
 target_include_directories(spirv-cross PUBLIC
-    "include"
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:lib>
 )

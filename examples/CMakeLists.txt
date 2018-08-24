@@ -1,18 +1,5 @@
 cmake_minimum_required (VERSION 3.6)
 
-MACRO(SUBDIRLIST result curdir)
-  FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
-  SET(dirlist "")
-  FOREACH(child ${children})
-    IF(IS_DIRECTORY ${curdir}/${child})
-      LIST(APPEND dirlist ${child})
-    ENDIF()
-  ENDFOREACH()
-  SET(${result} ${dirlist})
-ENDMACRO()
-
-SUBDIRLIST(SUBDIRS ${CMAKE_CURRENT_SOURCE_DIR})
-
-FOREACH(subdir ${SUBDIRS})
-  add_subdirectory(${subdir})
-ENDFOREACH()
+add_subdirectory(libs)
+add_subdirectory(hello_triangle)
+add_subdirectory(remote_path_tracing)

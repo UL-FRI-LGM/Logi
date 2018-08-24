@@ -1,4 +1,5 @@
 #include "descriptors/DescriptorPool.h"
+#include "base/Exceptions.h"
 
 namespace logi {
 
@@ -19,14 +20,27 @@ DescriptorPool::DescriptorPool(std::weak_ptr<HandleManager>& owner, const vk::De
 	vk_descriptor_pool_ = std::make_shared<ManagedVkDescriptorPool>(device, device.createDescriptorPool(descriptor_pool_ci));
 }
 
-DescriptorSet DescriptorPool::createDescriptorSet(const DescriptorSetLayout& set_layout) const {
-	// Allocate descriptor set.
-	vk::DescriptorSetAllocateInfo set_alloc_info{};
-	set_alloc_info.descriptorPool = vk_descriptor_pool_->get();
-	set_alloc_info.descriptorSetCount = 1;
-	set_alloc_info.pSetLayouts = &set_layout.getVkHandle();
+void DescriptorPool::freeDescriptorSets(const std::vector<DescriptorSet>& descriptor_sets) const {
+    if (data_->flags & vk::DescriptorPoolCreateFlagBits::eFreeDescriptorSet) {
+		throw IllegalInvocation("Tried to free descriptor sets from the pool that was not created with free descriptor set flag.");
+    }
 
-	return handle_manager_->createHandle<DescriptorSet>(vk_descriptor_pool_->getOwner().allocateDescriptorSets(set_alloc_info)[0], set_layout);
+	std::vector<vk::DescriptorSet> vk_descriptor_sets;
+	vk_descriptor_sets.reserve(descriptor_sets.size());
+
+    for (const DescriptorSet& set : descriptor_sets) {
+		vk_descriptor_sets.push_back(set.getVkHandle());
+		handle_manager_->destroyHandle(set);
+    }
+
+    const vk::Device& device = vk_descriptor_pool_->getOwner();
+	device.freeDescriptorSets(vk_descriptor_pool_->get(), vk_descriptor_sets.size(), vk_descriptor_sets.data());
+}
+
+void DescriptorPool::reset(const vk::DescriptorPoolResetFlags& reset_flags) const {
+	const vk::Device& device = vk_descriptor_pool_->getOwner();
+	handle_manager_->destroyAllHandles();
+	device.resetDescriptorPool(vk_descriptor_pool_->get(), reset_flags);
 }
 
 void DescriptorPool::free() {

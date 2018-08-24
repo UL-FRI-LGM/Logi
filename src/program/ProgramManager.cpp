@@ -1,6 +1,5 @@
 #include "program/ProgramManager.h"
 #include <fstream>
-#include <json.hpp>
 #include <vulkan/vulkan.hpp>
 
 namespace logi {

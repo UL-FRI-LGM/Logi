@@ -1,5 +1,4 @@
 cmake_minimum_required (VERSION 3.6)
-cmake_policy(SET CMP0048 NEW)
 
 # Metadata
 project(Logi VERSION 0.1.0 LANGUAGES CXX)
@@ -7,19 +6,14 @@ project(Logi VERSION 0.1.0 LANGUAGES CXX)
 # C++ 17 SUPPORT
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Add path to CMake custom modules.
 list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_SOURCE_DIR}/cmake_modules")
 
 # C++ Google Test
-option(BUILD_TESTS "Build tests." ON)
-option(BUILD_DOC "Build documentation" ON)
+option(BUILD_TESTS "Build tests." OFF)
+option(BUILD_DOC "Build documentation" OFF)
 option(BUILD_EXAMPLES "Build examples" ON)
-
-if(MSVC)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
-endif(MSVC)
 
 ##############################################
 # BUILD LOGI LIBRARY
@@ -28,8 +22,15 @@ endif(MSVC)
 # Libraries path
 add_subdirectory(${PROJECT_SOURCE_DIR}/libs)
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
-add_subdirectory(${PROJECT_SOURCE_DIR}/src)
+file(GLOB_RECURSE SRC_LIST "src/*.cpp")
+
+add_library(logi STATIC ${SRC_LIST})
+target_include_directories(logi PUBLIC
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
+
+target_link_libraries(logi vulkan spirv-cross vma)
 
 if (BUILD_EXAMPLES)
 	add_subdirectory(examples)

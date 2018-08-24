@@ -88,7 +88,7 @@ const AllocationManager& LogicalDevice::getAllocationManager() const {
 	return data_->allocation_manager;
 }
 
-void LogicalDevice::executeDescriptorsUpdate(const DescriptorsUpdate& update) const {
+void LogicalDevice::executeDescriptorsUpdate(const DescriptorSetUpdate& update) const {
 	data_->logical_device.updateDescriptorSets(update.getWriteOperations(), update.getCopyOperations());
 }
 

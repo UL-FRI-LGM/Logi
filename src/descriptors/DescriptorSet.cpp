@@ -1,29 +1,26 @@
 #include "descriptors/DescriptorSet.h"
+#include "base/Exceptions.h"
 
 namespace logi {
 
 
-DescriptorSet::DescriptorSet() : DependentDestroyableHandle({}, false) {
+DescriptorSet::DescriptorSet() : Handle(false) {
 }
 
-DescriptorSet::DescriptorSet(const std::weak_ptr<HandleManager>& owner, const vk::DescriptorSet& vk_descriptor_set, const DescriptorSetLayout& descriptor_set_layout) 
-	: DependentDestroyableHandle(owner), vk_descriptor_set_(std::make_shared<vk::DescriptorSet>(vk_descriptor_set)), layout_(std::make_shared<DescriptorSetLayout>(descriptor_set_layout)) {}
+DescriptorSet::DescriptorSet(const vk::DescriptorSet& vk_descriptor_set, const DescriptorSetLayout& descriptor_set_layout) 
+	: data_(std::make_shared<DescriptorSetData>(vk_descriptor_set, descriptor_set_layout)) {}
 
 const vk::DescriptorSet& DescriptorSet::getVkHandle() const {
 	// Check if the handle is still valid.
 	if (!alive()) {
-		throw std::runtime_error("Calls 'getVkHandle' on destroyed DescriptorSet handle.");
+		throw IllegalInvocation("Calls 'getVkHandle' on destroyed DescriptorSet handle.");
 	}
 
-	return *vk_descriptor_set_;
+	return data_->vk_descriptor_set;
 }
 
 const DescriptorSetLayout& DescriptorSet::getLayout() const {
-	return *layout_;
-}
-
-void DescriptorSet::destroy() const {
-	DependentDestroyableHandle::destroy();
+	return data_->layout;
 }
 
 }
