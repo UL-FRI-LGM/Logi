@@ -12,9 +12,10 @@
 #include <utility>
 #include <mutex>
 #include <memory>
-#include <iostream>
 #include <atomic>
 #include <unordered_map>
+#include <sstream>
+#include "Exceptions.h"
 
 namespace logi {
 
@@ -65,6 +66,12 @@ public:
 	 * @return	true	If object is valid.
 	 */
 	bool alive() const;
+
+	inline void checkForNullHandleInvocation(const char* object_name, const char*  method_name) const {
+		if (!(*alive_)) {
+			throw IllegalInvocation(std::string("Tried to invoke method ") + method_name + "() on a null " + object_name + " handle.");
+		}
+	}
 
 	/**
 	 * @brief	Default virtual destructor.

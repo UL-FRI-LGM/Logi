@@ -2,8 +2,11 @@
 #define COMMANDS_COMMAND_POOL_H
 #include <vulkan/vulkan.hpp>
 #include "commands/CommandBuffer.h"
+#include "commands/PrimaryCommandBuffer.h"
+#include "commands/SecondaryCommandBuffer.h"
 #include "base/Handle.h"
 #include "base/ManagedResource.h"
+
 
 namespace logi {
 

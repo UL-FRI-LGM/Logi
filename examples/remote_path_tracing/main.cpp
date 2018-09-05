@@ -5,7 +5,9 @@
 #include "base/SwapChain.h"
 #include "memory/Framebuffer.h"
 #include <algorithm>
+#include <iostream>
 #include "base/ExtensionObject.h"
+#include "commands/PrimaryCommandBuffer.h"
 
 struct Pixel {
 	float r, g, b, a;
@@ -24,7 +26,7 @@ struct GraphicInput {
 class HelloTriangle {
 public:
 	static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType, uint64_t obj, size_t location, int32_t code, const char* layerPrefix, const char* msg, void* userData) {
-		std::cerr << "validation layer: " << msg << std::endl;
+		std::cout << "validation layer: " << msg << std::endl;
 
 		return VK_FALSE;
 	};
@@ -252,13 +254,13 @@ public:
 		compute_desc_set = descriptor_pool.allocateDescriptorSet(compute_pipeline.layout().getDescriptorSetLayout(0));
 		graphic_desc_set = descriptor_pool.allocateDescriptorSet(graphic_pipeline.layout().getDescriptorSetLayout(0));
 
-		logi::DescriptorSetUpdate desc_update;
-		desc_update.writeImage(compute_desc_set, 0, 0, texture.sampler, texture.image_view, vk::ImageLayout::eGeneral);
-		desc_update.writeBuffer(compute_desc_set, 1, 0, compute_input_buffer, 0, sizeof(PathtracerInput));
-		desc_update.writeImage(graphic_desc_set, 0, 0, texture.sampler, texture.image_view, vk::ImageLayout::eGeneral);
-		desc_update.writeBuffer(graphic_desc_set, 1, 0, graphic_input_buffer, 0, sizeof(GraphicInput));
+		logi::DescriptorSetUpdate desc_update = gpu.createDescriptorUpdate();
+		desc_update.write(logi::DescriptorImageWrite(compute_desc_set, 0, 0, { logi::DescriptorImageInfo(texture.sampler, texture.image_view, vk::ImageLayout::eGeneral)}));
+		desc_update.write(logi::DescriptorBufferWrite(compute_desc_set, 1, 0, { logi::DescriptorBufferInfo(compute_input_buffer, 0, sizeof(PathtracerInput)) }));
+		desc_update.write(logi::DescriptorImageWrite(graphic_desc_set, 0, 0, { logi::DescriptorImageInfo(texture.sampler, texture.image_view, vk::ImageLayout::eGeneral) }));
+		desc_update.write(logi::DescriptorBufferWrite(graphic_desc_set, 1, 0, { logi::DescriptorBufferInfo(graphic_input_buffer, 0, sizeof(GraphicInput)) }));
 		
-		gpu.executeDescriptorsUpdate(desc_update);
+		desc_update.execute();
 	}
 
 	void createFramebuffers() {
@@ -270,22 +272,22 @@ public:
 	void buildCommandBuffers() {
 		// Create compute command buffers.
 		compute_cmd_buffer = command_pool.createPrimaryCommandBuffer();
-		compute_cmd_buffer.begin(vk::CommandBufferUsageFlagBits::eRenderPassContinue);
+		compute_cmd_buffer.begin();
 		compute_cmd_buffer.bindPipeline(compute_pipeline);
 		compute_cmd_buffer.bindDescriptorSets(vk::PipelineBindPoint::eCompute, compute_pipeline.layout(), 0, { compute_desc_set });
-		compute_cmd_buffer.dispatch((uint32_t)ceil(width / float(32)), (uint32_t)ceil(height / float(32)), 1);
+		compute_cmd_buffer.dispatch(static_cast<uint32_t>(ceil(width / float(32))), static_cast<uint32_t>(ceil(height / float(32))), 1);
 		compute_cmd_buffer.end();
 
 		// Create graphical command buffers.
 		for (const logi::Framebuffer& framebuffer : framebuffers) {
 			cmd_buffers.emplace_back(command_pool.createPrimaryCommandBuffer());
 			logi::PrimaryCommandBuffer& cmd_buffer = cmd_buffers.back();
-			const vk::CommandBuffer& vk_cmd_buffer = cmd_buffers.back().getVkHandle();
-
-			cmd_buffer.begin(vk::CommandBufferUsageFlagBits::eSimultaneousUse);
+			cmd_buffer.begin(logi::CommandBufferBeginInfo(vk::CommandBufferUsageFlagBits::eSimultaneousUse));
 
 			const std::vector<vk::ClearValue> clear_values = { vk::ClearValue(vk::ClearColorValue(std::array<float, 4>{ 0.0f, 0.0f, 0.0f, 1.0f })) };
-			cmd_buffer.beginRenderPass(render_pass, framebuffer, vk::Rect2D(vk::Offset2D(), swapchain_extent), clear_values);
+		    const logi::RenderPassBeginInfo rp_begin_info(render_pass, framebuffer, vk::Rect2D(vk::Offset2D(), swapchain_extent), clear_values);
+
+			cmd_buffer.beginRenderPass(rp_begin_info);
 			cmd_buffer.bindPipeline(graphic_pipeline);
 			cmd_buffer.bindDescriptorSets(vk::PipelineBindPoint::eGraphics, graphic_pipeline.layout(), 0, { graphic_desc_set });
 			cmd_buffer.draw(3);
@@ -317,7 +319,7 @@ public:
 		in_flight_fences[current_frame].wait(std::numeric_limits<uint64_t>::max());
 		in_flight_fences[current_frame].reset();
 
-		uint32_t image_index = swapchain.acquireNextImage(image_available_semaphores[current_frame]).value;
+	    const uint32_t image_index = swapchain.acquireNextImage(image_available_semaphores[current_frame]).value;
 
 		static const vk::PipelineStageFlags wait_stages{ vk::PipelineStageFlagBits::eColorAttachmentOutput };
 

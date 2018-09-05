@@ -23,7 +23,7 @@ public:
 
 	Framebuffer createFramebuffer(const std::vector<ImageView>& attachments, uint32_t width, uint32_t height, uint32_t layers, const vk::FramebufferCreateFlags& flags = {}) const;
 
-	vk::RenderPass getVkHandle() const;
+	const vk::RenderPass& getVkHandle() const;
 
 protected:
 	GraphicalPipeline addGraphicalPipeline(const vk::Pipeline& pipeline, const PipelineLayout& layout, const PipelineState& state) const;

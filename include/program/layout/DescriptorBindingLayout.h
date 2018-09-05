@@ -38,7 +38,7 @@ struct DescriptorBindingLayout final {
 	 *
 	 * @param	binding_initializer Structure containing binding index, descriptor type, number of array entries and stages in which the binding should be available.
 	 */
-	DescriptorBindingLayout(const internal::DescriptorBindingInitializer& binding_initializer);
+    explicit DescriptorBindingLayout(const internal::DescriptorBindingInitializer& binding_initializer);
 
 	/**
 	 * @brief	Build Vulkan binding structure from the data.

@@ -80,16 +80,16 @@ DescriptorPool LogicalDevice::createDescriptorPool(const DescriptorsCount& pool_
 	return handle_manager_->createHandle<DescriptorPool>(data_->logical_device, pool_sizes, flags);
 }
 
+DescriptorSetUpdate LogicalDevice::createDescriptorUpdate() const {
+	return handle_manager_->createHandle<DescriptorSetUpdate>(data_->logical_device);
+}
+
 const ProgramManager& LogicalDevice::getProgramManager() const {
 	return data_->program_manager;
 }
 
 const AllocationManager& LogicalDevice::getAllocationManager() const {
 	return data_->allocation_manager;
-}
-
-void LogicalDevice::executeDescriptorsUpdate(const DescriptorSetUpdate& update) const {
-	data_->logical_device.updateDescriptorSets(update.getWriteOperations(), update.getCopyOperations());
 }
 
 #pragma region DEVICE HANDLE GETTERS

@@ -23,4 +23,5 @@ IllegalInvocation::IllegalInvocation(const std::string& message)
 
 IllegalInvocation::IllegalInvocation(const char* const message)
     : LogiException(message) {}
+
 }

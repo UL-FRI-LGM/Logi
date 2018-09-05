@@ -19,7 +19,7 @@ Framebuffer RenderPass::createFramebuffer(const std::vector<ImageView>& attachme
 	return handle_manager_->createHandle<Framebuffer>(data_->vk_render_pass.getOwner(), data_->vk_render_pass.get(), attachments, width, height, layers, flags);
 }
 
-vk::RenderPass RenderPass::getVkHandle() const {
+const vk::RenderPass& RenderPass::getVkHandle() const {
 	return data_->vk_render_pass.get();
 }
 
