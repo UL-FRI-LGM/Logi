@@ -28,7 +28,7 @@ public:
 	 *
 	 * @param	vk_physical_device	
 	 */
-	PhysicalDevice(const vk::PhysicalDevice& vk_physical_device);
+    explicit PhysicalDevice(const vk::PhysicalDevice& vk_physical_device);
 
 	/**
 	 * @brief	Retrieve device properties.

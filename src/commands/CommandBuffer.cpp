@@ -254,6 +254,18 @@ void CommandBuffer::setDeviceMask(const uint32_t device_mask) const {
 	data_->vk_cmd_buffer.setDeviceMask(device_mask);
 }
 
+void CommandBuffer::signalEvent(const Event& event, const vk::PipelineStageFlags& stage_mask) const {
+	checkForNullHandleInvocation("CommandBuffer", "signalEvent");
+
+	data_->vk_cmd_buffer.setEvent(event.getVkHandle(), stage_mask);
+}
+
+void CommandBuffer::resetEvent(const Event& event, const vk::PipelineStageFlags& stage_mask) const {
+	checkForNullHandleInvocation("CommandBuffer", "resetEvent");
+
+	data_->vk_cmd_buffer.resetEvent(event.getVkHandle(), stage_mask);
+}
+
 void CommandBuffer::end() const {
 	checkForNullHandleInvocation("CommandBuffer", "end");
 

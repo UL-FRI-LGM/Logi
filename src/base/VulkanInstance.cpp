@@ -7,66 +7,49 @@
 */
 
 #include "base/VulkanInstance.h"
-#include <algorithm>
-#include "GlobalConfig.h"
-#include "DebugUtils.h"
 
 namespace logi {
 
-ApplicationInfo::ApplicationInfo(const std::string& app_name, const uint32_t app_version, const std::string& engine_name, const uint32_t engine_version)
-	: app_name(app_name), app_version(app_version), engine_name(engine_name), engine_version(engine_version) {}
+ApplicationInfo::ApplicationInfo(std::string app_name, const uint32_t app_version, std::string engine_name, 
+	                             const uint32_t engine_version)
+	: app_name(std::move(app_name)), app_version(app_version), engine_name(std::move(engine_name)), 
+      engine_version(engine_version) {}
 
-InstanceConfiguration::InstanceConfiguration(const std::vector<const char*>& extensions, bool enable_validation, const std::vector<const char*>& validation_layers)
-	: extensions(extensions), enable_validation(enable_validation), validation_layers(validation_layers) {}
+const vk::ApplicationInfo& ApplicationInfo::build() {
+	vk_app_info_ = vk::ApplicationInfo(app_name.data(), app_version, engine_name.data(), engine_version, VK_API_VERSION_1_1);
+	vk_app_info_.pNext = buildExtensions();
 
+	return vk_app_info_;
+}
 
-VulkanInstance::VulkanInstance() : data_(nullptr), handle_manager_(nullptr) {}
+InstanceConfiguration::InstanceConfiguration(ApplicationInfo application_info, std::vector<const char*> extensions,
+	                                         std::vector<const char*> validation_layers, 
+	                                         const vk::InstanceCreateFlags& flags)
+	: application_info(std::move(application_info)), extensions(std::move(extensions)), 
+      validation_layers(std::move(validation_layers)), flags(flags) {}
 
-VulkanInstance::VulkanInstance(const ApplicationInfo& application_info, const InstanceConfiguration& configuration)
-	: data_(std::make_shared<InstanceData>(application_info, configuration)), handle_manager_(std::make_shared<HandleManager>()) {
+const vk::InstanceCreateInfo& InstanceConfiguration::build() {
+	vk_instance_ci_ = vk::InstanceCreateInfo(flags, &application_info.build(), validation_layers.size(), 
+		                                     validation_layers.data(), extensions.size(), extensions.data());
+	vk_instance_ci_.pNext = buildExtensions();
 
-	const ApplicationInfo& app_info = data_->application_info;
-	InstanceConfiguration& config = data_->configuration;
+	return vk_instance_ci_;
+}
 
-	// Create ApplicationInfo using the global configuration.
-	vk::ApplicationInfo vk_app_info{};
+VulkanInstance::VulkanInstance() : data_(nullptr) {}
 
-	vk_app_info.pApplicationName = app_info.app_name.c_str();
-	vk_app_info.applicationVersion = app_info.app_version;
-	vk_app_info.pEngineName = app_info.engine_name.c_str();
-	vk_app_info.engineVersion = app_info.engine_version;
-	vk_app_info.apiVersion = VK_API_VERSION_1_1;
+VulkanInstance::VulkanInstance(InstanceConfiguration configuration)
+	: data_(std::make_shared<InstanceData>(std::move(configuration))) {
 
-	vk::InstanceCreateInfo instance_ci{};
-	instance_ci.pApplicationInfo = &vk_app_info;
-	instance_ci.enabledExtensionCount = static_cast<uint32_t>(config.extensions.size());
-	instance_ci.ppEnabledExtensionNames = config.extensions.data();
-
-	// Setup validation layers if validation is enabled.
-	if (config.enable_validation) {
-		std::vector<const char*>& layers = config.validation_layers;
-
-		// Check if the requested validation layers are supported.
-		if (!checkValidationLayerSupport(layers)) {
-			throw std::runtime_error("Requested validation layers are not supported!");
-		}
-
-		instance_ci.ppEnabledLayerNames = layers.data();
-		instance_ci.enabledLayerCount = static_cast<uint32_t>(layers.size());
-	} else {
-		instance_ci.enabledLayerCount = 0;
-	}
-
-	// Try to create instance.
-	data_->vk_instance = vk::createInstance(instance_ci);
-
+	// Try to create Vulkan instance.
+	data_->vk_instance = vk::createInstance(data_->configuration.build());
 
 	// Fetch available physical devices.
 	std::vector<vk::PhysicalDevice> physical_devices = data_->vk_instance.enumeratePhysicalDevices();
 
 	// Create Vulkan device handles.
 	for (vk::PhysicalDevice& p_dev : physical_devices) {
-		data_->physical_devices.emplace_back(handle_manager_->createHandle<PhysicalDevice>(p_dev));
+		data_->physical_devices.emplace_back(data_->handle_manager->createHandle<PhysicalDevice>(p_dev));
 	}
 }
 
@@ -79,19 +62,15 @@ void VulkanInstance::setupDebugCallback(const vk::DebugReportFlagsEXT& flags, PF
 	create_info.pfnCallback = callback;
 
 	// Setup callback.
-	auto setup_callback_fn = reinterpret_cast<PFN_vkCreateDebugReportCallbackEXT>(data_->vk_instance.getProcAddr("vkCreateDebugReportCallbackEXT"));
+    const auto setup_callback_fn = reinterpret_cast<PFN_vkCreateDebugReportCallbackEXT>(data_->vk_instance.getProcAddr("vkCreateDebugReportCallbackEXT"));
 
 	// Check if the setup callback function was successfully retrieved.
 	if (setup_callback_fn == nullptr) {
-		throw std::runtime_error("Failed to set up debug callback!");
+		throw InitializationError("Failed to setup debug callback! Check if extension VK_EXT_DEBUG_REPORT_EXTENSION_NAME is enabled.");
 	}
 
-	data_->debug_callbacks.push_back({});
+	data_->debug_callbacks.emplace_back();
 	setup_callback_fn(static_cast<VkInstance>(data_->vk_instance), &create_info, nullptr, reinterpret_cast<VkDebugReportCallbackEXT*>(&data_->debug_callbacks.back()));
-}
-
-const ApplicationInfo& VulkanInstance::applicationInfo() const {
-	return data_->application_info;
 }
 
 const InstanceConfiguration& VulkanInstance::configuration() const {
@@ -114,8 +93,8 @@ bool VulkanInstance::checkValidationLayerSupport(const std::vector<const char*>&
 	for (const char* layer : layers) {
 		bool found = false;
 
-		for (const auto& layerProperties : available_layers) {
-			if (strcmp(layer, layerProperties.layerName) == 0) {
+		for (const auto& layer_properties : available_layers) {
+			if (strcmp(layer, layer_properties.layerName) == 0) {
 				found = true;
 				break;
 			}
@@ -131,7 +110,7 @@ bool VulkanInstance::checkValidationLayerSupport(const std::vector<const char*>&
 
 void VulkanInstance::free() {
 	if (alive()) {
-		handle_manager_->destroyAllHandles();
+		data_->handle_manager->destroyAllHandles();
 
 		// Clear debug callbacks.
 		const auto destroy_callback_fn = reinterpret_cast<PFN_vkDestroyDebugReportCallbackEXT>(data_->vk_instance.getProcAddr("vkDestroyDebugReportCallbackEXT"));
@@ -149,8 +128,8 @@ void VulkanInstance::free() {
 	}
 }
 
-VulkanInstance::InstanceData::InstanceData(const ApplicationInfo& application_info, const InstanceConfiguration& configuration)
-	: application_info(application_info), configuration(configuration) {}
+VulkanInstance::InstanceData::InstanceData(InstanceConfiguration configuration)
+	:  configuration(std::move(configuration)), handle_manager(std::make_shared<HandleManager>()) {}
 
 
 } /// !namespace logi

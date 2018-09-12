@@ -89,6 +89,26 @@ public:
     explicit IllegalInvocation(const char* message);
 };
 
+/**
+ * @brief   InitializationError error.
+ */
+class InitializationError : LogiException {
+public:
+	/**
+	 * @brief	Forwards message to the std exception class.
+	 *
+	 * @param	message Exception message.
+	 */
+	explicit InitializationError(const std::string& message);
+
+	/**
+	 * @brief	Forwards message to the std exception class.
+	 *
+	 * @param	message Exception message.
+	 */
+	explicit InitializationError(const char* message);
+};
+
 }
 
 #endif

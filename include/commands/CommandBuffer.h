@@ -8,6 +8,7 @@
 #include "descriptors/DescriptorSet.h"
 #include "memory/Buffer.h"
 #include "memory/Image.h"
+#include "synchronization/Event.h"
 
 namespace logi {
 
@@ -405,6 +406,22 @@ public:
 	 * @param	device_mask New value of the current device mask.
 	 */
 	void setDeviceMask(uint32_t device_mask) const;
+
+    /**
+	 * @brief	Set an event object to signaled state
+	 *
+	 * @param	event       Event that will be signaled.
+	 * @param	stage_mask  Specifies the source stage mask used to determine when the event is signaled.
+	 */
+	void signalEvent(const Event& event, const vk::PipelineStageFlags& stage_mask) const;
+
+	/**
+     * @brief	Reset an event object to non-signaled state
+     *
+     * @param	event       Event that will be signaled.
+     * @param	stage_mask  Specifies the source stage mask used to determine when the event is reset.
+     */
+    void resetEvent(const Event& event, const vk::PipelineStageFlags& stage_mask) const;
 
 	/**
 	 * @brief   Ends command buffer recording.

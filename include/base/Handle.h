@@ -14,7 +14,6 @@
 #include <memory>
 #include <atomic>
 #include <unordered_map>
-#include <sstream>
 #include "Exceptions.h"
 
 namespace logi {

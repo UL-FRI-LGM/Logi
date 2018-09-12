@@ -50,14 +50,12 @@ public:
 	}
 
 	void createInstance() {
-		logi::ApplicationInfo app_info("test", 1, "test", 1);
 		logi::InstanceConfiguration instance_config{};
 		instance_config.extensions = getRequiredExtensions();
 		instance_config.extensions.emplace_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
 		instance_config.validation_layers = { "VK_LAYER_LUNARG_standard_validation", "VK_LAYER_RENDERDOC_Capture" };
-		instance_config.enable_validation = true;
 
-		instance = logi::VulkanInstance(app_info, instance_config);
+		instance = logi::VulkanInstance(instance_config);
 
 		instance.setupDebugCallback(vk::DebugReportFlagBitsEXT::eError | vk::DebugReportFlagBitsEXT::eDebug | vk::DebugReportFlagBitsEXT::eWarning, debugCallback);
 	}
@@ -172,7 +170,7 @@ public:
 		logi::Shader vertex_shader = program_manager.loadShader("./shaders/triangle.vert.spv", vk::ShaderStageFlagBits::eVertex);
 		logi::Shader fragment_shader = program_manager.loadShader("./shaders/triangle.frag.spv", vk::ShaderStageFlagBits::eFragment);
 		logi::PipelineLayout pipeline_layout = program_manager.createPipelineLayout({ vertex_shader, fragment_shader });
-
+   
 		logi::PipelineState state;
 
 		// INPUT ASSEMBLY STATE
