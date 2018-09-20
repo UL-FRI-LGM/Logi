@@ -1,16 +1,62 @@
+#include <utility>
 #include "queues/QueueFamily.h"
 
 namespace logi {
 
+NvidiaQueueFamilyCheckpointProperties::NvidiaQueueFamilyCheckpointProperties(
+    const vk::PipelineStageFlags& checkpoint_execution_stage_mask)
+    : checkpoint_execution_stage_mask(checkpoint_execution_stage_mask) {}
 
-QueueFamilyProperties::QueueFamilyProperties(const uint32_t family_index, const vk::QueueFamilyProperties& properties)
-	: family_index(family_index), queue_flags(properties.queueFlags), max_queue_count(properties.queueCount), timestamp_valid_bits(properties.timestampValidBits),
-	min_image_transfer_granularity(properties.minImageTransferGranularity) {}
+std::unique_ptr<Extension> NvidiaQueueFamilyCheckpointProperties::clone() const {
+	return std::make_unique<NvidiaQueueFamilyCheckpointProperties>(*this);
+}
 
+bool NvidiaQueueFamilyCheckpointProperties::operator==(const NvidiaQueueFamilyCheckpointProperties& rhs) const {
+    return checkpoint_execution_stage_mask == rhs.checkpoint_execution_stage_mask;
+}
 
-QueueFamilyConfig::QueueFamilyConfig(const QueueFamilyProperties& properties, uint32_t queue_count, const std::vector<float>& priorities, const vk::DeviceQueueCreateFlags& flags)
-	: properties(properties), flags(flags), queue_count(queue_count), priorities(priorities) {}
+QueueFamilyProperties::QueueFamilyProperties(const uint32_t family_index, const vk::QueueFamilyProperties& properties) 
+	: family_index(family_index), queue_flags(properties.queueFlags), queue_count(properties.queueCount), 
+      timestamp_valid_bits(properties.timestampValidBits),
+      min_image_transfer_granularity(properties.minImageTransferGranularity) {}
 
+QueueFamilyProperties::QueueFamilyProperties(const uint32_t family_index, const vk::QueueFamilyProperties2& properties)
+	: family_index(family_index), queue_flags(properties.queueFamilyProperties.queueFlags),
+      queue_count(properties.queueFamilyProperties.queueCount),
+      timestamp_valid_bits(properties.queueFamilyProperties.timestampValidBits),
+	  min_image_transfer_granularity(properties.queueFamilyProperties.minImageTransferGranularity) {
+    
+    // Add extensions.
+	void* next = properties.pNext;
+    while (next != nullptr) {
+        const auto* type = reinterpret_cast<const vk::StructureType*>(next);
+
+        if (*type == vk::StructureType::eQueueFamilyCheckpointPropertiesNV) {
+			const auto* ext = reinterpret_cast<vk::QueueFamilyCheckpointPropertiesNV*>(next);
+			addExtension(NvidiaQueueFamilyCheckpointProperties(ext->checkpointExecutionStageMask));
+			next = ext->pNext;
+        }
+		else {
+			throw InitializationError("Encountered unknown extension structure.");
+		}
+    }
+}
+
+QueueFamilyConfig::QueueFamilyConfig(QueueFamilyProperties properties, const uint32_t queue_count,
+                                     std::vector<float> priorities, const vk::DeviceQueueCreateFlags& flags)
+	: properties(std::move(properties)), queue_count(queue_count), priorities(std::move(priorities)), flags(flags) {
+    // If there are too few priorities specified set missing priorities to lowest possible (0.0f).
+    while (this->priorities.size() < queue_count) {
+		this->priorities.emplace_back(0.0f);
+    }
+}
+
+vk::DeviceQueueCreateInfo QueueFamilyConfig::build() const {
+	vk::DeviceQueueCreateInfo create_info(flags, properties.family_index, queue_count, priorities.data());
+	create_info.pNext = buildExtensions();
+
+	return create_info;
+}
 
 
 QueueFamily::QueueFamily(const vk::Device device, const QueueFamilyConfig& configuration)

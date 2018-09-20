@@ -20,7 +20,7 @@ namespace logi {
 /**
  * @brief	Contains information about engine and application.
  */
-struct ApplicationInfo : public ExtendableObject {
+struct ApplicationInfo : public BuildableExtendable {
     /**
 	 * @brief   Initialize ApplicationInfo data.
 	 *
@@ -70,7 +70,7 @@ private:
 /**
  * @brief	Contains instance configuration. Used to initialize VulkanInstance.
  */
-struct InstanceConfiguration : public ExtendableObject {
+struct InstanceConfiguration : public BuildableExtendable {
     /**
      * @brief	Initialize InstanceConfiguration data.
      *

@@ -15,7 +15,7 @@ namespace logi {
 /**
  * @brief   Aggregates data required to build Vulkan RenderPassBeginInfo.
  */
-struct RenderPassBeginInfo : public ExtendableObject {
+struct RenderPassBeginInfo : public BuildableExtendable {
 
 	/**
 	 * @brief	Initializes RenderPassBeginInfo data.

@@ -10,49 +10,115 @@
 #define QUEUES_QUEUE_FAMILY_H
 
 #include <vulkan/vulkan.hpp>
+#include <vector>
 #include "commands/CommandPool.h"
 #include "queues/Queue.h"
-#include <vector>
 
 namespace logi {
 
 /**
+ * @brief	Contains Nvidia QueueFamily checkpoint properties.
+ */
+struct NvidiaQueueFamilyCheckpointProperties : public Extension {
+    /**
+     * @brief	NvidiaQueueFamilyCheckpointProperties default constructor.
+     *
+     * @param	checkpoint_execution_stage_mask Mask specifying pipeline checkpoint execution.
+     */
+    explicit NvidiaQueueFamilyCheckpointProperties(const vk::PipelineStageFlags& checkpoint_execution_stage_mask = {});
+
+    /**
+     * @brief   Copies NvidiaQueueFamilyCheckpointProperties object and returns unique pointer to it.
+     *
+     * @return	Unique pointer to the copy. 
+     */
+    std::unique_ptr<Extension> clone() const override;
+
+    /**
+     * @brief	Compares NvidiaQueueFamilyCheckpointProperties structures.
+     *
+     * @param	rhs Right hand side value.
+     * @return	True if the structures contain equal configurations.
+     */
+    bool operator==(const NvidiaQueueFamilyCheckpointProperties& rhs) const;
+
+    /**
+     * Mask specifying pipeline checkpoint execution.
+     */
+	vk::PipelineStageFlags checkpoint_execution_stage_mask;
+};
+
+/**
  * @brief	Contains QueueFamily properties.
  */
-struct QueueFamilyProperties {
+struct QueueFamilyProperties : public Extendable {
+	/**
+     * @brief	QueueFamilyProperties default constructor.
+     *
+     * @param	family_index		Index of the queue family.
+     * @param	properties			Queue family properties.
+     */
+	QueueFamilyProperties(uint32_t family_index, const vk::QueueFamilyProperties& properties);
+
 	/**
 	 * @brief	QueueFamilyProperties default constructor.
 	 *
 	 * @param	family_index		Index of the queue family.
 	 * @param	properties			Queue family properties.
 	 */
-	QueueFamilyProperties(uint32_t family_index, const vk::QueueFamilyProperties& properties);
+	QueueFamilyProperties(uint32_t family_index, const vk::QueueFamilyProperties2& properties);
 
-	const uint32_t family_index;						///< Index of the queue family.
-	const vk::QueueFlags queue_flags;					///< Bitmask indicating capabilities of the queues in this queue family.
-	const uint32_t max_queue_count;						///< Number of available queues.
-	const uint32_t timestamp_valid_bits;				///< Count of meaningful bits in the timestamps.
-	const vk::Extent3D min_image_transfer_granularity;	///< Minimum granularity supported for image transfer operations.
+    /**
+     * Queue family index.
+     */
+	uint32_t family_index;
+
+    /**
+     * Bit mask indicating capabilities of the queues in this queue family.
+     */
+	vk::QueueFlags queue_flags;
+
+    /**
+     * Number of available queues
+     */
+	uint32_t queue_count;
+
+    /**
+     * Count of meaningful bits in the timestamps.
+     */
+	uint32_t timestamp_valid_bits;
+
+    /**
+     * Minimum granularity supported for image transfer operations.
+     */
+	vk::Extent3D min_image_transfer_granularity;
+
+protected:
+	using Extendable::addExtension;
 };
 
 /**
  * @brief	Structure used to specify QueueFamily configuration during LogicalDevice creation.
  */
-struct QueueFamilyConfig {
+struct QueueFamilyConfig : public BuildableExtendable {
 	/**
 	 * @brief	Populates QueueFamilyConfig with the given values.
 	 *
 	 * @param	properties	Queue family properties.
 	 * @param	queue_count	Number of queues that should be instantiated.
 	 * @param	priorities	Vector containing queue priorities.
-	 * @param	flags		Specify behaviour of the queues.
+	 * @param	flags		Specify behavior of the queues.
 	 */
-	explicit QueueFamilyConfig(const QueueFamilyProperties& properties, uint32_t queue_count = 0u, const std::vector<float>& priorities = {}, const vk::DeviceQueueCreateFlags& flags = {});
+	explicit QueueFamilyConfig(QueueFamilyProperties properties, uint32_t queue_count = 0u,
+	                           std::vector<float> priorities = {}, const vk::DeviceQueueCreateFlags& flags = {});
+
+
+	vk::DeviceQueueCreateInfo build() const;
 
 	QueueFamilyProperties properties;	///< Queue family properties.
-	vk::DeviceQueueCreateFlags flags;	///< Specify behaviour of the queues.
 	uint32_t queue_count;				///< Number of queues that should be instantiated.
 	std::vector<float> priorities;		///< Vector containing queue priorities.
+    vk::DeviceQueueCreateFlags flags;	///< Specify behavior of the queues.
 };
 
 

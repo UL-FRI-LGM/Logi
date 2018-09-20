@@ -108,7 +108,7 @@ struct DescriptorImageInfo {
 /**
  * @brief   Contains base descriptor write information.
  */
-struct DescriptorWrite : public ExtendableObject {
+struct DescriptorWrite : public BuildableExtendable {
 
     /**
 	 * @brief	Initialize base descriptor write data.
@@ -252,7 +252,7 @@ private:
 /**
  * @brief   Contains descriptor copy information.
  */
-struct DescriptorSetCopy : public ExtendableObject {
+struct DescriptorSetCopy : public BuildableExtendable {
 
     /**
      * @brief	Initialize descriptor set copy data.

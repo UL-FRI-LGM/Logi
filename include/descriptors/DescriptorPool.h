@@ -139,7 +139,7 @@ std::vector<DescriptorSet> DescriptorPool::allocateDescriptorSets(const std::vec
 	set_alloc_info.descriptorPool = vk_descriptor_pool_->get();
 	set_alloc_info.descriptorSetCount = vk_layouts.size();
 	set_alloc_info.pSetLayouts = vk_layouts.data();
-	set_alloc_info.pNext = ExtensionObject::buildExtensions(extensions...);
+	set_alloc_info.pNext = BuildableExtension::buildExtensions(extensions...);
 
     // Allocate descriptor sets.
 	const vk::Device& device = vk_descriptor_pool_->getOwner();
@@ -164,7 +164,7 @@ DescriptorSet DescriptorPool::allocateDescriptorSet(const DescriptorSetLayout& s
 	set_alloc_info.descriptorPool = vk_descriptor_pool_->get();
 	set_alloc_info.descriptorSetCount = 1u;
 	set_alloc_info.pSetLayouts = &set_layout.getVkHandle();
-	set_alloc_info.pNext = ExtensionObject::buildExtensions(extensions...);
+	set_alloc_info.pNext = BuildableExtension::buildExtensions(extensions...);
 
 	// Allocate descriptor sets.
 	const vk::Device& device = vk_descriptor_pool_->getOwner();

@@ -28,7 +28,7 @@ const vk::PipelineInputAssemblyStateCreateInfo* InputAssemblyState::buildCreateI
 TessellationDomainOriginState::TessellationDomainOriginState(const vk::TessellationDomainOrigin domain_origin)
     : domain_origin(domain_origin) {}
 
-std::unique_ptr<ExtensionObject> TessellationDomainOriginState::clone() const {
+std::unique_ptr<BuildableExtension> TessellationDomainOriginState::clone() const {
     return std::make_unique<TessellationDomainOriginState>(domain_origin);
 }
 
@@ -58,7 +58,7 @@ TessellationState::TessellationState(const uint32_t patch_control_points,
     : patch_control_points(patch_control_points), flags(flags) {}
 
 bool TessellationState::operator==(const TessellationState& rhs) const {
-    return patch_control_points == rhs.patch_control_points && ExtendableObject::operator==(rhs);
+    return patch_control_points == rhs.patch_control_points && BuildableExtendable::operator==(rhs);
 }
 
 const vk::PipelineTessellationStateCreateInfo* TessellationState::buildCreateInfo() {
@@ -75,7 +75,7 @@ NvidiaViewportSwizzleState::NvidiaViewportSwizzleState(std::vector<vk::ViewportS
                                                        const vk::PipelineViewportSwizzleStateCreateFlagsNV& flags)
     : swizzle_states(std::move(swizzle_states)), flags(flags) {}
 
-std::unique_ptr<ExtensionObject> NvidiaViewportSwizzleState::clone() const {
+std::unique_ptr<BuildableExtension> NvidiaViewportSwizzleState::clone() const {
     return std::make_unique<NvidiaViewportSwizzleState>(swizzle_states, flags);
 }
 
@@ -106,7 +106,7 @@ NvidiaViewportWScalingState::NvidiaViewportWScalingState(const bool enable_w_sca
                                                          std::vector<vk::ViewportWScalingNV> w_scalings)
     : enable_w_scaling(enable_w_scaling), w_scalings(std::move(w_scalings)) {}
 
-std::unique_ptr<ExtensionObject> NvidiaViewportWScalingState::clone() const {
+std::unique_ptr<BuildableExtension> NvidiaViewportWScalingState::clone() const {
     return std::make_unique<NvidiaViewportWScalingState>(enable_w_scaling, w_scalings);
 }
 
@@ -138,7 +138,7 @@ ViewportState::ViewportState(std::vector<vk::Viewport> viewports, std::vector<vk
     : viewports(std::move(viewports)), scissors(std::move(scissors)), flags(flags) {}
 
 bool ViewportState::operator==(const ViewportState& rhs) const {
-    return viewports == rhs.viewports && scissors == rhs.scissors && ExtendableObject::operator==(rhs);
+    return viewports == rhs.viewports && scissors == rhs.scissors && BuildableExtendable::operator==(rhs);
 }
 
 vk::PipelineViewportStateCreateInfo* ViewportState::buildCreateInfo() {
@@ -160,7 +160,7 @@ ExtRasterizationConservativeState::ExtRasterizationConservativeState(
     : conservative_mode(conservative_mode), extra_primitive_overestimation_size(extra_primitive_overestimation_size),
       flags(flags) {}
 
-std::unique_ptr<ExtensionObject> ExtRasterizationConservativeState::clone() const {
+std::unique_ptr<BuildableExtension> ExtRasterizationConservativeState::clone() const {
     return std::make_unique<ExtRasterizationConservativeState>(conservative_mode, extra_primitive_overestimation_size,
                                                                flags);
 }
@@ -192,7 +192,7 @@ void* ExtRasterizationConservativeState::build(void* next) {
 AMDRasterizationOrder::AMDRasterizationOrder(const vk::RasterizationOrderAMD rasterization_order)
     : rasterization_order(rasterization_order) {}
 
-std::unique_ptr<ExtensionObject> AMDRasterizationOrder::clone() const {
+std::unique_ptr<BuildableExtension> AMDRasterizationOrder::clone() const {
     return std::make_unique<AMDRasterizationOrder>(rasterization_order);
 }
 
@@ -233,7 +233,7 @@ bool RasterizationState::operator==(const RasterizationState& rhs) const {
         polygon_mode == rhs.polygon_mode && cull_mode == rhs.cull_mode && front_face == rhs.front_face &&
 		depth_bias_enable == rhs.depth_bias_enable && depth_bias_constant_factor == rhs.depth_bias_constant_factor &&
 		depth_bias_clamp == rhs.depth_bias_clamp && depth_bias_slope_factor == rhs.depth_bias_slope_factor &&
-        ExtendableObject::operator==(rhs);
+        BuildableExtendable::operator==(rhs);
 }
 
 vk::PipelineRasterizationStateCreateInfo* RasterizationState::buildCreateInfo() {
@@ -257,7 +257,7 @@ NvidiaCoverageModulationState::NvidiaCoverageModulationState(const vk::CoverageM
     : modulation_mode(modulation_mode), enable_modulation_table(enable_modulation_table),
       modulation_table(std::move(modulation_table)), flags(flags) {}
 
-std::unique_ptr<ExtensionObject> NvidiaCoverageModulationState::clone() const {
+std::unique_ptr<BuildableExtension> NvidiaCoverageModulationState::clone() const {
     return std::make_unique<NvidiaCoverageModulationState>(modulation_mode, enable_modulation_table, modulation_table,
                                                            flags);
 }
@@ -294,7 +294,7 @@ NvidiaCoverageToColorState::NvidiaCoverageToColorState(const bool enable, const 
                                                        const vk::PipelineCoverageToColorStateCreateFlagsNV& flags)
     : enable(enable), location(location), flags(flags) {}
 
-std::unique_ptr<ExtensionObject> NvidiaCoverageToColorState::clone() const {
+std::unique_ptr<BuildableExtension> NvidiaCoverageToColorState::clone() const {
     return std::make_unique<NvidiaCoverageToColorState>(enable, location, flags);
 }
 
@@ -323,7 +323,7 @@ ExtSampleLocationsState::ExtSampleLocationsState(const bool enable,
                                                  const vk::SampleLocationsInfoEXT& sample_locations_info)
     : enable(enable), sample_locations_info(sample_locations_info) {}
 
-std::unique_ptr<ExtensionObject> ExtSampleLocationsState::clone() const {
+std::unique_ptr<BuildableExtension> ExtSampleLocationsState::clone() const {
     return std::make_unique<ExtSampleLocationsState>(enable, sample_locations_info);
 }
 
@@ -362,7 +362,7 @@ bool MultisampleState::operator==(const MultisampleState& rhs) const {
     return rasterization_samples == rhs.rasterization_samples && enable_sample_shading == rhs.enable_sample_shading &&
         min_sample_shading == rhs.min_sample_shading && sample_mask == rhs.sample_mask &&
 		enable_alpha_to_coverage == rhs.enable_alpha_to_coverage && enable_alpha_to_one == rhs.enable_alpha_to_one &&
-		ExtendableObject::operator==(rhs);
+		BuildableExtendable::operator==(rhs);
 }
 
 vk::PipelineMultisampleStateCreateInfo* MultisampleState::buildCreateInfo() {
@@ -393,7 +393,7 @@ bool DepthStencilState::operator==(const DepthStencilState& rhs) const {
         && depth_compare_op == rhs.depth_compare_op && enable_depth_bounds_test == rhs.enable_depth_bounds_test
         && enable_stencil_test == rhs.enable_stencil_test && front == rhs.front && back == rhs.back
         && min_depth_bounds == rhs.min_depth_bounds && max_depth_bounds == rhs.max_depth_bounds
-        && ExtendableObject::operator==(rhs);
+        && BuildableExtendable::operator==(rhs);
 }
 
 vk::PipelineDepthStencilStateCreateInfo* DepthStencilState::buildCreateInfo() {
@@ -414,7 +414,7 @@ ExtColorBlendAdvancedState::ExtColorBlendAdvancedState(const bool src_premultipl
                                                        const vk::BlendOverlapEXT blend_overlap)
     : src_premultiplied(src_premultiplied), dst_premultiplied(dst_premultiplied), blend_overlap(blend_overlap) {}
 
-std::unique_ptr<ExtensionObject> ExtColorBlendAdvancedState::clone() const {
+std::unique_ptr<BuildableExtension> ExtColorBlendAdvancedState::clone() const {
     return std::make_unique<ExtColorBlendAdvancedState>(src_premultiplied, dst_premultiplied, blend_overlap);
 }
 
@@ -451,7 +451,7 @@ ColorBlendState::ColorBlendState(const bool enable_logic_op, const vk::LogicOp l
 
 bool ColorBlendState::operator==(const ColorBlendState& rhs) const {
     return enable_logic_op == rhs.enable_logic_op && logic_op == rhs.logic_op && attachment_states == rhs.
-        attachment_states && blend_constants == rhs.blend_constants && ExtendableObject::operator==(rhs);
+        attachment_states && blend_constants == rhs.blend_constants && BuildableExtendable::operator==(rhs);
 }
 
 vk::PipelineColorBlendStateCreateInfo* ColorBlendState::buildCreateInfo() {
@@ -473,7 +473,7 @@ DynamicState::DynamicState(std::set<vk::DynamicState> dynamic_states, const vk::
     : flags(flags), dynamic_states_set_(std::move(dynamic_states)) {}
 
 bool DynamicState::operator==(const DynamicState& rhs) const {
-    return dynamic_states_set_ == rhs.dynamic_states_set_ && ExtendableObject::operator==(rhs);
+    return dynamic_states_set_ == rhs.dynamic_states_set_ && BuildableExtendable::operator==(rhs);
 }
 
 vk::PipelineDynamicStateCreateInfo* DynamicState::buildCreateInfo() {

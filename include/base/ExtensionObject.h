@@ -12,13 +12,79 @@
 #include <memory>
 #include <typeindex>
 #include <functional>
+#include "base/UniqueWrapper.h"
 
 namespace logi {
+
+class Extension {
+public:
+	/**
+     * @brief	Create a copy of the object and return a unique pointer that points to it.
+     *
+     * @return	Pointer to the object copy.
+     */
+	virtual std::unique_ptr<Extension> clone() const = 0;
+
+	/**
+     * @brief	Default virtual destructor.
+     */
+	virtual ~Extension() = 0;
+};
+
+/**
+ * @brief	Base class for Logi object that can be extended with ExtensionsObjects.
+ */
+class Extendable {
+public:
+	virtual ~Extendable() = default;
+	/**
+	 * @brief	Default constructor.
+	 */
+	Extendable() = default;
+
+	/**
+	 * @brief	Compare extensions of two extendable objects.
+	 *
+	 * @param	rhs	Right hand side Extendable.
+	 * @return	True if all the extensions contain equal configuration
+	 */
+	bool operator==(const Extendable& rhs) const;
+
+	/**
+	 * @brief	Check if the object has an extension of the given type.
+	 *
+	 * @tparam	ExtType	Extension type.
+	 * @return	True if the extension is present.
+	 */
+	template <typename ExtType>
+	bool hasExtension() const;
+
+	/**
+	 * @brief	Retrieve pointer to the extension of the given type.
+	 *
+	 * @tparam	ExtType	Extension type.
+	 * @return	Pointer to the extension or null pointer if the extension is not present.
+	 */
+	template <typename ExtType>
+	const ExtType* getExtension() const;
+
+	/**
+	 * @brief	Add Extension to the Extendable.
+	 *
+	 * @tparam	ExtType		Type of the extension.
+	 * @param	extension	Extension to be added.
+	 */
+	template <typename ExtType>
+	void addExtension(const ExtType& extension);
+
+private:
+	std::map<std::type_index, UniqueWrapper<Extension>> extensions_;
+};
 
 /**
  * @brief	Base class for Logi extension objects.
  */
-class ExtensionObject {
+class BuildableExtension {
 public:
 	/**
 	 * @brief	Builds extension configuration and return void pointer to it.
@@ -32,7 +98,7 @@ public:
 	 * 
 	 * @return	Pointer to the object copy.
 	 */
-	virtual std::unique_ptr<ExtensionObject> clone() const = 0;
+	virtual std::unique_ptr<BuildableExtension> clone() const = 0;
 
     /**
 	 * @brief	Handles call with no extensions.
@@ -44,145 +110,48 @@ public:
 	}
 
     /**
-     * @brief   Build the given ExtensionObject.
+     * @brief   Build the given BuildableExtension.
      *
-     * @param	extension	ExtensionObject.
+     * @param	extension	BuildableExtension.
      * @return	Pointer to the built extension.
      */
-    static void* buildExtensions(ExtensionObject& extension);
+    static void* buildExtensions(BuildableExtension& extension);
 
     /**
-	 * @brief   Build the given ExtensionObject, link them and return the pointer to the first extension in linked list.
+	 * @brief   Build the given BuildableExtension, link them and return the pointer to the first extension in linked list.
 	 *
-	 * @tparam	Args	    ExtensionObject type.
+	 * @tparam	Args	    BuildableExtension type.
 	 * @param	extension	Extension that will be built in this call.
 	 * @param	extensions	Remaining extensions.
 	 * @return	Pointer to the built extensions.
 	 */
 	template<typename... Args>
-    static void* buildExtensions(ExtensionObject& extension, Args... extensions) {
-		return extension.build(buildExtensions(extensions...));
-    }
+    static void* buildExtensions(BuildableExtension& extension, Args ... extensions);
 
 	/**
 	 * @brief	Default virtual destructor.
 	 */
-	virtual ~ExtensionObject() = default;
+	virtual ~BuildableExtension() = default;
 };
-
-/**
- * @brief   Copiable class used to wrapp ExtensionObject and make its usage easier.
- */
-class ExtensionWrapper {
-public:
-    /**
-     * @brief   Default constructor.
-     */
-	ExtensionWrapper() = default;
-
-	/**
-	 * @brief	Constructs and populates the structure.
-	 *
-	 * @param	extension		Unique pointer to the extension object.
-	 * @param	comparator_fn	Comparator function used to compare extension objects.
-	 */
-	ExtensionWrapper(std::unique_ptr<ExtensionObject>&& extension, std::function<bool(const ExtensionObject&, const ExtensionObject&)> comparator_fn);
-
-	/**
-	 * @brief	Copy constructor that deep copies extension object.
-	 *
-	 * @param	rhs	Right hand side ExtensionEntry.
-	 */
-	ExtensionWrapper(const ExtensionWrapper& rhs);
-
-	/**
-	 * @brief	Copy assignment operator that deep copies extension object.
-	 *
-	 * @param	rhs	Right hand sied ExtensionEntry.
-	 * @return	Reference to this.
-	 */
-	ExtensionWrapper& operator=(const ExtensionWrapper& rhs);
-
-    /**
-     * @brief   Compare the wrapped extensions.
-     * 
-     * @return  True if the wrapped extensions are equal.
-     */
-	bool operator==(const ExtensionWrapper& rhs) const;
-
-	/**
-     * @brief   Compare the wrapped extensions.
-     *
-     * @return  True if the wrapped extensions are not equal.
-     */
-	bool operator!=(const ExtensionWrapper& rhs) const;
-
-    /**
-     * @brief   Derefereneces the wrapped extension object.
-     * 
-     * @return  Pointer to extensions object.
-     */
-	ExtensionObject* operator->() const;
-
-    /**
-     * @brief   Retrieve pointer to the wrapped extension object.
-     * 
-     * @return  Pointer to extensions object.
-     */
-	ExtensionObject* get() const;
-
-    /**
-     * @brief   Create extension wrapper that wrapps the given extensions and creates comparator function used to compare it.
-     *
-     * @tparam	ExtensionType	
-     * @param	extension	
-     * @return	
-     */
-    template <typename ExtensionType>
-	static ExtensionWrapper create(const ExtensionType& extension) {
-        // Generate comparator.
-		const std::function<bool(const ExtensionObject&, const ExtensionObject&)> comparator_fn = [](const ExtensionObject& lhs, const ExtensionObject& rhs) {
-			const ExtensionType* lhs_ptr = dynamic_cast<const ExtensionType*>(&lhs);
-			const ExtensionType* rhs_ptr = dynamic_cast<const ExtensionType*>(&lhs);
-
-            // Left hand side pointer should always be of ExtensionType so there is no need to check if dynamic cast succeeded.
-			return (rhs_ptr != nullptr) && (*lhs_ptr) == (*rhs_ptr);
-		};
-
-		return ExtensionWrapper(std::make_unique<ExtensionType>(extension), comparator_fn);
-    }
-
-private:
-    /**
-     * Unique pointer to the extensions.
-     */
-	std::unique_ptr<ExtensionObject> extension_;
-
-    /**
-     * Function used to compare two extension objects.
-     */
-	std::function<bool(const ExtensionObject&, const ExtensionObject&)> comparator_fn_; 
-};
-
 
 /**
  * @brief	Base class for Logi object that can be extended with ExtensionsObjects.
  */
-class ExtendableObject {
+class BuildableExtendable {
 public:
-    virtual ~ExtendableObject() = default;
+    virtual ~BuildableExtendable() = default;
     /**
 	 * @brief	Default constructor.
 	 */
-	ExtendableObject() = default;
+	BuildableExtendable() = default;
 
 	/**
 	 * @brief	Compare extensions of two extendable objects.
 	 *
-	 * @param	rhs	Right hand side ExtendableObject.
+	 * @param	rhs	Right hand side BuildableExtendable.
 	 * @return	True if all the extensions contain equal configuration
 	 */
-	bool operator==(const ExtendableObject& rhs) const;
+	bool operator==(const BuildableExtendable& rhs) const;
 
 	/**
 	 * @brief	Check if the object has an extension of the given type.
@@ -203,7 +172,7 @@ public:
 	ExtType* getExtension();
 
 	/**
-	 * @brief	Add ExtensionObject to the ExtendableObject.	
+	 * @brief	Add BuildableExtension to the BuildableExtendable.	
 	 *
 	 * @tparam	ExtType		Type of the extension.
 	 * @param	extension	Extension to be added.
@@ -220,16 +189,42 @@ protected:
 	void* buildExtensions() const;
 
 private:
-	std::map<std::type_index, ExtensionWrapper> extensions_;
+	std::map<std::type_index, UniqueWrapper<BuildableExtension>> extensions_;
 };
 
 template <typename ExtType>
-bool ExtendableObject::hasExtension() const {
+bool Extendable::hasExtension() const {
 	return extensions_.find(typeid(ExtType)) != extensions_.end();
 }
 
 template <typename ExtType>
-ExtType* ExtendableObject::getExtension() {
+const ExtType* Extendable::getExtension() const {
+	auto it = extensions_.find(typeid(ExtType));
+
+	if (it == extensions_.end()) {
+		return nullptr;
+	}
+
+	return dynamic_cast<const ExtType*>(it->second.get());
+}
+
+template <typename ExtType>
+void Extendable::addExtension(const ExtType& extension) {
+	extensions_[typeid(ExtType)] = UniqueWrapper<Extension>::create(extension);
+}
+
+template <typename ... Args>
+void* BuildableExtension::buildExtensions(BuildableExtension& extension, Args ... extensions) {
+    return extension.build(buildExtensions(extensions...));
+}
+
+template <typename ExtType>
+bool BuildableExtendable::hasExtension() const {
+	return extensions_.find(typeid(ExtType)) != extensions_.end();
+}
+
+template <typename ExtType>
+ExtType* BuildableExtendable::getExtension() {
 	auto it = extensions_.find(typeid(ExtType));
 	
 	if (it == extensions_.end()) {
@@ -240,8 +235,8 @@ ExtType* ExtendableObject::getExtension() {
 }
 
 template <typename ExtType>
-void ExtendableObject::addExtension(const ExtType& extension) {
-	extensions_[typeid(ExtType)] = ExtensionWrapper::create(extension);
+void BuildableExtendable::addExtension(const ExtType& extension) {
+	extensions_[typeid(ExtType)] = UniqueWrapper<BuildableExtension>::create(extension);
 }
 
 }

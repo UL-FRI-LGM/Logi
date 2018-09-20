@@ -13,7 +13,7 @@ namespace logi {
 /**
  * @brief	Convinience structure used to build the Vulkan PipelineInputAssemblyStateCreateInfo.
  */
-struct InputAssemblyState : public ExtendableObject {
+struct InputAssemblyState : public BuildableExtendable {
 
     /**
      * @brief	Default constructor that initializes members with either default or the given values.
@@ -67,7 +67,7 @@ private:
 /**
  * @brief	Convinience structure used to build the Vulkan PipelineTessellationDomainOriginStateCreateInfo.
  */
-struct TessellationDomainOriginState : public ExtensionObject {
+struct TessellationDomainOriginState : public BuildableExtension {
 
     /**
      * @brief	Default constructor that initializes members with either default or given values.
@@ -82,7 +82,7 @@ struct TessellationDomainOriginState : public ExtensionObject {
      *
      * @return	Unique pointer to the copy.
      */
-    std::unique_ptr<ExtensionObject> clone() const override;
+    std::unique_ptr<BuildableExtension> clone() const override;
 
     /**
      * @brief	Compares TessellationDomainOriginStates if they are contain equivalent configuration.
@@ -123,7 +123,7 @@ private:
 /**
  * @brief	Convinience structure used to build the Vulkan PipelineTessellationStateCreateInfo.
  */
-struct TessellationState : public ExtendableObject {
+struct TessellationState : public BuildableExtendable {
 
     /**
      * @brief	Default constructor that initializes members with either default or given values.
@@ -167,7 +167,7 @@ private:
 /**
  * @brief	Convinience structure used to build the Vulkan PipelineViewportSwizzleStateCreateInfoNV.
  */
-struct NvidiaViewportSwizzleState : public ExtensionObject {
+struct NvidiaViewportSwizzleState : public BuildableExtension {
 
     /**
      * @brief	Default constructor that initializes members with either default or given values.
@@ -183,7 +183,7 @@ struct NvidiaViewportSwizzleState : public ExtensionObject {
      *
      * @return	Unique pointer to the copy.
      */
-    std::unique_ptr<ExtensionObject> clone() const override;
+    std::unique_ptr<BuildableExtension> clone() const override;
 
     /**
      * @brief	Compare NvidiaViewportSwizzleStates if they are contain equivalent configuration.
@@ -228,7 +228,7 @@ private:
 /**
  * @brief	Convinience structure used to build the Vulkan PipelineViewportWScalingStateCreateInfoNV.
  */
-struct NvidiaViewportWScalingState : public ExtensionObject {
+struct NvidiaViewportWScalingState : public BuildableExtension {
 
     /**
      * @brief	Default constructor that initializes members with either default or given values.
@@ -244,7 +244,7 @@ struct NvidiaViewportWScalingState : public ExtensionObject {
      *
      * @return	Unique pointer to the copy.
      */
-    std::unique_ptr<ExtensionObject> clone() const override;
+    std::unique_ptr<BuildableExtension> clone() const override;
 
     /**
     ¸* @brief	Compare NvidiaViewportWScalingState if they are contain equivalent configuration.
@@ -290,7 +290,7 @@ private:
 /**
  * @brief	Convinience structure used to build the Vulkan PipelineViewportStateCreateInfo.
  */
-struct ViewportState : public ExtendableObject {
+struct ViewportState : public BuildableExtendable {
     /**
      * @brief	Default constructor that initializes members with either default or given values.
      *
@@ -339,7 +339,7 @@ private:
 /**
  * @brief	Convinience structure used to build the Vulkan PipelineRasterizationConservativeStateCreateInfoEXT.
  */
-struct ExtRasterizationConservativeState : public ExtensionObject {
+struct ExtRasterizationConservativeState : public BuildableExtension {
     /**
      * @brief	Default constructor that initializes members with either default or given values.
      *
@@ -357,7 +357,7 @@ struct ExtRasterizationConservativeState : public ExtensionObject {
      *
      * @return	Unique pointer to the copy.
      */
-    std::unique_ptr<ExtensionObject> clone() const override;
+    std::unique_ptr<BuildableExtension> clone() const override;
 
     /**
      * @brief	Compare ExtRasterizationConservativeState if they are contain equivalent configuration.
@@ -408,7 +408,7 @@ private:
 /**
  * @brief	Convinience structure used to build the Vulkan PipelineRasterizationStateRasterizationOrderAMD.
  */
-struct AMDRasterizationOrder : public ExtensionObject {
+struct AMDRasterizationOrder : public BuildableExtension {
     /**
      * @brief 	Default constructor that initializes members with either default or given values.
      *
@@ -421,7 +421,7 @@ struct AMDRasterizationOrder : public ExtensionObject {
      *
      * @return	Unique pointer to the copy.
      */
-    std::unique_ptr<ExtensionObject> clone() const override;
+    std::unique_ptr<BuildableExtension> clone() const override;
 
     /**
      * @brief	Compare AMDRasterizationOrder if they are contain equivalent configuration.
@@ -462,7 +462,7 @@ private:
 /**
  * @brief	Convinience structure used to build the Vulkan PipelineRasterizationStateCreateInfo.
  */
-struct RasterizationState : public ExtendableObject {
+struct RasterizationState : public BuildableExtendable {
 
     /**
      * @brief 
@@ -575,7 +575,7 @@ private:
 /**
  * @brief   Convinience structure used to build the Vulkan PipelineCoverageModulationStateCreateInfoNV.
  */
-struct NvidiaCoverageModulationState : public ExtensionObject {
+struct NvidiaCoverageModulationState : public BuildableExtension {
     /**
      * @brief  	Default constructor that initializes members with either default or given values.
      *
@@ -595,7 +595,7 @@ struct NvidiaCoverageModulationState : public ExtensionObject {
      *
      * @return	Unique pointer to the copy.
      */
-    std::unique_ptr<ExtensionObject> clone() const override;
+    std::unique_ptr<BuildableExtension> clone() const override;
 
     /**
      * @brief	Compare NvidiaCoverageModulationState if they are contain equivalent configuration.
@@ -651,7 +651,7 @@ private:
 /**
  * @brief   Convinience structure used to build the Vulkan PipelineCoverageToColorStateCreateInfoNV.
  */
-struct NvidiaCoverageToColorState : public ExtensionObject {
+struct NvidiaCoverageToColorState : public BuildableExtension {
 
     /**
 	 * @brief   Default constructor that initializes members with either default or given values.
@@ -668,7 +668,7 @@ struct NvidiaCoverageToColorState : public ExtensionObject {
      *
      * @return	Unique pointer to the copy.
      */
-    std::unique_ptr<ExtensionObject> clone() const override;
+    std::unique_ptr<BuildableExtension> clone() const override;
 
     /**
      * @brief	Compare NvidiaCoverageToColorState if they are contain equivalent configuration.
@@ -719,7 +719,7 @@ private:
 /**
  * @brief   Convinience structure used to build the Vulkan PipelineSampleLocationsStateCreateInfoEXT.
  */
-struct ExtSampleLocationsState : public ExtensionObject {
+struct ExtSampleLocationsState : public BuildableExtension {
 
     /**
      * @brief   Default constructor that initializes members with either default or given values.
@@ -736,7 +736,7 @@ struct ExtSampleLocationsState : public ExtensionObject {
      *
      * @return	Unique pointer to the copy.
      */
-    std::unique_ptr<ExtensionObject> clone() const override;
+    std::unique_ptr<BuildableExtension> clone() const override;
 
     /**
      * @brief	Compare ExtSampleLocationsState if they are contain equivalent configuration.
@@ -782,7 +782,7 @@ private:
 /**
 * @brief   Convinience structure used to build the Vulkan PipelineMultisampleStateCreateInfo.
 */
-struct MultisampleState : public ExtendableObject {
+struct MultisampleState : public BuildableExtendable {
     /**
      * @brief   Default constructor that initializes members with either default or given values.
      *
@@ -862,7 +862,7 @@ private:
 /**
  * @brief   Convinience structure used to build the Vulkan PipelineDepthStencilStateCreateInfo.
  */
-struct DepthStencilState : public ExtendableObject {
+struct DepthStencilState : public BuildableExtendable {
 
     /**
 	 * @brief   Default constructor that initializes members with either default or given values.
@@ -960,7 +960,7 @@ private:
 /**
  * @brief   Convinience structure used to build the Vulkan PipelineColorBlendAdvancedStateCreateInfoEXT.
  */
-struct ExtColorBlendAdvancedState : public ExtensionObject {
+struct ExtColorBlendAdvancedState : public BuildableExtension {
 
     /**
 	 * @brief   Default constructor that initializes members with either default or given values.
@@ -979,7 +979,7 @@ struct ExtColorBlendAdvancedState : public ExtensionObject {
      *
      * @return	Unique pointer to the copy.
      */
-    std::unique_ptr<ExtensionObject> clone() const override;
+    std::unique_ptr<BuildableExtension> clone() const override;
 
     /**
      * @brief	Compare PipelineColorBlendAdvancedStateCreateInfoEXT if they are contain equivalent configuration.
@@ -1029,7 +1029,7 @@ private:
 /**
  * @brief   Convinience structure used to build the Vulkan PipelineColorBlendStateCreateInfo.
  */
-struct ColorBlendState : public ExtendableObject {
+struct ColorBlendState : public BuildableExtendable {
     /**
 	 * @brief   Default constructor that initializes members with either default or given values.
 	 *
@@ -1096,7 +1096,7 @@ private:
 /**
  * @brief   Convinience structure used to build the Vulkan PipelineDynamicStateCreateInfo.
  */
-struct DynamicState : public ExtendableObject {
+struct DynamicState : public BuildableExtendable {
 
     /**
      * @brief   Default constructor that initializes members with either default or given values.

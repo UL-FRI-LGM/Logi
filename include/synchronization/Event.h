@@ -8,7 +8,7 @@
 
 namespace logi {
 
-struct EventCreateInfo : public ExtendableObject {
+struct EventCreateInfo : public BuildableExtendable {
 
     /**
      * @brief	Populates EventCreateInfo configuration structure.

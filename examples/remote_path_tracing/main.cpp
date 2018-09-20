@@ -124,7 +124,7 @@ public:
 			}
 		}
 
-		gpu = physical_device.createLogicalDevice(configurations, { VK_KHR_SWAPCHAIN_EXTENSION_NAME });
+		gpu = physical_device.createLogicalDevice(logi::LogicalDeviceConfig(configurations, std::vector<char*>{ VK_KHR_SWAPCHAIN_EXTENSION_NAME }));
 		program_manager = gpu.getProgramManager();
 		allocation_manager = gpu.getAllocationManager();
 		command_pool = gpu.getQueueFamily(render_family_index).createCommandPool();

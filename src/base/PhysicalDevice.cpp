@@ -2,10 +2,10 @@
 
 namespace logi {
 
-PhysicalDevice::PhysicalDevice() : vk_physical_device_(nullptr), handle_manager_(nullptr) {}
+PhysicalDevice::PhysicalDevice() : Handle(false), vk_physical_device_(nullptr), handle_manager_(nullptr) {}
 
 PhysicalDevice::PhysicalDevice(const vk::PhysicalDevice& vk_physical_device)
-	: vk_physical_device_(std::make_shared<vk::PhysicalDevice>(vk_physical_device)), handle_manager_(std::make_shared<HandleManager>()) {}
+	: Handle(true), vk_physical_device_(std::make_shared<vk::PhysicalDevice>(vk_physical_device)), handle_manager_(std::make_shared<HandleManager>()) {}
 
 
 vk::PhysicalDeviceProperties PhysicalDevice::properties() const {
@@ -46,9 +46,8 @@ bool PhysicalDevice::supportsSurfacePresent(const vk::SurfaceKHR& surface, const
 	return vk_physical_device_->getSurfaceSupportKHR(family_properties.family_index, surface);
 }
 
-LogicalDevice PhysicalDevice::createLogicalDevice(std::vector<QueueFamilyConfig>& qfamily_configs,
-	const std::vector<const char*>& extensions, const vk::PhysicalDeviceFeatures& features) const {
-	return handle_manager_->createHandle<LogicalDevice>(*vk_physical_device_, qfamily_configs, extensions, features);
+LogicalDevice PhysicalDevice::createLogicalDevice(const LogicalDeviceConfig& config) const {
+	return handle_manager_->createHandle<LogicalDevice>(*vk_physical_device_, config);
 }
 
 

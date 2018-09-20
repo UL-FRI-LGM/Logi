@@ -22,6 +22,53 @@
 namespace logi {
 
 /**
+ * @brief	Structure used to specify logical device configuration.
+ */
+struct LogicalDeviceConfig : public BuildableExtendable {
+
+    /**
+     * @brief	Populates LogicalDeviceConfig with the given values.
+     *
+     * @param	queues_config       Structures describing the queues that are requested to be created along with the logical device.
+     * @param	extensions          Null-terminated UTF-8 strings containing the names of extensions to enable for the created device.
+     * @param	enabled_features    Structure that contains boolean indicators of all the features to be enabled.
+     * @param	flags               Flags used to specify additional configuration.
+     */
+    explicit LogicalDeviceConfig(std::vector<QueueFamilyConfig> queues_config = {}, std::vector<char*> extensions = {},
+						         vk::PhysicalDeviceFeatures enabled_features = {}, const vk::DeviceCreateFlags& flags = {});
+
+    /**
+	 * @brief	Builds Vulkan DeviceCreateInfo structure.
+	 *
+	 * @return	Vulkan DeviceCreateInfo structure.
+	 */
+	vk::DeviceCreateInfo build() const;
+
+    /**
+	 * Structures describing the queues that are requested to be created along with the logical device.
+	 */
+	std::vector<QueueFamilyConfig> queues_config;
+
+	/**
+	 * Null-terminated UTF-8 strings containing the names of extensions to enable for the created device.
+	 */
+	std::vector<char*> extensions;
+
+	/**
+	 * Structure that contains boolean indicators of all the features to be enabled.
+	 */
+	vk::PhysicalDeviceFeatures enabled_features;
+
+	/**
+	 * Flags used to specify additional configuration.
+	 */
+	vk::DeviceCreateFlags flags;
+
+private:
+	std::vector<vk::DeviceQueueCreateInfo> vk_queue_infos_;
+};
+
+/**
  * @brief	Creates VulkanDevice handle used to manage resources of the given Vulkan physical device.
  */
 class LogicalDevice : public DependentDestroyableHandle {
@@ -33,11 +80,9 @@ public:
 	 *
 	 * @param	owner			Handle owner.
 	 * @param	device			Vulkan PhysicalDevice handle.
-	 * @param	qfamily_configs	Vector containing configurations for queue families.
-	 * @param	extensions		Requested extensions.
-	 * @param	features		Requested features.
+     * @param   configuration   Logical device configuration.
 	 */
-	LogicalDevice(const std::weak_ptr<HandleManager>& owner, vk::PhysicalDevice& device, std::vector<QueueFamilyConfig>& qfamily_configs, const std::vector<const char*>& extensions, const vk::PhysicalDeviceFeatures& features);
+	LogicalDevice(const std::weak_ptr<HandleManager>& owner, vk::PhysicalDevice& device, const LogicalDeviceConfig& configuration);
 
 	/**
 	 * @brief	Get queue family with the given index.
@@ -95,16 +140,37 @@ protected:
 
 private:
 	struct DeviceData {
-		DeviceData(const vk::PhysicalDevice& physical_device, const std::vector<const char*>& enabled_extensions, const vk::PhysicalDeviceFeatures& enabled_features);
+		DeviceData(vk::PhysicalDevice physical_device, LogicalDeviceConfig configuration);
 
-		vk::PhysicalDevice physical_device;				///< Physical device handle.
-		vk::Device logical_device{ nullptr };			///< Logical device handle.
-		std::vector<const char*> enabled_extensions{};	///< Enabled extensions.
-		vk::PhysicalDeviceFeatures enabled_features{};	///< Enabled features.
+        /**
+         * Physical device handle.
+         */
+		vk::PhysicalDevice physical_device;
 
+        /**
+         * Logical device handle.
+         */
+		vk::Device logical_device{};
+
+        /**
+         * Logical device configuration.
+         */
+		LogicalDeviceConfig configuration;
+
+        /**
+         * Program manager.
+         */
 		ProgramManager program_manager{};
+
+		/**
+		 * Allocation manager.
+		 */
 		AllocationManager allocation_manager{};
-		std::vector<QueueFamily> queue_families_{};		///< Vector of queue families.
+
+        /**
+         * Queue families.
+         */
+		std::vector<QueueFamily> queue_families{};
 	};
 
 	std::shared_ptr<DeviceData> data_;

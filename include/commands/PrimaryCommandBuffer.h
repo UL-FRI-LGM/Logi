@@ -12,7 +12,7 @@ namespace logi {
 /**
  * @brief   Aggregates data required to build Vulkan CommandBufferBeginInfo.
  */
-struct CommandBufferBeginInfo : public ExtendableObject {
+struct CommandBufferBeginInfo : public BuildableExtendable {
 
     /**
      * @brief	Initializes CommandBufferBeginInfo data.

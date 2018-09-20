@@ -6,8 +6,8 @@
 * This code is licensed under the MIT license (MIT) (http://opensource.org/licenses/MIT)
 */
 
-#ifndef BASE_PHYSICAL_DEVICE_H_
-#define BASE_PHYSICAL_DEVICE_H_
+#ifndef BASE_PHYSICAL_DEVICE_H
+#define BASE_PHYSICAL_DEVICE_H
 
 #include <vulkan/vulkan.hpp>
 #include "queues/QueueFamily.h"
@@ -79,7 +79,7 @@ public:
 	 */
 	bool supportsSurfacePresent(const vk::SurfaceKHR& surface, const QueueFamilyProperties& family_properties) const;
 
-	LogicalDevice createLogicalDevice(std::vector<QueueFamilyConfig>& qfamily_configs, const std::vector<const char*>& extensions = {}, const vk::PhysicalDeviceFeatures& features = {}) const;
+	LogicalDevice createLogicalDevice(const LogicalDeviceConfig& config) const;
 
 	// TODO Implement free.
 private:
@@ -89,6 +89,5 @@ private:
 
 
 }
-
 
 #endif

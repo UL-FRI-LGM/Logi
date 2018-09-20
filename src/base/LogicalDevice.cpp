@@ -11,46 +11,42 @@
 namespace logi {
 
 #pragma region INITIALIZATION
+
+LogicalDeviceConfig::LogicalDeviceConfig(std::vector<QueueFamilyConfig> queues_config, std::vector<char*> extensions,
+	                                     vk::PhysicalDeviceFeatures enabled_features, const vk::DeviceCreateFlags& flags) 
+    : queues_config(std::move(queues_config)), extensions(std::move(extensions)), 
+      enabled_features(std::move(enabled_features)), flags(flags) {}
+
+vk::DeviceCreateInfo LogicalDeviceConfig::build() const {
+    // Genereate queue infos.
+	vk_queue_infos_.clear();
+	vk_queue_infos_.reserve(queues_config.size());
+
+    for (const QueueFamilyConfig& config : queues_config) {
+		vk_queue_infos.emplace_back(config.build());
+    }
+
+    // Build device create info.
+	vk::DeviceCreateInfo create_info(flags, vk_queue_infos.size(), vk_queue_infos.data(), 0, nullptr, extensions.size(), 
+		                             extensions.data(), &enabled_features);
+	create_info.pNext = buildExtensions();
+
+	return create_info;
+}
+
+
 LogicalDevice::LogicalDevice() : DependentDestroyableHandle({}, false), data_(nullptr), handle_manager_(nullptr) {}
 
-LogicalDevice::LogicalDevice(const std::weak_ptr<HandleManager>& owner, vk::PhysicalDevice& device, std::vector<QueueFamilyConfig>& qfamily_configs, const std::vector<const char*>& extensions = {}, const vk::PhysicalDeviceFeatures& features = {})
-	: DependentDestroyableHandle(owner), data_(std::make_shared<DeviceData>(device, extensions, features)), handle_manager_(std::make_shared<HandleManager>()) {
-	
-	// Generate queue create infos.
-	std::vector<vk::DeviceQueueCreateInfo> queue_create_infos{};
-	queue_create_infos.reserve(qfamily_configs.size());
-
-	for (QueueFamilyConfig& config : qfamily_configs) {
-		// Ignore configurations with 0 queue count.
-		if (config.queue_count > 0) {
-			vk::DeviceQueueCreateInfo queue_ci{};
-			queue_ci.flags = config.flags;
-			queue_ci.queueCount = config.queue_count;
-			config.priorities.resize(config.queue_count, 0.0f);
-			queue_ci.pQueuePriorities = config.priorities.data();
-
-			queue_create_infos.emplace_back(queue_ci);
-		}
-	}
-
-	// Construct device create info.
-	vk::DeviceCreateInfo device_create_info{};
-	device_create_info.queueCreateInfoCount = static_cast<uint32_t>(queue_create_infos.size());;
-	device_create_info.pQueueCreateInfos = queue_create_infos.data();
-	device_create_info.pEnabledFeatures = &data_->enabled_features;
-
-
-	if (!extensions.empty()) {
-		device_create_info.enabledExtensionCount = static_cast<uint32_t>(data_->enabled_extensions.size());
-		device_create_info.ppEnabledExtensionNames = data_->enabled_extensions.data();
-	}
+LogicalDevice::LogicalDevice(const std::weak_ptr<HandleManager>& owner, vk::PhysicalDevice& device, const LogicalDeviceConfig& configuration)
+	: DependentDestroyableHandle(owner), data_(std::make_shared<DeviceData>(device, configuration)), 
+      handle_manager_(std::make_shared<HandleManager>()) {
 
 	// Create logical device.
-	data_->logical_device = data_->physical_device.createDevice(device_create_info);
+	data_->logical_device = data_->physical_device.createDevice(data_->configuration.build());
 
 	// Create QueueFamily handles.
-	for (const QueueFamilyConfig& config : qfamily_configs) {
-		data_->queue_families_.emplace_back(handle_manager_->createHandle<QueueFamily>(data_->logical_device, config));
+	for (const QueueFamilyConfig& config : data_->configuration.queues_config) {
+		data_->queue_families.emplace_back(handle_manager_->createHandle<QueueFamily>(data_->logical_device, config));
 	}
 
 	// Create Allocation and Program manager
@@ -63,12 +59,12 @@ LogicalDevice::LogicalDevice(const std::weak_ptr<HandleManager>& owner, vk::Phys
 
 const QueueFamily& LogicalDevice::getQueueFamily(uint32_t index) const {
 
-	auto it = std::find_if(data_->queue_families_.begin(), data_->queue_families_.end(), [index](const QueueFamily& family) {
+    const auto it = std::find_if(data_->queue_families.begin(), data_->queue_families.end(), [index](const QueueFamily& family) {
 		return family.configuration().properties.family_index == index;
 	});
 
 	// Check if the queue family was found.
-	if (it == data_->queue_families_.end()) {
+	if (it == data_->queue_families.end()) {
 		throw std::runtime_error("Queue family index out of range.");
 	}
 
@@ -142,9 +138,11 @@ void LogicalDevice::free() {
 #pragma endregion
 
 
-LogicalDevice::DeviceData::DeviceData(const vk::PhysicalDevice& physical_device,
-	const std::vector<const char*>& enabled_extensions, const vk::PhysicalDeviceFeatures& enabled_features)
-	: physical_device(physical_device), enabled_extensions(enabled_extensions), enabled_features(enabled_features) {}
+LogicalDevice::DeviceData::DeviceData(vk::PhysicalDevice physical_device, LogicalDeviceConfig configuration) 
+	: physical_device(std::move(physical_device)), configuration(std::move(configuration)) {}
+
+
+
 
 
 } /// !namespace logi

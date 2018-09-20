@@ -5,7 +5,7 @@
 
 namespace logi {
 
-struct QueryPoolCreateInfo : public ExtendableObject {
+struct QueryPoolCreateInfo : public BuildableExtendable {
 
     explicit QueryPoolCreateInfo(const vk::QueryPoolCreateFlags& flags = {}, vk::QueryType query_type = vk::QueryType::eOcclusion, 
 		                         uint32_t query_count = 0, const vk::QueryPipelineStatisticFlags& pipeline_statistics = {});
