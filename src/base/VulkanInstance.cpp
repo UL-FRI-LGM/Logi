@@ -22,13 +22,13 @@ const vk::ApplicationInfo& ApplicationInfo::build() {
 	return vk_app_info_;
 }
 
-InstanceConfiguration::InstanceConfiguration(ApplicationInfo application_info, std::vector<const char*> extensions,
+InstanceConfig::InstanceConfig(ApplicationInfo application_info, std::vector<const char*> extensions,
 	                                         std::vector<const char*> validation_layers, 
 	                                         const vk::InstanceCreateFlags& flags)
 	: application_info(std::move(application_info)), extensions(std::move(extensions)), 
       validation_layers(std::move(validation_layers)), flags(flags) {}
 
-const vk::InstanceCreateInfo& InstanceConfiguration::build() {
+const vk::InstanceCreateInfo& InstanceConfig::build() {
 	vk_instance_ci_ = vk::InstanceCreateInfo(flags, &application_info.build(), validation_layers.size(), 
 		                                     validation_layers.data(), extensions.size(), extensions.data());
 	vk_instance_ci_.pNext = buildExtensions();
@@ -38,7 +38,7 @@ const vk::InstanceCreateInfo& InstanceConfiguration::build() {
 
 VulkanInstance::VulkanInstance() : data_(nullptr) {}
 
-VulkanInstance::VulkanInstance(InstanceConfiguration configuration)
+VulkanInstance::VulkanInstance(InstanceConfig configuration)
 	: data_(std::make_shared<InstanceData>(std::move(configuration))) {
 
 	// Try to create Vulkan instance.
@@ -73,7 +73,7 @@ void VulkanInstance::setupDebugCallback(const vk::DebugReportFlagsEXT& flags, PF
 	setup_callback_fn(static_cast<VkInstance>(data_->vk_instance), &create_info, nullptr, reinterpret_cast<VkDebugReportCallbackEXT*>(&data_->debug_callbacks.back()));
 }
 
-const InstanceConfiguration& VulkanInstance::configuration() const {
+const InstanceConfig& VulkanInstance::configuration() const {
 	return data_->configuration;
 }
 
@@ -128,7 +128,7 @@ void VulkanInstance::free() {
 	}
 }
 
-VulkanInstance::InstanceData::InstanceData(InstanceConfiguration configuration)
+VulkanInstance::InstanceData::InstanceData(InstanceConfig configuration)
 	:  configuration(std::move(configuration)), handle_manager(std::make_shared<HandleManager>()) {}
 
 

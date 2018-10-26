@@ -60,33 +60,45 @@ public:
 	 *
 	 * @param	device	Vulkan logical device handle.
 	 */
-	ProgramManager(const vk::Device& device);
+    explicit ProgramManager(const vk::Device& device);
 
 	/**
 	 * @brief	Creates pipeline layout that consist of the given shaders. Shader reflection is performed to extract the PipelineLayout data.
 	 *
-	 * @param	shaders	Vector containing Shader handles.
+	 * @param	shader_stages	Vector containing Shader handles.
 	 * @return	PipelineLayout handle.
 	 */
-	PipelineLayout createPipelineLayout(const std::vector<Shader>& shaders);
+	PipelineLayout createPipelineLayout(const std::vector<PipelineShaderStage>& shader_stages);
 
 	/**
 	 * @brief	Creates Shader handle object and populates it with the given ShaderData.
 	 *
-	 * @param	shader_data	Shader data.
+	 * @param	config  Shader module configuration.
 	 * @return	Shader handle.
 	 */
-	Shader createShader(const ShaderData& shader_data);
+	ShaderModule createShaderModule(const ShaderModuleConfig& config) const;
 
-	/**
-	 * @brief	Loads shader code from the file located on the given path and creates and populates Shader handle with loaded data.
+    /**
+     * @brief	Load shader file and create a ShaderModule using the loaded code.
+     *
+     * @param	path    Path to the shader file.
+     * @param	flags   Additional ShaderModule configuration flags.
+     * @return	Created ShaderModule.
+     */
+    ShaderModule loadShaderModule(const std::string& path, const vk::ShaderModuleCreateFlags& flags = {}) const;
+
+    /**
+	 * @brief	Load shader file and create a ShaderModule using the loaded code.
 	 *
-	 * @param	shader_path	Path to the shader file.
-	 * @param	stage		Shader stage.
-	 * @param	entry_point Shader entry point.
-	 * @return	Shader handle.
+	 * @tparam	ExtTypes    Types of extensions.
+	 * @param	path        Path to the shader file.
+	 * @param	flags       Additional ShaderModule configuration flags.
+	 * @param	extensions  ShaderModule extensions.
+	 * @return	Created ShaderModule.
 	 */
-	Shader loadShader(const std::string& shader_path, vk::ShaderStageFlagBits stage, const std::string& entry_point = "main");
+	template <typename ExtTypes>
+    ShaderModule loadShaderModule(const std::string& path, const vk::ShaderModuleCreateFlags& flags,
+                                  const ExtTypes& extensions...) const;
 
 	/**
 	 * @brief	TODO
@@ -120,6 +132,14 @@ private:
 	static std::vector<uint32_t> readShaderFile(const std::string& path);
 
 };
+
+template <typename ExtTypes>
+ShaderModule ProgramManager::loadShaderModule(const std::string& path, const vk::ShaderModuleCreateFlags& flags,
+                                              const ExtTypes& extensions, ...) const {
+    ShaderModuleConfig config(readShaderFile(path), flags);
+    config.addExtensions(extensions...);
+    return handle_manager_->createHandle<ShaderModule>(device_, config);
+}
 
 }
 

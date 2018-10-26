@@ -11,7 +11,7 @@
         "${projectRoot}\\include",
         "${projectRoot}\\examples\\libs\\glm",
         "${projectRoot}\\examples\\libs\\glfw\\include",
-        "${projectRoot}\\libs\\spirv-cross",
+        "${projectRoot}\\libs\\spirv-cross\\include",
         "${projectRoot}\\libs\\vma",
         "${projectRoot}\\libs\\json",
         "${projectRoot}\\test\\libs\\googletest\\googletest\\include"
@@ -35,7 +35,7 @@
         "${projectRoot}\\include",
         "${projectRoot}\\examples\\libs\\glm",
         "${projectRoot}\\examples\\libs\\glfw\\include",
-        "${projectRoot}\\libs\\spirv-cross",
+        "${projectRoot}\\libs\\spirv-cross\\include",
         "${projectRoot}\\libs\\vma",
         "${projectRoot}\\libs\\json",
         "${projectRoot}\\test\\libs\\googletest\\googletest\\include"
@@ -49,28 +49,29 @@
       "intelliSenseMode": "windows-msvc-x86"
     },
     {
-      "inheritEnvironments": [
-        "msvc_x64"
-      ],
-      "name": "x64-Debug",
-      "includePath": [
-        "${env.INCLUDE}",
-        "${env.VULKAN_SDK}\\Include",
-        "${projectRoot}\\include",
-        "${projectRoot}\\examples\\libs\\glm",
-        "${projectRoot}\\examples\\libs\\glfw\\include",
-        "${projectRoot}\\libs\\spirv-cross",
-        "${projectRoot}\\libs\\vma",
-        "${projectRoot}\\libs\\json",
-        "${projectRoot}\\test\\libs\\googletest\\googletest\\include"
-      ],
+      "compilerSwitches": "/std:c++latest",
       "defines": [
         "WIN32",
         "_DEBUG",
         "UNICODE",
         "_UNICODE"
       ],
-      "intelliSenseMode": "windows-msvc-x64"
+      "includePath": [
+        "${env.INCLUDE}",
+        "${env.VULKAN_SDK}\\Include",
+        "${projectRoot}\\include",
+        "${projectRoot}\\examples\\libs\\glm",
+        "${projectRoot}\\examples\\libs\\glfw\\include",
+        "${projectRoot}\\libs\\spirv-cross\\include",
+        "${projectRoot}\\libs\\vma",
+        "${projectRoot}\\libs\\json",
+        "${projectRoot}\\test\\libs\\googletest\\googletest\\include"
+      ],
+      "inheritEnvironments": [
+        "msvc_x64"
+      ],
+      "intelliSenseMode": "windows-msvc-x64",
+      "name": "x64-Debug"
     },
     {
       "inheritEnvironments": [
@@ -83,7 +84,7 @@
         "${projectRoot}\\include",
         "${projectRoot}\\examples\\libs\\glm",
         "${projectRoot}\\examples\\libs\\glfw\\include",
-        "${projectRoot}\\libs\\spirv-cross",
+        "${projectRoot}\\libs\\spirv-cross\\include",
         "${projectRoot}\\libs\\vma",
         "${projectRoot}\\libs\\json",
         "${projectRoot}\\test\\libs\\googletest\\googletest\\include"

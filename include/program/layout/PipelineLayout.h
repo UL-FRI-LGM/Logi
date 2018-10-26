@@ -39,7 +39,7 @@ public:
 	 * @param	device	Vulkan logical device handle.
 	 * @param	shaders	Vector of shaders that form a pipeline.
 	 */
-	PipelineLayout(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const std::vector<Shader>& shaders);
+	PipelineLayout(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const std::vector<PipelineShaderStage>& shaders);
 
 	/**
 	 * @brief	Retrieve Pipeline type eCompute/eGraphical.
@@ -99,11 +99,11 @@ protected:
 
 private:
 	struct PipelineLayoutConfig {
-		PipelineLayoutConfig(const std::vector<Shader>& shaders)
+		PipelineLayoutConfig(const std::vector<PipelineShaderStage>& shaders)
 			: type(PipelineType::eUndefined), shaders(shaders) { }
 
 		PipelineType type;												///< Pipeline type (graphical or compute).
-		std::vector<Shader> shaders;									///< Pipeline shaders.
+		std::vector<PipelineShaderStage> shaders;								///< Pipeline shaders.
 		std::vector<DescriptorSetLayout> descriptor_sets;				///< Descriptor sets.
 		std::vector<PushConstantRange> push_constants;					///< Push constants.
 		std::vector<VertexAttributeLayout> attributes;					///< Only for graphical pipelines.

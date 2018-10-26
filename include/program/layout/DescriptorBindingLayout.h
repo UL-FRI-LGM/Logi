@@ -2,7 +2,6 @@
 #define PROGRAM_LAYOUT_DESCRIPTOR_BINDING_LAYOUT_H
 
 #include <vulkan/vulkan.hpp>
-#include "base/ManagedResource.h"
 
 namespace logi {
 namespace internal {

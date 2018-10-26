@@ -4,7 +4,6 @@
 #include <vulkan/vulkan.hpp>
 #include <vector>
 #include <optional>
-#include <functional>
 #include "base/Types.h"
 
 namespace logi {

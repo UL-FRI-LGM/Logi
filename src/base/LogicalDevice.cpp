@@ -17,17 +17,17 @@ LogicalDeviceConfig::LogicalDeviceConfig(std::vector<QueueFamilyConfig> queues_c
     : queues_config(std::move(queues_config)), extensions(std::move(extensions)), 
       enabled_features(std::move(enabled_features)), flags(flags) {}
 
-vk::DeviceCreateInfo LogicalDeviceConfig::build() const {
+vk::DeviceCreateInfo LogicalDeviceConfig::build() {
     // Genereate queue infos.
 	vk_queue_infos_.clear();
 	vk_queue_infos_.reserve(queues_config.size());
 
     for (const QueueFamilyConfig& config : queues_config) {
-		vk_queue_infos.emplace_back(config.build());
+		vk_queue_infos_.emplace_back(config.build());
     }
 
     // Build device create info.
-	vk::DeviceCreateInfo create_info(flags, vk_queue_infos.size(), vk_queue_infos.data(), 0, nullptr, extensions.size(), 
+	vk::DeviceCreateInfo create_info(flags, vk_queue_infos_.size(), vk_queue_infos_.data(), 0, nullptr, extensions.size(),
 		                             extensions.data(), &enabled_features);
 	create_info.pNext = buildExtensions();
 

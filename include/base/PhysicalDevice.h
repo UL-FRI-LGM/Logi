@@ -81,7 +81,9 @@ public:
 
 	LogicalDevice createLogicalDevice(const LogicalDeviceConfig& config) const;
 
-	// TODO Implement free.
+protected:
+    void free() override;
+
 private:
 	std::shared_ptr<vk::PhysicalDevice> vk_physical_device_;	///< Physical device handle.
 	std::shared_ptr<HandleManager> handle_manager_;				///< LogicalDevice handle manager.

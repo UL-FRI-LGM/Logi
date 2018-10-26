@@ -50,5 +50,9 @@ LogicalDevice PhysicalDevice::createLogicalDevice(const LogicalDeviceConfig& con
 	return handle_manager_->createHandle<LogicalDevice>(*vk_physical_device_, config);
 }
 
+void PhysicalDevice::free() {
+	handle_manager_->destroyAllHandles();
+}
+
 
 }

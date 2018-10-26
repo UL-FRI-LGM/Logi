@@ -75,7 +75,18 @@ public:
 	 * @param	extension	Extension to be added.
 	 */
 	template <typename ExtType>
-	void addExtension(const ExtType& extension);
+	void addExtensions(const ExtType& extension);
+
+	/**
+     * @brief	Add multiple Extensions to the Extendable.
+     *
+     * @tparam	ExtType		Type of the extension.
+     * @tparam	ExtTypes	Types of the remaining extensions.
+     * @param	extension	Extension to be added.
+     * @param	extensions	Remaining extensions.
+     */
+    template <typename ExtType, typename... ExtTypes>
+    void addExtensions(const ExtType& extension, const ExtTypes& ... extensions);
 
 private:
 	std::map<std::type_index, UniqueWrapper<Extension>> extensions_;
@@ -125,7 +136,7 @@ public:
 	 * @param	extensions	Remaining extensions.
 	 * @return	Pointer to the built extensions.
 	 */
-	template<typename... Args>
+	template <typename... Args>
     static void* buildExtensions(BuildableExtension& extension, Args ... extensions);
 
 	/**
@@ -139,7 +150,6 @@ public:
  */
 class BuildableExtendable {
 public:
-    virtual ~BuildableExtendable() = default;
     /**
 	 * @brief	Default constructor.
 	 */
@@ -178,7 +188,20 @@ public:
 	 * @param	extension	Extension to be added.
 	 */
 	template <typename ExtType>
-	void addExtension(const ExtType& extension);
+	void addExtensions(const ExtType& extension);
+
+	/**
+     * @brief	Add multiple Extensions to the Extendable.
+     *
+     * @tparam	ExtType		Type of the extension.
+     * @tparam	ExtTypes	Types of the remaining extensions.
+     * @param	extension	Extension to be added.
+     * @param	extensions	Remaining extensions.
+     */
+	    template <typename ExtType, typename... ExtTypes>
+	void addExtensions(const ExtType& extension, const ExtTypes& ... extensions);
+
+	virtual ~BuildableExtendable() = default;
 
 protected:
 	/**
@@ -209,8 +232,14 @@ const ExtType* Extendable::getExtension() const {
 }
 
 template <typename ExtType>
-void Extendable::addExtension(const ExtType& extension) {
+void Extendable::addExtensions(const ExtType& extension) {
 	extensions_[typeid(ExtType)] = UniqueWrapper<Extension>::create(extension);
+}
+
+template <typename ExtType, typename ... ExtTypes>
+void Extendable::addExtensions(const ExtType& extension, const ExtTypes&... extensions) {
+    extensions_[typeid(ExtType)] = UniqueWrapper<Extension>::create(extension);
+    addExtensions(extensions...);
 }
 
 template <typename ... Args>
@@ -235,8 +264,14 @@ ExtType* BuildableExtendable::getExtension() {
 }
 
 template <typename ExtType>
-void BuildableExtendable::addExtension(const ExtType& extension) {
+void BuildableExtendable::addExtensions(const ExtType& extension) {
 	extensions_[typeid(ExtType)] = UniqueWrapper<BuildableExtension>::create(extension);
+}
+
+template <typename ExtType, typename ... ExtTypes>
+void BuildableExtendable::addExtensions(const ExtType& extension, const ExtTypes&... extensions) {
+	extensions_[typeid(ExtType)] = UniqueWrapper<Extension>::create(extension);
+	addExtensions(extensions...);
 }
 
 }

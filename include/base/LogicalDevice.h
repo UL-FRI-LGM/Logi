@@ -42,7 +42,7 @@ struct LogicalDeviceConfig : public BuildableExtendable {
 	 *
 	 * @return	Vulkan DeviceCreateInfo structure.
 	 */
-	vk::DeviceCreateInfo build() const;
+	vk::DeviceCreateInfo build();
 
     /**
 	 * Structures describing the queues that are requested to be created along with the logical device.

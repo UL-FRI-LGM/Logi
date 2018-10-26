@@ -15,17 +15,12 @@ ProgramManager::ProgramManager() : Handle(false), device_(nullptr), handle_manag
 
 ProgramManager::ProgramManager(const vk::Device& device) : device_(device), handle_manager_(std::make_shared<HandleManager>()) {}
 
-PipelineLayout ProgramManager::createPipelineLayout(const std::vector<Shader>& shaders) {
-	return handle_manager_->createHandle<PipelineLayout>(device_, shaders);
+PipelineLayout ProgramManager::createPipelineLayout(const std::vector<PipelineShaderStage>& shader_stages) {
+	return handle_manager_->createHandle<PipelineLayout>(device_, shader_stages);
 }
 
-Shader ProgramManager::createShader(const ShaderData& shader_data) {
-	return handle_manager_->createHandle<Shader>(device_, shader_data);
-}
-
-Shader ProgramManager::loadShader(const std::string& shader_path, vk::ShaderStageFlagBits stage, const std::string& entry_point) {
-	ShaderData shader_data(stage, readShaderFile(shader_path), entry_point);
-	return handle_manager_->createHandle<Shader>(device_, shader_data);
+ShaderModule ProgramManager::createShaderModule(const ShaderModuleConfig& config) const {
+	return handle_manager_->createHandle<ShaderModule>(device_, config);
 }
 
 RenderPass ProgramManager::createRenderPass(const RenderPassLayout& layout) const {
@@ -118,7 +113,7 @@ std::vector<uint32_t> ProgramManager::readShaderFile(const std::string& path) {
 		throw std::runtime_error("Failed to load shader file: \"" + path + "\". Make sure that the file exists.");
 	}
 
-	size_t file_size = static_cast<size_t>(file.tellg());
+	const size_t file_size = static_cast<size_t>(file.tellg());
 	std::vector<uint32_t> buffer(file_size / sizeof(uint32_t));
 
 	file.seekg(0);

@@ -11,21 +11,21 @@ namespace logi {
 
 PipelineLayout::PipelineLayout() : DependentDestroyableHandle({}, false), config_(nullptr), vk_pipeline_layout_(nullptr), descriptor_set_hm_(nullptr) { }
 
-PipelineLayout::PipelineLayout(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const std::vector<Shader>& shaders) 
+PipelineLayout::PipelineLayout(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const std::vector<PipelineShaderStage>& shaders)
 	: DependentDestroyableHandle(owner), config_(std::make_shared<PipelineLayoutConfig>(shaders)), vk_pipeline_layout_(nullptr),
 	  descriptor_set_hm_(std::make_shared<HandleManager>()) {
 
 	// Sort the shaders in the same order as they come in the pipeline.
-	std::sort(config_->shaders.begin(), config_->shaders.end(), [](Shader a, Shader b) { return a.getStage() < b.getStage(); });
+	std::sort(config_->shaders.begin(), config_->shaders.end(), [](PipelineShaderStage a, PipelineShaderStage b) { return a.stage < b.stage; });
 
 	// Validate stages.
 	vk::ShaderStageFlags stages{};
 	for (auto it = config_->shaders.begin(); it != config_->shaders.end(); ++it) {
-		if (stages & it->getStage()) {
+		if (stages & it->stage) {
 			throw std::runtime_error("Multiple shaders with same stage.");
 		}
 
-		stages |= it->getStage();
+		stages |= it->stage;
 	}
 
 	// Determine pipeline type.
@@ -65,7 +65,7 @@ std::vector<vk::PipelineShaderStageCreateInfo> PipelineLayout::getVkShaderHandle
 
 	// Fetch ShaderStageCreateInfo-s.
 	for (auto& shader : config_->shaders) {
-		vk_shaders.emplace_back(shader.getVkHandle());
+		vk_shaders.emplace_back(shader.build());
 	}
 
 	return vk_shaders;
@@ -99,12 +99,12 @@ void PipelineLayout::shaderReflection(const vk::Device& device) const {
 	std::vector<std::vector<internal::DescriptorBindingInitializer>> desc_sets_initializers{};
 	std::vector<internal::PushConstantRangeInitializer> push_consts_initializers{};
 
-	for (Shader& shader : config_->shaders) {
-		spirv_cross::Compiler comp(shader.getCode());
+	for (PipelineShaderStage& shader : config_->shaders) {
+		spirv_cross::Compiler comp(shader.code());
 
 		// The SPIR-V is now parsed, and we can perform reflection on it.
 		spirv_cross::ShaderResources resources = comp.get_shader_resources();
-		vk::ShaderStageFlagBits stage = shader.getStage();
+		vk::ShaderStageFlagBits stage = shader.stage;
 
 #pragma region VertexAttributes
 		// Parse attributes if it's a vertex shader.

@@ -50,7 +50,7 @@ public:
 	}
 
 	void createInstance() {
-		logi::InstanceConfiguration instance_config{};
+		logi::InstanceConfig instance_config{};
 		instance_config.extensions = getRequiredExtensions();
 		instance_config.extensions.emplace_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
 		instance_config.validation_layers = { "VK_LAYER_LUNARG_standard_validation", "VK_LAYER_RENDERDOC_Capture" };
@@ -167,9 +167,9 @@ public:
 	}
 
 	void createGraphicPipeline() {
-		logi::Shader vertex_shader = program_manager.loadShader("./shaders/triangle.vert.spv", vk::ShaderStageFlagBits::eVertex);
-		logi::Shader fragment_shader = program_manager.loadShader("./shaders/triangle.frag.spv", vk::ShaderStageFlagBits::eFragment);
-		logi::PipelineLayout pipeline_layout = program_manager.createPipelineLayout({ vertex_shader, fragment_shader });
+		logi::ShaderModule vertex_shader = program_manager.loadShaderModule("./shaders/triangle.vert.spv");
+		logi::ShaderModule fragment_shader = program_manager.loadShaderModule("./shaders/triangle.frag.spv");
+		logi::PipelineLayout pipeline_layout = program_manager.createPipelineLayout({ logi::PipelineShaderStage(vk::ShaderStageFlagBits::eVertex, vertex_shader), logi::PipelineShaderStage(vk::ShaderStageFlagBits::eFragment, fragment_shader) });
    
 		logi::PipelineState state;
 
@@ -223,8 +223,8 @@ public:
 	}
 
 	void createComputePipeline() {
-		const logi::Shader compute_shader = program_manager.loadShader("./shaders/pathtrace.comp.spv", vk::ShaderStageFlagBits::eCompute);
-		const logi::PipelineLayout pipeline_layout = program_manager.createPipelineLayout({ compute_shader });
+		const logi::ShaderModule compute_shader = program_manager.loadShaderModule("./shaders/pathtrace.comp.spv");
+		const logi::PipelineLayout pipeline_layout = program_manager.createPipelineLayout({ logi::PipelineShaderStage(vk::ShaderStageFlagBits::eCompute, compute_shader) });
 
 		compute_pipeline = program_manager.createComputePipelines({ logi::ComputePipelineCreateInfo(pipeline_layout) })[0];
 	}
@@ -447,7 +447,7 @@ private:
 
 int main() {
 	logi::TessellationState tessellation_state;
-	tessellation_state.addExtension(logi::TessellationDomainOriginState());
+	tessellation_state.addExtensions(logi::TessellationDomainOriginState());
 
 	logi::TessellationState copy = tessellation_state;
 	copy.getExtension<logi::TessellationDomainOriginState>()->domain_origin = vk::TessellationDomainOrigin::eLowerLeftKHR;

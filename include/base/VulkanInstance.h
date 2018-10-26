@@ -70,7 +70,7 @@ private:
 /**
  * @brief	Contains instance configuration. Used to initialize VulkanInstance.
  */
-struct InstanceConfiguration : public BuildableExtendable {
+struct InstanceConfig : public BuildableExtendable {
     /**
      * @brief	Initialize InstanceConfiguration data.
      *
@@ -79,7 +79,7 @@ struct InstanceConfiguration : public BuildableExtendable {
      * @param	validation_layers   Array specifying which validation layers should be enabled.
      * @param   flags               Flags specifying additional configuration.
      */
-	explicit InstanceConfiguration(ApplicationInfo application_info = ApplicationInfo(),
+	explicit InstanceConfig(ApplicationInfo application_info = ApplicationInfo(),
 		                           std::vector<const char*> extensions = {},
 		                           std::vector<const char*> validation_layers = {},
 	                               const vk::InstanceCreateFlags& flags = {});
@@ -134,7 +134,7 @@ public:
 	 *
 	 * @param	configuration   Vulkan instance configuration.
 	 */
-    explicit VulkanInstance(InstanceConfiguration configuration);
+    explicit VulkanInstance(InstanceConfig configuration);
 
     /**
 	 * @brief	Register debug report callback. Debug report callbacks give more detailed feedback on the application’s 
@@ -150,7 +150,7 @@ public:
 	 *
 	 * @return	Instance configuration.
 	 */
-	const InstanceConfiguration& configuration() const;
+	const InstanceConfig& configuration() const;
 
     /**
      * @brief   Retrieve vector of physical devices.
@@ -182,9 +182,9 @@ protected:
 
 private:
 	struct InstanceData {
-	    explicit InstanceData(InstanceConfiguration configuration);
+	    explicit InstanceData(InstanceConfig configuration);
 
-		InstanceConfiguration configuration;
+		InstanceConfig configuration;
 		vk::Instance vk_instance{};
 		std::vector<PhysicalDevice> physical_devices{};
 		std::vector<vk::DebugReportCallbackEXT> debug_callbacks{};

@@ -33,7 +33,7 @@ public:
 
 	void createInstance() {
 		logi::ApplicationInfo app_info("test", 1, "test", 1);
-		logi::InstanceConfiguration instance_config{};
+		logi::InstanceConfig instance_config{};
 		instance_config.extensions = getRequiredExtensions();
 		instance_config.extensions.emplace_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
 		instance_config.validation_layers = { "VK_LAYER_LUNARG_standard_validation" };

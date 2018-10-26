@@ -94,7 +94,7 @@ struct QueueFamilyProperties : public Extendable {
 	vk::Extent3D min_image_transfer_granularity;
 
 protected:
-	using Extendable::addExtension;
+	using Extendable::addExtensions;
 };
 
 /**

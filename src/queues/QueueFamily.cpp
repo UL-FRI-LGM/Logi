@@ -33,7 +33,7 @@ QueueFamilyProperties::QueueFamilyProperties(const uint32_t family_index, const 
 
         if (*type == vk::StructureType::eQueueFamilyCheckpointPropertiesNV) {
 			const auto* ext = reinterpret_cast<vk::QueueFamilyCheckpointPropertiesNV*>(next);
-			addExtension(NvidiaQueueFamilyCheckpointProperties(ext->checkpointExecutionStageMask));
+			addExtensions(NvidiaQueueFamilyCheckpointProperties(ext->checkpointExecutionStageMask));
 			next = ext->pNext;
         }
 		else {

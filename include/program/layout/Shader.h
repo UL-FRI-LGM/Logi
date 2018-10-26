@@ -2,78 +2,224 @@
 #define PROGRAM_LAYOUT_SHADER_H
 
 #include "base/ManagedResource.h"
+#include "base/Handle.h"
+#include "base/ExtensionObject.h"
+
 #include <vulkan/vulkan.hpp>
+#include <optional>
 #include <string>
 #include <vector>
-#include "base/Handle.h"
 
 namespace logi {
 
 /**
- * @brief	Structure that contains the data required to instantiate a Shader.
+ * @brief   Structure that contains shader module code and configuration.
  */
-struct ShaderData {
-	/**
-	 * @brief	Populates ShaderData structure.
-	 *
-	 * @param	stage			 Shader stage.
-	 * @param	code			 Shader code.
-	 * @param	entry_point		 Shader entry point.	
-	 */
-	ShaderData(vk::ShaderStageFlagBits stage, const std::vector<uint32_t>& code, const std::string& entry_point = "main");
+struct ShaderModuleConfig : public BuildableExtendable {
 
-	vk::ShaderStageFlagBits stage;		///< Shader stage.
-	std::vector<uint32_t> code;			///< Shader code.
-	std::string entry_point;			///< Shader entry point.
+    /**
+     * @brief   Initialize ShaderModuleConfig members.
+     *
+     * @param	code	Shader module code.
+     * @param	flags	Additional configuration flags.
+     */
+    explicit ShaderModuleConfig(std::vector<uint32_t> code, const vk::ShaderModuleCreateFlags& flags = {});
+
+    /**
+     * @brief	Builds Vulkan ShaderModule create info structure.
+     *
+     * @return	Vulkan ShaderModule create info structure.
+     */
+    vk::ShaderModuleCreateInfo build() const;
+
+    /**
+     * Additional configuration flags.
+     */
+    vk::ShaderModuleCreateFlags flags;
+
+    /**
+     * Shader code.
+     */
+    std::vector<uint32_t> code;
 };
+
 
 /**
- * @brief	Encapsulates shader data.
+ * @brief   ShaderModule handle that manages Vulkan ShaderModule object. 
  */
-class Shader : public DependentDestroyableHandle {
+class ShaderModule : public DependentDestroyableHandle {
 public:
-	/**
-	 * @brief	Creates Shader handle.
-	 *
-	 * @param	owner		Pointer to a HandleManager responsible for this handle.
-	 * @param	device		Device to which the shader belongs.
-	 * @param	shader_data	ShaderData structure
-	 */
-	Shader(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const ShaderData& shader_data);
+    /**
+     * @brief   Create placeholder ShaderModule handle.
+     */
+    ShaderModule();
 
-	/**
-	 * @brief	Get shader stage.
-	 *
-	 * @return	Shader stage flag.
-	 */
-	vk::ShaderStageFlagBits getStage() const;
+    /**
+     * @brief	Creates ShaderModule handle.
+     *
+     * @param	owner	Pointer to a HandleManager responsible for this handle.
+     * @param	device	Device to which the shader belongs.
+     * @param	config	Shader data and configuration.
+     */
+    ShaderModule(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const ShaderModuleConfig& config);
 
-	/**
-	 * @brief	Get shader code.
-	 *
-	 * @return	Reference to the shader code.
-	 */
-	const std::vector<uint32_t>& getCode() const;
+    /**
+     * @brief	Get shader configuration.
+     *
+     * @return	Reference to the shader configuration.
+     */
+    const ShaderModuleConfig& config() const;
 
-	/**
-	 * @brief	Get Vulkan shader handle.
-	 *
-	 * @return	Vulkan shader handle.
-	 */
-	vk::PipelineShaderStageCreateInfo getVkHandle() const;
+    /**
+     * @brief   Get shader code.
+     * 
+     * @return  Reference to the shader code.
+     */
+	const std::vector<uint32_t>& code() const;
+
+    /**
+     * @brief	Get Vulkan shader module handle.
+     *
+     * @return	Vulkan shader module handle.
+     */
+    const vk::ShaderModule& getVkHandle() const;
 
 protected:
-	/**
-	 * @brief	Destroys shader module.
+
+    /**
+     * @brief   Frees Vulkan ShaderModule.
+     */
+    void free() override;
+private:
+    using ManagedVkShaderModule = ManagedResource<vk::Device, vk::ShaderModule, vk::DispatchLoaderStatic, &vk::Device::destroyShaderModule>;
+
+    /**
+     * @brief   Contains ShaderModule handle internal data.
+     */
+    struct ShaderModuleData {
+        /**
+         * @brief   Inizialize shader module configuration.
+         *
+         * @param	config  Shader module configuration.
+         */
+        explicit ShaderModuleData(ShaderModuleConfig config);
+
+        /**
+         * Shader module configuration.
+         */
+        ShaderModuleConfig config;
+
+        /**
+         * Shader module handle. 
+         */
+        ManagedVkShaderModule vk_shader_module;
+    };
+
+    /**
+     * ShaderModule handle internal data.
+     */
+    std::shared_ptr<ShaderModuleData> data_;
+};
+
+
+/**
+ * @brief   Structure that contains shader specialization data.
+ */
+struct ShaderSpecialization {
+
+    /**
+     * @brief   Initialize ShaderSpecialization members.
+     *
+     * @param	map_entries	Array of vk::SpecializationMapEntry which maps constant IDs to offsets in data.
+     * @param	data	    Contains the constant values to specialize with.
+     */
+    explicit ShaderSpecialization(std::vector<vk::SpecializationMapEntry> map_entries = {},
+                                  std::vector<unsigned char> data = {});
+
+    /**
+	 * @brief   Builds Vulkan SpecializationInfo structure using the member values.
+	 *
+	 * @return	Vulkan SpecializationInfo structure
 	 */
-	void free() override;
+    vk::SpecializationInfo* build();
+
+    /**
+     * Array of vk::SpecializationMapEntry which maps constant IDs to offsets in data.
+     */
+    std::vector<vk::SpecializationMapEntry> map_entries;
+
+    /**
+     * Contains the constant values to specialize with.
+     */
+    std::vector<unsigned char> data;
 
 private:
-	using ManagedVkShaderModule = ManagedResource<vk::Device, vk::ShaderModule, vk::DispatchLoaderStatic, &vk::Device::destroyShaderModule>;
-
-	std::shared_ptr<ShaderData> shader_data_;
-	std::shared_ptr<ManagedVkShaderModule> vk_shader_module_;
+    /**
+     * Vulkan specialization info structure.
+     */
+    vk::SpecializationInfo vk_specialization_;
 };
+
+
+/**
+ * @brief   Structure that contains pipeline shader stage configuration.
+ */
+struct PipelineShaderStage : public BuildableExtendable {
+
+    /**
+     * @brief	Initialize PipelineShaderStage members.
+     *
+     * @param	stage			Value specifying a single pipeline stage.
+     * @param	module			Handle that holds the shader for this stage.
+     * @param	entry_point		Entry point name of the shader for this stage.
+     * @param	flags			Additional configuration flags.
+     * @param	specialization	Optional specialization constants.
+     */
+    explicit PipelineShaderStage(vk::ShaderStageFlagBits stage = {}, ShaderModule module = {},
+                                 std::string entry_point = "main",
+                                 const vk::PipelineShaderStageCreateFlags& flags = {},
+                                 std::optional<ShaderSpecialization> specialization = std::nullopt);
+
+	/**
+	 * @brief	Builds Vulkan PipelineShaderStageCreateInfo structure using the member values.
+	 *
+	 * @return	Vulkan PipelineShaderStageCreateInfo structure.
+	 */
+    vk::PipelineShaderStageCreateInfo build();
+
+	/**
+     * @brief   Get shader code.
+     *
+     * @return  Reference to the shader code.
+     */
+	const std::vector<uint32_t>& code() const;
+
+	/**
+	 * Additional configuration flags.
+	 */
+    vk::PipelineShaderStageCreateFlags flags;
+
+    /**
+     * Value specifying a single pipeline stage.
+     */
+    vk::ShaderStageFlagBits stage;
+
+	/**
+	 * Handle that holds the shader for this stage.
+	 */
+    ShaderModule module;
+
+	/**
+	 * Entry point name of the shader for this stage.
+	 */
+    std::string entry_point;
+
+	/**
+	 * Optional specialization constants.
+	 */
+    std::optional<ShaderSpecialization> specialization;
+};
+
 
 } ///!	namespace logi
 

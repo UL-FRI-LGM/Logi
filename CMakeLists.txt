@@ -3,14 +3,6 @@ cmake_minimum_required (VERSION 3.10)
 # Metadata
 project(Logi VERSION 0.1.0 LANGUAGES CXX)
 
-if (MSVC_VERSION GREATER_EQUAL "1900")
-    include(CheckCXXCompilerFlag)
-    CHECK_CXX_COMPILER_FLAG("/std:c++17" CXX_17_SUPPORT)
-    if (CXX_17_SUPPORT)
-        add_compile_options("/std:c++17")
-    endif()
-endif()
-
 # Add path to CMake custom modules.
 list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_SOURCE_DIR}/cmake_modules")
 
