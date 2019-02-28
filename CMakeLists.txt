@@ -4,12 +4,12 @@ cmake_minimum_required (VERSION 3.10)
 project(Logi VERSION 0.1.0 LANGUAGES CXX)
 
 # Add path to CMake custom modules.
-list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_SOURCE_DIR}/cmake_modules")
+list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules")
 
 # C++ Google Test
 option(BUILD_TESTS "Build tests." OFF)
 option(BUILD_DOC "Build documentation" OFF)
-option(BUILD_EXAMPLES "Build examples" ON)
+option(BUILD_EXAMPLES "Build examples" OFF)
 
 ##############################################
 # BUILD LOGI LIBRARY
