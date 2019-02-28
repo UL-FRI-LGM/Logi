@@ -1,6 +1,6 @@
 #include "base/VulkanInstance.h"
 #define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h>
+#include <base/GLFWManager.h>
 #include <glm/glm.hpp>
 #include "base/SwapChain.h"
 #include "memory/Framebuffer.h"
@@ -41,12 +41,7 @@ public:
 	}
 
 	void initWindow() {
-		glfwInit();
-
-		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-
-		window = glfwCreateWindow(width, height, "Vulkan", nullptr, nullptr);
+		window = GLFWManager::instance().createWindow("Example", width, height);
 	}
 
 	void createInstance() {
@@ -61,13 +56,7 @@ public:
 	}
 
 	void initSurface() {
-		VkSurfaceKHR vk_surface;
-
-		if (glfwCreateWindowSurface(static_cast<VkInstance>(instance.getVkHandle()), window, nullptr, &vk_surface) != VK_SUCCESS) {
-			throw std::runtime_error("failed to create window surface!");
-		}
-
-		surface = vk::SurfaceKHR(vk_surface);
+		surface = window.createWindowSurface(instance.getVkHandle()).value;
 	}
 
 	void selectDevice() {
@@ -343,7 +332,7 @@ public:
 		auto ref_ts = Time::now();
 		graphic_input.frame_count = 1;
 
-		while (!glfwWindowShouldClose(window)) {
+		while (!window.shouldClose()) {
 			input_ubo.timestamp = std::chrono::duration<float, std::micro>(Time::now() - ref_ts).count() / 1000000;
 			compute_input_buffer.writeData(&input_ubo, sizeof(PathtracerInput));
 			graphic_input_buffer.writeData(&graphic_input, sizeof(GraphicInput));
@@ -353,9 +342,9 @@ public:
 
 			graphic_input.frame_count++;
 
-			if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+			if (glfwGetMouseButton(window.glfwHandle(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
 				double x, y;
-				glfwGetCursorPos(window, &x, &y);
+				glfwGetCursorPos(window.glfwHandle(), &x, &y);
 
 				input_ubo.mouse_pos.x = std::min(std::max(0.0, x), (double)width) / width;
 				input_ubo.mouse_pos.y = 1 - std::min(std::max(0.0, y), (double)height) / height;
@@ -397,7 +386,7 @@ private:
 		logi::Sampler sampler{};
 	};
 
-	GLFWwindow* window;
+	Window window;
 	vk::SurfaceKHR surface;
 
 	static const size_t max_frames_in_flight = 2;

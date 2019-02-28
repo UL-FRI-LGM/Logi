@@ -3,11 +3,8 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include "base/SwapChain.h"
-#include "memory/Framebuffer.h"
-#include <algorithm>
 #include <iostream>
 #include "base/ExtensionObject.h"
-#include "commands/PrimaryCommandBuffer.h"
 
 
 class ExampleBase {
@@ -187,11 +184,6 @@ private:
 int main() {
 	logi::TessellationState tessellation_state;
 	tessellation_state.addExtensions(logi::TessellationDomainOriginState());
-
-	logi::TessellationState copy = tessellation_state;
-	copy.getExtension<logi::TessellationDomainOriginState>()->domain_origin = vk::TessellationDomainOrigin::eLowerLeftKHR;
-
-	std::cout << (copy == tessellation_state) << std::endl;
 
 	{
 		ExampleBase example;

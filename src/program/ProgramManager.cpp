@@ -23,6 +23,10 @@ ShaderModule ProgramManager::createShaderModule(const ShaderModuleConfig& config
 	return handle_manager_->createHandle<ShaderModule>(device_, config);
 }
 
+ShaderModule ProgramManager::loadShaderModule(const std::string& path, const vk::ShaderModuleCreateFlags& flags) const {
+	return handle_manager_->createHandle<ShaderModule>(device_, ShaderModuleConfig(readShaderFile(path), flags));
+}
+
 RenderPass ProgramManager::createRenderPass(const RenderPassLayout& layout) const {
 	return handle_manager_->createHandle<RenderPass>(device_, layout);
 }
