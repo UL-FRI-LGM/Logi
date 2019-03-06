@@ -16,7 +16,7 @@ option(BUILD_EXAMPLES "Build examples" OFF)
 ############################################## 
 
 # Libraries path
-add_subdirectory(${PROJECT_SOURCE_DIR}/libs)
+include(ExternalDependencies.cmake)
 
 file(GLOB_RECURSE SRC_LIST "src/*.cpp")
 
@@ -30,7 +30,7 @@ target_include_directories(logi PUBLIC
     $<INSTALL_INTERFACE:include>
 )
 
-target_link_libraries(logi vulkan spirv-cross vma)
+target_link_libraries(logi Vulkan::Vulkan spirv-cross vma)
 
 if (BUILD_EXAMPLES)
 	add_subdirectory(examples)
