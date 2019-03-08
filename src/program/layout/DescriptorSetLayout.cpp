@@ -1,4 +1,4 @@
-#include "program/layout/DescriptorSetLayout.h"
+#include "logi/program/layout/DescriptorSetLayout.h"
 
 namespace logi {
 
@@ -20,7 +20,7 @@ DescriptorSetLayout::DescriptorSetLayout(const vk::Device& device, const std::ve
 
 	// Create descriptor set layout.
 	vk::DescriptorSetLayoutCreateInfo dsl_ci;
-	dsl_ci.bindingCount = vk_bindings.size();
+	dsl_ci.bindingCount = static_cast<uint32_t>(vk_bindings.size());
 	dsl_ci.pBindings = vk_bindings.data();
 
 	vk_descriptor_set_layout_ = std::make_shared<ManagedVkDescriptorSetLayout>(device, device.createDescriptorSetLayout(dsl_ci));

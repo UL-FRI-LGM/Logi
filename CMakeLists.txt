@@ -9,7 +9,7 @@ list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules")
 # C++ Google Test
 option(BUILD_TESTS "Build tests." OFF)
 option(BUILD_DOC "Build documentation" OFF)
-option(BUILD_EXAMPLES "Build examples" OFF)
+option(BUILD_EXAMPLES "Build examples" ON)
 
 ##############################################
 # BUILD LOGI LIBRARY

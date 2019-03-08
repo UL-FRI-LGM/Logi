@@ -1,5 +1,5 @@
-#include "descriptors/DescriptorPool.h"
-#include "base/Exceptions.h"
+#include "logi/descriptors/DescriptorPool.h"
+#include "logi/base/Exceptions.h"
 
 namespace logi {
 
@@ -13,7 +13,7 @@ DescriptorPool::DescriptorPool(std::weak_ptr<HandleManager>& owner, const vk::De
 	vk::DescriptorPoolCreateInfo descriptor_pool_ci{};
 	descriptor_pool_ci.maxSets = pool_sizes.num_sets;
 	descriptor_pool_ci.pPoolSizes = vk_pool_sizes.data();
-	descriptor_pool_ci.poolSizeCount = vk_pool_sizes.size();
+	descriptor_pool_ci.poolSizeCount = static_cast<uint32_t>(vk_pool_sizes.size());
 	descriptor_pool_ci.flags = flags;
 
 	// Create descriptor pool.
@@ -34,7 +34,7 @@ void DescriptorPool::freeDescriptorSets(const std::vector<DescriptorSet>& descri
     }
 
     const vk::Device& device = vk_descriptor_pool_->getOwner();
-	device.freeDescriptorSets(vk_descriptor_pool_->get(), vk_descriptor_sets.size(), vk_descriptor_sets.data());
+	device.freeDescriptorSets(vk_descriptor_pool_->get(), static_cast<uint32_t>(vk_descriptor_sets.size()), vk_descriptor_sets.data());
 }
 
 void DescriptorPool::reset(const vk::DescriptorPoolResetFlags& reset_flags) const {

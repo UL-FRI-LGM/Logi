@@ -1,4 +1,4 @@
-#include "commands/PrimaryCommandBuffer.h"
+#include "logi/commands/PrimaryCommandBuffer.h"
 
 namespace logi {
 
@@ -18,7 +18,7 @@ RenderPassBeginInfo::RenderPassBeginInfo(RenderPass render_pass, Framebuffer fra
 	  clear_values(std::move(clear_values)) {}
 
 vk::RenderPassBeginInfo RenderPassBeginInfo::build() const {
-	vk::RenderPassBeginInfo begin_info(render_pass.getVkHandle(), framebuffer.getVkHandle(), render_area, clear_values.size(), clear_values.data());
+	vk::RenderPassBeginInfo begin_info(render_pass.getVkHandle(), framebuffer.getVkHandle(), render_area, static_cast<uint32_t>(clear_values.size()), clear_values.data());
 	begin_info.pNext = buildExtensions();
 
 	return begin_info;

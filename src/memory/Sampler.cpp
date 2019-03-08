@@ -1,5 +1,5 @@
 
-#include "memory/Sampler.h"
+#include "logi/memory/Sampler.h"
 
 namespace logi {
 

@@ -1,8 +1,19 @@
 cmake_minimum_required (VERSION 3.6)
 
+set(TARGET_NAME "hello_triangle")
+
 include(${PROJECT_SOURCE_DIR}/cmake_modules/CompileShaders.cmake)
 
-add_executable(example_hello_triangle main.cpp)
-target_link_libraries(example_hello_triangle logi glfw)
+file(GLOB_RECURSE SRC_LIST "src/*.cpp")
 
-compile_shaders(example_hello_triangle shaders)
+add_executable(${TARGET_NAME} ${SRC_LIST})
+target_link_libraries(${TARGET_NAME} example_base)
+set_property(TARGET ${TARGET_NAME} PROPERTY CXX_STANDARD 17)
+set_property(TARGET ${TARGET_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
+
+target_include_directories(${TARGET_NAME} PUBLIC
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
+
+compile_shaders(${TARGET_NAME} shaders)

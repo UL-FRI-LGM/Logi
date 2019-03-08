@@ -1,4 +1,4 @@
-#include "memory/BufferView.h"
+#include "logi/memory/BufferView.h"
 
 namespace logi {
 

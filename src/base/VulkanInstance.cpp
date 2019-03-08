@@ -6,7 +6,7 @@
 * This code is licensed under the MIT license (MIT) (http://opensource.org/licenses/MIT)
 */
 
-#include "base/VulkanInstance.h"
+#include "logi/base/VulkanInstance.h"
 
 namespace logi {
 
@@ -29,8 +29,8 @@ InstanceConfig::InstanceConfig(ApplicationInfo application_info, std::vector<con
       validation_layers(std::move(validation_layers)), flags(flags) {}
 
 const vk::InstanceCreateInfo& InstanceConfig::build() {
-	vk_instance_ci_ = vk::InstanceCreateInfo(flags, &application_info.build(), validation_layers.size(), 
-		                                     validation_layers.data(), extensions.size(), extensions.data());
+	vk_instance_ci_ = vk::InstanceCreateInfo(flags, &application_info.build(), static_cast<uint32_t>(validation_layers.size()),
+		                                     validation_layers.data(), static_cast<uint32_t>(extensions.size()), extensions.data());
 	vk_instance_ci_.pNext = buildExtensions();
 
 	return vk_instance_ci_;

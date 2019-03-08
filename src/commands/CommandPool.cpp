@@ -1,5 +1,5 @@
-#include "commands/CommandPool.h"
-#include "commands/CommandBuffer.h"
+#include "logi/commands/CommandPool.h"
+#include "logi/commands/CommandBuffer.h"
 #include <vulkan/vulkan.hpp>
 
 namespace logi {

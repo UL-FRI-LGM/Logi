@@ -1,11 +1,11 @@
-#include "program/layout/PipelineLayout.h"
+#include "logi/program/layout/PipelineLayout.h"
 #include <vector>
 #include <unordered_map>
 #include <algorithm>
 #include <numeric>
 #include <vulkan/vulkan.hpp>
 #include <spirv_cross.hpp>
-#include "util/FormatConversion.h"
+#include "logi/util/FormatConversion.h"
 
 namespace logi {
 
@@ -222,14 +222,14 @@ void PipelineLayout::shaderReflection(const vk::Device& device) const {
 						break;
 					}
 					else if (it->offset > const_range.offset) {
-						it = push_consts_initializers.insert(it, internal::PushConstantRangeInitializer(const_range.offset, const_range.range, stage));
+						it = push_consts_initializers.insert(it, internal::PushConstantRangeInitializer(static_cast<uint32_t>(const_range.offset), static_cast<uint32_t>(const_range.range), stage));
 						break;
 					}
 				}
 
 				// Emplace at the end of the const.
 				if (it == push_consts_initializers.end()) {
-					push_consts_initializers.emplace_back(internal::PushConstantRangeInitializer(const_range.offset, const_range.range, stage));
+					push_consts_initializers.emplace_back(internal::PushConstantRangeInitializer(static_cast<uint32_t>(const_range.offset), static_cast<uint32_t>(const_range.range), stage));
 				}
 			}
 		}
@@ -272,9 +272,9 @@ void PipelineLayout::buildVkPipelineLayout(const vk::Device& device) {
 
 	vk::PipelineLayoutCreateInfo layout_ci{};
 	layout_ci.pSetLayouts = vk_desc_set_layouts.data();
-	layout_ci.setLayoutCount = vk_desc_set_layouts.size();
+	layout_ci.setLayoutCount = static_cast<uint32_t>(vk_desc_set_layouts.size());
 	layout_ci.pPushConstantRanges = vk_push_constants.data();
-	layout_ci.pushConstantRangeCount = vk_push_constants.size();
+	layout_ci.pushConstantRangeCount = static_cast<uint32_t>(vk_push_constants.size());
 
 	vk_pipeline_layout_ = std::make_shared<ManagedVkPipelineLayout>(device, device.createPipelineLayout(layout_ci));
 }

@@ -5,16 +5,10 @@
 #include <vector>
 #include "base/Monitor.h"
 #include "base/Window.h"
-#include "base/PhysicalDevice.h"
+#include "logi/base/PhysicalDevice.h"
 
 class GLFWManager {
 public:
-	GLFWManager() {
-		if (!glfwInit()) {
-			throw std::runtime_error("Failed to initialize GLFW.");
-		}
-	}
-
 	GLFWManager(const GLFWManager&) = delete;
 	GLFWManager& operator=(const GLFWManager&) = delete;
 	GLFWManager(GLFWManager&&) = delete;
@@ -32,16 +26,23 @@ public:
 
 	void pollEvents() const;
 
-    template <typename... Args>
-    Window createWindow(Args... args) {
-		return Window(args...);
-    }
+  template <typename... Args>
+  Window createWindow(Args... args) {
+	  return Window(args...);
+  }
 
 #ifdef GLFW_INCLUDE_VULKAN
 	bool vulkanSupported() const;
 
 	std::vector<const char*> getRequiredInstanceExtensions() const;
 #endif
+
+private:
+	GLFWManager() {
+		if (!glfwInit()) {
+			throw std::runtime_error("Failed to initialize GLFW.");
+		}
+	}
 };
 
 #endif // BASE_GLFW_MANAGER_H

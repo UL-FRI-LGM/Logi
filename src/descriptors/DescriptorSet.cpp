@@ -1,5 +1,5 @@
-#include "descriptors/DescriptorSet.h"
-#include "base/Exceptions.h"
+#include "logi/descriptors/DescriptorSet.h"
+#include "logi/base/Exceptions.h"
 
 namespace logi {
 

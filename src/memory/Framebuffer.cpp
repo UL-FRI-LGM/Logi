@@ -1,5 +1,5 @@
 #include <utility>
-#include "memory/Framebuffer.h"
+#include "logi/memory/Framebuffer.h"
 
 namespace logi {
 
@@ -20,7 +20,7 @@ Framebuffer::Framebuffer(std::weak_ptr<HandleManager> owner, const vk::Device de
 
 	vk::FramebufferCreateInfo fb_ci;
 	fb_ci.renderPass = render_pass;
-	fb_ci.attachmentCount = vk_iv_handles.size();
+	fb_ci.attachmentCount = static_cast<uint32_t>(vk_iv_handles.size());
 	fb_ci.pAttachments = vk_iv_handles.data();
 	fb_ci.width = width;
 	fb_ci.height = height;

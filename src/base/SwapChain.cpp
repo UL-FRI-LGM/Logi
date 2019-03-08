@@ -7,7 +7,7 @@
 */
 
 #include <utility>
-#include "base/SwapChain.h"
+#include "logi/base/SwapChain.h"
 
 namespace logi {
 
@@ -54,8 +54,7 @@ SwapChain::SwapChain(std::weak_ptr<HandleManager>& owner, const vk::PhysicalDevi
 	}
 };
 
-
-void SwapChain::create(uint32_t& width, uint32_t& height, const bool vsync) const {
+void SwapChain::create(const vk::Extent2D& desired_extent, const bool vsync) const {
 
 	const vk::PhysicalDevice& physical_device = data_->physical_device;
 	const vk::SurfaceKHR& surface = data_->surface;
@@ -65,19 +64,15 @@ void SwapChain::create(uint32_t& width, uint32_t& height, const bool vsync) cons
 	// Get physical device surface properties and formats.
 	const vk::SurfaceCapabilitiesKHR surface_capabilites = physical_device.getSurfaceCapabilitiesKHR(surface);
 
-	// Create SwapChain extent.
-	vk::Extent2D swapchain_extent;
 	// If width (and height) equals the special value 0xFFFFFFFF, the size of the surface will be set by the SwapChain.
-	if (surface_capabilites.currentExtent.width == static_cast<uint32_t>(-1)) {
+	if (surface_capabilites.currentExtent.width == std::numeric_limits<uint32_t>::max()) {
 		// If the surface size is undefined, the size is set to the size of the images requested.
-		swapchain_extent.width = width;
-		swapchain_extent.height = height;
+		data_->extent.width = desired_extent.width;
+		data_->extent.height = desired_extent.height;
 	}
 	else {
 		// If the surface size is defined, the swap chain size must match
-		swapchain_extent = surface_capabilites.currentExtent;
-		width = surface_capabilites.currentExtent.width;
-		height = surface_capabilites.currentExtent.height;
+		data_->extent = surface_capabilites.currentExtent;
 	}
 
 	// Select a present mode for the SwapChain.
@@ -115,7 +110,6 @@ void SwapChain::create(uint32_t& width, uint32_t& height, const bool vsync) cons
 		pre_transform = surface_capabilites.currentTransform;
 	}
 
-
 	// Find a supported composite alpha format (not all devices support alpha opaque)
 	static const std::vector<vk::CompositeAlphaFlagBitsKHR> alpha_preferred = {
 		vk::CompositeAlphaFlagBitsKHR::eOpaque,
@@ -141,7 +135,7 @@ void SwapChain::create(uint32_t& width, uint32_t& height, const bool vsync) cons
 	swapchain_ci.minImageCount = num_swapchain_images;
 	swapchain_ci.imageFormat = data_->color_format;
 	swapchain_ci.imageColorSpace = data_->color_space;
-	swapchain_ci.imageExtent = vk::Extent2D(swapchain_extent.width, swapchain_extent.height);
+	swapchain_ci.imageExtent = data_->extent;
 	swapchain_ci.imageUsage = vk::ImageUsageFlagBits::eColorAttachment;
 	swapchain_ci.preTransform = pre_transform;
 	swapchain_ci.imageArrayLayers = 1;
@@ -153,7 +147,7 @@ void SwapChain::create(uint32_t& width, uint32_t& height, const bool vsync) cons
 	}
 	else {
 		swapchain_ci.imageSharingMode = vk::SharingMode::eConcurrent;
-		swapchain_ci.queueFamilyIndexCount = data_->concurrent_families.size();
+		swapchain_ci.queueFamilyIndexCount = static_cast<uint32_t>(data_->concurrent_families.size());
 		swapchain_ci.pQueueFamilyIndices = data_->concurrent_families.data();
 	}
 
@@ -205,7 +199,7 @@ void SwapChain::create(uint32_t& width, uint32_t& height, const bool vsync) cons
 	}
 
 	// Set image index out of range.
-	data_->acquired_image_index = data_->image_views.size();
+	data_->acquired_image_index = static_cast<uint32_t>(data_->image_views.size());
 }
 
 void SwapChain::free() {
@@ -252,6 +246,10 @@ vk::Result SwapChain::queuePresent(const Queue& queue, const Semaphore& wait_sem
 
 vk::Format SwapChain::getColorFormat() const {
 	return data_->color_format;
+}
+
+const vk::Extent2D& SwapChain::getExtent() const {
+	return data_->extent;
 }
 
 SwapChain::SwapchainData::SwapchainData(const vk::PhysicalDevice& physical_device, const vk::Device& device, 

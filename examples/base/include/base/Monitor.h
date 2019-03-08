@@ -3,7 +3,6 @@
 
 #include <GLFW/glfw3.h>
 #include <utility>
-#include <string>
 #include <vector>
 
 class Monitor {

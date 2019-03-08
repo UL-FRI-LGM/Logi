@@ -1,6 +1,6 @@
 #define VMA_IMPLEMENTATION
 #include <vk_mem_alloc.h>
-#include "memory/Buffer.h"
+#include "logi/memory/Buffer.h"
 
 namespace logi {
 

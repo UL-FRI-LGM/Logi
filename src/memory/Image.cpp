@@ -1,4 +1,4 @@
-#include "memory/Image.h"
+#include "logi/memory/Image.h"
 
 namespace logi {
 

@@ -1,6 +1,8 @@
-#include "queues/Queue.h"
+#include "logi/queues/Queue.h"
 
 namespace logi {
+
+Queue::Queue() : Handle(false) {}
 
 Queue::Queue(const vk::Queue& queue) : queue_(queue) {}
 

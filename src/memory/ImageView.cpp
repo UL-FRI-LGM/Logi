@@ -1,4 +1,4 @@
-#include "memory/ImageView.h"
+#include "logi/memory/ImageView.h"
 
 namespace logi {
 

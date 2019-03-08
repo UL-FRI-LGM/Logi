@@ -1,4 +1,4 @@
-#include "program/render_pass/SubpassLayout.h"
+#include "logi/program/render_pass/SubpassLayout.h"
 
 namespace logi {
 
@@ -75,11 +75,11 @@ void SubpassLayout::dontPreserveAttachments(const attachment_index_t index, cons
  vk::SubpassDescription SubpassLayout::createVkSubpassDescription() const {
 	// Build sub pass description.
 	return vk::SubpassDescription(vk::SubpassDescriptionFlags(), pipeline_bind_point_,
-		input_attachments_.size(), (!input_attachments_.empty()) ? &input_attachments_[0] : nullptr,
-		color_attachments_.size(), (!color_attachments_.empty()) ? &color_attachments_[0] : nullptr,
+		static_cast<uint32_t>(input_attachments_.size()), (!input_attachments_.empty()) ? &input_attachments_[0] : nullptr,
+			static_cast<uint32_t>(color_attachments_.size()), (!color_attachments_.empty()) ? &color_attachments_[0] : nullptr,
 		(!resolve_attachments_.empty()) ? &resolve_attachments_[0] : nullptr,
 		(depth_stencil_attachment_.has_value()) ? &depth_stencil_attachment_.value() : nullptr,
-		preserve_attachments_.size(), (!preserve_attachments_.empty()) ? &preserve_attachments_[0] : nullptr);
+		static_cast<uint32_t>(preserve_attachments_.size()), (!preserve_attachments_.empty()) ? &preserve_attachments_[0] : nullptr);
 }
 
 void SubpassLayout::addOrUpdateAttachment(std::vector<vk::AttachmentReference>& attachments, const attachment_index_t index, const vk::ImageLayout layout) {

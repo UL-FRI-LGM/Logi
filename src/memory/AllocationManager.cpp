@@ -1,4 +1,4 @@
-#include "memory/AllocationManager.h"
+#include "logi/memory/AllocationManager.h"
 
 namespace logi {
 
@@ -35,7 +35,7 @@ Buffer AllocationManager::createBuffer(const BufferConfiguration& configuration)
 	} else {
 		buffer_ci.sharingMode = vk::SharingMode::eConcurrent;
 		buffer_ci.pQueueFamilyIndices = configuration.concurrent_queue_families.data();
-		buffer_ci.queueFamilyIndexCount = configuration.concurrent_queue_families.size();
+		buffer_ci.queueFamilyIndexCount = static_cast<uint32_t>(configuration.concurrent_queue_families.size());
 	}
 
 	// High level usage type.
@@ -79,7 +79,7 @@ Image AllocationManager::createImage(const ImageConfiguration& configuration) {
 	} else {
 		image_ci.sharingMode = vk::SharingMode::eConcurrent;
 		image_ci.pQueueFamilyIndices = configuration.concurrent_queue_families.data();
-		image_ci.queueFamilyIndexCount = configuration.concurrent_queue_families.size();
+		image_ci.queueFamilyIndexCount = static_cast<uint32_t>(configuration.concurrent_queue_families.size());
 	}
 
 

@@ -1,9 +1,6 @@
-cmake_minimum_required (VERSION 3.6)
-
 # Vulkan
 if (NOT TARGET Vulkan::Vulkan)
 	find_package(Vulkan REQUIRED)
-	message(STATUS "${Vulkan_INCLUDE_DIRS}")
 else()
 	message(STATUS "[Logi] Target Vulkan::Vulkan is already defined. Using existing target.")
 endif()

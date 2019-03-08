@@ -1,4 +1,4 @@
-#include "synchronization/Fence.h"
+#include "logi/synchronization/Fence.h"
 
 namespace logi {
 

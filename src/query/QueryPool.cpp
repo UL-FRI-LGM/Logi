@@ -1,4 +1,4 @@
-#include "query/QueryPool.h"
+#include "logi/query/QueryPool.h"
 
 namespace logi {
 

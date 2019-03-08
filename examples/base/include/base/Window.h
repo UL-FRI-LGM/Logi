@@ -149,25 +149,25 @@ protected:
 	static void onResize(GLFWwindow* glfw_window, int32_t width, int32_t height);
 
 private:
-    struct WindowData : std::enable_shared_from_this<WindowData> {
-        explicit WindowData(GLFWwindow* window);
+  struct WindowData : std::enable_shared_from_this<WindowData> {
+      explicit WindowData(GLFWwindow* window);
 
-		GLFWwindow* window;
-		bool destroyed;
+	GLFWwindow* window;
+	bool destroyed;
 
-		CallbackCollection<std::string, Window> on_close_callbacks;
-		CallbackCollection<std::string, Window, bool> on_focus_callbacks;
-		CallbackCollection<std::string, Window, bool> on_iconify_callbacks;
-		CallbackCollection<std::string, Window, int32_t, int32_t> on_position_changed_callbacks;
-		CallbackCollection<std::string, Window> on_refresh_callbacks;
-		CallbackCollection<std::string, Window, int32_t, int32_t> on_resize_callbacks;
+	CallbackCollection<std::string, Window> on_close_callbacks;
+	CallbackCollection<std::string, Window, bool> on_focus_callbacks;
+	CallbackCollection<std::string, Window, bool> on_iconify_callbacks;
+	CallbackCollection<std::string, Window, int32_t, int32_t> on_position_changed_callbacks;
+	CallbackCollection<std::string, Window> on_refresh_callbacks;
+	CallbackCollection<std::string, Window, int32_t, int32_t> on_resize_callbacks;
 
-        std::shared_ptr<WindowData> getSharedPtr() {
-            return shared_from_this();
-        }
-    };
+      std::shared_ptr<WindowData> getSharedPtr() {
+          return shared_from_this();
+      }
+  };
 
-    explicit Window(std::shared_ptr<WindowData> data);
+  explicit Window(std::shared_ptr<WindowData> data);
 
 	std::shared_ptr<WindowData> data_;
 };

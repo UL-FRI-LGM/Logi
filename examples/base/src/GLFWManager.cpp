@@ -29,7 +29,7 @@ bool GLFWManager::vulkanSupported() const {
 std::vector<const char*> GLFWManager::getRequiredInstanceExtensions() const {
 	uint32_t count;
 	const char** extensions = glfwGetRequiredInstanceExtensions(&count);
-	return std::vector<const char*>(extensions, extensions + sizeof(const char*) * count);
+	return std::vector<const char*>(extensions, extensions + count);
 }
 #endif
 

@@ -1,5 +1,5 @@
-#include "descriptors/DecriptorsUpdate.h"
-#include "base/Exceptions.h"
+#include "logi/descriptors/DecriptorsUpdate.h"
+#include "logi/base/Exceptions.h"
 
 namespace logi {
 
@@ -17,7 +17,7 @@ vk::WriteDescriptorSet DescriptorImageWrite::build() {
 
     // Add image info data.
 	vk::WriteDescriptorSet vk_write = DescriptorWrite::build();
-	vk_write.descriptorCount = vk_image_infos_.size();
+	vk_write.descriptorCount = static_cast<uint32_t>(vk_image_infos_.size());
 	vk_write.pImageInfo = vk_image_infos_.data();
 	vk_write.pNext = buildExtensions();
 
@@ -33,7 +33,7 @@ vk::WriteDescriptorSet DescriptorBufferWrite::build() {
 
 	// Add image info data.
 	vk::WriteDescriptorSet vk_write = DescriptorWrite::build();
-	vk_write.descriptorCount = vk_buffer_infos_.size();
+	vk_write.descriptorCount = static_cast<uint32_t>(vk_buffer_infos_.size());
 	vk_write.pBufferInfo = vk_buffer_infos_.data();
 
 	return vk_write;
@@ -48,7 +48,7 @@ vk::WriteDescriptorSet DescriptorBufferViewWrite::build() {
 
 	// Add image info data.
 	vk::WriteDescriptorSet vk_write = DescriptorWrite::build();
-	vk_write.descriptorCount = vk_buffer_views_.size();
+	vk_write.descriptorCount = static_cast<uint32_t>(vk_buffer_views_.size());
 	vk_write.pTexelBufferView = vk_buffer_views_.data();
 
 	return vk_write;

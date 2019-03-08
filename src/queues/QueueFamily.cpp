@@ -1,5 +1,5 @@
 #include <utility>
-#include "queues/QueueFamily.h"
+#include "logi/queues/QueueFamily.h"
 
 namespace logi {
 
@@ -59,12 +59,14 @@ vk::DeviceQueueCreateInfo QueueFamilyConfig::build() const {
 }
 
 
+QueueFamily::QueueFamily() : Handle(false) {}
+
 QueueFamily::QueueFamily(const vk::Device device, const QueueFamilyConfig& configuration)
 	: data_(std::make_shared<QueueFamilyData>(device, configuration)), handle_manager_(std::make_shared<HandleManager>()) {
 
 	// Create queues.
 	data_->queues.reserve(configuration.queue_count);
-	for (size_t i = 0; i < configuration.queue_count; i++) {
+	for (uint32_t i = 0u; i < configuration.queue_count; i++) {
 		data_->queues.emplace_back(handle_manager_->createHandle<Queue>(data_->vk_device.getQueue(data_->configuration.properties.family_index, i)));
 	}
 }

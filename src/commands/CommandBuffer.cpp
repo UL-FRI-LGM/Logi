@@ -1,4 +1,4 @@
-#include "commands/CommandBuffer.h"
+#include "logi/commands/CommandBuffer.h"
 
 namespace logi {
 
@@ -45,8 +45,8 @@ void CommandBuffer::bindDescriptorSets(const vk::PipelineBindPoint bind_point, c
     }
 
 	data_->vk_cmd_buffer.bindDescriptorSets(bind_point, pipeline_layout.getVkHandle(), first_set, 
-		                                    vk_descriptor_sets.size(), vk_descriptor_sets.data(), 
-		                                    dynamic_offsets.size(), dynamic_offsets.data());
+		static_cast<uint32_t>(vk_descriptor_sets.size()), vk_descriptor_sets.data(),
+		static_cast<uint32_t>(dynamic_offsets.size()), dynamic_offsets.data());
 }
 
 void CommandBuffer::bindIndexBuffer(const Buffer& buffer, const uint64_t offset, const vk::IndexType index_type) const {

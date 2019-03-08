@@ -6,28 +6,28 @@
 * This code is licensed under the MIT license (MIT) (http://opensource.org/licenses/MIT)
 */
 #include <vulkan/vulkan.hpp>
-#include "base/LogicalDevice.h"
+#include "logi/base/LogicalDevice.h"
 
 namespace logi {
 
 #pragma region INITIALIZATION
 
-LogicalDeviceConfig::LogicalDeviceConfig(std::vector<QueueFamilyConfig> queues_config, std::vector<char*> extensions,
+LogicalDeviceConfig::LogicalDeviceConfig(std::vector<QueueFamilyConfig> queues_config, std::vector<const char*> extensions,
 	                                     vk::PhysicalDeviceFeatures enabled_features, const vk::DeviceCreateFlags& flags) 
     : queues_config(std::move(queues_config)), extensions(std::move(extensions)), 
       enabled_features(std::move(enabled_features)), flags(flags) {}
 
 vk::DeviceCreateInfo LogicalDeviceConfig::build() {
-    // Genereate queue infos.
+  // Generate queue infos.
 	vk_queue_infos_.clear();
 	vk_queue_infos_.reserve(queues_config.size());
 
-    for (const QueueFamilyConfig& config : queues_config) {
+  for (const QueueFamilyConfig& config : queues_config) {
 		vk_queue_infos_.emplace_back(config.build());
-    }
+  }
 
-    // Build device create info.
-	vk::DeviceCreateInfo create_info(flags, vk_queue_infos_.size(), vk_queue_infos_.data(), 0, nullptr, extensions.size(),
+  // Build device create info.
+	vk::DeviceCreateInfo create_info(flags, static_cast<uint32_t>(vk_queue_infos_.size()), vk_queue_infos_.data(), 0, nullptr, static_cast<uint32_t>(extensions.size()),
 		                             extensions.data(), &enabled_features);
 	create_info.pNext = buildExtensions();
 
@@ -46,7 +46,9 @@ LogicalDevice::LogicalDevice(const std::weak_ptr<HandleManager>& owner, vk::Phys
 
 	// Create QueueFamily handles.
 	for (const QueueFamilyConfig& config : data_->configuration.queues_config) {
-		data_->queue_families.emplace_back(handle_manager_->createHandle<QueueFamily>(data_->logical_device, config));
+		if (config.queue_count > 0) {
+			data_->queue_families.emplace_back(handle_manager_->createHandle<QueueFamily>(data_->logical_device, config));
+		}
 	}
 
 	// Create Allocation and Program manager
@@ -58,7 +60,6 @@ LogicalDevice::LogicalDevice(const std::weak_ptr<HandleManager>& owner, vk::Phys
 
 
 const QueueFamily& LogicalDevice::getQueueFamily(uint32_t index) const {
-
     const auto it = std::find_if(data_->queue_families.begin(), data_->queue_families.end(), [index](const QueueFamily& family) {
 		return family.configuration().properties.family_index == index;
 	});
@@ -69,6 +70,10 @@ const QueueFamily& LogicalDevice::getQueueFamily(uint32_t index) const {
 	}
 
 	return *it;
+}
+
+const std::vector<QueueFamily>& LogicalDevice::getQueueFamilies() const {
+	return data_->queue_families;
 }
 
 

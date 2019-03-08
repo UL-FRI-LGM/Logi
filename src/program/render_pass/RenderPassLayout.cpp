@@ -1,4 +1,4 @@
-#include "program/render_pass/RenderPassLayout.h"
+#include "logi/program/render_pass/RenderPassLayout.h"
 
 namespace logi {
 
@@ -90,9 +90,10 @@ vk::RenderPassCreateInfo* RenderPassLayout::buildCreateInfo() {
 	}
 
 	// Build create info.
-	vk_create_info_ = vk::RenderPassCreateInfo(vk::RenderPassCreateFlags(), attachments_.size(), (attachments_.empty()) ? nullptr : &attachments_[0],
-											   vk_subpasses_.size(), (vk_subpasses_.empty()) ? nullptr : &vk_subpasses_[0],
-											   dependencies_.size(), (dependencies_.empty()) ? nullptr : &dependencies_[0]);
+	vk_create_info_ = vk::RenderPassCreateInfo(vk::RenderPassCreateFlags(), 
+		static_cast<uint32_t>(attachments_.size()), (attachments_.empty()) ? nullptr : &attachments_[0],
+		static_cast<uint32_t>(vk_subpasses_.size()), (vk_subpasses_.empty()) ? nullptr : &vk_subpasses_[0],
+		static_cast<uint32_t>(dependencies_.size()), (dependencies_.empty()) ? nullptr : &dependencies_[0]);
 
 	return &vk_create_info_;
 }

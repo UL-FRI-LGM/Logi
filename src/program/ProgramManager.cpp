@@ -1,4 +1,4 @@
-#include "program/ProgramManager.h"
+#include "logi/program/ProgramManager.h"
 #include <fstream>
 #include <vulkan/vulkan.hpp>
 
@@ -15,7 +15,7 @@ ProgramManager::ProgramManager() : Handle(false), device_(nullptr), handle_manag
 
 ProgramManager::ProgramManager(const vk::Device& device) : device_(device), handle_manager_(std::make_shared<HandleManager>()) {}
 
-PipelineLayout ProgramManager::createPipelineLayout(const std::vector<PipelineShaderStage>& shader_stages) {
+PipelineLayout ProgramManager::createPipelineLayout(const std::vector<PipelineShaderStage>& shader_stages) const {
 	return handle_manager_->createHandle<PipelineLayout>(device_, shader_stages);
 }
 
@@ -56,7 +56,7 @@ std::vector<GraphicalPipeline> ProgramManager::createGraphicalPipelines(std::vec
 		PipelineState& state = create_infos[i].state;
 
 		vk::GraphicsPipelineCreateInfo gp_ci{};
-		gp_ci.stageCount = shader_stages_cis[i].size();
+		gp_ci.stageCount = static_cast<uint32_t>(shader_stages_cis[i].size());
 		gp_ci.pStages = shader_stages_cis[i].data();
 		gp_ci.pVertexInputState = &vertex_input_states[i];
 		gp_ci.pInputAssemblyState = state.input_assembly.buildCreateInfo();

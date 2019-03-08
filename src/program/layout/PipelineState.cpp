@@ -1,5 +1,5 @@
 #include <utility>
-#include "program/layout/PipelineState.h"
+#include "logi/program/layout/PipelineState.h"
 
 namespace logi {
 
@@ -84,14 +84,14 @@ bool NvidiaViewportSwizzleState::operator==(const NvidiaViewportSwizzleState& rh
 }
 
 vk::PipelineViewportSwizzleStateCreateInfoNV* NvidiaViewportSwizzleState::buildCreateInfo() {
-    vk_create_info_ = vk::PipelineViewportSwizzleStateCreateInfoNV(flags, swizzle_states.size(),
+    vk_create_info_ = vk::PipelineViewportSwizzleStateCreateInfoNV(flags, static_cast<uint32_t>(swizzle_states.size()),
                                                                    (swizzle_states.empty()) ? nullptr : &swizzle_states[0]);
 
     return &vk_create_info_;
 }
 
 void* NvidiaViewportSwizzleState::build(void* next) {
-    vk_create_info_ = vk::PipelineViewportSwizzleStateCreateInfoNV(flags, swizzle_states.size(),
+    vk_create_info_ = vk::PipelineViewportSwizzleStateCreateInfoNV(flags, static_cast<uint32_t>(swizzle_states.size()),
                                                                    (swizzle_states.empty()) ? nullptr : &swizzle_states[0]);
     vk_create_info_.pNext = next;
 
@@ -115,14 +115,14 @@ bool NvidiaViewportWScalingState::operator==(const NvidiaViewportWScalingState& 
 }
 
 vk::PipelineViewportWScalingStateCreateInfoNV* NvidiaViewportWScalingState::buildCreateInfo() {
-    vk_create_info_ = vk::PipelineViewportWScalingStateCreateInfoNV(enable_w_scaling, w_scalings.size(),
+    vk_create_info_ = vk::PipelineViewportWScalingStateCreateInfoNV(enable_w_scaling, static_cast<uint32_t>(w_scalings.size()),
                                                                     (w_scalings.empty()) ? nullptr : &w_scalings[0]);
 
     return &vk_create_info_;
 }
 
 void* NvidiaViewportWScalingState::build(void* next) {
-    vk_create_info_ = vk::PipelineViewportWScalingStateCreateInfoNV(enable_w_scaling, w_scalings.size(),
+    vk_create_info_ = vk::PipelineViewportWScalingStateCreateInfoNV(enable_w_scaling, static_cast<uint32_t>(w_scalings.size()),
                                                                     (w_scalings.empty()) ? nullptr : &w_scalings[0]);
     vk_create_info_.pNext = next;
 
@@ -142,9 +142,9 @@ bool ViewportState::operator==(const ViewportState& rhs) const {
 }
 
 vk::PipelineViewportStateCreateInfo* ViewportState::buildCreateInfo() {
-    vk_create_info_ = vk::PipelineViewportStateCreateInfo(flags, viewports.size(),
+    vk_create_info_ = vk::PipelineViewportStateCreateInfo(flags, static_cast<uint32_t>(viewports.size()),
 		                                                  (viewports.empty()) ? nullptr : &viewports[0],
-                                                          scissors.size(), (scissors.empty()) ? nullptr : &scissors[0]);
+		                                                  static_cast<uint32_t>(scissors.size()), (scissors.empty()) ? nullptr : &scissors[0]);
     vk_create_info_.pNext = buildExtensions();
 
     return &vk_create_info_;
@@ -269,7 +269,7 @@ bool NvidiaCoverageModulationState::operator==(const NvidiaCoverageModulationSta
 
 vk::PipelineCoverageModulationStateCreateInfoNV* NvidiaCoverageModulationState::buildCreateInfo() {
     vk_create_info_ = vk::PipelineCoverageModulationStateCreateInfoNV(flags, modulation_mode, enable_modulation_table,
-                                                                      modulation_table.size(),
+		                                                                  static_cast<uint32_t>(modulation_table.size()),
                                                                       (modulation_table.empty())
                                                                           ? nullptr : &modulation_table[0]);
 
@@ -278,7 +278,7 @@ vk::PipelineCoverageModulationStateCreateInfoNV* NvidiaCoverageModulationState::
 
 void* NvidiaCoverageModulationState::build(void* next) {
     vk_create_info_ = vk::PipelineCoverageModulationStateCreateInfoNV(flags, modulation_mode, enable_modulation_table,
-                                                                      modulation_table.size(),
+		                                                                  static_cast<uint32_t>(modulation_table.size()),
                                                                       (modulation_table.empty())
                                                                           ? nullptr : &modulation_table[0]);
     vk_create_info_.pNext = next;
@@ -457,7 +457,7 @@ bool ColorBlendState::operator==(const ColorBlendState& rhs) const {
 vk::PipelineColorBlendStateCreateInfo* ColorBlendState::buildCreateInfo() {
     vk_create_info_.logicOpEnable = enable_logic_op;
     vk_create_info_.logicOp = logic_op;
-    vk_create_info_.attachmentCount = attachment_states.size();
+    vk_create_info_.attachmentCount = static_cast<uint32_t>(attachment_states.size());
     vk_create_info_.pAttachments = attachment_states.data();
     std::copy(blend_constants.begin(), blend_constants.end(), vk_create_info_.blendConstants);
     vk_create_info_.pNext = buildExtensions();
@@ -479,7 +479,7 @@ bool DynamicState::operator==(const DynamicState& rhs) const {
 vk::PipelineDynamicStateCreateInfo* DynamicState::buildCreateInfo() {
     std::copy(dynamic_states_set_.begin(), dynamic_states_set_.end(), std::back_inserter(dynamic_states_));
 
-    vk_create_info_ = vk::PipelineDynamicStateCreateInfo(flags, dynamic_states_.size(),
+    vk_create_info_ = vk::PipelineDynamicStateCreateInfo(flags, static_cast<uint32_t>(dynamic_states_.size()),
                                                          (dynamic_states_.empty()) ? nullptr : &dynamic_states_[0]);
     vk_create_info_.pNext = buildExtensions();
 

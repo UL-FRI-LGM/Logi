@@ -1,4 +1,4 @@
-#include "program/layout/Shader.h"
+#include "logi/program/layout/Shader.h"
 
 namespace logi {
 
@@ -48,7 +48,7 @@ ShaderSpecialization::ShaderSpecialization(std::vector<vk::SpecializationMapEntr
 	: map_entries(std::move(map_entries)), data(std::move(data)) {}
 
 vk::SpecializationInfo* ShaderSpecialization::build() {
-	vk_specialization_.mapEntryCount = map_entries.size();
+	vk_specialization_.mapEntryCount = static_cast<uint32_t>(map_entries.size());
 	vk_specialization_.pMapEntries = map_entries.data();
 	vk_specialization_.dataSize = data.size();
 	vk_specialization_.pData = data.data();

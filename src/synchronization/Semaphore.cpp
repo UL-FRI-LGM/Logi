@@ -1,4 +1,4 @@
-#include "synchronization/Semaphore.h"
+#include "logi/synchronization/Semaphore.h"
 
 namespace logi {
 
