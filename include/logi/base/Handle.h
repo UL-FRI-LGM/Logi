@@ -1,220 +1,349 @@
 /*
-*
-*
-* Copyright (C) 2017 by Primoz Lavric
-*
-* This code is licensed under the MIT license (MIT) (http://opensource.org/licenses/MIT)
-*/
+ * Copyright (C) 2017 by Primoz Lavric
+ *
+ * This code is licensed under the MIT license (MIT) (http://opensource.org/licenses/MIT)
+ */
 
 #ifndef BASE_HANDLE_H
 #define BASE_HANDLE_H
 
-#include <utility>
-#include <mutex>
-#include <memory>
 #include <atomic>
+#include <memory>
+#include <mutex>
 #include <unordered_map>
-#include "logi/base/Exceptions.h"
+#include <utility>
+#include "Exceptions.h"
 
 namespace logi {
 
-// Forward declaration of HandleManager for use in Handle and DependentDestroyableHandle.
-class HandleManager;
-
-/**
- * @brief	Base class for all Handle objects.
- */
 class Handle {
-	friend class HandleManager;
-public:
-	/**
-	 * @brief	Create new handle object. Assigns a unique identifier to the handle.
-	 * 
-	 * @param	alive	Initial alive state.
-	 */
-	explicit Handle(bool alive = true);
+  template <typename, typename>
+  friend class HandleGenerator;
 
-	/**
-	 * @brief	Retrieve handle unique identifier.
-	 *
-	 * @return	Handle unique identifier.
-	 */
-	size_t id() const;
+ public:
+  /**
+   * @brief Initializes handle.
+   *
+   * @param valid Initial validity flag.
+   */
+  explicit Handle(bool valid = false);
 
-	/**
-	 * @brief	Return true if handles refer to the same resource.
-	 *
-	 * @param	other	Other handle.
-	 * @return	true	If handles refer to the same resource.
-	 */
-	bool operator==(const Handle& other) const;
+  /**
+   * @brief   Retrieve handle unique identifier.
+   *
+   * @return  Handle unique identifier.
+   */
+  size_t id() const;
 
-	/**
-	 * @brief	Return true if the handle is valid.
-	 */
-	operator bool() const;
+  /**
+   * @brief   Return true if handles refer to the same resource.
+   *
+   * @param   other Other handle.
+   * @return  true	If handles refer to the same resource.
+   */
+  bool operator==(const Handle& other) const;
 
-	/**
-	 * @brief	Return true if the handle is not valid.
-	 */
-	bool operator!() const;
+  /**
+   * @brief   Return true if the handle is valid.
+   */
+  operator bool() const;
 
-	/**
-	 * @brief	Return true if the handle is valid.
-	 *
-	 * @return	true	If object is valid.
-	 */
-	bool alive() const;
+  /**
+   * @brief   Return true if the handle is not valid.
+   */
+  bool operator!() const;
 
-	inline void checkForNullHandleInvocation(const char* object_name, const char*  method_name) const {
-		if (!(*alive_)) {
-			throw IllegalInvocation(std::string("Tried to invoke method ") + method_name + "() on a null " + object_name + " handle.");
-		}
-	}
+  /**
+   * @brief   Return true if the handle is valid.
+   *
+   * @return  true  If object is valid.
+   */
+  bool valid() const;
 
-	/**
-	 * @brief	Default virtual destructor.
-	 */
-	virtual ~Handle() = default;
+  inline void checkForNullHandleInvocation(const char* object_name, const char* method_name) const {
+    if (!valid()) {
+      throw IllegalInvocation(std::string("Tried to invoke method ") + method_name + "() on a null " + object_name +
+                              " handle.");
+    }
+  }
 
-protected:
-	/**
-	 * @brief	Destroy handle resources.
-	 */
-	virtual void free();
+ protected:
+  /**
+   * @brief Invalidates handle.
+   */
+  virtual void free();
 
-private:
-	std::shared_ptr<std::atomic<bool>> alive_;	///< If true the handle is still valid.
-	size_t id_;									///< Handle identifier.
-	static size_t id_generator_;				///< Used to generate identifiers.
+ private:
+  /**
+   * @brief Handle internal data.
+   */
+  struct Data {
+    /**
+     * @brief Initializes validity flag and identifier.
+     *
+     * @param valid Validity flag.
+     * @param id    Identifier.
+     */
+    Data(bool valid, size_t id);
+
+    /**
+     * Flag that specifies validity of the handle.
+     */
+    std::atomic<bool> valid;
+
+    /**
+     * Handle identifier.
+     */
+    size_t id;
+  };
+
+  /**
+   * Static atomic size_t value used for identifier generation.
+   */
+  static std::atomic<size_t> id_generator_;
+
+  /**
+   * Handle internal data (should not be null).
+   */
+  std::shared_ptr<Data> data_;
 };
 
 /**
- * @brief	Provides destroy functionality to the Handle.
+ * @brief Destroyable handle.
  */
 class DestroyableHandle : public Handle {
-public:
-	explicit DestroyableHandle(bool alive = true);
+ public:
+  using Handle::Handle;
 
-	/**
-	 * @brief	Calls handle free method.
-	 */
-	virtual void destroy();
-};
-
-
-/**
- * @brief	Provides destroy functionality to the Handle. Destroy forwards the destroy call to the HandleManager.
- */
-class DependentDestroyableHandle : public Handle {
-public:
-	/**
-	 * @brief	Constructs destroyable handle object.
-	 *
-	 * @param	owner	HandleManager responsible for this Handle.
-	 */
-	explicit DependentDestroyableHandle(std::weak_ptr<HandleManager> owner, bool alive = true);
-
-	/**
-	 * @brief	Delegates destroy call to the Handle owner.
-	 */
-	virtual void destroy() const;
-
-private:
-	std::weak_ptr<HandleManager> owner_;	///< Pointer to the HandleManager that is responsible for this Handle.
+  /**
+   * @brief	Calls handle free method.
+   */
+  void destroy();
 };
 
 /**
- * @brief	HandleManager is an object that is responsible for Handle creation and destruction.
+ * @brief   Handle with pointer to the owner.
+ *
+ * @tparam  OwnerType Type of the owner.
  */
-class HandleManager : public std::enable_shared_from_this<HandleManager> {
-public:
-	/**
-	 * @brief	Default constructor.
-	 */
-	HandleManager() = default;
+template <typename OwnerType>
+class OwnedHandle : public Handle {
+ public:
+  OwnedHandle();
 
-	/**
-	 * @brief	Create and register DestroyableHandles.
-	 *
-	 * @tparam	T		Handle type (must inherit from DependentDestroyableHandle).
-	 * @tparam	Args	Handle constructor argument types.
-	 * @param	args	Handle constructor arguments.
-	 * @return	Constructed handle of type T.
-	 */
-	template <typename T, class... Args, typename std::enable_if<std::is_base_of<DependentDestroyableHandle, T>::value>::type* = nullptr>
-	T createHandle(Args&&...args);
+  /**
+   * @brief Initializes base Handle class and owner handle.
+   *
+   * @param owner Owner handle.
+   * @param valid Handle validity flag.
+   */
+  explicit OwnedHandle(const OwnerType& owner, bool valid = true);
 
-	/**
-	 * @brief	Create and register non DestroyableHandles.
-	 *
-	 * @tparam	T		Handle type (must inherit from Handle).
-	 * @tparam	Args	Handle constructor argument types.
-	 * @param	args	Handle constructor arguments.
-	 * @return	Constructed handle of type T.
-	 */
-	template <typename T, class... Args, typename std::enable_if<std::is_base_of<Handle, T>::value && !std::is_base_of<DependentDestroyableHandle, T>::value>::type* = nullptr>
-	T createHandle(Args&&...args);
+  /**
+   * @brief   Retrieve direct owner.
+   *
+   * @return  Owner handle.
+   */
+  template <typename SearchedOwner = OwnerType,
+            typename std::enable_if<std::is_same<SearchedOwner, OwnerType>::value, int>::type = 0>
+  SearchedOwner& getOwner() {
+    return owner_;
+  }
 
-	/**
-	 * @brief	Retrieve Handle with the given identifier.
-	 * 
-	 * @tparam	T	Type of the handle.
-	 * @param	id	Handle unique identifier.
-	 * @return	Handle with the given identifier.
-	 */
-	template <typename T>
-	T getHandle(size_t id) const;
+  /**
+   * @brief   Search for owner in the hierarchy.
+   *
+   * @return  Owner handle.
+   */
+  template <typename SearchedOwner,
+            typename std::enable_if<!std::is_same<SearchedOwner, OwnerType>::value, int>::type = 0>
+  SearchedOwner& getOwner() {
+    return owner_.template getOwner<SearchedOwner>();
+  }
 
-	/**
-	 * @brief	Destroys the given handle and unregisters it from HandleManager.
-	 *
-	 * @param	handle	Handle that should be destroyed.
-	 */
-	void destroyHandle(const Handle& handle);
+ protected:
+  /**
+   * @brief Frees owner instance.
+   */
+  void free() override;
 
-	/**
-	 * @brief	Destroys all handles managed by this HandleManager.
-	 */
-	void destroyAllHandles();
-
-private:
-	std::mutex resources_lock_;						/// Mutex used to synchronize Handle creation and destruction.
-	std::unordered_map<size_t, std::unique_ptr<Handle>> handles_;	/// Map that maps Handle identifier to Handle.
+ private:
+  /**
+   * @brief Shared owner instance.
+   */
+  std::shared_ptr<OwnerType> owner_;
 };
 
-template <typename T, class ... Args, typename std::enable_if<std::is_base_of<DependentDestroyableHandle, T>::value>::type*>
-T HandleManager::createHandle(Args&&... args) {
-	// Construct handle, register and return it.
-	std::weak_ptr<HandleManager> this_weak_ptr = std::weak_ptr<HandleManager>(shared_from_this());
-	T handle = T(this_weak_ptr, std::forward<Args>(args)...);
+template <typename OwnerType>
+OwnedHandle<OwnerType>::OwnedHandle() : Handle(false), owner_(nullptr) {}
 
-	std::lock_guard<std::mutex> guard(resources_lock_);
-	handles_.emplace(std::make_pair(handle.id(), std::make_unique<T>(handle)));
-	return handle;
+template <typename OwnerType>
+OwnedHandle<OwnerType>::OwnedHandle(const OwnerType& owner, bool valid)
+  : Handle(valid), owner_(std::make_shared<OwnerType>(owner)) {}
+
+template <typename OwnerType>
+void OwnedHandle<OwnerType>::free() {
+  owner_.reset();
+  Handle::free();
 }
 
-template <typename T, class... Args, typename std::enable_if<std::is_base_of<Handle, T>::value && !std::is_base_of<DependentDestroyableHandle, T>::value>::type*>
-T HandleManager::createHandle(Args&&... args) {
-	// Construct handle, register and return it.
-	T handle = T(std::forward<Args>(args)...);
+/**
+ * @brief Destroyable handle.
+ */
+template <typename OwnerType>
+class DestroyableOwnedHandle : public OwnedHandle<OwnerType> {
+ public:
+  using OwnedHandle<OwnerType>::OwnedHandle;
 
-	std::lock_guard<std::mutex> guard(resources_lock_);
-	handles_.emplace(std::make_pair(handle.id(), std::make_unique<T>(handle)));
-	return handle;
+  /**
+   * @brief	Calls handle free method.
+   */
+  void destroy();
+};
+
+template <typename OwnerType>
+void DestroyableOwnedHandle<OwnerType>::destroy() {
+  // Check if the object is still alive before trying to destroy it.
+  if (OwnedHandle<OwnerType>::valid()) {
+    OwnedHandle<OwnerType>::getOwner().destroyHandle(*this);
+  }
 }
 
-template <typename T>
-T HandleManager::getHandle(size_t id) const {
-	const auto it = handles_.find(id);
+/**
+ * @brief
+ *
+ * @tparam GeneratorType
+ * @tparam HandleType
+ */
+template <typename GeneratorType, typename HandleType>
+class HandleGenerator {
+ public:
+  static_assert(std::is_base_of<OwnedHandle<GeneratorType>, HandleType>::value,
+                "HandleGenerator HandleType must inherit from OwnedHandle<GeneratorType>.");
 
-	if (it == handles_.end()) {
-		throw std::runtime_error("Failed to find the requested handle.");
-	}
+  /**
+   * @brief Initializes HandleGenerator internal data.
+   */
+  HandleGenerator();
 
-	return static_cast<T>(*it);
+  /**
+   * @brief   Check if the handle with the given identifier was generated by this generator.
+   *
+   * @param   id  Handle identifier.
+   * @return  True if the handle was found.
+   */
+  bool hasHandle(size_t id) const;
+
+  /**
+   * @brief   Retrieve handle with the given identifier.
+   * @throws  Exception if the handle is not found.
+   *
+   * @param   id  Handle identifier.
+   * @return  Const reference to the handle.
+   */
+  const HandleType& getHandle(size_t id) const;
+
+ protected:
+  /**
+   * @brief   Creates new handle of HandleType type with the given arguments.
+   *
+   * @tparam  Args  Argument types.
+   * @param   args  Arguments.
+   * @return  Reference to the newly created handle.
+   */
+  template <typename... Args>
+  const HandleType& createHandle(Args... args) const;
+
+  /**
+   * @brief	Destroys the given handle and unregisters it from HandleManager.
+   *
+   * @param	handle	Handle that should be destroyed.
+   */
+  void destroyHandle(const OwnedHandle<GeneratorType>& handle) const;
+
+  /**
+   * @brief	Destroys all handles generated by this HandleGenerator.
+   */
+  void destroyAllHandles() const;
+
+ private:
+  /**
+   * @brief Handle generator internal data.
+   */
+  struct Data {
+    /**
+     * Lock used to synchronize resource creation.
+     */
+    std::mutex handles_lock;
+
+    /**
+     * Owned handles.
+     */
+    std::unordered_map<size_t, std::unique_ptr<HandleType>> handles;
+  };
+
+  /**
+   * @brief Internal data (should not be null).
+   */
+  std::shared_ptr<Data> data_;
+};
+
+template <typename GeneratorType, typename HandleType>
+HandleGenerator<GeneratorType, HandleType>::HandleGenerator() : data_(std::make_shared<Data>()) {}
+
+template <typename GeneratorType, typename HandleType>
+template <class... Args>
+const HandleType& HandleGenerator<GeneratorType, HandleType>::createHandle(Args... args) const {
+  std::lock_guard<std::mutex> guard(data_->handles_lock);
+
+  // Create handle and move it into handles map.
+  // TODO
+  std::unique_ptr<HandleType> handle =
+    std::make_unique<HandleType>(/*static_cast<const GeneratorType&>(*this), args...*/);
+  auto it = data_->handles.emplace(handle->id(), std::move(handle)).first;
+  return *it->second;
 }
 
+template <typename GeneratorType, typename HandleType>
+bool HandleGenerator<GeneratorType, HandleType>::hasHandle(const size_t id) const {
+  return data_->handles.find(id) != data_->handles.end();
 }
+
+template <typename GeneratorType, typename HandleType>
+const HandleType& HandleGenerator<GeneratorType, HandleType>::getHandle(const size_t id) const {
+  const auto it = data_->handles.find(id);
+
+  if (it == data_->handles.end()) {
+    throw std::runtime_error("Failed to find the requested handle.");
+  }
+
+  return *it->second;
+}
+
+template <typename GeneratorType, typename HandleType>
+void HandleGenerator<GeneratorType, HandleType>::destroyHandle(const OwnedHandle<GeneratorType>& handle) const {
+  std::lock_guard<std::mutex> guard(data_->handles_lock);
+
+  // If the handle is found free its resources and erase it.
+  auto it = data_->handles.find(handle.id());
+  if (it != data_->handles.end()) {
+    static_cast<Handle*>(handle.second.get())->free();
+    data_->handles.erase(it);
+  }
+}
+
+template <typename GeneratorType, typename HandleType>
+void HandleGenerator<GeneratorType, HandleType>::destroyAllHandles() const {
+  std::lock_guard<std::mutex> guard(data_->handles_lock);
+
+  // Remove all handles.
+  for (auto& handle : data_->handles) {
+    static_cast<Handle*>(handle.second.get())->free();
+  }
+
+  data_->handles.clear();
+}
+
+} // namespace logi
 
 #endif

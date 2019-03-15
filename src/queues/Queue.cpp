@@ -2,37 +2,25 @@
 
 namespace logi {
 
-Queue::Queue() : Handle(false) {}
-
-Queue::Queue(const vk::Queue& queue) : queue_(queue) {}
+Queue::Queue(const QueueFamily& family, const vk::Queue& queue) : OwnedHandle(family, true), queue_(queue) {}
 
 void Queue::submit(const std::vector<vk::SubmitInfo>& submit_infos, const Fence& fence) const {
-	if (!alive()) {
-		throw std::runtime_error("Called 'submit' on destroyed queue.");
-	}
-
-	queue_.submit(submit_infos, fence.getVkHandle());
+  checkForNullHandleInvocation("Queue", "submit");
+  queue_.submit(submit_infos, fence.getVkHandle());
 }
 
 void Queue::submit(const std::vector<vk::SubmitInfo>& submit_infos) const {
-	if (!alive()) {
-		throw std::runtime_error("Called 'submit' on destroyed queue.");
-	}
-
-	queue_.submit(submit_infos, vk::Fence());
+  checkForNullHandleInvocation("Queue", "submit");
+  queue_.submit(submit_infos, vk::Fence());
 }
 
 void Queue::waitIdle() const {
-	if (!alive()) {
-		throw std::runtime_error("Called 'waitIdle' on destroyed queue.");
-	}
-
-	queue_.waitIdle();
+  checkForNullHandleInvocation("Queue", "waitIdle");
+  queue_.waitIdle();
 }
 
 const vk::Queue& Queue::getVkHandle() const {
-	return queue_;
+  return queue_;
 }
 
-
-}
+} // namespace logi

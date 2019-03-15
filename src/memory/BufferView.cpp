@@ -1,34 +1,41 @@
 #include "logi/memory/BufferView.h"
+#include "logi/base/LogicalDevice.h"
+#include "logi/memory/Buffer.h"
 
 namespace logi {
 
 BufferViewConfiguration::BufferViewConfiguration(vk::Format format, vk::DeviceSize offset, vk::DeviceSize range)
-	: format(format), offset(offset), range(range) { }
+  : format(format), offset(offset), range(range) {}
 
+BufferView::BufferView(const Buffer& buffer, const BufferViewConfiguration& config)
+  : DestroyableOwnedHandle<Buffer>(buffer, true) {
+  const vk::BufferViewCreateInfo bv_create_info(vk::BufferViewCreateFlags(), buffer, config.format, config.offset,
+                                                config.range);
 
-BufferView::BufferView(const std::weak_ptr<HandleManager>& owner, const vk::Device& vk_device, const vk::Buffer& vk_buffer, const BufferViewConfiguration& configuration)
-	: DependentDestroyableHandle(owner), configuration_(std::make_shared<BufferViewConfiguration>(configuration)), vk_buffer_view_(nullptr) {
-
-	const vk::BufferViewCreateInfo bv_create_info(vk::BufferViewCreateFlags(), vk_buffer, configuration_->format, configuration_->offset, configuration_->range);
-	vk_buffer_view_ = std::make_shared<ManagedVkBufferView>(vk_device, vk_device.createBufferView(bv_create_info));
+  vk::Device vk_device = getOwner<LogicalDevice>();
+  data_ = std::make_shared<Data>(config, ManagedVkBufferView(vk_device, vk_device.createBufferView(bv_create_info)));
 }
 
 const BufferViewConfiguration& BufferView::configuration() const {
-	return *configuration_;
+  checkForNullHandleInvocation("BufferView", "configuration");
+  return data_->config;
 }
 
 const vk::BufferView& BufferView::getVkHandle() const {
-	if (!alive()) {
-		throw std::runtime_error("Called 'getVkHandle' on destroyed BufferView object.");
-	}
+  checkForNullHandleInvocation("BufferView", "getVkHandle");
+  return data_->vk_buffer_view.get();
+}
 
-	return vk_buffer_view_->get();
+BufferView::operator vk::BufferView() const {
+  checkForNullHandleInvocation("BufferView", "operator vk::BufferView()");
+  return data_->vk_buffer_view.get();
 }
 
 void BufferView::free() {
-	vk_buffer_view_->destroy();
-	Handle::free();
+  if (valid()) {
+    data_->vk_buffer_view.destroy();
+    DestroyableOwnedHandle<Buffer>::free();
+  }
 }
 
-
-}
+} // namespace logi

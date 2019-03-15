@@ -1,48 +1,57 @@
 #include "logi/memory/ImageView.h"
+#include "logi/base/LogicalDevice.h"
+#include "logi/memory/Image.h"
 
 namespace logi {
 
-ImageViewConfiguration::ImageViewConfiguration(const vk::ImageViewType view_type, const vk::Format format, const vk::ComponentMapping component_mapping,
-											   vk::ImageAspectFlags aspect_mask, const uint32_t base_mip_level,
-											   const uint32_t mip_level_count, const uint32_t base_array_layer, 
-											   const uint32_t layer_count)
-	: view_type(view_type), format(format), component_mapping(std::move(component_mapping)), aspect_mask(std::move(aspect_mask)),
-	base_mip_level(base_mip_level), mip_level_count(mip_level_count), base_array_layer(base_array_layer), layer_count(layer_count) {}
+ImageViewConfiguration::ImageViewConfiguration(const vk::ImageViewType view_type, const vk::Format format,
+                                               const vk::ComponentMapping component_mapping,
+                                               const vk::ImageAspectFlags& aspect_mask, const uint32_t base_mip_level,
+                                               const uint32_t mip_level_count, const uint32_t base_array_layer,
+                                               const uint32_t layer_count)
+  : view_type(view_type), format(format), component_mapping(component_mapping), aspect_mask(aspect_mask),
+    base_mip_level(base_mip_level), mip_level_count(mip_level_count), base_array_layer(base_array_layer),
+    layer_count(layer_count) {}
 
+ImageView::ImageView(const Image& image, const ImageViewConfiguration& configuration)
+  : DestroyableOwnedHandle(image, true), data_(nullptr) {
+  // Create configuration structures.
+  const vk::ImageSubresourceRange sub_resource_range(configuration.aspect_mask, configuration.base_mip_level,
+                                                     configuration.mip_level_count, configuration.base_array_layer,
+                                                     configuration.layer_count);
 
-ImageView::ImageView() : DependentDestroyableHandle({}, false) {
+  const vk::ImageViewCreateInfo iw_create_info(vk::ImageViewCreateFlags(), image, configuration.view_type,
+                                               configuration.format, configuration.component_mapping,
+                                               sub_resource_range);
+
+  vk::Device vk_device = getOwner<LogicalDevice>();
+  data_ =
+    std::make_shared<Data>(configuration, ManagedVkImageView(vk_device, vk_device.createImageView(iw_create_info)));
 }
 
-ImageView::ImageView(const std::weak_ptr<HandleManager>& owner, const vk::Device& vk_device, const vk::Image& vk_image, const ImageViewConfiguration& configuration)
-	: DependentDestroyableHandle(owner), configuration_(std::make_shared<ImageViewConfiguration>(configuration)), vk_image_view_(nullptr) {
-
-	// Create configuration structures.
-	const vk::ImageSubresourceRange subresource_range(configuration_->aspect_mask, configuration_->base_mip_level, configuration_->mip_level_count, 
-												configuration_->base_array_layer, configuration_->layer_count);
-
-	const vk::ImageViewCreateInfo iw_create_info(vk::ImageViewCreateFlags(), vk_image, configuration_->view_type, configuration_->format,
-										   configuration_->component_mapping, subresource_range);
-
-	vk_image_view_ = std::make_shared<ManagedVkImageView>(vk_device, vk_device.createImageView(iw_create_info));
+const ImageViewConfiguration& ImageView::configuration() const {
+  checkForNullHandleInvocation("ImageView", "configuration");
+  return data_->configuration;
 }
-
-const ImageViewConfiguration& ImageView::configuration() const {	
-	return *configuration_;
-}
-
 
 const vk::ImageView& ImageView::getVkHandle() const {
-	if (alive()) {
-		return vk_image_view_->get();
-	}
+  checkForNullHandleInvocation("ImageView", "getVkHandle");
+  return data_->vk_image_view.get();
+}
 
-	throw std::runtime_error("Called 'getVkHandle' on destroyed ImageView object.");
+ImageView::operator vk::ImageView() const {
+  checkForNullHandleInvocation("ImageView", "operator vk::ImageView()");
+  return data_->vk_image_view.get();
 }
 
 void ImageView::free() {
-	vk_image_view_->destroy();
-	Handle::free();
+  if (valid()) {
+    data_->vk_image_view.destroy();
+    DestroyableOwnedHandle::free();
+  }
 }
 
+ImageView::Data::Data(ImageViewConfiguration config, ImageView::ManagedVkImageView vk_image_view)
+  : configuration(std::move(config)), vk_image_view(vk_image_view) {}
 
-}
+} // namespace logi

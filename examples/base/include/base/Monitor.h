@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <utility>
 #include <vector>
+#include <string_view>
 
 class Monitor {
 public:

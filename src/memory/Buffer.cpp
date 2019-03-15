@@ -1,68 +1,70 @@
+#include <utility>
+
 #define VMA_IMPLEMENTATION
 #include <vk_mem_alloc.h>
+#include "logi/base/LogicalDevice.h"
 #include "logi/memory/Buffer.h"
 
 namespace logi {
 
 /*
 std::vector<unsigned char> Buffer::getData() {
-	vk::DeviceMemory memory = vk::DeviceMemory(allocation_->GetMemory());
-	void* mapped_memory = device_.mapMemory(memory, 0, configuration_.buffer_size);
+  vk::DeviceMemory memory = vk::DeviceMemory(allocation_->GetMemory());
+  void* mapped_memory = device_.mapMemory(memory, 0, configuration_.buffer_size);
 
-	std::vector<unsigned char> data;
-	data.resize(configuration_.buffer_size);
-	std::memcpy(data.data(), mapped_memory, data.size());
+  std::vector<unsigned char> data;
+  data.resize(configuration_.buffer_size);
+  std::memcpy(data.data(), mapped_memory, data.size());
 
-	device_.unmapMemory(memory);
+  device_.unmapMemory(memory);
 
-	return data;
+  return data;
 }
 */
 
 void Buffer::writeData(void* data, size_t size_bytes) {
-	void* mapped_data;
-	vmaMapMemory(allocator_, allocation_, &mapped_data);
-	memcpy(mapped_data, data, size_bytes);
-	vmaUnmapMemory(allocator_, allocation_);
+  void* mapped_data;
+  vmaMapMemory(data_->allocator, data_->allocation, &mapped_data);
+  memcpy(mapped_data, data, size_bytes);
+  vmaUnmapMemory(data_->allocator, data_->allocation);
 }
 
-BufferConfiguration::BufferConfiguration(vk::DeviceSize size, vk::BufferUsageFlags usage, MemoryUsage memory_usage, std::vector<uint32_t> concurrent_queue_families, vk::BufferCreateFlags flags)
-	: flags(flags), size(size), usage(usage), memory_usage(memory_usage), concurrent_queue_families(concurrent_queue_families) {}
+BufferConfiguration::BufferConfiguration(vk::DeviceSize size, const vk::BufferUsageFlags& usage,
+                                         MemoryUsage memory_usage, std::vector<uint32_t> concurrent_queue_families,
+                                         const vk::BufferCreateFlags& flags)
+  : flags(flags), size(size), usage(usage), memory_usage(memory_usage),
+    concurrent_queue_families(std::move(concurrent_queue_families)) {}
 
-
-Buffer::Buffer() : DependentDestroyableHandle({}, false), allocator_(nullptr), allocation_(nullptr) { }
-
-Buffer::Buffer(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const vk::Buffer& buffer, VmaAllocator allocator, VmaAllocation allocation, const BufferConfiguration& configuration)
-	: DependentDestroyableHandle(owner), allocator_(allocator), allocation_(allocation), configuration_(std::make_shared<BufferConfiguration>(configuration)),
-	  vk_buffer_(std::make_shared<ManagedVkBuffer>(device, buffer)), buffer_view_hm_(std::make_shared<HandleManager>()) {}
+Buffer::Buffer(const AllocationManager& alloc_manager, const vk::Buffer& buffer, VmaAllocator allocator,
+               VmaAllocation allocation, const BufferConfiguration& configuration)
+  : DestroyableOwnedHandle<AllocationManager>(alloc_manager, true),
+    data_(std::make_shared<Data>(allocator, allocation, configuration,
+                                 ManagedVkBuffer(getOwner<LogicalDevice>().getLogicalDeviceHandle(), buffer))) {}
 
 BufferView Buffer::createBufferView(const BufferViewConfiguration& configuration) const {
-	if (!alive()) {
-		throw std::runtime_error("Called 'createBufferView' on destroyed Image object.");
-	}
-
-	// Create and register buffer view handle.
-	return buffer_view_hm_->createHandle<BufferView>(vk_buffer_->getOwner(), vk_buffer_->get(), configuration);
-
+  checkForNullHandleInvocation("Buffer", "createBufferView");
+  return HandleGenerator<Buffer, BufferView>::createHandle(configuration);
 }
 
 const vk::Buffer& Buffer::getVkHandle() const {
-	if (!alive()) {
-		throw std::runtime_error("Called 'getVkHandle' on destroyed Buffer object.");
-	}
+  checkForNullHandleInvocation("Buffer", "getVkHandle");
+  return data_->vk_buffer.get();
+}
 
-	return vk_buffer_->get();
+Buffer::operator vk::Buffer() const {
+  checkForNullHandleInvocation("Buffer", "operator vk::Buffer()");
+  return data_->vk_buffer.get();
 }
 
 void Buffer::free() {
-	if (alive()) {
-		// Destroy owned image views, image and free the memory.
-		buffer_view_hm_->destroyAllHandles();
-		vk_buffer_->destroy();
-		vmaFreeMemory(allocator_, allocation_);
+  if (valid()) {
+    // Destroy owned image views, image and free the memory.
+    HandleGenerator<Buffer, BufferView>::destroyAllHandles();
+    data_->vk_buffer.destroy();
+    vmaFreeMemory(data_->allocator, data_->allocation);
 
-		Handle::free();
-	}
+    DestroyableOwnedHandle<AllocationManager>::free();
+  }
 }
 
-}
+} // namespace logi

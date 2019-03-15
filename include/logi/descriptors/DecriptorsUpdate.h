@@ -11,6 +11,7 @@
 
 #include <utility>
 #include <vulkan/vulkan.hpp>
+#include <list>
 #include "logi/descriptors/DescriptorPool.h"
 #include "logi/memory/Buffer.h"
 #include "logi/memory/ImageView.h"

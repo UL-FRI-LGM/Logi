@@ -1,61 +1,70 @@
 #include "logi/commands/CommandPool.h"
-#include "logi/commands/CommandBuffer.h"
 #include <vulkan/vulkan.hpp>
+#include "logi/base/LogicalDevice.h"
+#include "logi/commands/CommandBuffer.h"
+#include "logi/queues/QueueFamily.h"
 
 namespace logi {
 
-CommandPool::CommandPool() : DependentDestroyableHandle({}, false), data_(nullptr), handle_manager_(nullptr) {}
+CommandPool::CommandPool(const QueueFamily& queue_family, const vk::CommandPoolCreateFlags& flags)
+  : DestroyableOwnedHandle(queue_family, true), data_(std::make_shared<Data>(queue_family.getOwner(), flags)) {
+  // Create command pool.
+  vk::CommandPoolCreateInfo pool_ci;
+  pool_ci.flags = data_->flags;
+  pool_ci.queueFamilyIndex = queue_family.configuration().properties.family_index;
 
-CommandPool::CommandPool(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const uint32_t queue_family_index, const vk::CommandPoolCreateFlags& flags) 
-	: DependentDestroyableHandle(owner), data_(std::make_shared<CommandPoolData>(flags)), handle_manager_(std::make_shared<HandleManager>()) {
-
-	// Create command pool.
-	vk::CommandPoolCreateInfo pool_ci{};
-	pool_ci.flags = data_->flags;
-	pool_ci.queueFamilyIndex = queue_family_index;
-	
-	vk_cmd_pool_ = std::make_shared<ManagedVkCommandPool>(device, device.createCommandPool(pool_ci));
+  data_->vk_cmd_pool = ManagedVkCommandPool(data_->vk_device, data_->vk_device.createCommandPool(pool_ci));
 }
 
-std::vector<vk::CommandBuffer> CommandPool::allocateCommandBuffers(const vk::CommandBufferLevel level, const uint32_t count) const {
-	vk::CommandBufferAllocateInfo allocate_info{};
-	allocate_info.commandPool = vk_cmd_pool_->get();
-	allocate_info.level = level;
-	allocate_info.commandBufferCount = count;
-
-	// Allocate buffers from the pool.
-	return vk_cmd_pool_->getOwner().allocateCommandBuffers(allocate_info);
+const PrimaryCommandBuffer& CommandPool::createPrimaryCommandBuffer() const {
+  checkForNullHandleInvocation("CommandPool", "createPrimaryCommandBuffer");
+  vk::CommandBuffer buffer = allocateCommandBuffers(vk::CommandBufferLevel::ePrimary, 1u)[0];
+  HandleGenerator<CommandPool, PrimaryCommandBuffer>::createHandle(buffer);
 }
 
-PrimaryCommandBuffer CommandPool::createPrimaryCommandBuffer() const {
-	vk::CommandBuffer buffer = allocateCommandBuffers(vk::CommandBufferLevel::ePrimary, 1u)[0];
-
-	return handle_manager_->createHandle<PrimaryCommandBuffer>(vk_cmd_pool_->getOwner(), vk_cmd_pool_->get(), buffer, static_cast<bool>(data_->flags & vk::CommandPoolCreateFlagBits::eResetCommandBuffer));
-}
-
-SecondaryCommmandBuffer CommandPool::createSecondaryCommandBuffer() const {
-	vk::CommandBuffer buffer = allocateCommandBuffers(vk::CommandBufferLevel::eSecondary, 1u)[0];
-
-	return handle_manager_->createHandle<SecondaryCommmandBuffer>(vk_cmd_pool_->getOwner(), vk_cmd_pool_->get(), buffer, static_cast<bool>(data_->flags & vk::CommandPoolCreateFlagBits::eResetCommandBuffer));
+const SecondaryCommmandBuffer& CommandPool::createSecondaryCommandBuffer() const {
+  checkForNullHandleInvocation("CommandPool", "createSecondaryCommandBuffer");
+  vk::CommandBuffer buffer = allocateCommandBuffers(vk::CommandBufferLevel::eSecondary, 1u)[0];
+  HandleGenerator<CommandPool, SecondaryCommmandBuffer>::createHandle(buffer);
 }
 
 void CommandPool::reset(const vk::CommandPoolResetFlags& flags) const {
-	if (!alive()) {
-		throw std::runtime_error("Called 'reset' on destroyed CommandPool.");
-	}
+  checkForNullHandleInvocation("CommandPool", "reset");
+  data_->vk_device.resetCommandPool(data_->vk_cmd_pool.get(), flags);
+}
 
-	vk_cmd_pool_->getOwner().resetCommandPool(vk_cmd_pool_->get(), flags);
+void CommandPool::freeCommandBuffer(const CommandBuffer& command_buffer) const {
+  checkForNullHandleInvocation("CommandPool", "freeCommandBuffer");
+  vk::CommandBuffer vk_cmd_buffer = command_buffer;
+  data_->vk_device.freeCommandBuffers(data_->vk_cmd_pool.get(), 1u, &vk_cmd_buffer);
 }
 
 const vk::CommandPoolCreateFlags& CommandPool::flags() const {
-	return data_->flags;
+  checkForNullHandleInvocation("CommandPool", "flags");
+  return data_->flags;
+}
+
+std::vector<vk::CommandBuffer> CommandPool::allocateCommandBuffers(const vk::CommandBufferLevel level,
+                                                                   const uint32_t count) const {
+  vk::CommandBufferAllocateInfo allocate_info;
+  allocate_info.commandPool = data_->vk_cmd_pool.get();
+  allocate_info.level = level;
+  allocate_info.commandBufferCount = count;
+
+  // Allocate buffers from the pool.
+  return data_->vk_device.allocateCommandBuffers(allocate_info);
 }
 
 void CommandPool::free() {
-	handle_manager_->destroyAllHandles();
-	vk_cmd_pool_->destroy();
+  if (valid()) {
+    HandleGenerator<CommandPool, PrimaryCommandBuffer>::destroyAllHandles();
+    HandleGenerator<CommandPool, SecondaryCommmandBuffer>::destroyAllHandles();
+    data_->vk_cmd_pool.destroy();
+    DestroyableOwnedHandle<QueueFamily>::free();
+  }
 }
 
-CommandPool::CommandPoolData::CommandPoolData(const vk::CommandPoolCreateFlags& flags) : flags(flags) {}
+CommandPool::Data::Data(const vk::Device& vk_device, const vk::CommandPoolCreateFlags& flags)
+  : vk_device(vk_device), flags(flags) {}
 
-} /// !namespace vkr
+} // namespace logi

@@ -2,93 +2,70 @@
 
 namespace logi {
 
-DescriptorSetLayout::DescriptorSetLayout(const vk::Device& device, const std::vector<internal::DescriptorBindingInitializer>& binding_intializers) 
-	: bindings_(std::make_shared<std::vector<DescriptorBindingLayout>>()), descriptors_count_(std::make_shared<DescriptorsCount>(1u)) {
+DescriptorSetLayout::DescriptorSetLayout(const PipelineLayout& pipeline_layout, const vk::Device& device,
+                                         const std::vector<internal::DescriptorBindingInitializer>& binding_intializers)
+  : OwnedHandle<PipelineLayout>(pipeline_layout, true), data_(nullptr) {
+  std::vector<DescriptorBindingLayout> bindings;
+  bindings.reserve(binding_intializers.size());
+  DescriptorsCount descriptors_count(1u);
 
-	for (const auto& initializer : binding_intializers) {
-		bindings_->emplace_back(DescriptorBindingLayout(initializer));
-		incrementDescriptorCount(initializer.type);
-	}
+  for (const auto& initializer : binding_intializers) {
+    bindings.emplace_back(DescriptorBindingLayout(initializer));
+    descriptors_count.incrementCount(initializer.type);
+  }
 
-	// Generate Vulkan binding layouts.
-	std::vector<vk::DescriptorSetLayoutBinding> vk_bindings{};
-	vk_bindings.reserve(bindings_->size());
+  // Generate Vulkan binding layouts.
+  std::vector<vk::DescriptorSetLayoutBinding> vk_bindings;
+  vk_bindings.reserve(bindings.size());
 
-	for (auto it = bindings_->begin(); it != bindings_->end(); ++it) {
-		vk_bindings.emplace_back(it->createVkBinding());
-	}
+  for (auto& binding : bindings) {
+    vk_bindings.emplace_back(binding.createVkBinding());
+  }
 
-	// Create descriptor set layout.
-	vk::DescriptorSetLayoutCreateInfo dsl_ci;
-	dsl_ci.bindingCount = static_cast<uint32_t>(vk_bindings.size());
-	dsl_ci.pBindings = vk_bindings.data();
+  // Create descriptor set layout.
+  vk::DescriptorSetLayoutCreateInfo dsl_ci;
+  dsl_ci.bindingCount = static_cast<uint32_t>(vk_bindings.size());
+  dsl_ci.pBindings = vk_bindings.data();
 
-	vk_descriptor_set_layout_ = std::make_shared<ManagedVkDescriptorSetLayout>(device, device.createDescriptorSetLayout(dsl_ci));
-}
-
-void DescriptorSetLayout::incrementDescriptorCount(const vk::DescriptorType& type) const {
-	switch (type) {
-	case vk::DescriptorType::eSampler:
-		descriptors_count_->samplers++;
-		break;
-	case vk::DescriptorType::eCombinedImageSampler:
-		descriptors_count_->combined_image_samplers++;
-		break;
-	case vk::DescriptorType::eSampledImage:
-		descriptors_count_->sampled_images++;
-		break;
-	case vk::DescriptorType::eStorageImage:
-		descriptors_count_->storage_images++;
-		break;
-	case vk::DescriptorType::eUniformTexelBuffer:
-		descriptors_count_->uniform_texel_buffers++;
-		break;
-	case vk::DescriptorType::eStorageTexelBuffer:
-		descriptors_count_->storage_texel_buffers++;
-		break;
-	case vk::DescriptorType::eUniformBuffer:
-		descriptors_count_->uniform_buffers++;
-		descriptors_count_->uniform_buffers_dynamic++;
-		break;
-	case vk::DescriptorType::eStorageBuffer:
-		descriptors_count_->storage_buffers++;
-		descriptors_count_->storage_buffers_dynamic++;
-		break;
-	case vk::DescriptorType::eInputAttachment:
-		descriptors_count_->input_attachments++;
-		break;
-	}
-}
-
-void DescriptorSetLayout::free() {
-	vk_descriptor_set_layout_->destroy();
+  data_ = std::make_shared<Data>(ManagedVkDescriptorSetLayout(device, device.createDescriptorSetLayout(dsl_ci)),
+                                 std::move(bindings), descriptors_count);
 }
 
 const DescriptorBindingLayout& DescriptorSetLayout::getDescriptorBinding(const uint32_t binding) const {
-	for (auto it = bindings_->begin(); it != bindings_->end(); ++it) {
-		if (it->binding == binding) {
-			return *it;
-		}
-		if (it->binding > binding) {
-			break;
-		}
-	}
+  checkForNullHandleInvocation("DescriptorSetLayout", "getDescriptorBinding");
+  for (auto& binding_entry : data_->bindings) {
+    if (binding_entry.binding == binding) {
+      return binding_entry;
+    }
 
-	throw std::runtime_error("Descriptor does not have binding with the given binding index.");
+    if (binding_entry.binding > binding) {
+      break;
+    }
+  }
+
+  throw std::runtime_error("Descriptor does not have binding with the given binding index.");
 }
 
-
 const vk::DescriptorSetLayout& DescriptorSetLayout::getVkHandle() const {
-	if (!alive()) {
-		throw std::runtime_error("Called getVkHandle on a destroyed DescriptorSetLayout.");
-	}
-
-	return vk_descriptor_set_layout_->get();
+  checkForNullHandleInvocation("DescriptorSetLayout", "getVkHandle");
+  return data_->vk_desc_layout.get();
 }
 
 const DescriptorsCount& DescriptorSetLayout::getDescriptorsCount() const {
-	return *descriptors_count_;
+  checkForNullHandleInvocation("DescriptorSetLayout", "getDescriptorsCount");
+  return data_->descriptors_count;
 }
 
+void DescriptorSetLayout::free() {
+  if (valid()) {
+    data_->vk_desc_layout.destroy();
+    OwnedHandle<PipelineLayout>::free();
+  }
+}
 
-} ///!	namespace vkr
+DescriptorSetLayout::Data::Data(DescriptorSetLayout::ManagedVkDescriptorSetLayout vk_desc_layout,
+                                std::vector<DescriptorBindingLayout> bindings,
+                                const DescriptorsCount& descriptors_count)
+  : vk_desc_layout(vk_desc_layout), bindings(std::move(bindings)), descriptors_count(descriptors_count) {}
+
+} // namespace logi

@@ -1,45 +1,52 @@
 #ifndef MEMORY_FRAMEBUFFER_H
 #define MEMORY_FRAMEBUFFER_H
 
+#include <logi/program/render_pass/RenderPass.h>
 #include <vulkan/vulkan.hpp>
-#include "logi/base/ManagedResource.h"
 #include "logi/base/Handle.h"
+#include "logi/base/ManagedResource.h"
 #include "logi/memory/ImageView.h"
 
 namespace logi {
 
-class Framebuffer : public DependentDestroyableHandle {
-public:
-	Framebuffer();
+class LogicalDevice;
 
-	Framebuffer(std::weak_ptr<HandleManager> owner, const vk::Device device, const vk::RenderPass& render_pass, const std::vector<ImageView>& attachments, 
-				uint32_t width, uint32_t height, uint32_t layers, const vk::FramebufferCreateFlags& flags);
+class Framebuffer : public DestroyableOwnedHandle<LogicalDevice> {
+ public:
+  /**
+   * @brief Default placeholder constructor.
+   */
+  Framebuffer() = default;
 
-	const vk::Framebuffer& getVkHandle() const;
+  Framebuffer(const LogicalDevice& device, const RenderPass& render_pass, const std::vector<ImageView>& attachments,
+              uint32_t width, uint32_t height, uint32_t layers, const vk::FramebufferCreateFlags& flags);
 
-protected:
-	void free() override;
+  const vk::Framebuffer& getVkHandle() const;
 
-private:
-	using ManagedVkFramebuffer = ManagedResource<vk::Device, vk::Framebuffer, vk::DispatchLoaderStatic, &vk::Device::destroyFramebuffer>;
+  operator vk::Framebuffer() const;
 
-	struct FramebufferData {
-		FramebufferData(std::vector<ImageView> attachments, const uint32_t width, const uint32_t height,
-		                const uint32_t layers, vk::FramebufferCreateFlags flags);
+ protected:
+  void free() override;
 
-		ManagedVkFramebuffer vk_framebuffer;
-		std::vector<ImageView> attachments;
-		uint32_t width;
-		uint32_t height;
-		uint32_t layers;
-		vk::FramebufferCreateFlags flags;
-	};
+ private:
+  using ManagedVkFramebuffer =
+    ManagedResource<vk::Device, vk::Framebuffer, vk::DispatchLoaderStatic, &vk::Device::destroyFramebuffer>;
 
-	std::shared_ptr<ManagedVkFramebuffer> vk_framebuffer;
-	std::shared_ptr<FramebufferData> data_;
+  struct FramebufferData {
+    FramebufferData(ManagedVkFramebuffer vk_framebuffer, std::vector<ImageView> attachments, const uint32_t width,
+                    const uint32_t height, const uint32_t layers, const vk::FramebufferCreateFlags& flags);
+
+    ManagedVkFramebuffer vk_framebuffer;
+    std::vector<ImageView> attachments;
+    uint32_t width;
+    uint32_t height;
+    uint32_t layers;
+    vk::FramebufferCreateFlags flags;
+  };
+
+  std::shared_ptr<FramebufferData> data_;
 };
 
-
-}
+} // namespace logi
 
 #endif

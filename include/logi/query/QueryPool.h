@@ -1,51 +1,53 @@
-#include <vulkan/vulkan.hpp>
-#include "logi/base/Handle.h"
 #include "logi/base/ExtensionObject.h"
+#include "logi/base/Handle.h"
 #include "logi/base/ManagedResource.h"
+#include <vulkan/vulkan.hpp>
 
 namespace logi {
 
 struct QueryPoolCreateInfo : public BuildableExtendable {
+  explicit QueryPoolCreateInfo(const vk::QueryPoolCreateFlags& flags = {},
+                               vk::QueryType query_type = vk::QueryType::eOcclusion, uint32_t query_count = 0,
+                               const vk::QueryPipelineStatisticFlags& pipeline_statistics = {});
 
-    explicit QueryPoolCreateInfo(const vk::QueryPoolCreateFlags& flags = {}, vk::QueryType query_type = vk::QueryType::eOcclusion, 
-		                         uint32_t query_count = 0, const vk::QueryPipelineStatisticFlags& pipeline_statistics = {});
+  vk::QueryPoolCreateInfo build() const;
 
-	vk::QueryPoolCreateInfo build() const;
-
-	vk::QueryPoolCreateFlags flags;
-	vk::QueryType query_type;
-	uint32_t query_count;
-	vk::QueryPipelineStatisticFlags pipeline_statistics;
+  vk::QueryPoolCreateFlags flags;
+  vk::QueryType query_type;
+  uint32_t query_count;
+  vk::QueryPipelineStatisticFlags pipeline_statistics;
 };
 
-class QueryPool : DependentDestroyableHandle {
-public:
-	QueryPool();
+class LogicalDevice;
 
-	QueryPool(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const QueryPoolCreateInfo& create_info);
+class QueryPool : DestroyableOwnedHandle<LogicalDevice> {
+ public:
+  QueryPool() = default;
 
-    template <typename T>
-    void getQueryPoolResults(const uint32_t first_query, const uint32_t query_count, vk::ArrayProxy<T> data,
-                             const uint64_t stride, const vk::QueryResultFlags& flags) const;
+  QueryPool(const LogicalDevice& device, const QueryPoolCreateInfo& create_info);
 
-	const vk::QueryPool& getVkHandle() const;
+  template <typename T>
+  void getQueryPoolResults(uint32_t first_query, uint32_t query_count, vk::ArrayProxy<T> data, uint64_t stride,
+                           const vk::QueryResultFlags& flags) const;
 
-protected:
-	void free() override;
+  const vk::QueryPool& getVkHandle() const;
 
-private:
-	using ManagedVkQueryPool = ManagedResource<vk::Device, vk::QueryPool, vk::DispatchLoaderStatic, &vk::Device::destroyQueryPool>;
+ protected:
+  void free() override;
 
-	std::shared_ptr<ManagedVkQueryPool> vk_query_pool_;
+ private:
+  using ManagedVkQueryPool =
+    ManagedResource<vk::Device, vk::QueryPool, vk::DispatchLoaderStatic, &vk::Device::destroyQueryPool>;
+
+  std::shared_ptr<ManagedVkQueryPool> vk_query_pool_;
 };
 
 template <typename T>
 void QueryPool::getQueryPoolResults(const uint32_t first_query, const uint32_t query_count, vk::ArrayProxy<T> data,
                                     const uint64_t stride, const vk::QueryResultFlags& flags) const {
-    checkForNullHandleInvocation("QueryPool", "getQueryPoolResults");
+  checkForNullHandleInvocation("QueryPool", "getQueryPoolResults");
 
-    vk_query_pool_->getOwner().getQueryPoolResults(vk_query_pool_->get(), first_query, query_count, data, stride,
-                                                   flags);
+  vk_query_pool_->getOwner().getQueryPoolResults(vk_query_pool_->get(), first_query, query_count, data, stride, flags);
 }
 
-}
+} // namespace logi

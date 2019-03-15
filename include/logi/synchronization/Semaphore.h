@@ -2,45 +2,49 @@
 #define SYNCHRONIZATION_SEMAPHORE_H_
 
 #include <vulkan/vulkan.hpp>
-#include "logi/base/ManagedResource.h"
 #include "logi/base/Handle.h"
+#include "logi/base/ManagedResource.h"
 
 namespace logi {
 
-class Semaphore : public DependentDestroyableHandle {
-public:
-	/**
-	 * @brief	Default placeholder constructor.
-	 */
-	Semaphore();
+class LogicalDevice;
 
-	/**
-	 * @brief	Create a handle used to access Vulkan semaphore object.
-	 *
-	 * @param	owner	HandleManager responsible for this handle.
-	 * @param	device	Vulkan device handle.
-	 * @param	flags	Used to specify additional Semaphore properties.
-	 */
-	Semaphore(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const vk::SemaphoreCreateFlags& flags = {});
+class Semaphore : public DestroyableOwnedHandle<LogicalDevice> {
+ public:
+  /**
+   * @brief	Default placeholder constructor.
+   */
+  Semaphore() = default;
 
-	/**
-	 * @brief	Retrieve Vulkan semaphore handle.
-	 *
-	 * @return	Vulkan semaphore handle.
-	 */
-	const vk::Semaphore& getVkHandle() const;
+  /**
+   * @brief	Create a handle used to access Vulkan semaphore object.
+   *
+   * @param	device  Logical device handle.
+   * @param	flags   Used to specify additional Semaphore properties.
+   */
+  explicit Semaphore(const LogicalDevice& device, const vk::SemaphoreCreateFlags& flags = {});
 
-protected:
-	/**
-	 * @brief	Destroy the wrapped Vulkan semaphore handle.
-	 */
-	void free() override;
+  /**
+   * @brief	Retrieve Vulkan semaphore handle.
+   *
+   * @return	Vulkan semaphore handle.
+   */
+  const vk::Semaphore& getVkHandle() const;
 
-private:
-	using ManagedVkSemaphore = ManagedResource<vk::Device, vk::Semaphore, vk::DispatchLoaderStatic, &vk::Device::destroySemaphore>;
-	std::shared_ptr<ManagedVkSemaphore> vk_semaphore_;
+  operator vk::Semaphore() const;
+
+ protected:
+  /**
+   * @brief	Destroy the wrapped Vulkan semaphore handle.
+   */
+  void free() override;
+
+ private:
+  using ManagedVkSemaphore =
+    ManagedResource<vk::Device, vk::Semaphore, vk::DispatchLoaderStatic, &vk::Device::destroySemaphore>;
+  std::shared_ptr<ManagedVkSemaphore> vk_semaphore_;
 };
 
-}
+} // namespace logi
 
 #endif //! SYNCHRONIZATION_SEMAPHORE_H_
