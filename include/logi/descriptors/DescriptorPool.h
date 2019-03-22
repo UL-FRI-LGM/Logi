@@ -18,6 +18,8 @@
 
 namespace logi {
 
+class LogicalDevice;
+
 class DescriptorPool : public DestroyableOwnedHandle<LogicalDevice>,
                        public HandleGenerator<DescriptorPool, DescriptorSet> {
  public:
@@ -164,7 +166,7 @@ DescriptorSet DescriptorPool::allocateDescriptorSet(const DescriptorSetLayout& s
   set_alloc_info.pNext = BuildableExtension::buildExtensions(extensions...);
 
   // Allocate descriptor sets.
-  vk::Device device = getOwner < LogicalDevice();
+  vk::Device device = getOwner<LogicalDevice>();
 
   return HandleGenerator<DescriptorPool, DescriptorSet>::template createHandle(
     device.allocateDescriptorSets(set_alloc_info)[0], set_layout);

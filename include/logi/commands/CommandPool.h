@@ -11,7 +11,7 @@ namespace logi {
 
 class QueueFamily;
 
-class CommandPool : public DestroyableOwnedHandle<QueueFamily>,
+class CommandPool : public DestroyableOwnedHandle<CommandPool, QueueFamily>,
                     public HandleGenerator<CommandPool, PrimaryCommandBuffer>,
                     public HandleGenerator<CommandPool, SecondaryCommmandBuffer> {
  public:

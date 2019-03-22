@@ -17,8 +17,13 @@ ImageConfiguration::ImageConfiguration(vk::ImageType type, vk::Format format, co
 
 Image::Image(const AllocationManager& alloc_manager, const vk::Image& image, VmaAllocator allocator,
              VmaAllocation allocation, const ImageConfiguration& configuration)
-  : DestroyableOwnedHandle(alloc_manager, true),
+  : DestroyableOwnedHandle<Image, AllocationManager, Swapchain>(alloc_manager, true),
     data_(std::make_shared<Data>(allocator, allocation, configuration,
+                                 ManagedVkImage(static_cast<vk::Device>(getOwner<LogicalDevice>()), image))) {}
+
+Image::Image(const Swapchain& swap_chain, const vk::Image& image)
+  : DestroyableOwnedHandle<Image, AllocationManager, Swapchain>(swap_chain, true),
+    data_(std::make_shared<Data>(nullptr, nullptr, ImageConfiguration(),
                                  ManagedVkImage(static_cast<vk::Device>(getOwner<LogicalDevice>()), image))) {}
 
 ImageView Image::createImageView(const ImageViewConfiguration& configuration) const {
@@ -38,14 +43,27 @@ Image::operator vk::Image() const {
   return data_->vk_image.get();
 }
 
+void Image::destroy() {
+  checkForNullHandleInvocation("Image", "destroy");
+  if (data_->allocator == nullptr) {
+    throw IllegalInvocation("Tried to destroy swapchain image.");
+  }
+
+  DestroyableOwnedHandle<Image, AllocationManager, Swapchain>::destroy();
+}
+
 void Image::free() {
   if (valid()) {
     // Destroy owned image views, image and free the memory.
     HandleGenerator<Image, ImageView>::destroyAllHandles();
-    data_->vk_image.destroy();
-    vmaFreeMemory(data_->allocator, data_->allocation);
 
-    DestroyableOwnedHandle<AllocationManager>::free();
+    // If the allocator is nullptr do not destroy image as it is a Swapchain image.
+    if (data_->allocator != nullptr) {
+      data_->vk_image.destroy();
+      vmaFreeMemory(data_->allocator, data_->allocation);
+    }
+
+    DestroyableOwnedHandle<AllocationManager, Swapchain>::free();
   }
 }
 

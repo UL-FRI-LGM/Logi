@@ -2,47 +2,52 @@
 #define PROGRAM_RENDER_PASS_RENDER_PASS_H
 
 #include <vulkan/vulkan.hpp>
-
-#include "logi/program/render_pass/RenderPassLayout.h"
+#include "logi/memory/Framebuffer.h"
 #include "logi/program/layout/PipelineState.h"
 #include "logi/program/render_pass/GraphicalPipeline.h"
-#include "logi/memory/Framebuffer.h"
+#include "logi/program/render_pass/RenderPassLayout.h"
 
 namespace logi {
 
 class ProgramManager;
 
-class RenderPass : public DependentDestroyableHandle {
-friend class ProgramManager;
-public:
-	RenderPass();
+class RenderPass : public DestroyableOwnedHandle<RenderPass, ProgramManager>,
+                   public HandleGenerator<RenderPass, GraphicalPipeline>,
+                   public HandleGenerator<RenderPass, Framebuffer> {
+  friend class ProgramManager;
 
-	RenderPass(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const RenderPassLayout& layout);
+ public:
+  RenderPass() = default;
 
-	vk::Extent2D renderAreaGranularity() const;
+  RenderPass(const ProgramManager& program_manager, const RenderPassLayout& layout);
 
-	Framebuffer createFramebuffer(const std::vector<ImageView>& attachments, uint32_t width, uint32_t height, uint32_t layers, const vk::FramebufferCreateFlags& flags = {}) const;
+  vk::Extent2D renderAreaGranularity() const;
 
-	const vk::RenderPass& getVkHandle() const;
+  Framebuffer createFramebuffer(const std::vector<ImageView>& attachments, uint32_t width, uint32_t height,
+                                uint32_t layers, const vk::FramebufferCreateFlags& flags = {}) const;
 
-protected:
-	GraphicalPipeline addGraphicalPipeline(const vk::Pipeline& pipeline, const PipelineLayout& layout, const PipelineState& state) const;
+  const vk::RenderPass& getVkHandle() const;
 
-private:
-	using ManagedVkRenderPass = ManagedResource<vk::Device, vk::RenderPass, vk::DispatchLoaderStatic, &vk::Device::destroyRenderPass>;
+  operator vk::RenderPass() const;
 
-	struct RenderPassData {
+ protected:
+  GraphicalPipeline addGraphicalPipeline(const vk::Pipeline& pipeline, const PipelineLayout& layout,
+                                         const PipelineState& state) const;
 
-		explicit RenderPassData(RenderPassLayout layout);
+ private:
+  using ManagedVkRenderPass =
+    ManagedResource<vk::Device, vk::RenderPass, vk::DispatchLoaderStatic, &vk::Device::destroyRenderPass>;
 
-		ManagedVkRenderPass vk_render_pass{};
-		RenderPassLayout layout;
-	};
+  struct RenderPassData {
+    explicit RenderPassData(RenderPassLayout layout);
 
-	std::shared_ptr<RenderPassData> data_;
-	std::shared_ptr<HandleManager> handle_manager_;
+    ManagedVkRenderPass vk_render_pass{};
+    RenderPassLayout layout;
+  };
+
+  std::shared_ptr<RenderPassData> data_;
 };
 
-}
+} // namespace logi
 
 #endif

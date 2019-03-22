@@ -46,7 +46,7 @@ class ProgramManager;
 /**
  * @brief   ShaderModule handle that manages Vulkan ShaderModule object.
  */
-class ShaderModule : public DestroyableOwnedHandle<ProgramManager> {
+class ShaderModule : public DestroyableOwnedHandle<ShaderModule, ProgramManager> {
  public:
   /**
    * @brief   Placeholder ShaderModule handle constructor.

@@ -30,7 +30,7 @@ class Buffer;
 /**
  * @brief	Handle used to access Vulkan BufferView resource.
  */
-class BufferView : public DestroyableOwnedHandle<Buffer> {
+class BufferView : public DestroyableOwnedHandle<BufferView, Buffer> {
  public:
   /**
    * @brief Default placeholder constructor.

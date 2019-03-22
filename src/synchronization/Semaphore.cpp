@@ -4,7 +4,7 @@
 namespace logi {
 
 Semaphore::Semaphore(const LogicalDevice& device, const vk::SemaphoreCreateFlags& flags)
-  : DestroyableOwnedHandle<LogicalDevice>(device, true), vk_semaphore_(nullptr) {
+  : DestroyableOwnedHandle<Semaphore, LogicalDevice>(device, true), vk_semaphore_(nullptr) {
   vk::SemaphoreCreateInfo semaphore_ci{};
   semaphore_ci.flags = flags;
 
@@ -25,7 +25,7 @@ Semaphore::operator vk::Semaphore() const {
 void Semaphore::free() {
   if (valid()) {
     vk_semaphore_->destroy();
-    DestroyableOwnedHandle<LogicalDevice>::free();
+    DestroyableOwnedHandle<Semaphore, LogicalDevice>::free();
   }
 }
 

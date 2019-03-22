@@ -9,7 +9,7 @@ namespace logi {
 
 class LogicalDevice;
 
-class Semaphore : public DestroyableOwnedHandle<LogicalDevice> {
+class Semaphore : public DestroyableOwnedHandle<Semaphore, LogicalDevice> {
  public:
   /**
    * @brief	Default placeholder constructor.

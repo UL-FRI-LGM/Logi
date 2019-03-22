@@ -34,7 +34,7 @@ class LogicalDevice;
 /**
  * @brief
  */
-class Event : public DestroyableOwnedHandle<LogicalDevice> {
+class Event : public DestroyableOwnedHandle<Event, LogicalDevice> {
  public:
   /**
    * @brief	Default placeholder constructor.

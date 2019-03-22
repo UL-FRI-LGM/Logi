@@ -9,7 +9,7 @@ namespace logi {
 
 class LogicalDevice;
 
-class Fence : public DestroyableOwnedHandle<LogicalDevice> {
+class Fence : public DestroyableOwnedHandle<Fence, LogicalDevice> {
  public:
   /**
    * @brief	Default placeholder constructor.

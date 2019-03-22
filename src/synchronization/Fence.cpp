@@ -4,7 +4,7 @@
 namespace logi {
 
 Fence::Fence(const LogicalDevice& device, const vk::FenceCreateFlags& flags)
-  : DestroyableOwnedHandle(device, true), vk_fence_(nullptr) {
+  : DestroyableOwnedHandle<Fence, LogicalDevice>(device, true), vk_fence_(nullptr) {
   vk::FenceCreateInfo fence_ci{};
   fence_ci.flags = flags;
 
@@ -52,7 +52,7 @@ Fence::operator vk::Fence() const {
 void Fence::free() {
   if (valid()) {
     vk_fence_->destroy();
-    DestroyableOwnedHandle<LogicalDevice>::free();
+    DestroyableOwnedHandle<Fence, LogicalDevice>::free();
   }
 }
 

@@ -10,11 +10,26 @@
 #include <atomic>
 #include <memory>
 #include <mutex>
+#include <type_traits>
 #include <unordered_map>
 #include <utility>
+#include <variant>
 #include "Exceptions.h"
 
 namespace logi {
+
+template <typename Type, typename SearchedOwner>
+class has_get_owner {
+ private:
+  template <typename T, typename SO>
+  static std::true_type test(decltype(&T::template getOwner<SO>));
+
+  template <typename T, typename SO>
+  static std::false_type test(...);
+
+ public:
+  static constexpr bool value = std::is_same<decltype(test<Type, SearchedOwner>(0)), std::true_type>::value;
+};
 
 class Handle {
   template <typename, typename>
@@ -124,9 +139,9 @@ class DestroyableHandle : public Handle {
 /**
  * @brief   Handle with pointer to the owner.
  *
- * @tparam  OwnerType Type of the owner.
+ * @tparam  OwnerTypes Possible owner types.
  */
-template <typename OwnerType>
+template <typename... OwnerTypes>
 class OwnedHandle : public Handle {
  public:
   OwnedHandle();
@@ -137,28 +152,33 @@ class OwnedHandle : public Handle {
    * @param owner Owner handle.
    * @param valid Handle validity flag.
    */
-  explicit OwnedHandle(const OwnerType& owner, bool valid = true);
-
-  /**
-   * @brief   Retrieve direct owner.
-   *
-   * @return  Owner handle.
-   */
-  template <typename SearchedOwner = OwnerType,
-            typename std::enable_if<std::is_same<SearchedOwner, OwnerType>::value, int>::type = 0>
-  SearchedOwner& getOwner() {
-    return owner_;
-  }
+  template <typename T>
+  explicit OwnedHandle(const T& owner, bool valid = true);
 
   /**
    * @brief   Search for owner in the hierarchy.
    *
    * @return  Owner handle.
    */
-  template <typename SearchedOwner,
-            typename std::enable_if<!std::is_same<SearchedOwner, OwnerType>::value, int>::type = 0>
-  SearchedOwner& getOwner() {
-    return owner_.template getOwner<SearchedOwner>();
+  template <typename SearchedOwner>
+  const SearchedOwner& getOwner() const {
+    return std::visit(
+      [](const auto& value) -> const SearchedOwner& {
+        // Deduce owner type.
+        typedef typename std::remove_cv<typename std::remove_reference<decltype(value)>::type>::type OwnerType;
+
+        if constexpr (std::is_same<OwnerType, SearchedOwner>::value) {
+          // Found requested owner.
+          return value;
+        } else if constexpr (has_get_owner<OwnerType, SearchedOwner>::value) {
+          // Descend into the actual owner in search for the SearchedOwner.
+          return value.template getOwner<SearchedOwner>();
+        } else {
+          // Actual has no owner.
+          throw IllegalInvocation("Could not find owner.");
+        }
+      },
+      *owner_);
   }
 
  protected:
@@ -167,22 +187,22 @@ class OwnedHandle : public Handle {
    */
   void free() override;
 
- private:
   /**
    * @brief Shared owner instance.
    */
-  std::shared_ptr<OwnerType> owner_;
+  std::shared_ptr<std::variant<OwnerTypes...>> owner_;
 };
 
-template <typename OwnerType>
-OwnedHandle<OwnerType>::OwnedHandle() : Handle(false), owner_(nullptr) {}
+template <typename... OwnerTypes>
+OwnedHandle<OwnerTypes...>::OwnedHandle() : Handle(false), owner_(nullptr) {}
 
-template <typename OwnerType>
-OwnedHandle<OwnerType>::OwnedHandle(const OwnerType& owner, bool valid)
-  : Handle(valid), owner_(std::make_shared<OwnerType>(owner)) {}
+template <typename... OwnerTypes>
+template <typename T>
+OwnedHandle<OwnerTypes...>::OwnedHandle(const T& owner, bool valid)
+  : Handle(valid), owner_(std::make_shared<std::variant<OwnerTypes...>>(owner)) {}
 
-template <typename OwnerType>
-void OwnedHandle<OwnerType>::free() {
+template <typename... OwnerTypes>
+void OwnedHandle<OwnerTypes...>::free() {
   owner_.reset();
   Handle::free();
 }
@@ -190,22 +210,31 @@ void OwnedHandle<OwnerType>::free() {
 /**
  * @brief Destroyable handle.
  */
-template <typename OwnerType>
-class DestroyableOwnedHandle : public OwnedHandle<OwnerType> {
+template <typename SubType, typename... OwnerTypes>
+class DestroyableOwnedHandle : public OwnedHandle<OwnerTypes...> {
  public:
-  using OwnedHandle<OwnerType>::OwnedHandle;
+  using OwnedHandle<OwnerTypes...>::OwnedHandle;
 
   /**
    * @brief	Calls handle free method.
    */
-  void destroy();
+  virtual void destroy();
 };
 
-template <typename OwnerType>
-void DestroyableOwnedHandle<OwnerType>::destroy() {
+template <typename, typename>
+class HandleGenerator;
+
+template <typename SubType, typename... OwnerTypes>
+void DestroyableOwnedHandle<SubType, OwnerTypes...>::destroy() {
   // Check if the object is still alive before trying to destroy it.
-  if (OwnedHandle<OwnerType>::valid()) {
-    OwnedHandle<OwnerType>::getOwner().destroyHandle(*this);
+  if (OwnedHandle<OwnerTypes...>::valid()) {
+    std::visit(
+      [this](auto& owner) {
+        // Deduce owner type.
+        static_cast<HandleGenerator<typename std::remove_reference<decltype(owner)>::type, SubType>&>(owner)
+          .destroyHandle(static_cast<const SubType&>(*this));
+      },
+      *OwnedHandle<OwnerTypes...>::owner_);
   }
 }
 
@@ -217,10 +246,10 @@ void DestroyableOwnedHandle<OwnerType>::destroy() {
  */
 template <typename GeneratorType, typename HandleType>
 class HandleGenerator {
- public:
-  static_assert(std::is_base_of<OwnedHandle<GeneratorType>, HandleType>::value,
-                "HandleGenerator HandleType must inherit from OwnedHandle<GeneratorType>.");
+  template <typename, typename...>
+  friend class DestroyableOwnedHandle;
 
+ public:
   /**
    * @brief Initializes HandleGenerator internal data.
    */
@@ -259,7 +288,7 @@ class HandleGenerator {
    *
    * @param	handle	Handle that should be destroyed.
    */
-  void destroyHandle(const OwnedHandle<GeneratorType>& handle) const;
+  void destroyHandle(const HandleType& handle) const;
 
   /**
    * @brief	Destroys all handles generated by this HandleGenerator.
@@ -321,13 +350,13 @@ const HandleType& HandleGenerator<GeneratorType, HandleType>::getHandle(const si
 }
 
 template <typename GeneratorType, typename HandleType>
-void HandleGenerator<GeneratorType, HandleType>::destroyHandle(const OwnedHandle<GeneratorType>& handle) const {
+void HandleGenerator<GeneratorType, HandleType>::destroyHandle(const HandleType& handle) const {
   std::lock_guard<std::mutex> guard(data_->handles_lock);
 
   // If the handle is found free its resources and erase it.
   auto it = data_->handles.find(handle.id());
   if (it != data_->handles.end()) {
-    static_cast<Handle*>(handle.second.get())->free();
+    static_cast<Handle*>(it->second.get())->free();
     data_->handles.erase(it);
   }
 }

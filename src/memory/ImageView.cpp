@@ -14,7 +14,7 @@ ImageViewConfiguration::ImageViewConfiguration(const vk::ImageViewType view_type
     layer_count(layer_count) {}
 
 ImageView::ImageView(const Image& image, const ImageViewConfiguration& configuration)
-  : DestroyableOwnedHandle(image, true), data_(nullptr) {
+  : DestroyableOwnedHandle<ImageView, Image>(image, true), data_(nullptr) {
   // Create configuration structures.
   const vk::ImageSubresourceRange sub_resource_range(configuration.aspect_mask, configuration.base_mip_level,
                                                      configuration.mip_level_count, configuration.base_array_layer,
@@ -47,7 +47,7 @@ ImageView::operator vk::ImageView() const {
 void ImageView::free() {
   if (valid()) {
     data_->vk_image_view.destroy();
-    DestroyableOwnedHandle::free();
+    DestroyableOwnedHandle<ImageView, Image>::free();
   }
 }
 

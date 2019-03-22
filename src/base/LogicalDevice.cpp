@@ -40,7 +40,8 @@ vk::DeviceCreateInfo LogicalDeviceConfig::build() {
 }
 
 LogicalDevice::LogicalDevice(const PhysicalDevice& physical_device, const LogicalDeviceConfig& configuration)
-  : DestroyableOwnedHandle<PhysicalDevice>(physical_device, true), data_(std::make_shared<DeviceData>(configuration)) {
+  : DestroyableOwnedHandle<LogicalDevice, PhysicalDevice>(physical_device, true),
+    data_(std::make_shared<DeviceData>(configuration)) {
   // Create logical device.
   data_->logical_device = static_cast<vk::PhysicalDevice>(physical_device).createDevice(data_->configuration.build());
 
@@ -94,11 +95,11 @@ const AllocationManager& LogicalDevice::getAllocationManager() const {
 }
 
 #pragma region DEVICE HANDLE GETTERS
-const vk::PhysicalDevice& LogicalDevice::getPhysicalDeviceHandle() const {
-  return getOwner();
+vk::PhysicalDevice LogicalDevice::getPhysicalDeviceHandle() const {
+  return getOwner<PhysicalDevice>();
 }
 
-const vk::Device& LogicalDevice::getLogicalDeviceHandle() const {
+vk::Device LogicalDevice::getLogicalDeviceHandle() const {
   return data_->logical_device;
 }
 
@@ -150,7 +151,7 @@ void LogicalDevice::free() {
 
   data_->logical_device.destroy();
 
-  DestroyableOwnedHandle<LogicalDevice>::free();
+  DestroyableOwnedHandle<LogicalDevice, PhysicalDevice>::free();
 }
 
 #pragma endregion

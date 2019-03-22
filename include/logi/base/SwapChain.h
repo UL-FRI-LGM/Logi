@@ -10,13 +10,14 @@
 #define SWAPCHAIN_H_
 
 #include <vulkan/vulkan.hpp>
+#include "logi/memory/Image.h"
 #include "logi/memory/ImageView.h"
 #include "logi/queues/Queue.h"
 #include "logi/synchronization/Semaphore.h"
 
 namespace logi {
 
-class SwapChain : public DestroyableOwnedHandle<LogicalDevice> {
+class SwapChain : public DestroyableOwnedHandle<LogicalDevice>, public HandleGenerator<SwapChain, Image> {
  public:
   /**
    * @brief	Default placeholder constructor.
@@ -84,8 +85,7 @@ class SwapChain : public DestroyableOwnedHandle<LogicalDevice> {
     vk::Format color_format{};       ///< Selected swap chain color format.
     vk::ColorSpaceKHR color_space{}; ///< Selected swap chain color space.
 
-    std::vector<vk::Image> images{};      ///< Swap chain images.
-    std::vector<ImageView> image_views{}; ///< Views of swap chain images
+    std::vector<Image> images{}; ///< Swap chain images.
     uint32_t acquired_image_index{};
   };
 

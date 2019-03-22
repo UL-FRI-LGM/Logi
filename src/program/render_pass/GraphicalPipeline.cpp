@@ -2,15 +2,12 @@
 
 namespace logi {
 
-GraphicalPipeline::GraphicalPipeline() : Pipeline(), state_(nullptr) {
-}
-
-GraphicalPipeline::GraphicalPipeline(const std::weak_ptr<HandleManager>& owner, const vk::Device& device, const vk::Pipeline& pipeline, const PipelineLayout& layout, const PipelineState& state)
-	: Pipeline(owner, device, pipeline, layout), state_(std::make_shared<PipelineState>(state)) { }
-
+GraphicalPipeline::GraphicalPipeline(const ProgramManager& program_manager, const vk::Pipeline& pipeline,
+                                     const PipelineLayout& layout, const PipelineState& state)
+  : Pipeline(program_manager, pipeline, layout), state_(std::make_shared<PipelineState>(state)) {}
 
 const PipelineState& GraphicalPipeline::state() const {
-	return *state_;
+  return *state_;
 }
 
-}
+} // namespace logi

@@ -57,11 +57,13 @@ struct ImageConfiguration {
 };
 
 class AllocationManager;
+class Swapchain;
 
 /**
  * @brief	Handle used to access Vulkan Image resource.
  */
-class Image : public DestroyableOwnedHandle<AllocationManager>, public HandleGenerator<Image, ImageView> {
+class Image : public DestroyableOwnedHandle<Image, AllocationManager, Swapchain>,
+              public HandleGenerator<Image, ImageView> {
  public:
   /**
    * @brief Default placeholder constructor.
@@ -79,6 +81,15 @@ class Image : public DestroyableOwnedHandle<AllocationManager>, public HandleGen
    */
   Image(const AllocationManager& alloc_manager, const vk::Image& image, VmaAllocator allocator,
         VmaAllocation allocation, const ImageConfiguration& configuration);
+
+  /**
+   * @brief	Create handle used to access Vulkan Image resource.
+   *
+   * @param	swap_chain    Owner swapchain.
+   * @param	image			    Vulkan image handle.
+   * @param	configuration	Image configuration.
+   */
+  Image(const Swapchain& swap_chain, const vk::Image& image);
 
   /**
    * @brief	Create ImageView for this Image.
@@ -102,9 +113,11 @@ class Image : public DestroyableOwnedHandle<AllocationManager>, public HandleGen
    */
   operator vk::Image() const;
 
+  void destroy() override;
+
  protected:
   /**
-   * @brief	Destroys owned ImageView resoucres, destroys Vulkan Image handle and frees the memory.
+   * @brief	Destroys owned ImageView resources, destroys Vulkan Image handle and frees the memory.
    */
   void free() override;
 

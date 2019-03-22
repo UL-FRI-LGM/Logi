@@ -23,7 +23,7 @@ class ProgramManager;
  * @brief	Wraps the data required to create VkPipelineLayout. It retrieves the data from the given shaders by performing
  * shader reflection using spriv-cross.
  */
-class PipelineLayout : public DestroyableOwnedHandle<ProgramManager>,
+class PipelineLayout : public DestroyableOwnedHandle<PipelineLayout, ProgramManager>,
                        public HandleGenerator<PipelineLayout, DescriptorSetLayout> {
  public:
   /**

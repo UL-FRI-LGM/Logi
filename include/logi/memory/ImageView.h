@@ -47,7 +47,7 @@ class Image;
 /**
  * @brief	Handle used to access Vulkan ImageView resource.
  */
-class ImageView : public DestroyableOwnedHandle<Image> {
+class ImageView : public DestroyableOwnedHandle<ImageView, Image> {
  public:
   ImageView() = default;
 

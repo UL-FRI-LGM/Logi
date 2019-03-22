@@ -8,22 +8,25 @@
 
 #include "logi/base/SwapChain.h"
 #include <utility>
+#include "logi/base/LogicalDevice.h"
+#include "logi/base/PhysicalDevice.h"
 
 namespace logi {
 
 SwapChain::SwapChain(const LogicalDevice& device, const vk::SurfaceKHR& surface, const uint32_t present_family,
                      const std::vector<uint32_t>& concurrent_families)
-  : DestroyableOwnedHandle(device),
-    data_(std::make_shared<SwapchainData>(surface, present_family, concurrent_families)),
-    image_view_hm(std::make_shared<HandleManager>()) {
+  : DestroyableOwnedHandle<LogicalDevice>(device, true),
+    data_(std::make_shared<SwapchainData>(surface, present_family, concurrent_families)) {
+  vk::PhysicalDevice vk_physical_device = getOwner<PhysicalDevice>();
+
   // Check if family with present support was found.
-  const bool present_support = physical_device.getSurfaceSupportKHR(present_family, surface);
+  const bool present_support = vk_physical_device.getSurfaceSupportKHR(present_family, surface);
   if (!present_support) {
     throw std::runtime_error("Given present family does not support presentation on the given surface.");
   }
 
   // Get list of supported surface formats
-  std::vector<vk::SurfaceFormatKHR> surface_formats = physical_device.getSurfaceFormatsKHR(surface);
+  std::vector<vk::SurfaceFormatKHR> surface_formats = vk_physical_device.getSurfaceFormatsKHR(surface);
 
   if (surface_formats.empty()) {
     throw std::runtime_error("Failed to retrieve supported surface formats.");
@@ -55,13 +58,13 @@ SwapChain::SwapChain(const LogicalDevice& device, const vk::SurfaceKHR& surface,
 };
 
 void SwapChain::create(const vk::Extent2D& desired_extent, const bool vsync) const {
-  const vk::PhysicalDevice& physical_device = data_->physical_device;
+  vk::PhysicalDevice vk_physical_device = getOwner<PhysicalDevice>();
+  vk::Device vk_device = getOwner<LogicalDevice>();
   const vk::SurfaceKHR& surface = data_->surface;
-  const vk::Device& device = data_->device;
   const vk::SwapchainKHR old_swapchain = data_->swapchain;
 
   // Get physical device surface properties and formats.
-  const vk::SurfaceCapabilitiesKHR surface_capabilites = physical_device.getSurfaceCapabilitiesKHR(surface);
+  const vk::SurfaceCapabilitiesKHR surface_capabilites = vk_physical_device.getSurfaceCapabilitiesKHR(surface);
 
   // If width (and height) equals the special value 0xFFFFFFFF, the size of the surface will be set by the SwapChain.
   if (surface_capabilites.currentExtent.width == std::numeric_limits<uint32_t>::max()) {
@@ -80,7 +83,7 @@ void SwapChain::create(const vk::Extent2D& desired_extent, const bool vsync) con
 
   // If v-sync is not requested, try to find a mailbox mode. It's the lowest latency non-tearing present mode available
   if (!vsync) {
-    std::vector<vk::PresentModeKHR> present_modes = physical_device.getSurfacePresentModesKHR(surface);
+    std::vector<vk::PresentModeKHR> present_modes = vk_physical_device.getSurfacePresentModesKHR(surface);
 
     for (auto& present_mode : present_modes) {
       if (present_mode == vk::PresentModeKHR::eMailbox) {
@@ -152,7 +155,7 @@ void SwapChain::create(const vk::Extent2D& desired_extent, const bool vsync) con
   swapchain_ci.compositeAlpha = composite_alpha;
 
   // Set additional usage flag for blitting from the swapchain images if supported
-  const vk::FormatProperties format_properties = physical_device.getFormatProperties(data_->color_format);
+  const vk::FormatProperties format_properties = vk_physical_device.getFormatProperties(data_->color_format);
 
   if ((format_properties.optimalTilingFeatures & vk::FormatFeatureFlagBits::eTransferSrcKHR) ||
       (format_properties.optimalTilingFeatures & vk::FormatFeatureFlagBits::eBlitSrc)) {
@@ -160,17 +163,17 @@ void SwapChain::create(const vk::Extent2D& desired_extent, const bool vsync) con
   }
 
   // Create SwapChain.
-  data_->swapchain = device.createSwapchainKHR(swapchain_ci);
+  data_->swapchain = vk_device.createSwapchainKHR(swapchain_ci);
 
   // If an existing swap chain is re-created, destroy the old swap chain
   // This also cleans up all the presentable images
   if (old_swapchain) {
     // Destroy old image views.
-    image_view_hm->destroyAllHandles();
-    device.destroySwapchainKHR(old_swapchain);
+    HandleGenerator<SwapChain, Image>::destroyAllHandles();
+    vk_device.destroySwapchainKHR(old_swapchain);
   }
 
-  data_->images = device.getSwapchainImagesKHR(data_->swapchain);
+  data_->images = vk_device.getSwapchainImagesKHR(data_->swapchain);
 
   // Get the swap chain buffers containing the image and imageview
   data_->image_views.clear();
@@ -244,11 +247,9 @@ const vk::Extent2D& SwapChain::getExtent() const {
   return data_->extent;
 }
 
-SwapChain::SwapchainData::SwapchainData(const vk::PhysicalDevice& physical_device, const vk::Device& device,
-                                        const vk::SurfaceKHR& surface, uint32_t present_family,
+SwapChain::SwapchainData::SwapchainData(const vk::SurfaceKHR& surface, uint32_t present_family,
                                         std::vector<uint32_t> concurrent_families)
-  : physical_device(physical_device), device(device), surface(surface), present_family(present_family),
-    concurrent_families(std::move(concurrent_families)) {
+  : surface(surface), present_family(present_family), concurrent_families(std::move(concurrent_families)) {
   // If present family is not among concurrent families add it.
   if (std::find(this->concurrent_families.begin(), this->concurrent_families.end(), present_family) ==
       this->concurrent_families.end()) {

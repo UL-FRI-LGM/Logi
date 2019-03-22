@@ -76,7 +76,7 @@ class PhysicalDevice;
 /**
  * @brief	Creates VulkanDevice handle used to manage resources of the given Vulkan physical device.
  */
-class LogicalDevice : public DestroyableOwnedHandle<PhysicalDevice>,
+class LogicalDevice : public DestroyableOwnedHandle<LogicalDevice, PhysicalDevice>,
                       public HandleGenerator<LogicalDevice, QueueFamily>,
                       public HandleGenerator<LogicalDevice, AllocationManager>,
                       public HandleGenerator<LogicalDevice, ProgramManager>,
@@ -133,14 +133,14 @@ class LogicalDevice : public DestroyableOwnedHandle<PhysicalDevice>,
    *
    * @return Physical device handle.
    */
-  const vk::PhysicalDevice& getPhysicalDeviceHandle() const;
+  vk::PhysicalDevice getPhysicalDeviceHandle() const;
 
   /**
    * @brief Retrieve logical device handle.
    *
    * @return Logical device handle.
    */
-  const vk::Device& getLogicalDeviceHandle() const;
+  vk::Device getLogicalDeviceHandle() const;
 
   SwapChain createSwapchain(const vk::SurfaceKHR& surface, uint32_t present_family,
                             const std::vector<uint32_t>& concurrent_families = {}) const;

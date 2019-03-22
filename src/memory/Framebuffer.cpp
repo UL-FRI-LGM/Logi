@@ -1,13 +1,13 @@
 #include "logi/memory/Framebuffer.h"
 #include <utility>
 #include "logi/base/LogicalDevice.h"
+#include "logi/program/render_pass/RenderPass.h"
 
 namespace logi {
 
-Framebuffer::Framebuffer(const LogicalDevice& device, const RenderPass& render_pass,
-                         const std::vector<ImageView>& attachments, uint32_t width, uint32_t height, uint32_t layers,
-                         const vk::FramebufferCreateFlags& flags)
-  : DestroyableOwnedHandle<LogicalDevice>(device, true), data_(nullptr) {
+Framebuffer::Framebuffer(const RenderPass& render_pass, const std::vector<ImageView>& attachments, uint32_t width,
+                         uint32_t height, uint32_t layers, const vk::FramebufferCreateFlags& flags)
+  : DestroyableOwnedHandle<RenderPass>(render_pass, true), data_(nullptr) {
   std::vector<vk::ImageView> vk_iv_handles;
   vk_iv_handles.reserve(attachments.size());
 
@@ -16,7 +16,7 @@ Framebuffer::Framebuffer(const LogicalDevice& device, const RenderPass& render_p
   }
 
   vk::FramebufferCreateInfo fb_ci;
-  fb_ci.renderPass = render_pass;
+  fb_ci.renderPass = getOwner<RenderPass>();
   fb_ci.attachmentCount = static_cast<uint32_t>(vk_iv_handles.size());
   fb_ci.pAttachments = vk_iv_handles.data();
   fb_ci.width = width;
@@ -24,7 +24,7 @@ Framebuffer::Framebuffer(const LogicalDevice& device, const RenderPass& render_p
   fb_ci.layers = layers;
   fb_ci.flags = flags;
 
-  vk::Device vk_device = device;
+  vk::Device vk_device = getOwner<LogicalDevice>();
   data_ = std::make_shared<FramebufferData>(ManagedVkFramebuffer(vk_device, vk_device.createFramebuffer(fb_ci)),
                                             attachments, width, height, layers, flags);
 }

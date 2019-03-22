@@ -9,17 +9,17 @@
 
 namespace logi {
 
-class LogicalDevice;
+class RenderPass;
 
-class Framebuffer : public DestroyableOwnedHandle<LogicalDevice> {
+class Framebuffer : public DestroyableOwnedHandle<RenderPass> {
  public:
   /**
    * @brief Default placeholder constructor.
    */
   Framebuffer() = default;
 
-  Framebuffer(const LogicalDevice& device, const RenderPass& render_pass, const std::vector<ImageView>& attachments,
-              uint32_t width, uint32_t height, uint32_t layers, const vk::FramebufferCreateFlags& flags);
+  Framebuffer(const RenderPass& render_pass, const std::vector<ImageView>& attachments, uint32_t width, uint32_t height,
+              uint32_t layers, const vk::FramebufferCreateFlags& flags);
 
   const vk::Framebuffer& getVkHandle() const;
 

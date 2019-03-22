@@ -13,7 +13,7 @@ vk::EventCreateInfo EventCreateInfo::build() const {
 }
 
 Event::Event(const LogicalDevice& device, const EventCreateInfo& event_ci)
-  : DestroyableOwnedHandle(device, true), vk_event_(nullptr) {
+  : DestroyableOwnedHandle<Event, LogicalDevice>(device, true), vk_event_(nullptr) {
   vk::Device vk_device = device;
   vk_event_ = std::make_shared<ManagedVkEvent>(vk_device, vk_device.createEvent(event_ci.build()));
 }
@@ -46,7 +46,7 @@ Event::operator vk::Event() const {
 void Event::free() {
   if (valid()) {
     vk_event_->destroy();
-    DestroyableOwnedHandle<LogicalDevice>::free();
+    DestroyableOwnedHandle<Event, LogicalDevice>::free();
   }
 }
 

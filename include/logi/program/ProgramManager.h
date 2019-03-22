@@ -134,7 +134,7 @@ ShaderModule ProgramManager::loadShaderModule(const std::string& path, const vk:
                                               const ExtTypes& extensions...) const {
   ShaderModuleConfig config(readShaderFile(path), flags);
   config.addExtensions(extensions);
-  return handle_manager_->createHandle<ShaderModule>(device_, config);
+  return HandleGenerator<ProgramManager, ShaderModule>::createHandle(config);
 }
 
 } // namespace logi
