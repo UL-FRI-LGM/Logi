@@ -49,7 +49,7 @@ void ExampleBase::selectDevice() {
 	const std::vector<logi::PhysicalDevice>& devices = vk_instance.devices();
 
 	for (const auto device : devices) {
-		vk::PhysicalDeviceType type = device.properties().deviceType;
+		vk::PhysicalDeviceType type = device.getProperties().deviceType;
 
 		if (type == vk::PhysicalDeviceType::eDiscreteGpu) {
       // If discrete gpu is found select it immediately.

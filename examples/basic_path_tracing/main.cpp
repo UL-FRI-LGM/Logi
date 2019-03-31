@@ -1,4 +1,4 @@
-#include "logi/base/VulkanInstance.h"
+#include "logi/base/vulkan_instance.hpp"
 #define GLFW_INCLUDE_VULKAN
 #include <base/GLFWManager.h>
 #include <glm/glm.hpp>
@@ -64,7 +64,7 @@ public:
 		const std::vector<logi::PhysicalDevice>& devices = instance.devices();
 
 		for (auto it = devices.begin(); it != devices.end(); ++it) {
-			if (it->properties().deviceType == vk::PhysicalDeviceType::eDiscreteGpu) {
+			if (it->getProperties().deviceType == vk::PhysicalDeviceType::eDiscreteGpu) {
 				physical_device = *it;
 				return;
 			}

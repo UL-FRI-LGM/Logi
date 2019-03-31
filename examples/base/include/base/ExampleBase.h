@@ -3,8 +3,8 @@
 
 #define GLFW_INCLUDE_VULKAN
 #include <base/GLFWManager.h>
-#include "logi/base/VulkanInstance.h"
 #include <iostream>
+#include "logi/base/vulkan_instance.hpp"
 
 struct ExampleConfiguration {
 	std::string window_title = "Example";

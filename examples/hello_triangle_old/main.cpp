@@ -1,4 +1,4 @@
-#include "base/VulkanInstance.h"
+#include "base/VulkanInstanceImpl.h"
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 #include "base/SwapChain.h"
