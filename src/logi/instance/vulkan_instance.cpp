@@ -38,8 +38,8 @@ const vk::DispatchLoaderDynamic& VulkanInstance::getDispatcher() const {
   return object_->getDispatcher();
 }
 
-VulkanInstance::operator const vk::Instance&() const {
-  return static_cast<const vk::Instance&>(*object_);
+VulkanInstance::operator vk::Instance() const {
+  return static_cast<vk::Instance>(*object_);
 }
 
 void VulkanInstance::destroy() {

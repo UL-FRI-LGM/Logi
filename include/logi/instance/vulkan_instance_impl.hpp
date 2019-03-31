@@ -31,12 +31,16 @@
 
 namespace logi {
 
+class SurfaceKHR;
+class SurfaceKHRImpl;
+
 /**
  * @brief	Vulkan instance handle.
  */
 class VulkanInstanceImpl : public VulkanObject<VulkanInstanceImpl>,
                            public VulkanObjectComposite<DebugReportCallbackEXTImpl>,
-                           public VulkanObjectComposite<PhysicalDeviceImpl> {
+                           public VulkanObjectComposite<PhysicalDeviceImpl>,
+                           public VulkanObjectComposite<SurfaceKHRImpl> {
  public:
   /**
    * @brief Create Vulkan instance.
@@ -53,11 +57,16 @@ class VulkanInstanceImpl : public VulkanObject<VulkanInstanceImpl>,
 
   void destroyDebugReportCallbackEXT(size_t id);
 
+  SurfaceKHR registerSurfaceKHR(const vk::SurfaceKHR& vk_surface,
+                                const std::optional<vk::AllocationCallbacks>& allocator);
+
+  void destroySurfaceKHR(size_t id);
+
   std::vector<PhysicalDevice> enumeratePhysicalDevices() const;
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
-  operator const vk::Instance&() const;
+  operator vk::Instance() const;
 
   void destroy();
 

@@ -1,6 +1,6 @@
 /**
  * Project Logi source code
- * Copyright (C) 2019 Primoz Lavric
+ * Copyright (C) 2019 Lana Besevic
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGI_BASE_DEBUG_REPORT_CALLBACK_HPP
-#define LOGI_BASE_DEBUG_REPORT_CALLBACK_HPP
+#ifndef LOGI_SURFACE_SURFACE_HPP
+#define LOGI_SURFACE_SURFACE_HPP
 
 #include <vulkan/vulkan.hpp>
 #include "logi/base/handle.hpp"
@@ -25,9 +25,9 @@
 namespace logi {
 
 class VulkanInstance;
-class DebugReportCallbackEXTImpl;
+class SurfaceKHRImpl;
 
-class DebugReportCallbackEXT : public Handle<DebugReportCallbackEXTImpl> {
+class SurfaceKHR : public Handle<SurfaceKHRImpl> {
  public:
   using Handle::Handle;
 
@@ -37,9 +37,9 @@ class DebugReportCallbackEXT : public Handle<DebugReportCallbackEXTImpl> {
 
   void destroy() const;
 
-  operator vk::DebugReportCallbackEXT() const;
+  operator vk::SurfaceKHR() const;
 };
 
 } // namespace logi
 
-#endif // LOGI_DEBUG_REPORT_CALLBACK_HPP
+#endif // LOGI_SURFACE_SURFACE_HPP

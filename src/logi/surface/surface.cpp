@@ -1,6 +1,6 @@
 /**
  * Project Logi source code
- * Copyright (C) 2019 Primoz Lavric
+ * Copyright (C) 2019 Lana Besevic
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,30 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGI_BASE_DEBUG_REPORT_CALLBACK_HPP
-#define LOGI_BASE_DEBUG_REPORT_CALLBACK_HPP
-
-#include <vulkan/vulkan.hpp>
-#include "logi/base/handle.hpp"
+#include "logi/surface/surface.hpp"
+#include "logi/instance/vulkan_instance.hpp"
+#include "logi/instance/vulkan_instance_impl.hpp"
+#include "logi/surface/surface_impl.hpp"
 
 namespace logi {
 
-class VulkanInstance;
-class DebugReportCallbackEXTImpl;
+VulkanInstance SurfaceKHR::getInstance() const {
+  return VulkanInstance(object_->getInstance().shared_from_this());
+}
 
-class DebugReportCallbackEXT : public Handle<DebugReportCallbackEXTImpl> {
- public:
-  using Handle::Handle;
+const vk::DispatchLoaderDynamic& SurfaceKHR::getDispatcher() const {
+  return object_->getDispatcher();
+}
 
-  VulkanInstance getInstance() const;
+void SurfaceKHR::destroy() const {
+  object_->destroy();
+}
 
-  const vk::DispatchLoaderDynamic& getDispatcher() const;
-
-  void destroy() const;
-
-  operator vk::DebugReportCallbackEXT() const;
-};
+SurfaceKHR::operator vk::SurfaceKHR() const {
+  return *object_;
+}
 
 } // namespace logi
-
-#endif // LOGI_DEBUG_REPORT_CALLBACK_HPP

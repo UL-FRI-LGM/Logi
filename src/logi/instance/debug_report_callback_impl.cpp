@@ -42,7 +42,7 @@ void DebugReportCallbackEXTImpl::destroy() const {
   instance_.destroyDebugReportCallbackEXT(id());
 }
 
-DebugReportCallbackEXTImpl::operator const vk::DebugReportCallbackEXT&() const {
+DebugReportCallbackEXTImpl::operator vk::DebugReportCallbackEXT() const {
   return vk_callback_;
 }
 
@@ -54,4 +54,4 @@ void DebugReportCallbackEXTImpl::free() {
   }
 }
 
-}
+} // namespace logi
