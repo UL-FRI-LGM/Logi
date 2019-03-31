@@ -17,6 +17,7 @@
  */
 
 #include "logi/instance/vulkan_instance.hpp"
+#include "logi/instance/debug_report_callback_impl.hpp"
 #include "logi/instance/vulkan_instance_impl.hpp"
 
 namespace logi {
@@ -38,8 +39,8 @@ const vk::DispatchLoaderDynamic& VulkanInstance::getDispatcher() const {
   return object_->getDispatcher();
 }
 
-VulkanInstance::operator const vk::Instance&() const {
-  return static_cast<const vk::Instance&>(*object_);
+VulkanInstance::operator vk::Instance() const {
+  return object_->operator vk::Instance();
 }
 
 void VulkanInstance::destroy() {

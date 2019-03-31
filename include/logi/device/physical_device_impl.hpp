@@ -29,8 +29,10 @@ namespace logi {
  * @brief Forward declaration for owner reference.
  */
 class VulkanInstanceImpl;
+class LogicalDevice;
+class LogicalDeviceImpl;
 
-class PhysicalDeviceImpl : public VulkanObject<PhysicalDeviceImpl> {
+class PhysicalDeviceImpl : public VulkanObject<PhysicalDeviceImpl>, public VulkanObjectComposite<LogicalDeviceImpl> {
  public:
   /**
    * @brief Vulkan physical device.
@@ -238,6 +240,11 @@ class PhysicalDeviceImpl : public VulkanObject<PhysicalDeviceImpl> {
     getGeneratedCommandsPropertiesNVX(vk::DeviceGeneratedCommandsFeaturesNVX& features) const {
     return vk_physical_device_.getGeneratedCommandsPropertiesNVX<X, Y, Z...>(features, getDispatcher());
   }
+
+  LogicalDevice createLogicalDevice(const vk::DeviceCreateInfo& create_info,
+                                    const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyLogicalDevice(size_t id);
 
   /**
    * @brief   Retrieve reference to the instance implementation.

@@ -17,6 +17,8 @@
  */
 
 #include "logi/device/physical_device_impl.hpp"
+#include "logi/device/logical_device.hpp"
+#include "logi/device/logical_device_impl.hpp"
 #include "logi/instance/vulkan_instance_impl.hpp"
 
 namespace logi {
@@ -169,13 +171,18 @@ vk::DeviceGeneratedCommandsLimitsNVX
   return vk_physical_device_.getGeneratedCommandsPropertiesNVX(features, getDispatcher());
 }
 
+LogicalDevice PhysicalDeviceImpl::createLogicalDevice(const vk::DeviceCreateInfo& create_info,
+                                                      const std::optional<vk::AllocationCallbacks>& allocator) {
+  return LogicalDevice(VulkanObjectComposite<LogicalDeviceImpl>::createObject(*this, create_info, allocator));
+}
+
+void PhysicalDeviceImpl::destroyLogicalDevice(size_t id) {
+  VulkanObjectComposite<LogicalDeviceImpl>::destroyObject(id);
+}
+
 VulkanInstanceImpl& PhysicalDeviceImpl::getInstance() const {
   return instance_;
 }
-
-/*const Handle<LogicalDevice>& PhysicalDevice::createLogicalDevice(const vk::DeviceCreateInfo& create_info) const {
-  return HandleComposite<LogicalDevice>::createHandle(Handle<PhysicalDevice>(shared_from_this()), create_info);
-}*/
 
 const vk::DispatchLoaderDynamic& PhysicalDeviceImpl::getDispatcher() const {
   return instance_.getDispatcher();

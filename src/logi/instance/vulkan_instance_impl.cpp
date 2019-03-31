@@ -18,7 +18,10 @@
 
 #include "logi/instance/vulkan_instance_impl.hpp"
 #include "logi/base/exception.hpp"
+#include "logi/device/physical_device.hpp"
 #include "logi/device/physical_device_impl.hpp"
+#include "logi/instance/debug_report_callback.hpp"
+#include "logi/instance/debug_report_callback_impl.hpp"
 
 namespace logi {
 
@@ -37,7 +40,6 @@ VulkanInstanceImpl::VulkanInstanceImpl(const vk::InstanceCreateInfo& create_info
   // Fetch available physical devices.
   std::vector<vk::PhysicalDevice> devices = vk_instance_.enumeratePhysicalDevices(dispatcher_);
 
-  // physical_devices_.reserve(devices.size());
   // Create Vulkan device handles.
   for (vk::PhysicalDevice& device : devices) {
     VulkanObjectComposite<PhysicalDeviceImpl>::createObject(*this, device);
@@ -72,7 +74,7 @@ const vk::DispatchLoaderDynamic& VulkanInstanceImpl::getDispatcher() const {
   return dispatcher_;
 }
 
-VulkanInstanceImpl::operator const vk::Instance&() const {
+VulkanInstanceImpl::operator vk::Instance() const {
   return vk_instance_;
 }
 

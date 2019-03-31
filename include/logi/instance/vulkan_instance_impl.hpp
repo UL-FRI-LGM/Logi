@@ -25,11 +25,13 @@
 #include <vector>
 #include <vulkan/vulkan.hpp>
 #include "logi/base/vulkan_object.hpp"
-#include "logi/device/physical_device.hpp"
-#include "logi/instance/debug_report_callback.hpp"
-#include "logi/instance/debug_report_callback_impl.hpp"
 
 namespace logi {
+
+class DebugReportCallbackEXT;
+class DebugReportCallbackEXTImpl;
+class PhysicalDevice;
+class PhysicalDeviceImpl;
 
 /**
  * @brief	Vulkan instance handle.
@@ -57,7 +59,7 @@ class VulkanInstanceImpl : public VulkanObject<VulkanInstanceImpl>,
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
-  operator const vk::Instance&() const;
+  operator vk::Instance() const;
 
   void destroy();
 

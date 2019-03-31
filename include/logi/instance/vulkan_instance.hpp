@@ -42,7 +42,7 @@ class VulkanInstance : public Handle<VulkanInstanceImpl> {
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
-  operator const vk::Instance&() const;
+  operator vk::Instance() const;
 
   void destroy();
 };
