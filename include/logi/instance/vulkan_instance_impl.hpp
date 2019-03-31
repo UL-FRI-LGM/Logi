@@ -32,13 +32,16 @@ class DebugReportCallbackEXT;
 class DebugReportCallbackEXTImpl;
 class PhysicalDevice;
 class PhysicalDeviceImpl;
+class SurfaceKHR;
+class SurfaceKHRImpl;
 
 /**
  * @brief	Vulkan instance handle.
  */
 class VulkanInstanceImpl : public VulkanObject<VulkanInstanceImpl>,
                            public VulkanObjectComposite<DebugReportCallbackEXTImpl>,
-                           public VulkanObjectComposite<PhysicalDeviceImpl> {
+                           public VulkanObjectComposite<PhysicalDeviceImpl>,
+                           public VulkanObjectComposite<SurfaceKHRImpl> {
  public:
   /**
    * @brief Create Vulkan instance.
@@ -54,6 +57,11 @@ class VulkanInstanceImpl : public VulkanObject<VulkanInstanceImpl>,
                                                       const std::optional<vk::AllocationCallbacks>& allocator);
 
   void destroyDebugReportCallbackEXT(size_t id);
+
+  SurfaceKHR registerSurfaceKHR(const vk::SurfaceKHR& vk_surface,
+                                const std::optional<vk::AllocationCallbacks>& allocator);
+
+  void destroySurfaceKHR(size_t id);
 
   std::vector<PhysicalDevice> enumeratePhysicalDevices() const;
 

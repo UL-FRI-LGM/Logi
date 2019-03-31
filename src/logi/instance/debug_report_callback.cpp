@@ -35,4 +35,8 @@ void DebugReportCallbackEXT::destroy() const {
   object_->destroy();
 }
 
+DebugReportCallbackEXT::operator vk::DebugReportCallbackEXT() const {
+  return *object_;
 }
+
+} // namespace logi

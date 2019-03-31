@@ -22,6 +22,8 @@
 #include "logi/device/physical_device_impl.hpp"
 #include "logi/instance/debug_report_callback.hpp"
 #include "logi/instance/debug_report_callback_impl.hpp"
+#include "logi/surface/surface.hpp"
+#include "logi/surface/surface_impl.hpp"
 
 namespace logi {
 
@@ -35,7 +37,7 @@ VulkanInstanceImpl::VulkanInstanceImpl(const vk::InstanceCreateInfo& create_info
   init_dispatch.vkCreateInstance = pfn_create_instance;
 
   vk_instance_ = vk::createInstance(create_info, allocator_ ? &allocator.value() : nullptr, init_dispatch);
-  dispatcher_ = vk::DispatchLoaderDynamic(vk_instance_, pfn_get_instance_proc_addr);
+  dispatcher_ = vk::DispatchLoaderDynamic(static_cast<VkInstance>(vk_instance_), pfn_get_instance_proc_addr);
 
   // Fetch available physical devices.
   std::vector<vk::PhysicalDevice> devices = vk_instance_.enumeratePhysicalDevices(dispatcher_);
@@ -48,13 +50,22 @@ VulkanInstanceImpl::VulkanInstanceImpl(const vk::InstanceCreateInfo& create_info
 
 DebugReportCallbackEXT
   VulkanInstanceImpl::createDebugReportCallbackEXT(const vk::DebugReportCallbackCreateInfoEXT& create_info,
-                                                   const std::optional<vk::AllocationCallbacks>& allocator = {}) {
+                                                   const std::optional<vk::AllocationCallbacks>& allocator) {
   return DebugReportCallbackEXT(
     VulkanObjectComposite<DebugReportCallbackEXTImpl>::createObject(*this, create_info, allocator));
 }
 
 void VulkanInstanceImpl::destroyDebugReportCallbackEXT(size_t id) {
   VulkanObjectComposite<DebugReportCallbackEXTImpl>::destroyObject(id);
+}
+
+SurfaceKHR VulkanInstanceImpl::registerSurfaceKHR(const vk::SurfaceKHR& vk_surface,
+                                                  const std::optional<vk::AllocationCallbacks>& allocator) {
+  return SurfaceKHR(VulkanObjectComposite<SurfaceKHRImpl>::createObject(*this, vk_surface, allocator));
+}
+
+void VulkanInstanceImpl::destroySurfaceKHR(size_t id) {
+  VulkanObjectComposite<SurfaceKHRImpl>::destroyObject(id);
 }
 
 std::vector<PhysicalDevice> VulkanInstanceImpl::enumeratePhysicalDevices() const {

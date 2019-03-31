@@ -16,7 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGI_SURFACE_IMPL_HPP
-#define LOGI_SURFACE_IMPL_HPP
+#ifndef LOGI_SURFACE_SURFACE_IMPL_HPP
+#define LOGI_SURFACE_SURFACE_IMPL_HPP
 
-#endif // LOGI_SURFACE_IMPL_HPP
+#include "logi/base/vulkan_object.hpp"
+
+namespace logi {
+
+class VulkanInstanceImpl;
+
+class SurfaceKHRImpl : public VulkanObject<SurfaceKHRImpl> {
+ public:
+  SurfaceKHRImpl(VulkanInstanceImpl& instance, const vk::SurfaceKHR& vk_surface,
+                 const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  VulkanInstanceImpl& getInstance() const;
+
+  const vk::DispatchLoaderDynamic& getDispatcher() const;
+
+  void destroy() const;
+
+  operator vk::SurfaceKHR() const;
+
+ protected:
+  void free() override;
+
+ private:
+  VulkanInstanceImpl& instance_;
+  std::optional<vk::AllocationCallbacks> allocator_;
+  vk::SurfaceKHR vk_surface_;
+};
+
+} // namespace logi
+
+#endif // LOGI_SURFACE_SURFACE_IMPL_HPP
