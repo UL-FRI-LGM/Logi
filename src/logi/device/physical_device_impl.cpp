@@ -17,7 +17,6 @@
  */
 
 #include "logi/device/physical_device_impl.hpp"
-#include "logi/device/logical_device.hpp"
 #include "logi/device/logical_device_impl.hpp"
 #include "logi/instance/vulkan_instance_impl.hpp"
 
@@ -159,6 +158,41 @@ std::vector<vk::SparseImageFormatProperties2KHR> PhysicalDeviceImpl::getSparseIm
   return vk_physical_device_.getSparseImageFormatProperties2KHR(p_sparse_image_format_properties, getDispatcher());
 }
 
+vk::ResultValueType<std::vector<vk::Rect2D>>::type
+  PhysicalDeviceImpl::getPresentRectanglesKHR(vk::SurfaceKHR surface) const {
+  return vk_physical_device_.getPresentRectanglesKHR(surface, getDispatcher());
+}
+
+vk::ResultValueType<vk::SurfaceCapabilitiesKHR>::type
+  PhysicalDeviceImpl::getSurfaceCapabilitiesKHR(vk::SurfaceKHR surface) const {
+  return vk_physical_device_.getSurfaceCapabilitiesKHR(surface, getDispatcher());
+}
+
+vk::ResultValueType<std::vector<vk::SurfaceFormatKHR>>::type
+  PhysicalDeviceImpl::getSurfaceFormatsKHR(vk::SurfaceKHR surface) const {
+  return vk_physical_device_.getSurfaceFormatsKHR(surface, getDispatcher());
+}
+
+vk::ResultValueType<vk::SurfaceCapabilities2KHR>::type
+  PhysicalDeviceImpl::getSurfaceCapabilities2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surface_info) const {
+  return vk_physical_device_.getSurfaceCapabilities2KHR(surface_info, getDispatcher());
+}
+
+vk::ResultValueType<std::vector<vk::SurfaceFormat2KHR>>::type
+  PhysicalDeviceImpl::getSurfaceFormats2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surface_info) const {
+  return vk_physical_device_.getSurfaceFormats2KHR(surface_info, getDispatcher());
+}
+
+vk::ResultValueType<std::vector<vk::PresentModeKHR>>::type
+  PhysicalDeviceImpl::getSurfacePresentModesKHR(vk::SurfaceKHR surface) const {
+  return vk_physical_device_.getSurfacePresentModesKHR(surface, getDispatcher());
+}
+
+vk::ResultValueType<vk::Bool32>::type PhysicalDeviceImpl::getSurfaceSupportKHR(uint32_t queue_index,
+                                                                               vk::SurfaceKHR surface) const {
+  return vk_physical_device_.getSurfaceSupportKHR(queue_index, surface, getDispatcher());
+}
+
 vk::ExternalImageFormatPropertiesNV PhysicalDeviceImpl::getExternalImageFormatPropertiesNV(
   vk::Format format, vk::ImageType type, vk::ImageTiling tiling, const vk::ImageUsageFlags& usage,
   const vk::ImageCreateFlags& flags, const vk::ExternalMemoryHandleTypeFlagsNV& external_handle_type) const {
@@ -171,9 +205,10 @@ vk::DeviceGeneratedCommandsLimitsNVX
   return vk_physical_device_.getGeneratedCommandsPropertiesNVX(features, getDispatcher());
 }
 
-LogicalDevice PhysicalDeviceImpl::createLogicalDevice(const vk::DeviceCreateInfo& create_info,
-                                                      const std::optional<vk::AllocationCallbacks>& allocator) {
-  return LogicalDevice(VulkanObjectComposite<LogicalDeviceImpl>::createObject(*this, create_info, allocator));
+std::shared_ptr<LogicalDeviceImpl>
+  PhysicalDeviceImpl::createLogicalDevice(const vk::DeviceCreateInfo& create_info,
+                                          const std::optional<vk::AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<LogicalDeviceImpl>::createObject(*this, create_info, allocator);
 }
 
 void PhysicalDeviceImpl::destroyLogicalDevice(size_t id) {
@@ -193,7 +228,8 @@ PhysicalDeviceImpl::operator vk::PhysicalDevice() const {
 }
 
 void PhysicalDeviceImpl::free() {
-  // VulkanObjectComposite<LogicalDeviceImpl>::destroyAllObjects();
+  VulkanObjectComposite<LogicalDeviceImpl>::destroyAllObjects();
+  vk_physical_device_ = nullptr;
   VulkanObject::free();
 }
 

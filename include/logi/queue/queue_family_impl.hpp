@@ -16,29 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGI_SURFACE_SURFACE_IMPL_HPP
-#define LOGI_SURFACE_SURFACE_IMPL_HPP
+#ifndef LOGI_QUEUE_QUEUE_FAMILY_IMPL_HPP
+#define LOGI_QUEUE_QUEUE_FAMILY_IMPL_HPP
 
 #include "logi/base/vulkan_object.hpp"
 
 namespace logi {
 
 class VulkanInstanceImpl;
+class PhysicalDeviceImpl;
+class LogicalDeviceImpl;
 
-class SurfaceKHRImpl : public VulkanObject<SurfaceKHRImpl> {
+class QueueFamilyImpl : public VulkanObject<QueueFamilyImpl> {
  public:
-  SurfaceKHRImpl(VulkanInstanceImpl& instance, const vk::SurfaceKHR& vk_surface,
-                 const std::optional<vk::AllocationCallbacks>& allocator = {});
+  QueueFamilyImpl(LogicalDeviceImpl& instance, const vk::DeviceQueueCreateInfo& queue_create_info);
 
   // region Logi Declarations
 
   VulkanInstanceImpl& getInstance() const;
 
+  PhysicalDeviceImpl& getPhysicalDevice() const;
+
+  LogicalDeviceImpl& getLogicalDevice() const;
+
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
   void destroy() const;
 
-  operator vk::SurfaceKHR() const;
+  operator uint32_t() const;
 
  protected:
   void free() override;
@@ -46,11 +51,10 @@ class SurfaceKHRImpl : public VulkanObject<SurfaceKHRImpl> {
   // endregion
 
  private:
-  VulkanInstanceImpl& instance_;
-  std::optional<vk::AllocationCallbacks> allocator_;
-  vk::SurfaceKHR vk_surface_;
+  LogicalDeviceImpl& logical_device_;
+  uint32_t queue_family_index_;
 };
 
 } // namespace logi
 
-#endif // LOGI_SURFACE_SURFACE_IMPL_HPP
+#endif // LOGI_QUEUE_QUEUE_FAMILY_IMPL_HPP

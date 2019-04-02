@@ -29,8 +29,8 @@ LogicalDeviceImpl::LogicalDeviceImpl(PhysicalDeviceImpl& physical_device, const 
   vk::PhysicalDevice vk_physical_device = physical_device;
   const vk::DispatchLoaderDynamic& instance_dispatcher = physical_device.getDispatcher();
 
-  vk_device_ = vk_physical_device.createDevice(create_info, allocator_ ? allocator_.value() : nullptr,
-                                               physical_device.getDispatcher());
+  vk_device_ =
+    vk_physical_device.createDevice(create_info, allocator_ ? &allocator.value() : nullptr, instance_dispatcher);
 
   // Initialize device dispatcher.
   dispatcher_ = vk::DispatchLoaderDynamic(vk_instance, instance_dispatcher.vkGetInstanceProcAddr, vk_device_,
@@ -58,12 +58,10 @@ LogicalDeviceImpl::operator const vk::Device() const {
 }
 
 void LogicalDeviceImpl::free() {
-  if (valid()) {
-    // TODO (Destroy composited objects)
-
-    vk_device_.destroy(allocator_ ? allocator_.value() : nullptr, dispatcher_);
-    VulkanObject::free();
-  }
+  // TODO (Destroy composited objects)
+  vk_device_.destroy(allocator_ ? &allocator_.value() : nullptr, dispatcher_);
+  vk_device_ = nullptr;
+  VulkanObject::free();
 }
 
 }

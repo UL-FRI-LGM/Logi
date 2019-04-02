@@ -36,7 +36,7 @@ VulkanInstanceImpl::VulkanInstanceImpl(const vk::InstanceCreateInfo& create_info
   vk::DispatchLoaderDynamic init_dispatch;
   init_dispatch.vkCreateInstance = pfn_create_instance;
 
-  vk_instance_ = vk::createInstance(create_info, allocator_ ? &allocator.value() : nullptr, init_dispatch);
+  vk_instance_ = vk::createInstance(create_info, allocator_ ? &allocator_.value() : nullptr, init_dispatch);
   dispatcher_ = vk::DispatchLoaderDynamic(static_cast<VkInstance>(vk_instance_), pfn_get_instance_proc_addr);
 
   // Fetch available physical devices.
@@ -90,16 +90,15 @@ VulkanInstanceImpl::operator vk::Instance() const {
 }
 
 void VulkanInstanceImpl::free() {
-  if (valid()) {
-    VulkanObjectComposite<PhysicalDeviceImpl>::destroyAllObjects();
+  VulkanObjectComposite<PhysicalDeviceImpl>::destroyAllObjects();
 
-    for (const auto& callback : debug_callbacks_) {
-      vk_instance_.destroyDebugReportCallbackEXT(callback, nullptr, dispatcher_);
-    }
-
-    vk_instance_.destroy(allocator_ ? &allocator_.value() : nullptr);
-    VulkanObject::free();
+  for (const auto& callback : debug_callbacks_) {
+    vk_instance_.destroyDebugReportCallbackEXT(callback, nullptr, dispatcher_);
   }
+
+  vk_instance_.destroy(allocator_ ? &allocator_.value() : nullptr);
+  vk_instance_ = nullptr;
+  VulkanObject::free();
 }
 
 void VulkanInstanceImpl::destroy() {

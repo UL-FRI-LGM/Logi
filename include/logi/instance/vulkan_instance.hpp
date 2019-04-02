@@ -24,14 +24,15 @@
 #include "logi/base/handle.hpp"
 #include "logi/device/physical_device.hpp"
 #include "logi/instance/debug_report_callback.hpp"
+#include "logi/instance/vulkan_instance_impl.hpp"
 
 namespace logi {
-
-class VulkanInstanceImpl;
 
 class VulkanInstance : public Handle<VulkanInstanceImpl> {
  public:
   using Handle::Handle;
+
+  // region Logi Declarations
 
   DebugReportCallbackEXT createDebugReportCallbackEXT(const vk::DebugReportCallbackCreateInfoEXT& create_info,
                                                       const std::optional<vk::AllocationCallbacks>& allocator) const;
@@ -45,6 +46,8 @@ class VulkanInstance : public Handle<VulkanInstanceImpl> {
   operator vk::Instance() const;
 
   void destroy();
+
+  // endregion
 };
 
 VulkanInstance createInstance(const vk::InstanceCreateInfo& create_info,

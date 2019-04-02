@@ -43,7 +43,8 @@ SurfaceKHRImpl::operator vk::SurfaceKHR() const {
 
 void SurfaceKHRImpl::free() {
   vk::Instance vk_instance = instance_;
-  vk_instance.destroySurfaceKHR(vk_surface_, allocator_.value_or(nullptr), getDispatcher());
+  vk_instance.destroySurfaceKHR(vk_surface_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+  vk_surface_ = nullptr;
   VulkanObject::free();
 }
 

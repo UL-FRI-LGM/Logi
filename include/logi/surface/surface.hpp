@@ -31,6 +31,8 @@ class SurfaceKHR : public Handle<SurfaceKHRImpl> {
  public:
   using Handle::Handle;
 
+  // region Logi Declarations
+
   VulkanInstance getInstance() const;
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
@@ -38,6 +40,8 @@ class SurfaceKHR : public Handle<SurfaceKHRImpl> {
   void destroy() const;
 
   operator vk::SurfaceKHR() const;
+
+  // endregion
 };
 
 } // namespace logi

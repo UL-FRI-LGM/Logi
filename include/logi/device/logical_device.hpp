@@ -20,12 +20,11 @@
 #define LOGI_DEVICE_LOGICAL_DEVICE_HPP
 
 #include "logi/base/handle.hpp"
+#include "logi/device/logical_device_impl.hpp"
 
 namespace logi {
 
-class LogicalDeviceImpl;
-
-class LogicalDevice : Handle<LogicalDeviceImpl> {
+class LogicalDevice : public Handle<LogicalDeviceImpl> {
  public:
   using Handle::Handle;
 };

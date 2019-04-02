@@ -21,6 +21,20 @@ TEST(Instance, Vk) {
   VulkanInstance instance = createInstance(ci);
   VulkanInstance second = instance;
   std::vector<PhysicalDevice> devices = second.enumeratePhysicalDevices();
+
+  vk::PhysicalDeviceFeatures features;
+  vk::DeviceCreateInfo dci;
+  vk::DeviceQueueCreateInfo qci;
+  qci.queueFamilyIndex = 0;
+  qci.queueCount = 1;
+  float priority = 0.1;
+  qci.pQueuePriorities = &priority;
+
+  dci.pQueueCreateInfos = &qci;
+  dci.queueCreateInfoCount = 1;
+  dci.pEnabledFeatures = &features;
+
+  LogicalDevice log_device = devices[0].createLogicalDevice(dci);
   int a = 0;
   // devices[0].getExternalBufferProperties();
 
