@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGI_SYNCHRONIZATION_SEMAPHORE_IMPL_HPP
-#define LOGI_SYNCHRONIZATION_SEMAPHORE_IMPL_HPP
+#ifndef LOGI_NVIDIA_OBJECT_TABLE_NVX_IMPL_HPP
+#define LOGI_NVIDIA_OBJECT_TABLE_NVX_IMPL_HPP
 
 #include <vulkan/vulkan.hpp>
 #include "logi/base/vulkan_object.hpp"
@@ -28,10 +28,21 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 
-class SemaphoreImpl : public VulkanObject<SemaphoreImpl> {
+class ObjectTableNVXImpl : public VulkanObject<ObjectTableNVXImpl> {
  public:
-  SemaphoreImpl(LogicalDeviceImpl& logical_device, const vk::SemaphoreCreateInfo& create_info,
-                const std::optional<vk::AllocationCallbacks>& allocator = {});
+  ObjectTableNVXImpl(LogicalDeviceImpl& logical_device, const vk::ObjectTableCreateInfoNVX& create_info,
+                     const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  // region Vulkan Declarations
+
+  vk::ResultValueType<void>::type
+    registerObjectsNVX(vk::ArrayProxy<const vk::ObjectTableEntryNVX* const> object_table_entries,
+                       vk::ArrayProxy<const uint32_t> object_indices) const;
+
+  vk::ResultValueType<void>::type unregisterObjectsNVX(vk::ArrayProxy<const vk::ObjectEntryTypeNVX> object_entry_types,
+                                                       vk::ArrayProxy<const uint32_t> object_indices) const;
+
+  // endregion
 
   // region Logi Declarations
 
@@ -45,7 +56,7 @@ class SemaphoreImpl : public VulkanObject<SemaphoreImpl> {
 
   void destroy() const;
 
-  operator vk::Semaphore() const;
+  operator vk::ObjectTableNVX() const;
 
  protected:
   void free() override;
@@ -55,9 +66,8 @@ class SemaphoreImpl : public VulkanObject<SemaphoreImpl> {
  private:
   LogicalDeviceImpl& logical_device_;
   std::optional<vk::AllocationCallbacks> allocator_;
-  vk::Semaphore vk_semaphore_;
+  vk::ObjectTableNVX vk_object_table_nvx;
 };
-
 } // namespace logi
 
-#endif // LOGI_SYNCHRONIZATION_SEMAPHORE_IMPL_HPP
+#endif // LOGI_NVIDIA_OBJECT_TABLE_NVX_IMPL_HPP

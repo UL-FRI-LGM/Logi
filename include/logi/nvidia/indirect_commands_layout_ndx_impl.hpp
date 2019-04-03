@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGI_SYNCHRONIZATION_SEMAPHORE_IMPL_HPP
-#define LOGI_SYNCHRONIZATION_SEMAPHORE_IMPL_HPP
+#ifndef LOGI_NVIDIA_INDIRECT_COMMANDS_LAYOUT_NDX_IMPL_HPP
+#define LOGI_NVIDIA_INDIRECT_COMMANDS_LAYOUT_NDX_IMPL_HPP
 
 #include <vulkan/vulkan.hpp>
 #include "logi/base/vulkan_object.hpp"
@@ -28,10 +28,11 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 
-class SemaphoreImpl : public VulkanObject<SemaphoreImpl> {
+class IndirectCommandsLayoutNVXImpl : public VulkanObject<IndirectCommandsLayoutNVXImpl> {
  public:
-  SemaphoreImpl(LogicalDeviceImpl& logical_device, const vk::SemaphoreCreateInfo& create_info,
-                const std::optional<vk::AllocationCallbacks>& allocator = {});
+  IndirectCommandsLayoutNVXImpl(LogicalDeviceImpl& logical_device,
+                                const vk::IndirectCommandsLayoutCreateInfoNVX& create_info,
+                                const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   // region Logi Declarations
 
@@ -45,7 +46,7 @@ class SemaphoreImpl : public VulkanObject<SemaphoreImpl> {
 
   void destroy() const;
 
-  operator vk::Semaphore() const;
+  operator vk::IndirectCommandsLayoutNVX() const;
 
  protected:
   void free() override;
@@ -55,9 +56,9 @@ class SemaphoreImpl : public VulkanObject<SemaphoreImpl> {
  private:
   LogicalDeviceImpl& logical_device_;
   std::optional<vk::AllocationCallbacks> allocator_;
-  vk::Semaphore vk_semaphore_;
+  vk::IndirectCommandsLayoutNVX vk_indirect_commands_layout_nvx;
 };
 
 } // namespace logi
 
-#endif // LOGI_SYNCHRONIZATION_SEMAPHORE_IMPL_HPP
+#endif // LOGI_NVIDIA_INDIRECT_COMMANDS_LAYOUT_NDX_IMPL_HPP

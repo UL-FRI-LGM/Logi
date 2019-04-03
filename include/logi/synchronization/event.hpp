@@ -55,7 +55,7 @@ class Event : public Handle<EventImpl> {
 
   void destroy() const;
 
-  operator const vk::Event() const;
+  operator vk::Event() const;
 
   // endregion
 };

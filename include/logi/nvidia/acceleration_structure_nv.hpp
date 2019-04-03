@@ -16,48 +16,53 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGI_SYNCHRONIZATION_SEMAPHORE_IMPL_HPP
-#define LOGI_SYNCHRONIZATION_SEMAPHORE_IMPL_HPP
+#ifndef LOGI_NVIDIA_ACCELERATION_STRUCTURE_NV_HPP
+#define LOGI_NVIDIA_ACCELERATION_STRUCTURE_NV_HPP
 
 #include <vulkan/vulkan.hpp>
-#include "logi/base/vulkan_object.hpp"
+#include "logi/base/handle.hpp"
+#include "logi/nvidia/acceleration_structure_nv_impl.hpp"
 
 namespace logi {
 
-class VulkanInstanceImpl;
-class PhysicalDeviceImpl;
-class LogicalDeviceImpl;
+class AccelerationStructureNVImpl;
+class VulkanInstance;
+class PhysicalDevice;
+class LogicalDevice;
 
-class SemaphoreImpl : public VulkanObject<SemaphoreImpl> {
+class AccelerationStructureNV : public Handle<AccelerationStructureNVImpl> {
  public:
-  SemaphoreImpl(LogicalDeviceImpl& logical_device, const vk::SemaphoreCreateInfo& create_info,
-                const std::optional<vk::AllocationCallbacks>& allocator = {});
+  using Handle::Handle;
+
+  // region Vulkan Declarations
+
+  template <typename T>
+  vk::ResultValueType<void>::type getHandleNV(vk::ArrayProxy<T> data) const;
+
+  // endregion
 
   // region Logi Declarations
 
-  VulkanInstanceImpl& getInstance() const;
+  VulkanInstance getInstance() const;
 
-  PhysicalDeviceImpl& getPhysicalDevice() const;
+  PhysicalDevice getPhysicalDevice() const;
 
-  LogicalDeviceImpl& getLogicalDevice() const;
+  LogicalDevice getLogicalDevice() const;
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
   void destroy() const;
 
-  operator vk::Semaphore() const;
-
- protected:
-  void free() override;
+  operator vk::AccelerationStructureNV() const;
 
   // endregion
-
- private:
-  LogicalDeviceImpl& logical_device_;
-  std::optional<vk::AllocationCallbacks> allocator_;
-  vk::Semaphore vk_semaphore_;
 };
+
+template <typename T>
+vk::ResultValueType<void>::type AccelerationStructureNV::getHandleNV(vk::ArrayProxy<T> data) const {
+  return object_->getHandleNV(data);
+}
 
 } // namespace logi
 
-#endif // LOGI_SYNCHRONIZATION_SEMAPHORE_IMPL_HPP
+#endif // LOGI_ACCELERATION_STRUCTURE_NV_HPP

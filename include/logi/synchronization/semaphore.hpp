@@ -45,7 +45,7 @@ class Semaphore : public Handle<SemaphoreImpl> {
 
   void destroy() const;
 
-  operator const vk::Semaphore() const;
+  operator vk::Semaphore() const;
 
   // endregion
 };

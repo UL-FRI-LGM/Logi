@@ -36,7 +36,7 @@ void SurfaceKHR::destroy() const {
 }
 
 SurfaceKHR::operator vk::SurfaceKHR() const {
-  return *object_;
+  return object_->operator vk::SurfaceKHR();
 }
 
 } // namespace logi

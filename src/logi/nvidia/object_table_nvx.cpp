@@ -16,37 +16,49 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "logi/synchronization/semaphore.hpp"
+#include "logi/nvidia/object_table_nvx.hpp"
 #include "logi/device/logical_device_impl.hpp"
 #include "logi/device/physical_device_impl.hpp"
 #include "logi/instance/vulkan_instance.hpp"
 #include "logi/instance/vulkan_instance_impl.hpp"
-#include "logi/synchronization/semaphore_impl.hpp"
+#include "logi/nvidia/object_table_nvx_impl.hpp"
 
 namespace logi {
 
-VulkanInstance Semaphore::getInstance() const {
+vk::ResultValueType<void>::type
+  ObjectTableNVX::registerObjectsNVX(vk::ArrayProxy<const vk::ObjectTableEntryNVX* const> object_table_entries,
+                                     vk::ArrayProxy<const uint32_t> object_indices) const {
+  return object_->registerObjectsNVX(object_table_entries, object_indices);
+}
+
+vk::ResultValueType<void>::type
+  ObjectTableNVX::unregisterObjectsNVX(vk::ArrayProxy<const vk::ObjectEntryTypeNVX> object_entry_types,
+                                       vk::ArrayProxy<const uint32_t> object_indices) const {
+  return object_->unregisterObjectsNVX(object_entry_types, object_indices);
+}
+
+VulkanInstance ObjectTableNVX::getInstance() const {
   return VulkanInstance(object_->getInstance().shared_from_this());
 }
 
-PhysicalDevice Semaphore::getPhysicalDevice() const {
+PhysicalDevice ObjectTableNVX::getPhysicalDevice() const {
   return PhysicalDevice(object_->getPhysicalDevice().shared_from_this());
 }
 
-LogicalDevice Semaphore::getLogicalDevice() const {
+LogicalDevice ObjectTableNVX::getLogicalDevice() const {
   return LogicalDevice(object_->getLogicalDevice().shared_from_this());
 }
 
-const vk::DispatchLoaderDynamic& Semaphore::getDispatcher() const {
+const vk::DispatchLoaderDynamic& ObjectTableNVX::getDispatcher() const {
   return object_->getDispatcher();
 }
 
-void Semaphore::destroy() const {
+void ObjectTableNVX::destroy() const {
   object_->destroy();
 }
 
-Semaphore::operator vk::Semaphore() const {
-  return object_->operator vk::Semaphore();
+ObjectTableNVX::operator vk::ObjectTableNVX() const {
+  return object_->operator vk::ObjectTableNVX();
 }
 
 } // namespace logi
