@@ -19,6 +19,8 @@
 #include "logi/device/logical_device_impl.hpp"
 #include "logi/device/physical_device_impl.hpp"
 #include "logi/instance/vulkan_instance_impl.hpp"
+#include "logi/queue/queue_family.hpp"
+#include "logi/queue/queue_family_impl.hpp"
 
 namespace logi {
 
@@ -35,6 +37,24 @@ LogicalDeviceImpl::LogicalDeviceImpl(PhysicalDeviceImpl& physical_device, const 
   // Initialize device dispatcher.
   dispatcher_ = vk::DispatchLoaderDynamic(vk_instance, instance_dispatcher.vkGetInstanceProcAddr, vk_device_,
                                           instance_dispatcher.vkGetDeviceProcAddr);
+
+  // Initialize queue families.
+  for (uint32_t i = 0u; i < create_info.queueCreateInfoCount; i++) {
+    VulkanObjectComposite<QueueFamilyImpl>::createObject(*this, create_info.pQueueCreateInfos[i]);
+  }
+}
+
+std::vector<QueueFamily> LogicalDeviceImpl::getQueueFamilies() const {
+  auto families_map = VulkanObjectComposite<QueueFamilyImpl>::getHandles();
+
+  std::vector<QueueFamily> queue_families;
+  queue_families.reserve(families_map.size());
+
+  for (const auto& entry : families_map) {
+    queue_families.emplace_back(entry.second);
+  }
+
+  return queue_families;
 }
 
 VulkanInstanceImpl& LogicalDeviceImpl::getInstance() const {
@@ -59,6 +79,7 @@ LogicalDeviceImpl::operator const vk::Device() const {
 
 void LogicalDeviceImpl::free() {
   // TODO (Destroy composited objects)
+  VulkanObjectComposite<QueueFamilyImpl>::destroyAllObjects();
   vk_device_.destroy(allocator_ ? &allocator_.value() : nullptr, dispatcher_);
   vk_device_ = nullptr;
   VulkanObject::free();

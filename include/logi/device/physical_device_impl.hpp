@@ -31,6 +31,7 @@ namespace logi {
  */
 class VulkanInstanceImpl;
 class LogicalDeviceImpl;
+class LogicalDevice;
 
 class PhysicalDeviceImpl : public VulkanObject<PhysicalDeviceImpl>, public VulkanObjectComposite<LogicalDeviceImpl> {
  public:
@@ -226,8 +227,8 @@ class PhysicalDeviceImpl : public VulkanObject<PhysicalDeviceImpl>, public Vulka
 
   // region Logi Declarations
 
-  std::shared_ptr<LogicalDeviceImpl> createLogicalDevice(const vk::DeviceCreateInfo& create_info,
-                                                         const std::optional<vk::AllocationCallbacks>& allocator = {});
+  LogicalDevice createLogicalDevice(const vk::DeviceCreateInfo& create_info,
+                                    const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyLogicalDevice(size_t id);
 

@@ -204,7 +204,7 @@ vk::DeviceGeneratedCommandsLimitsNVX
 
 LogicalDevice PhysicalDevice::createLogicalDevice(const vk::DeviceCreateInfo& create_info,
                                                   const std::optional<vk::AllocationCallbacks>& allocator) {
-  return LogicalDevice(object_->createLogicalDevice(create_info, allocator));
+  return object_->createLogicalDevice(create_info, allocator);
 }
 
 void PhysicalDevice::destroyLogicalDevice(const LogicalDevice& device) {

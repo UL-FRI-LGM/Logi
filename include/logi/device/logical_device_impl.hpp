@@ -26,11 +26,15 @@ namespace logi {
 
 class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
+class QueueFamilyImpl;
+class QueueFamily;
 
-class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl> {
+class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>, public VulkanObjectComposite<QueueFamilyImpl> {
  public:
   LogicalDeviceImpl(PhysicalDeviceImpl& physical_device, const vk::DeviceCreateInfo& create_info,
                     const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  std::vector<QueueFamily> getQueueFamilies() const;
 
   VulkanInstanceImpl& getInstance() const;
 

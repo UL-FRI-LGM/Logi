@@ -36,7 +36,5 @@ TEST(Instance, Vk) {
 
   LogicalDevice log_device = devices[0].createLogicalDevice(dci);
   int a = 0;
-  // devices[0].getExternalBufferProperties();
-
-  // std::vector<PhysicalDevice> devices = instance->getPhysicalDevices();
+  second.destroy();
 }

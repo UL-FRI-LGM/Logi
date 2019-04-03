@@ -17,6 +17,7 @@
  */
 
 #include "logi/device/physical_device_impl.hpp"
+#include "logi/device/logical_device.hpp"
 #include "logi/device/logical_device_impl.hpp"
 #include "logi/instance/vulkan_instance_impl.hpp"
 
@@ -205,10 +206,9 @@ vk::DeviceGeneratedCommandsLimitsNVX
   return vk_physical_device_.getGeneratedCommandsPropertiesNVX(features, getDispatcher());
 }
 
-std::shared_ptr<LogicalDeviceImpl>
-  PhysicalDeviceImpl::createLogicalDevice(const vk::DeviceCreateInfo& create_info,
-                                          const std::optional<vk::AllocationCallbacks>& allocator) {
-  return VulkanObjectComposite<LogicalDeviceImpl>::createObject(*this, create_info, allocator);
+LogicalDevice PhysicalDeviceImpl::createLogicalDevice(const vk::DeviceCreateInfo& create_info,
+                                                      const std::optional<vk::AllocationCallbacks>& allocator) {
+  return LogicalDevice(VulkanObjectComposite<LogicalDeviceImpl>::createObject(*this, create_info, allocator));
 }
 
 void PhysicalDeviceImpl::destroyLogicalDevice(size_t id) {
