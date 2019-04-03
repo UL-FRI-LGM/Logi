@@ -35,8 +35,9 @@ LogicalDeviceImpl::LogicalDeviceImpl(PhysicalDeviceImpl& physical_device, const 
     vk_physical_device.createDevice(create_info, allocator_ ? &allocator.value() : nullptr, instance_dispatcher);
 
   // Initialize device dispatcher.
-  dispatcher_ = vk::DispatchLoaderDynamic(vk_instance, instance_dispatcher.vkGetInstanceProcAddr, vk_device_,
-                                          instance_dispatcher.vkGetDeviceProcAddr);
+  dispatcher_ =
+    vk::DispatchLoaderDynamic(static_cast<VkInstance>(vk_instance), instance_dispatcher.vkGetInstanceProcAddr,
+                              static_cast<VkDevice>(vk_device_), instance_dispatcher.vkGetDeviceProcAddr);
 
   // Initialize queue families.
   for (uint32_t i = 0u; i < create_info.queueCreateInfoCount; i++) {
@@ -85,4 +86,4 @@ void LogicalDeviceImpl::free() {
   VulkanObject::free();
 }
 
-}
+} // namespace logi
