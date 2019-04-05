@@ -53,7 +53,7 @@ void FenceImpl::destroy() const {
   // TODO
 }
 
-FenceImpl::operator const vk::Fence() const {
+FenceImpl::operator vk::Fence() const {
   return vk_fence_;
 }
 

@@ -16,45 +16,47 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "logi/synchronization/semaphore_impl.hpp"
+#include "logi/nvidia/acceleration_structure_nv_impl.hpp"
 #include "logi/device/logical_device_impl.hpp"
 
 namespace logi {
 
-SemaphoreImpl::SemaphoreImpl(LogicalDeviceImpl& logical_device, const vk::SemaphoreCreateInfo& create_info,
-                             const std::optional<vk::AllocationCallbacks>& allocator)
+AccelerationStructureNVImpl::AccelerationStructureNVImpl(LogicalDeviceImpl& logical_device,
+                                                         const vk::AccelerationStructureCreateInfoNV& create_info,
+                                                         const std::optional<vk::AllocationCallbacks>& allocator)
   : logical_device_(logical_device), allocator_(allocator) {
   vk::Device vk_device = logical_device_;
-  vk_semaphore_ = vk_device.createSemaphore(create_info, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+  vk_acceleration_structure_nv =
+    vk_device.createAccelerationStructureNV(create_info, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
-VulkanInstanceImpl& SemaphoreImpl::getInstance() const {
+VulkanInstanceImpl& AccelerationStructureNVImpl::getInstance() const {
   return logical_device_.getInstance();
 }
 
-PhysicalDeviceImpl& SemaphoreImpl::getPhysicalDevice() const {
+PhysicalDeviceImpl& AccelerationStructureNVImpl::getPhysicalDevice() const {
   return logical_device_.getPhysicalDevice();
 }
 
-LogicalDeviceImpl& SemaphoreImpl::getLogicalDevice() const {
+LogicalDeviceImpl& AccelerationStructureNVImpl::getLogicalDevice() const {
   return logical_device_;
 }
 
-const vk::DispatchLoaderDynamic& SemaphoreImpl::getDispatcher() const {
+const vk::DispatchLoaderDynamic& AccelerationStructureNVImpl::getDispatcher() const {
   return logical_device_.getDispatcher();
 }
 
-void SemaphoreImpl::destroy() const {
+void AccelerationStructureNVImpl::destroy() const {
   // TODO
 }
 
-SemaphoreImpl::operator vk::Semaphore() const {
-  return vk_semaphore_;
+AccelerationStructureNVImpl::operator vk::AccelerationStructureNV() const {
+  return vk_acceleration_structure_nv;
 }
 
-void SemaphoreImpl::free() {
+void AccelerationStructureNVImpl::free() {
   vk::Device vk_device = logical_device_;
-  vk_device.destroy(vk_semaphore_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+  vk_device.destroy(vk_acceleration_structure_nv, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }
 

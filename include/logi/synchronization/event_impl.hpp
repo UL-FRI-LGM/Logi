@@ -55,7 +55,7 @@ class EventImpl : public VulkanObject<EventImpl> {
 
   void destroy() const;
 
-  operator const vk::Event() const;
+  operator vk::Event() const;
 
  protected:
   void free() override;

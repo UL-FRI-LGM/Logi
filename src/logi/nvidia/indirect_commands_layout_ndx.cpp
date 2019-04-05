@@ -16,37 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "logi/synchronization/semaphore.hpp"
+#include "logi/nvidia/indirect_commands_layout_ndx.hpp"
 #include "logi/device/logical_device_impl.hpp"
 #include "logi/device/physical_device_impl.hpp"
 #include "logi/instance/vulkan_instance.hpp"
 #include "logi/instance/vulkan_instance_impl.hpp"
-#include "logi/synchronization/semaphore_impl.hpp"
+#include "logi/nvidia/indirect_commands_layout_ndx_impl.hpp"
 
 namespace logi {
 
-VulkanInstance Semaphore::getInstance() const {
+VulkanInstance IndirectCommandsLayoutNVX::getInstance() const {
   return VulkanInstance(object_->getInstance().shared_from_this());
 }
 
-PhysicalDevice Semaphore::getPhysicalDevice() const {
+PhysicalDevice IndirectCommandsLayoutNVX::getPhysicalDevice() const {
   return PhysicalDevice(object_->getPhysicalDevice().shared_from_this());
 }
 
-LogicalDevice Semaphore::getLogicalDevice() const {
+LogicalDevice IndirectCommandsLayoutNVX::getLogicalDevice() const {
   return LogicalDevice(object_->getLogicalDevice().shared_from_this());
 }
 
-const vk::DispatchLoaderDynamic& Semaphore::getDispatcher() const {
+const vk::DispatchLoaderDynamic& IndirectCommandsLayoutNVX::getDispatcher() const {
   return object_->getDispatcher();
 }
 
-void Semaphore::destroy() const {
+void IndirectCommandsLayoutNVX::destroy() const {
   object_->destroy();
 }
 
-Semaphore::operator vk::Semaphore() const {
-  return object_->operator vk::Semaphore();
+IndirectCommandsLayoutNVX::operator vk::IndirectCommandsLayoutNVX() const {
+  return object_->operator vk::IndirectCommandsLayoutNVX();
 }
 
 } // namespace logi

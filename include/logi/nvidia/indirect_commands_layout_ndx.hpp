@@ -16,48 +16,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGI_SYNCHRONIZATION_SEMAPHORE_IMPL_HPP
-#define LOGI_SYNCHRONIZATION_SEMAPHORE_IMPL_HPP
+#ifndef LOGI_NVIDIA_INDIRECT_COMMANDS_LAYOUT_NDX_HPP
+#define LOGI_NVIDIA_INDIRECT_COMMANDS_LAYOUT_NDX_HPP
 
 #include <vulkan/vulkan.hpp>
-#include "logi/base/vulkan_object.hpp"
+#include "logi/base/handle.hpp"
+#include "logi/nvidia/indirect_commands_layout_ndx_impl.hpp"
 
 namespace logi {
 
-class VulkanInstanceImpl;
-class PhysicalDeviceImpl;
-class LogicalDeviceImpl;
+class IndirectCommandsLayoutNVXImpl;
+class VulkanInstance;
+class PhysicalDevice;
+class LogicalDevice;
 
-class SemaphoreImpl : public VulkanObject<SemaphoreImpl> {
+class IndirectCommandsLayoutNVX : public Handle<IndirectCommandsLayoutNVXImpl> {
  public:
-  SemaphoreImpl(LogicalDeviceImpl& logical_device, const vk::SemaphoreCreateInfo& create_info,
-                const std::optional<vk::AllocationCallbacks>& allocator = {});
+  using Handle::Handle;
 
   // region Logi Declarations
 
-  VulkanInstanceImpl& getInstance() const;
+  VulkanInstance getInstance() const;
 
-  PhysicalDeviceImpl& getPhysicalDevice() const;
+  PhysicalDevice getPhysicalDevice() const;
 
-  LogicalDeviceImpl& getLogicalDevice() const;
+  LogicalDevice getLogicalDevice() const;
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
   void destroy() const;
 
-  operator vk::Semaphore() const;
-
- protected:
-  void free() override;
+  operator vk::IndirectCommandsLayoutNVX() const;
 
   // endregion
-
- private:
-  LogicalDeviceImpl& logical_device_;
-  std::optional<vk::AllocationCallbacks> allocator_;
-  vk::Semaphore vk_semaphore_;
 };
 
 } // namespace logi
 
-#endif // LOGI_SYNCHRONIZATION_SEMAPHORE_IMPL_HPP
+#endif // LOGI_NVIDIA_INDIRECT_COMMANDS_LAYOUT_NDX_HPP

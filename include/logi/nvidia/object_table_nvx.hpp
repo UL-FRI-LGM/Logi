@@ -16,54 +16,52 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGI_SYNCHRONIZATION_FENCE_IMPL_HPP
-#define LOGI_SYNCHRONIZATION_FENCE_IMPL_HPP
+#ifndef LOGI_NVIDIA_OBJECT_TABLE_NVX_HPP
+#define LOGI_NVIDIA_OBJECT_TABLE_NVX_HPP
 
 #include <vulkan/vulkan.hpp>
-#include "logi/base/vulkan_object.hpp"
+#include "logi/base/handle.hpp"
+#include "logi/nvidia/object_table_nvx_impl.hpp"
 
 namespace logi {
 
-class VulkanInstanceImpl;
-class PhysicalDeviceImpl;
-class LogicalDeviceImpl;
+class ObjectTableNVXImpl;
+class VulkanInstance;
+class PhysicalDevice;
+class LogicalDevice;
 
-class FenceImpl : public VulkanObject<FenceImpl> {
+class ObjectTableNVX : public Handle<ObjectTableNVXImpl> {
  public:
-  FenceImpl(LogicalDeviceImpl& logical_device, const vk::FenceCreateInfo& create_info,
-            const std::optional<vk::AllocationCallbacks>& allocator = {});
+  using Handle::Handle;
 
   // region Vulkan Declarations
 
-  bool getStatus() const;
+  vk::ResultValueType<void>::type
+    registerObjectsNVX(vk::ArrayProxy<const vk::ObjectTableEntryNVX* const> object_table_entries,
+                       vk::ArrayProxy<const uint32_t> object_indices) const;
+
+  vk::ResultValueType<void>::type unregisterObjectsNVX(vk::ArrayProxy<const vk::ObjectEntryTypeNVX> object_entry_types,
+                                                       vk::ArrayProxy<const uint32_t> object_indices) const;
 
   // endregion
 
   // region Logi Declarations
 
-  VulkanInstanceImpl& getInstance() const;
+  VulkanInstance getInstance() const;
 
-  PhysicalDeviceImpl& getPhysicalDevice() const;
+  PhysicalDevice getPhysicalDevice() const;
 
-  LogicalDeviceImpl& getLogicalDevice() const;
+  LogicalDevice getLogicalDevice() const;
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
   void destroy() const;
 
-  operator vk::Fence() const;
-
- protected:
-  void free() override;
+  operator vk::ObjectTableNVX() const;
 
   // endregion
-
- private:
-  LogicalDeviceImpl& logical_device_;
-  std::optional<vk::AllocationCallbacks> allocator_;
-  vk::Fence vk_fence_;
 };
 
 } // namespace logi
 
-#endif // LOGI_SYNCHRONIZATION_FENCE_IMPL_HPP
+#endif // LOGI_NVIDIA_OBJECT_TABLE_NVX_HPP

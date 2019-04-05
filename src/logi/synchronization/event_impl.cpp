@@ -63,7 +63,7 @@ void EventImpl::destroy() const {
   // TODO
 }
 
-EventImpl::operator const vk::Event() const {
+EventImpl::operator vk::Event() const {
   return vk_event_;
 }
 

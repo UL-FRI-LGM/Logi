@@ -16,37 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "logi/synchronization/semaphore.hpp"
+#include "logi/query/query_pool.hpp"
 #include "logi/device/logical_device_impl.hpp"
 #include "logi/device/physical_device_impl.hpp"
 #include "logi/instance/vulkan_instance.hpp"
 #include "logi/instance/vulkan_instance_impl.hpp"
-#include "logi/synchronization/semaphore_impl.hpp"
+#include "logi/query/query_pool_impl.hpp"
 
 namespace logi {
 
-VulkanInstance Semaphore::getInstance() const {
+VulkanInstance QueryPool::getInstance() const {
   return VulkanInstance(object_->getInstance().shared_from_this());
 }
 
-PhysicalDevice Semaphore::getPhysicalDevice() const {
+PhysicalDevice QueryPool::getPhysicalDevice() const {
   return PhysicalDevice(object_->getPhysicalDevice().shared_from_this());
 }
 
-LogicalDevice Semaphore::getLogicalDevice() const {
+LogicalDevice QueryPool::getLogicalDevice() const {
   return LogicalDevice(object_->getLogicalDevice().shared_from_this());
 }
 
-const vk::DispatchLoaderDynamic& Semaphore::getDispatcher() const {
+const vk::DispatchLoaderDynamic& QueryPool::getDispatcher() const {
   return object_->getDispatcher();
 }
 
-void Semaphore::destroy() const {
+void QueryPool::destroy() const {
   object_->destroy();
 }
 
-Semaphore::operator vk::Semaphore() const {
-  return object_->operator vk::Semaphore();
+QueryPool::operator vk::QueryPool() const {
+  return object_->operator vk::QueryPool();
 }
 
 } // namespace logi
