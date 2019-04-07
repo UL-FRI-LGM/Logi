@@ -56,6 +56,15 @@ class Structure : protected VkStructureType {
     data = vec.empty() ? nullptr : vec.data();
     size = vec.size();
   }
+
+  template <typename EntryType>
+  static void vecLogiToVk(std::vector<EntryType>& logi_vec, std::vector<typename EntryType::VkType>& vk_vec) {
+    vk_vec.clear();
+    vk_vec.reserve(logi_vec.size());
+    for (auto& entry : logi_vec) {
+      vk_vec.emplace_back(entry.build());
+    }
+  }
 };
 
 template <typename First, typename... Rest>
