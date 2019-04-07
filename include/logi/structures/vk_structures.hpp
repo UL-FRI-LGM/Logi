@@ -24,6 +24,24 @@
 
 namespace logi {
 
+class BindBufferMemoryDeviceGroupInfo : public Structure<vk::BindBufferMemoryDeviceGroupInfo> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(deviceIndices, pDeviceIndices, deviceIndexCount);
+  }
+
+  std::vector<uint32_t> deviceIndices;
+};
+
+class BindBufferMemoryInfo : public Structure<vk::BindBufferMemoryInfo> {
+ public:
+  using VkType::buffer;
+  using VkType::memory;
+  using VkType::memoryOffset;
+};
+
+using BindBufferMemoryInfoChain = StructureChain<BindBufferMemoryInfo, BindBufferMemoryDeviceGroupInfo>;
+
 class DescriptorSetLayoutBinding : public SimpleStructure<vk::DescriptorSetLayoutBinding> {
  public:
   vk::DescriptorSetLayoutBinding build() const override {
