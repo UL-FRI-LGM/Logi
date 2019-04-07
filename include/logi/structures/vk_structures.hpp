@@ -556,6 +556,55 @@ using PhysicalDeviceProperties2Chain =
                  PhysicalDeviceSubgroupProperties, PhysicalDeviceTransformFeedbackPropertiesEXT,
                  PhysicalDeviceVertexAttributeDivisorPropertiesEXT>;
 
+class PhysicalDeviceImageViewImageFormatInfoEXT : public Structure<vk::PhysicalDeviceImageViewImageFormatInfoEXT> {
+ public:
+  using VkType::imageViewType;
+};
+
+class PhysicalDeviceImageDrmFormatModifierInfoEXT : public Structure<vk::PhysicalDeviceImageDrmFormatModifierInfoEXT> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(queueFamilyIndices, pQueueFamilyIndices, queueFamilyIndexCount);
+  }
+
+  using VkType::drmFormatModifier;
+  using VkType::sharingMode;
+  std::vector<uint32_t> queueFamilyIndices;
+};
+
+class PhysicalDeviceExternalImageFormatInfo : public Structure<vk::PhysicalDeviceExternalImageFormatInfo> {
+ public:
+  using VkType::handleType;
+};
+
+class ImageStencilUsageCreateInfoEXT : public Structure<vk::ImageStencilUsageCreateInfoEXT> {
+ public:
+  using VkType::stencilUsage;
+};
+
+class ImageFormatListCreateInfoKHR : public Structure<vk::ImageFormatListCreateInfoKHR> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(viewFormats, pViewFormats, viewFormatCount);
+  }
+
+  std::vector<vk::Format> viewFormats;
+};
+
+class PhysicalDeviceImageFormatInfo2 : public Structure<vk::PhysicalDeviceImageFormatInfo2> {
+ public:
+  using VkType::flags;
+  using VkType::format;
+  using VkType::tiling;
+  using VkType::type;
+  using VkType::usage;
+};
+
+using PhysicalDeviceImageFormatInfo2Chain =
+  StructureChain<PhysicalDeviceImageFormatInfo2, ImageFormatListCreateInfoKHR, ImageStencilUsageCreateInfoEXT,
+                 PhysicalDeviceExternalImageFormatInfo, PhysicalDeviceImageDrmFormatModifierInfoEXT,
+                 PhysicalDeviceImageViewImageFormatInfoEXT>;
+
 class PhysicalDeviceVulkanMemoryModelFeaturesKHR : public Structure<vk::PhysicalDeviceVulkanMemoryModelFeaturesKHR> {
  public:
   using VkType::vulkanMemoryModel;
@@ -791,6 +840,18 @@ using PhysicalDeviceFeatures2Chain =
                  PhysicalDeviceTransformFeedbackFeaturesEXT, PhysicalDeviceVariablePointerFeatures,
                  PhysicalDeviceVertexAttributeDivisorFeaturesEXT, PhysicalDeviceVulkanMemoryModelFeaturesKHR>;
 
+class QueueFamilyCheckpointPropertiesNV : public Structure<vk::QueueFamilyCheckpointPropertiesNV> {
+ public:
+  using VkType::checkpointExecutionStageMask;
+};
+
+class QueueFamilyProperties2 : public Structure<vk::QueueFamilyProperties2> {
+ public:
+  using VkType::queueFamilyProperties;
+};
+
+using QueueFamilyProperties2Chain = StructureChain<QueueFamilyProperties2, QueueFamilyCheckpointPropertiesNV>;
+
 class DeviceMemoryOverallocationCreateInfoAMD : public Structure<vk::DeviceMemoryOverallocationCreateInfoAMD> {
  public:
   using VkType::overallocationBehavior;
@@ -802,7 +863,6 @@ class DeviceGroupDeviceCreateInfo : public Structure<vk::DeviceGroupDeviceCreate
     vecToCArr(physicalDevices, pPhysicalDevices, physicalDeviceCount);
   }
 
-  uint32_t physicalDeviceCount;
   std::vector<vk::PhysicalDevice> physicalDevices;
 };
 
@@ -846,21 +906,6 @@ using FormatProperties2Chain = StructureChain<FormatProperties2>;
 class ImageSwapchainCreateInfoKHR : public Structure<vk::ImageSwapchainCreateInfoKHR> {
  public:
   using VkType::swapchain;
-};
-
-class ImageStencilUsageCreateInfoEXT : public Structure<vk::ImageStencilUsageCreateInfoEXT> {
- public:
-  using VkType::stencilUsage;
-};
-
-class ImageFormatListCreateInfoKHR : public Structure<vk::ImageFormatListCreateInfoKHR> {
- public:
-  void updateVkStructure() override {
-    vecToCArr(viewFormats, pViewFormats, viewFormatCount);
-  }
-
-  uint32_t viewFormatCount;
-  std::vector<vk::Format> viewFormats;
 };
 
 class ImageDrmFormatModifierListCreateInfoEXT : public Structure<vk::ImageDrmFormatModifierListCreateInfoEXT> {
@@ -922,6 +967,37 @@ using ImageCreateInfoChain =
                  ImageFormatListCreateInfoKHR, ImageDrmFormatModifierListCreateInfoEXT,
                  ImageDrmFormatModifierExplicitCreateInfoEXT, ExternalMemoryImageCreateInfoNV,
                  ExternalMemoryImageCreateInfo, DedicatedAllocationImageCreateInfoNV>;
+
+class TextureLODGatherFormatPropertiesAMD : public Structure<vk::TextureLODGatherFormatPropertiesAMD> {
+ public:
+  using VkType::supportsTextureGatherLODBiasAMD;
+};
+
+class SamplerYcbcrConversionImageFormatProperties : public Structure<vk::SamplerYcbcrConversionImageFormatProperties> {
+ public:
+  using VkType::combinedImageSamplerDescriptorCount;
+};
+
+class FilterCubicImageViewImageFormatPropertiesEXT
+  : public Structure<vk::FilterCubicImageViewImageFormatPropertiesEXT> {
+ public:
+  using VkType::filterCubic;
+  using VkType::filterCubicMinmax;
+};
+
+class ExternalImageFormatProperties : public Structure<vk::ExternalImageFormatProperties> {
+ public:
+  using VkType::externalMemoryProperties;
+};
+
+class ImageFormatProperties2 : public Structure<vk::ImageFormatProperties2> {
+ public:
+  using VkType::imageFormatProperties;
+};
+
+using ImageFormatProperties2Chain =
+  StructureChain<ImageFormatProperties2, ExternalImageFormatProperties, FilterCubicImageViewImageFormatPropertiesEXT,
+                 SamplerYcbcrConversionImageFormatProperties, TextureLODGatherFormatPropertiesAMD>;
 
 class DescriptorSetLayoutBinding : public SimpleStructure<vk::DescriptorSetLayoutBinding> {
  public:
@@ -1234,6 +1310,120 @@ class ImageMemoryBarrier : public Structure<vk::ImageMemoryBarrier> {
 };
 
 using ImageMemoryBarrierChain = StructureChain<ImageMemoryBarrier, SampleLocationsInfoEXT>;
+
+class ImagePlaneMemoryRequirementsInfo : public Structure<vk::ImagePlaneMemoryRequirementsInfo> {
+ public:
+  using VkType::planeAspect;
+};
+
+class ImageMemoryRequirementsInfo2 : public Structure<vk::ImageMemoryRequirementsInfo2> {
+ public:
+  using VkType::image;
+};
+
+using ImageMemoryRequirementsInfo2Chain =
+  StructureChain<ImageMemoryRequirementsInfo2, ImagePlaneMemoryRequirementsInfo>;
+
+class SamplerYcbcrConversionInfo : public Structure<vk::SamplerYcbcrConversionInfo> {
+ public:
+  using VkType::conversion;
+};
+
+class ImageViewUsageCreateInfo : public Structure<vk::ImageViewUsageCreateInfo> {
+ public:
+  using VkType::usage;
+};
+
+class ImageViewASTCDecodeModeEXT : public Structure<vk::ImageViewASTCDecodeModeEXT> {
+ public:
+  using VkType::decodeMode;
+};
+
+class ImageViewCreateInfo : public Structure<vk::ImageViewCreateInfo> {
+ public:
+  using VkType::components;
+  using VkType::flags;
+  using VkType::format;
+  using VkType::image;
+  using VkType::subresourceRange;
+  using VkType::viewType;
+};
+
+using ImageViewCreateInfoChain =
+  StructureChain<ImageViewCreateInfo, ImageViewASTCDecodeModeEXT, ImageViewUsageCreateInfo, SamplerYcbcrConversionInfo>;
+
+class MemoryPriorityAllocateInfoEXT : public Structure<vk::MemoryPriorityAllocateInfoEXT> {
+ public:
+  using VkType::priority;
+};
+
+class MemoryDedicatedAllocateInfo : public Structure<vk::MemoryDedicatedAllocateInfo> {
+ public:
+  using VkType::buffer;
+  using VkType::image;
+};
+
+class MemoryAllocateFlagsInfo : public Structure<vk::MemoryAllocateFlagsInfo> {
+ public:
+  using VkType::deviceMask;
+  using VkType::flags;
+};
+
+class ImportMemoryHostPointerInfoEXT : public Structure<vk::ImportMemoryHostPointerInfoEXT> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(hostPointer, pHostPointer, hostPointer);
+  }
+
+  using VkType::handleType;
+  std::vector<void> hostPointer;
+};
+
+class ImportMemoryFdInfoKHR : public Structure<vk::ImportMemoryFdInfoKHR> {
+ public:
+  using VkType::fd;
+  using VkType::handleType;
+};
+
+class ExportMemoryAllocateInfoNV : public Structure<vk::ExportMemoryAllocateInfoNV> {
+ public:
+  using VkType::handleTypes;
+};
+
+class ExportMemoryAllocateInfo : public Structure<vk::ExportMemoryAllocateInfo> {
+ public:
+  using VkType::handleTypes;
+};
+
+class DedicatedAllocationMemoryAllocateInfoNV : public Structure<vk::DedicatedAllocationMemoryAllocateInfoNV> {
+ public:
+  using VkType::buffer;
+  using VkType::image;
+};
+
+class MemoryAllocateInfo : public Structure<vk::MemoryAllocateInfo> {
+ public:
+  using VkType::allocationSize;
+  using VkType::memoryTypeIndex;
+};
+
+using MemoryAllocateInfoChain =
+  StructureChain<MemoryAllocateInfo, DedicatedAllocationMemoryAllocateInfoNV, ExportMemoryAllocateInfo,
+                 ExportMemoryAllocateInfoNV, ImportMemoryFdInfoKHR, ImportMemoryHostPointerInfoEXT,
+                 MemoryAllocateFlagsInfo, MemoryDedicatedAllocateInfo, MemoryPriorityAllocateInfoEXT>;
+
+class MemoryDedicatedRequirements : public Structure<vk::MemoryDedicatedRequirements> {
+ public:
+  using VkType::prefersDedicatedAllocation;
+  using VkType::requiresDedicatedAllocation;
+};
+
+class MemoryRequirements2 : public Structure<vk::MemoryRequirements2> {
+ public:
+  using VkType::memoryRequirements;
+};
+
+using MemoryRequirements2Chain = StructureChain<MemoryRequirements2, MemoryDedicatedRequirements>;
 
 class PipelineSampleLocationsStateCreateInfoEXT : public Structure<vk::PipelineSampleLocationsStateCreateInfoEXT> {
  public:
