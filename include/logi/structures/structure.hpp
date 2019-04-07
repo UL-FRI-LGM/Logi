@@ -70,13 +70,15 @@ class Structure : protected VkStructureType {
 template <typename First, typename... Rest>
 class StructureChain {
  public:
+  using VkType = typename First::VkType;
+
   explicit StructureChain(bool enable_all = false) {
     if (enable_all) {
       enable<Rest...>();
     }
   }
 
-  const typename First::VkType& build() {
+  typename First::VkType& build() {
     typename First::VkType& vk_first = first_.build();
     const void** p_next = &vk_first.pNext;
 
