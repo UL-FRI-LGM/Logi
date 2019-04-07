@@ -29,7 +29,7 @@ BufferViewImpl::BufferViewImpl(BufferImpl& buffer, vk::BufferViewCreateInfo crea
                                const std::optional<vk::AllocationCallbacks>& allocator)
   : buffer_(buffer), allocator_(allocator) {
   vk::Device vk_device = getLogicalDevice();
-  create_info.buffer = static_cast<const vk::Buffer>(buffer_);
+  create_info.buffer = buffer_;
   vk_buffer_view_ =
     vk_device.createBufferView(create_info, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }

@@ -74,7 +74,7 @@ void BufferImpl::free() {
   VulkanObjectComposite<BufferViewImpl>::destroyAllObjects();
 
   if (memory_allocator_ != nullptr) {
-    vmaDestroyBuffer(getMemoryAllocator().getVmaAllocator(), buffer_, allocation_);
+    vmaDestroyBuffer(getMemoryAllocator().getVmaAllocator(), static_cast<VkBuffer>(buffer_), allocation_);
     memory_allocator_ = nullptr;
   }
 

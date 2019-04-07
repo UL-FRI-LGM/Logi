@@ -58,8 +58,8 @@ MemoryAllocatorImpl::MemoryAllocatorImpl(LogicalDeviceImpl& logical_device,
                                          const std::optional<vk::AllocationCallbacks>& allocator)
   : logical_device_(logical_device), allocator_(allocator), vma_(nullptr) {
   VmaAllocatorCreateInfo create_info = {};
-  create_info.physicalDevice = static_cast<vk::PhysicalDevice>(getPhysicalDevice());
-  create_info.device = static_cast<vk::Device>(getLogicalDevice());
+  create_info.physicalDevice = static_cast<VkPhysicalDevice>(static_cast<vk::PhysicalDevice>(getPhysicalDevice()));
+  create_info.device = static_cast<VkDevice>(static_cast<vk::Device>(getLogicalDevice()));
   create_info.preferredLargeHeapBlockSize = preferred_large_heap_block_size;
   create_info.frameInUseCount = frame_in_use_count;
   create_info.pAllocationCallbacks =

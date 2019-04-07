@@ -73,7 +73,7 @@ void ImageImpl::free() {
   VulkanObjectComposite<ImageViewImpl>::destroyAllObjects();
 
   if (memory_allocator_ != nullptr) {
-    vmaDestroyImage(getMemoryAllocator().getVmaAllocator(), image_, allocation_);
+    vmaDestroyImage(getMemoryAllocator().getVmaAllocator(), static_cast<VkImage>(image_), allocation_);
     memory_allocator_ = nullptr;
   }
 
