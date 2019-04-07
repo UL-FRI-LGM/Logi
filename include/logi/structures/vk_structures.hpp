@@ -555,6 +555,24 @@ class PipelineLayoutCreateInfo : public Structure<vk::PipelineLayoutCreateInfo> 
 
 using PipelineLayoutCreateInfoChain = StructureChain<PipelineLayoutCreateInfo>;
 
+class ShaderModuleValidationCacheCreateInfoEXT : public Structure<vk::ShaderModuleValidationCacheCreateInfoEXT> {
+ public:
+  using VkType::validationCache;
+};
+
+class ShaderModuleCreateInfo : public Structure<vk::ShaderModuleCreateInfo> {
+ public:
+  void updateVkStructure() override {
+    pCode = code.empty() ? nullptr : reinterpret_cast<const uint32_t*>(code.data());
+    codeSize = code.size();
+  }
+
+  using VkType::flags;
+  std::vector<std::byte> code;
+};
+
+using ShaderModuleCreateInfoChain = StructureChain<ShaderModuleCreateInfo, ShaderModuleValidationCacheCreateInfoEXT>;
+
 class SpecializationInfo : public Structure<vk::SpecializationInfo> {
   void updateVkStructure() override {
     vecToCArr(mapEntries, pMapEntries, mapEntryCount);
@@ -592,27 +610,10 @@ class ComputePipelineCreateInfo : public Structure<vk::ComputePipelineCreateInfo
   using VkType::basePipelineIndex;
   using VkType::flags;
   using VkType::layout;
-  PipelineShaderStageCreateInfo stage;
+  PipelineShaderStageCreateInfoChain stage;
 };
 
 using ComputePipelineCreateInfoChain = StructureChain<ComputePipelineCreateInfo>;
-
-class PipelineRepresentativeFragmentTestStateCreateInfoNV
-  : public Structure<vk::PipelineRepresentativeFragmentTestStateCreateInfoNV> {
- public:
-  using VkType::representativeFragmentTestEnable;
-};
-
-class PipelineDiscardRectangleStateCreateInfoEXT : public Structure<vk::PipelineDiscardRectangleStateCreateInfoEXT> {
- public:
-  void updateVkStructure() override {
-    vecToCArr(discardRectangles, pDiscardRectangles, discardRectangleCount);
-  }
-
-  using VkType::discardRectangleMode;
-  using VkType::flags;
-  std::vector<vk::Rect2D> discardRectangles;
-};
 
 class PipelineVertexInputDivisorStateCreateInfoEXT
   : public Structure<vk::PipelineVertexInputDivisorStateCreateInfoEXT> {
@@ -910,11 +911,36 @@ class PipelineDynamicStateCreateInfo : public Structure<vk::PipelineDynamicState
 
 using PipelineDynamicStateCreateInfoChain = StructureChain<PipelineDynamicStateCreateInfo>;
 
+class PipelineRepresentativeFragmentTestStateCreateInfoNV
+  : public Structure<vk::PipelineRepresentativeFragmentTestStateCreateInfoNV> {
+ public:
+  using VkType::representativeFragmentTestEnable;
+};
+
+class PipelineDiscardRectangleStateCreateInfoEXT : public Structure<vk::PipelineDiscardRectangleStateCreateInfoEXT> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(discardRectangles, pDiscardRectangles, discardRectangleCount);
+  }
+
+  using VkType::discardRectangleMode;
+  using VkType::flags;
+  std::vector<vk::Rect2D> discardRectangles;
+};
+
 class GraphicsPipelineCreateInfo : public Structure<vk::GraphicsPipelineCreateInfo> {
  public:
   void updateVkStructure() override {
-    // todo
-    // vecToCArr(dynamicStates, pDynamicStates, dynamicStateCount);
+    vecLogiToVk(stages, vkStages_);
+    pVertexInputState = &vertexInputState.build();
+    pInputAssemblyState = &inputAssemblyState.build();
+    pTessellationState = &tessellationState.build();
+    pViewportState = &viewportState.build();
+    pRasterizationState = &rasterizationState.build();
+    pMultisampleState = &multisampleState.build();
+    pDepthStencilState = &depthStencilState.build();
+    pColorBlendState = &colorBlendState.build();
+    pDynamicState = &dynamicState.build();
   }
 
   using VkType::basePipelineHandle;
@@ -938,6 +964,78 @@ class GraphicsPipelineCreateInfo : public Structure<vk::GraphicsPipelineCreateIn
  private:
   std::vector<vk::PipelineShaderStageCreateInfo> vkStages_;
 };
+
+using GraphicsPipelineCreateInfoChain =
+  StructureChain<GraphicsPipelineCreateInfo, PipelineDiscardRectangleStateCreateInfoEXT,
+                 PipelineRepresentativeFragmentTestStateCreateInfoNV>;
+
+class RenderPassFragmentDensityMapCreateInfoEXT : public Structure<vk::RenderPassFragmentDensityMapCreateInfoEXT> {
+ public:
+  using VkType::fragmentDensityMapAttachment;
+};
+
+class RenderPassInputAttachmentAspectCreateInfo : public Structure<vk::RenderPassInputAttachmentAspectCreateInfo> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(aspectReferences, pAspectReferences, aspectReferenceCount);
+  }
+
+  std::vector<vk::InputAttachmentAspectReference> aspectReferences;
+};
+
+class RenderPassMultiviewCreateInfo : public Structure<vk::RenderPassMultiviewCreateInfo> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(viewMasks, pViewMasks, subpassCount);
+    vecToCArr(viewOffsets, pViewOffsets, dependencyCount);
+    vecToCArr(correlationMasks, pCorrelationMasks, correlationMaskCount);
+  }
+
+  std::vector<uint32_t> viewMasks;
+  std::vector<int32_t> viewOffsets;
+  std::vector<uint32_t> correlationMasks;
+};
+
+class SubpassDescription : public Structure<vk::SubpassDescription> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(inputAttachments, pInputAttachments, inputAttachmentCount);
+    vecToCArr(colorAttachments, pColorAttachments, colorAttachmentCount);
+    pResolveAttachments = resolveAttachments.empty() ? nullptr : resolveAttachments.data();
+    pDepthStencilAttachment = depthStencilAttachment.has_value() ? &depthStencilAttachment.value() : nullptr;
+    vecToCArr(preserveAttachments, pPreserveAttachments, preserveAttachmentCount);
+  }
+
+  using VkType::flags;
+  using VkType::pipelineBindPoint;
+  std::vector<vk::AttachmentReference> inputAttachments;
+  std::vector<vk::AttachmentReference> colorAttachments;
+  std::vector<vk::AttachmentReference> resolveAttachments;
+  std::optional<vk::AttachmentReference> depthStencilAttachment;
+  std::vector<uint32_t> preserveAttachments;
+};
+
+class RenderPassCreateInfo : public Structure<vk::RenderPassCreateInfo> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(attachments, pAttachments, attachmentCount);
+    vecLogiToVk(subpasses, vkSubpasses_);
+    vecToCArr(vkSubpasses_, pSubpasses, subpassCount);
+    vecToCArr(dependencies, pDependencies, dependencyCount);
+  }
+
+  using VkType::flags;
+  std::vector<vk::AttachmentDescription> attachments;
+  std::vector<SubpassDescription> subpasses;
+  std::vector<vk::SubpassDependency> dependencies;
+
+ private:
+  std::vector<vk::SubpassDescription> vkSubpasses_;
+};
+
+using RenderPassCreateInfoChain =
+  StructureChain<RenderPassCreateInfo, RenderPassFragmentDensityMapCreateInfoEXT,
+                 RenderPassInputAttachmentAspectCreateInfo, RenderPassMultiviewCreateInfo>;
 
 } // namespace logi
 
