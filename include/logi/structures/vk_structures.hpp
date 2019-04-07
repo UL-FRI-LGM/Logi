@@ -245,6 +245,316 @@ class DescriptorSetLayoutSupport : public Structure<vk::DescriptorSetLayoutSuppo
 using DescriptorSetLayoutSupportChain =
   StructureChain<DescriptorSetLayoutSupport, DescriptorSetVariableDescriptorCountLayoutSupportEXT>;
 
+class PhysicalDeviceMemoryBudgetPropertiesEXT : public Structure<vk::PhysicalDeviceMemoryBudgetPropertiesEXT> {
+ public:
+  using VkType::heapBudget;
+  using VkType::heapUsage;
+};
+
+class PhysicalDeviceMemoryProperties2 : public Structure<vk::PhysicalDeviceMemoryProperties2> {
+ public:
+  using VkType::memoryProperties;
+};
+
+using PhysicalDeviceMemoryProperties2Chain =
+  StructureChain<PhysicalDeviceMemoryProperties2, PhysicalDeviceMemoryBudgetPropertiesEXT>;
+
+class PhysicalDeviceVertexAttributeDivisorPropertiesEXT
+  : public Structure<vk::PhysicalDeviceVertexAttributeDivisorPropertiesEXT> {
+ public:
+  using VkType::maxVertexAttribDivisor;
+};
+
+class PhysicalDeviceTransformFeedbackPropertiesEXT
+  : public Structure<vk::PhysicalDeviceTransformFeedbackPropertiesEXT> {
+ public:
+  using VkType::maxTransformFeedbackBufferDataSize;
+  using VkType::maxTransformFeedbackBufferDataStride;
+  using VkType::maxTransformFeedbackBuffers;
+  using VkType::maxTransformFeedbackBufferSize;
+  using VkType::maxTransformFeedbackStreamDataSize;
+  using VkType::maxTransformFeedbackStreams;
+  using VkType::transformFeedbackDraw;
+  using VkType::transformFeedbackQueries;
+  using VkType::transformFeedbackRasterizationStreamSelect;
+  using VkType::transformFeedbackStreamsLinesTriangles;
+};
+
+class PhysicalDeviceSubgroupProperties : public Structure<vk::PhysicalDeviceSubgroupProperties> {
+ public:
+  using VkType::quadOperationsInAllStages;
+  using VkType::subgroupSize;
+  using VkType::supportedOperations;
+  using VkType::supportedStages;
+};
+
+class PhysicalDeviceShadingRateImagePropertiesNV : public Structure<vk::PhysicalDeviceShadingRateImagePropertiesNV> {
+ public:
+  using VkType::shadingRateMaxCoarseSamples;
+  using VkType::shadingRatePaletteSize;
+  using VkType::shadingRateTexelSize;
+};
+
+class PhysicalDeviceShaderCorePropertiesAMD : public Structure<vk::PhysicalDeviceShaderCorePropertiesAMD> {
+ public:
+  using VkType::computeUnitsPerShaderArray;
+  using VkType::maxSgprAllocation;
+  using VkType::maxVgprAllocation;
+  using VkType::minSgprAllocation;
+  using VkType::minVgprAllocation;
+  using VkType::sgprAllocationGranularity;
+  using VkType::sgprsPerSimd;
+  using VkType::shaderArraysPerEngineCount;
+  using VkType::shaderEngineCount;
+  using VkType::simdPerComputeUnit;
+  using VkType::vgprAllocationGranularity;
+  using VkType::vgprsPerSimd;
+  using VkType::wavefrontSize;
+  using VkType::wavefrontsPerSimd;
+};
+
+class PhysicalDeviceSamplerFilterMinmaxPropertiesEXT
+  : public Structure<vk::PhysicalDeviceSamplerFilterMinmaxPropertiesEXT> {
+ public:
+  using VkType::filterMinmaxImageComponentMapping;
+  using VkType::filterMinmaxSingleComponentFormats;
+};
+
+class PhysicalDeviceSampleLocationsPropertiesEXT : public Structure<vk::PhysicalDeviceSampleLocationsPropertiesEXT> {
+ public:
+  using VkType::maxSampleLocationGridSize;
+  using VkType::sampleLocationCoordinateRange;
+  using VkType::sampleLocationSampleCounts;
+  using VkType::sampleLocationSubPixelBits;
+  using VkType::variableSampleLocations;
+};
+
+class PhysicalDeviceRayTracingPropertiesNV : public Structure<vk::PhysicalDeviceRayTracingPropertiesNV> {
+ public:
+  using VkType::maxDescriptorSetAccelerationStructures;
+  using VkType::maxGeometryCount;
+  using VkType::maxInstanceCount;
+  using VkType::maxRecursionDepth;
+  using VkType::maxShaderGroupStride;
+  using VkType::maxTriangleCount;
+  using VkType::shaderGroupBaseAlignment;
+  using VkType::shaderGroupHandleSize;
+};
+
+class PhysicalDevicePushDescriptorPropertiesKHR : public Structure<vk::PhysicalDevicePushDescriptorPropertiesKHR> {
+ public:
+  using VkType::maxPushDescriptors;
+};
+
+class PhysicalDeviceProtectedMemoryProperties : public Structure<vk::PhysicalDeviceProtectedMemoryProperties> {
+ public:
+  using VkType::protectedNoFault;
+};
+
+class PhysicalDevicePointClippingProperties : public Structure<vk::PhysicalDevicePointClippingProperties> {
+ public:
+  using VkType::pointClippingBehavior;
+};
+
+class PhysicalDevicePCIBusInfoPropertiesEXT : public Structure<vk::PhysicalDevicePCIBusInfoPropertiesEXT> {
+ public:
+  using VkType::pciBus;
+  using VkType::pciDevice;
+  using VkType::pciDomain;
+  using VkType::pciFunction;
+};
+
+class PhysicalDeviceMultiviewProperties : public Structure<vk::PhysicalDeviceMultiviewProperties> {
+ public:
+  using VkType::maxMultiviewInstanceIndex;
+  using VkType::maxMultiviewViewCount;
+};
+
+class PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX
+  : public Structure<vk::PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX> {
+ public:
+  using VkType::perViewPositionAllComponents;
+};
+
+class PhysicalDeviceMeshShaderPropertiesNV : public Structure<vk::PhysicalDeviceMeshShaderPropertiesNV> {
+ public:
+  using VkType::maxDrawMeshTasksCount;
+  using VkType::maxMeshMultiviewViewCount;
+  using VkType::maxMeshOutputPrimitives;
+  using VkType::maxMeshOutputVertices;
+  using VkType::maxMeshTotalMemorySize;
+  using VkType::maxMeshWorkGroupInvocations;
+  using VkType::maxMeshWorkGroupSize;
+  using VkType::maxTaskOutputCount;
+  using VkType::maxTaskTotalMemorySize;
+  using VkType::maxTaskWorkGroupInvocations;
+  using VkType::maxTaskWorkGroupSize;
+  using VkType::meshOutputPerPrimitiveGranularity;
+  using VkType::meshOutputPerVertexGranularity;
+};
+
+class PhysicalDeviceMaintenance3Properties : public Structure<vk::PhysicalDeviceMaintenance3Properties> {
+ public:
+  using VkType::maxMemoryAllocationSize;
+  using VkType::maxPerSetDescriptors;
+};
+
+class PhysicalDeviceInlineUniformBlockPropertiesEXT
+  : public Structure<vk::PhysicalDeviceInlineUniformBlockPropertiesEXT> {
+ public:
+  using VkType::maxDescriptorSetInlineUniformBlocks;
+  using VkType::maxDescriptorSetUpdateAfterBindInlineUniformBlocks;
+  using VkType::maxInlineUniformBlockSize;
+  using VkType::maxPerStageDescriptorInlineUniformBlocks;
+  using VkType::maxPerStageDescriptorUpdateAfterBindInlineUniformBlocks;
+};
+
+class PhysicalDeviceIDProperties : public Structure<vk::PhysicalDeviceIDProperties> {
+ public:
+  using VkType::deviceLUID;
+  using VkType::deviceLUIDValid;
+  using VkType::deviceNodeMask;
+  using VkType::deviceUUID;
+  using VkType::driverUUID;
+};
+
+class PhysicalDeviceFragmentDensityMapPropertiesEXT
+  : public Structure<vk::PhysicalDeviceFragmentDensityMapPropertiesEXT> {
+ public:
+  using VkType::fragmentDensityInvocations;
+  using VkType::maxFragmentDensityTexelSize;
+  using VkType::minFragmentDensityTexelSize;
+};
+
+class PhysicalDeviceFloatControlsPropertiesKHR : public Structure<vk::PhysicalDeviceFloatControlsPropertiesKHR> {
+ public:
+  using VkType::separateDenormSettings;
+  using VkType::separateRoundingModeSettings;
+  using VkType::shaderDenormFlushToZeroFloat16;
+  using VkType::shaderDenormFlushToZeroFloat32;
+  using VkType::shaderDenormFlushToZeroFloat64;
+  using VkType::shaderDenormPreserveFloat16;
+  using VkType::shaderDenormPreserveFloat32;
+  using VkType::shaderDenormPreserveFloat64;
+  using VkType::shaderRoundingModeRTEFloat16;
+  using VkType::shaderRoundingModeRTEFloat32;
+  using VkType::shaderRoundingModeRTEFloat64;
+  using VkType::shaderRoundingModeRTZFloat16;
+  using VkType::shaderRoundingModeRTZFloat32;
+  using VkType::shaderRoundingModeRTZFloat64;
+  using VkType::shaderSignedZeroInfNanPreserveFloat16;
+  using VkType::shaderSignedZeroInfNanPreserveFloat32;
+  using VkType::shaderSignedZeroInfNanPreserveFloat64;
+};
+
+class PhysicalDeviceExternalMemoryHostPropertiesEXT
+  : public Structure<vk::PhysicalDeviceExternalMemoryHostPropertiesEXT> {
+ public:
+  using VkType::minImportedHostPointerAlignment;
+};
+
+class PhysicalDeviceDriverPropertiesKHR : public Structure<vk::PhysicalDeviceDriverPropertiesKHR> {
+ public:
+  using VkType::conformanceVersion;
+  using VkType::driverID;
+  using VkType::driverInfo;
+  using VkType::driverName;
+};
+
+class PhysicalDeviceDiscardRectanglePropertiesEXT : public Structure<vk::PhysicalDeviceDiscardRectanglePropertiesEXT> {
+ public:
+  using VkType::maxDiscardRectangles;
+};
+
+class PhysicalDeviceDescriptorIndexingPropertiesEXT
+  : public Structure<vk::PhysicalDeviceDescriptorIndexingPropertiesEXT> {
+ public:
+  using VkType::maxDescriptorSetUpdateAfterBindInputAttachments;
+  using VkType::maxDescriptorSetUpdateAfterBindSampledImages;
+  using VkType::maxDescriptorSetUpdateAfterBindSamplers;
+  using VkType::maxDescriptorSetUpdateAfterBindStorageBuffers;
+  using VkType::maxDescriptorSetUpdateAfterBindStorageBuffersDynamic;
+  using VkType::maxDescriptorSetUpdateAfterBindStorageImages;
+  using VkType::maxDescriptorSetUpdateAfterBindUniformBuffers;
+  using VkType::maxDescriptorSetUpdateAfterBindUniformBuffersDynamic;
+  using VkType::maxPerStageDescriptorUpdateAfterBindInputAttachments;
+  using VkType::maxPerStageDescriptorUpdateAfterBindSampledImages;
+  using VkType::maxPerStageDescriptorUpdateAfterBindSamplers;
+  using VkType::maxPerStageDescriptorUpdateAfterBindStorageBuffers;
+  using VkType::maxPerStageDescriptorUpdateAfterBindStorageImages;
+  using VkType::maxPerStageDescriptorUpdateAfterBindUniformBuffers;
+  using VkType::maxPerStageUpdateAfterBindResources;
+  using VkType::maxUpdateAfterBindDescriptorsInAllPools;
+  using VkType::quadDivergentImplicitLod;
+  using VkType::robustBufferAccessUpdateAfterBind;
+  using VkType::shaderInputAttachmentArrayNonUniformIndexingNative;
+  using VkType::shaderSampledImageArrayNonUniformIndexingNative;
+  using VkType::shaderStorageBufferArrayNonUniformIndexingNative;
+  using VkType::shaderStorageImageArrayNonUniformIndexingNative;
+  using VkType::shaderUniformBufferArrayNonUniformIndexingNative;
+};
+
+class PhysicalDeviceDepthStencilResolvePropertiesKHR
+  : public Structure<vk::PhysicalDeviceDepthStencilResolvePropertiesKHR> {
+ public:
+  using VkType::independentResolve;
+  using VkType::independentResolveNone;
+  using VkType::supportedDepthResolveModes;
+  using VkType::supportedStencilResolveModes;
+};
+
+class PhysicalDeviceCooperativeMatrixPropertiesNV : public Structure<vk::PhysicalDeviceCooperativeMatrixPropertiesNV> {
+ public:
+  using VkType::cooperativeMatrixSupportedStages;
+};
+
+class PhysicalDeviceConservativeRasterizationPropertiesEXT
+  : public Structure<vk::PhysicalDeviceConservativeRasterizationPropertiesEXT> {
+ public:
+  using VkType::conservativePointAndLineRasterization;
+  using VkType::conservativeRasterizationPostDepthCoverage;
+  using VkType::degenerateLinesRasterized;
+  using VkType::degenerateTrianglesRasterized;
+  using VkType::extraPrimitiveOverestimationSizeGranularity;
+  using VkType::fullyCoveredFragmentShaderInputVariable;
+  using VkType::maxExtraPrimitiveOverestimationSize;
+  using VkType::primitiveOverestimationSize;
+  using VkType::primitiveUnderestimation;
+};
+
+class PhysicalDeviceBlendOperationAdvancedPropertiesEXT
+  : public Structure<vk::PhysicalDeviceBlendOperationAdvancedPropertiesEXT> {
+ public:
+  using VkType::advancedBlendAllOperations;
+  using VkType::advancedBlendCorrelatedOverlap;
+  using VkType::advancedBlendIndependentBlend;
+  using VkType::advancedBlendMaxColorAttachments;
+  using VkType::advancedBlendNonPremultipliedDstColor;
+  using VkType::advancedBlendNonPremultipliedSrcColor;
+};
+
+class PhysicalDeviceProperties2 : public Structure<vk::PhysicalDeviceProperties2> {
+ public:
+  using VkType::properties;
+};
+
+using PhysicalDeviceProperties2Chain =
+  StructureChain<PhysicalDeviceProperties2, PhysicalDeviceBlendOperationAdvancedPropertiesEXT,
+                 PhysicalDeviceConservativeRasterizationPropertiesEXT, PhysicalDeviceCooperativeMatrixPropertiesNV,
+                 PhysicalDeviceDepthStencilResolvePropertiesKHR, PhysicalDeviceDescriptorIndexingPropertiesEXT,
+                 PhysicalDeviceDiscardRectanglePropertiesEXT, PhysicalDeviceDriverPropertiesKHR,
+                 PhysicalDeviceExternalMemoryHostPropertiesEXT, PhysicalDeviceFloatControlsPropertiesKHR,
+                 PhysicalDeviceFragmentDensityMapPropertiesEXT, PhysicalDeviceIDProperties,
+                 PhysicalDeviceInlineUniformBlockPropertiesEXT, PhysicalDeviceMaintenance3Properties,
+                 PhysicalDeviceMeshShaderPropertiesNV, PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX,
+                 PhysicalDeviceMultiviewProperties, PhysicalDevicePCIBusInfoPropertiesEXT,
+                 PhysicalDevicePointClippingProperties, PhysicalDeviceProtectedMemoryProperties,
+                 PhysicalDevicePushDescriptorPropertiesKHR, PhysicalDeviceRayTracingPropertiesNV,
+                 PhysicalDeviceSampleLocationsPropertiesEXT, PhysicalDeviceSamplerFilterMinmaxPropertiesEXT,
+                 PhysicalDeviceShaderCorePropertiesAMD, PhysicalDeviceShadingRateImagePropertiesNV,
+                 PhysicalDeviceSubgroupProperties, PhysicalDeviceTransformFeedbackPropertiesEXT,
+                 PhysicalDeviceVertexAttributeDivisorPropertiesEXT>;
+
 class PhysicalDeviceVulkanMemoryModelFeaturesKHR : public Structure<vk::PhysicalDeviceVulkanMemoryModelFeaturesKHR> {
  public:
   using VkType::vulkanMemoryModel;
@@ -494,6 +804,123 @@ class DeviceGroupDeviceCreateInfo : public Structure<vk::DeviceGroupDeviceCreate
   uint32_t physicalDeviceCount;
   std::vector<vk::PhysicalDevice> physicalDevices;
 };
+
+class DeviceQueueGlobalPriorityCreateInfoEXT : public Structure<vk::DeviceQueueGlobalPriorityCreateInfoEXT> {
+ public:
+  using VkType::globalPriority;
+};
+
+class DeviceQueueCreateInfo : public Structure<vk::DeviceQueueCreateInfo> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(queuePriorities, pQueuePriorities, queueCount);
+  }
+
+  using VkType::flags;
+  using VkType::queueFamilyIndex;
+  std::vector<float> queuePriorities;
+};
+
+using DeviceQueueCreateInfoChain = StructureChain<DeviceQueueCreateInfo, DeviceQueueGlobalPriorityCreateInfoEXT>;
+
+class ExportFenceCreateInfo : public Structure<vk::ExportFenceCreateInfo> {
+ public:
+  using VkType::handleTypes;
+};
+
+class FenceCreateInfo : public Structure<vk::FenceCreateInfo> {
+ public:
+  using VkType::flags;
+};
+
+using FenceCreateInfoChain = StructureChain<FenceCreateInfo, ExportFenceCreateInfo>;
+
+class FormatProperties2 : public Structure<vk::FormatProperties2> {
+ public:
+  using VkType::formatProperties;
+};
+
+using FormatProperties2Chain = StructureChain<FormatProperties2>;
+
+class ImageSwapchainCreateInfoKHR : public Structure<vk::ImageSwapchainCreateInfoKHR> {
+ public:
+  using VkType::swapchain;
+};
+
+class ImageStencilUsageCreateInfoEXT : public Structure<vk::ImageStencilUsageCreateInfoEXT> {
+ public:
+  using VkType::stencilUsage;
+};
+
+class ImageFormatListCreateInfoKHR : public Structure<vk::ImageFormatListCreateInfoKHR> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(viewFormats, pViewFormats, viewFormatCount);
+  }
+
+  uint32_t viewFormatCount;
+  std::vector<vk::Format> viewFormats;
+};
+
+class ImageDrmFormatModifierListCreateInfoEXT : public Structure<vk::ImageDrmFormatModifierListCreateInfoEXT> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(drmFormatModifiers, pDrmFormatModifiers, drmFormatModifierCount);
+  }
+
+  std::vector<uint64_t> drmFormatModifiers;
+};
+
+class ImageDrmFormatModifierExplicitCreateInfoEXT : public Structure<vk::ImageDrmFormatModifierExplicitCreateInfoEXT> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(planeLayouts, pPlaneLayouts, drmFormatModifierPlaneCount);
+  }
+
+  using VkType::drmFormatModifier;
+  std::vector<vk::SubresourceLayout> planeLayouts;
+};
+
+class ExternalMemoryImageCreateInfoNV : public Structure<vk::ExternalMemoryImageCreateInfoNV> {
+ public:
+  using VkType::handleTypes;
+};
+
+class ExternalMemoryImageCreateInfo : public Structure<vk::ExternalMemoryImageCreateInfo> {
+ public:
+  using VkType::handleTypes;
+};
+
+class DedicatedAllocationImageCreateInfoNV : public Structure<vk::DedicatedAllocationImageCreateInfoNV> {
+ public:
+  using VkType::dedicatedAllocation;
+};
+
+class ImageCreateInfo : public Structure<vk::ImageCreateInfo> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(queueFamilyIndices, pQueueFamilyIndices, queueFamilyIndexCount);
+  }
+
+  using VkType::arrayLayers;
+  using VkType::extent;
+  using VkType::flags;
+  using VkType::format;
+  using VkType::imageType;
+  using VkType::mipLevels;
+  using VkType::samples;
+  using VkType::sharingMode;
+  using VkType::tiling;
+  using VkType::usage;
+  std::vector<uint32_t> queueFamilyIndices;
+  using VkType::initialLayout;
+};
+
+using ImageCreateInfoChain =
+  StructureChain<ImageCreateInfo, ImageSwapchainCreateInfoKHR, ImageStencilUsageCreateInfoEXT,
+                 ImageFormatListCreateInfoKHR, ImageDrmFormatModifierListCreateInfoEXT,
+                 ImageDrmFormatModifierExplicitCreateInfoEXT, ExternalMemoryImageCreateInfoNV,
+                 ExternalMemoryImageCreateInfo, DedicatedAllocationImageCreateInfoNV>;
 
 class DescriptorSetLayoutBinding : public SimpleStructure<vk::DescriptorSetLayoutBinding> {
  public:
