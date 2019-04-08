@@ -165,6 +165,18 @@ class DebugReportCallbackCreateInfoEXT : public Structure<vk::DebugReportCallbac
   using VkType::pUserData;
 };
 
+class DebugUtilsLabelEXT : public Structure<vk::DebugUtilsLabelEXT> {
+ public:
+  void updateVkStructure() override {
+    pLabelName = labelName.c_str();
+  }
+
+  std::string labelName;
+  using VkType::color;
+};
+
+using DebugUtilsLabelEXTChain = StructureChain<DebugUtilsLabelEXT>;
+
 class DebugUtilsMessengerCreateInfoEXT : public Structure<vk::DebugUtilsMessengerCreateInfoEXT> {
  public:
   using VkType::flags;
@@ -173,6 +185,34 @@ class DebugUtilsMessengerCreateInfoEXT : public Structure<vk::DebugUtilsMessenge
   using VkType::pfnUserCallback;
   using VkType::pUserData;
 };
+
+class DebugUtilsObjectNameInfoEXT : public Structure<vk::DebugUtilsObjectNameInfoEXT> {
+ public:
+  void updateVkStructure() override {
+    pObjectName = objectName.c_str();
+  }
+
+  using VkType::objectHandle;
+  using VkType::objectType;
+  std::string objectName;
+};
+
+using DebugUtilsObjectNameInfoEXTChain = StructureChain<DebugUtilsObjectNameInfoEXT>;
+
+class DebugUtilsObjectTagInfoEXT : public Structure<vk::DebugUtilsObjectTagInfoEXT> {
+ public:
+  void updateVkStructure() override {
+    pTag = tag.empty() ? nullptr : tag.data();
+    tagSize = tag.size();
+  }
+
+  using VkType::objectHandle;
+  using VkType::objectType;
+  using VkType::tagName;
+  std::vector<std::byte> tag;
+};
+
+using DebugUtilsObjectTagInfoEXTChain = StructureChain<DebugUtilsObjectTagInfoEXT>;
 
 class ValidationFeaturesEXT : public Structure<vk::ValidationFeaturesEXT> {
  public:
@@ -454,6 +494,14 @@ class CommandBufferInheritanceInfo : public Structure<vk::CommandBufferInheritan
 using CommandBufferInheritanceInfoChain =
   StructureChain<CommandBufferInheritanceInfo, CommandBufferInheritanceConditionalRenderingInfoEXT>;
 
+class CommandPoolCreateInfo : public Structure<vk::CommandPoolCreateInfo> {
+ public:
+  using VkType::flags;
+  using VkType::queueFamilyIndex;
+};
+
+using CommandPoolCreateInfoChain = StructureChain<CommandPoolCreateInfo>;
+
 class DeviceGroupCommandBufferBeginInfo : public Structure<vk::DeviceGroupCommandBufferBeginInfo> {
  public:
   using VkType::deviceMask;
@@ -527,6 +575,23 @@ class DescriptorSetLayoutSupport : public Structure<vk::DescriptorSetLayoutSuppo
 
 using DescriptorSetLayoutSupportChain =
   StructureChain<DescriptorSetLayoutSupport, DescriptorSetVariableDescriptorCountLayoutSupportEXT>;
+
+class DescriptorUpdateTemplateCreateInfo : public Structure<vk::DescriptorUpdateTemplateCreateInfo> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(descriptorUpdateEntries, pDescriptorUpdateEntries, descriptorUpdateEntryCount);
+  }
+
+  using VkType::flags;
+  std::vector<vk::DescriptorUpdateTemplateEntry> descriptorUpdateEntries;
+  using VkType::descriptorSetLayout;
+  using VkType::pipelineBindPoint;
+  using VkType::pipelineLayout;
+  using VkType::set;
+  using VkType::templateType;
+};
+
+using DescriptorUpdateTemplateCreateInfoChain = StructureChain<DescriptorUpdateTemplateCreateInfo>;
 
 class PhysicalDeviceMemoryBudgetPropertiesEXT : public Structure<vk::PhysicalDeviceMemoryBudgetPropertiesEXT> {
  public:
@@ -1152,6 +1217,37 @@ class DeviceQueueCreateInfo : public Structure<vk::DeviceQueueCreateInfo> {
 
 using DeviceQueueCreateInfoChain = StructureChain<DeviceQueueCreateInfo, DeviceQueueGlobalPriorityCreateInfoEXT>;
 
+class DeviceQueueInfo2 : public Structure<vk::DeviceQueueInfo2> {
+ public:
+  using VkType::flags;
+  using VkType::queueFamilyIndex;
+  using VkType::queueIndex;
+};
+
+using DeviceQueueInfo2Chain = StructureChain<DeviceQueueInfo2>;
+
+class DisplayEventInfoEXT : public Structure<vk::DisplayEventInfoEXT> {
+ public:
+  using VkType::displayEvent;
+};
+
+using DisplayEventInfoEXTChain = StructureChain<DisplayEventInfoEXT>;
+
+class DisplayModeCreateInfoKHR : public Structure<vk::DisplayModeCreateInfoKHR> {
+ public:
+  using VkType::flags;
+  using VkType::parameters;
+};
+
+using DisplayModeCreateInfoKHRChain = StructureChain<DisplayModeCreateInfoKHR>;
+
+class DisplayModeProperties2KHR : public Structure<vk::DisplayModeProperties2KHR> {
+ public:
+  using VkType::displayModeProperties;
+};
+
+using DisplayModeProperties2KHRChain = StructureChain<DisplayModeProperties2KHR>;
+
 class DeviceMemoryOverallocationCreateInfoAMD : public Structure<vk::DeviceMemoryOverallocationCreateInfoAMD> {
  public:
   using VkType::overallocationBehavior;
@@ -1224,6 +1320,39 @@ using DeviceCreateInfoChain =
                  PhysicalDeviceShaderImageFootprintFeaturesNV, PhysicalDeviceShadingRateImageFeaturesNV,
                  PhysicalDeviceTransformFeedbackFeaturesEXT, PhysicalDeviceVariablePointerFeatures,
                  PhysicalDeviceVertexAttributeDivisorFeaturesEXT, PhysicalDeviceVulkanMemoryModelFeaturesKHR>;
+
+class DeviceEventInfoEXT : public Structure<vk::DeviceEventInfoEXT> {
+ public:
+  using VkType::deviceEvent;
+};
+
+using DeviceEventInfoEXTChain = StructureChain<DeviceEventInfoEXT>;
+
+class DeviceGeneratedCommandsFeaturesNVX : public Structure<vk::DeviceGeneratedCommandsFeaturesNVX> {
+ public:
+  using VkType::computeBindingPointSupport;
+};
+
+using DeviceGeneratedCommandsFeaturesNVXCHain = StructureChain<DeviceGeneratedCommandsFeaturesNVX>;
+
+class DeviceGeneratedCommandsLimitsNVX : public Structure<vk::DeviceGeneratedCommandsLimitsNVX> {
+ public:
+  using VkType::maxIndirectCommandsLayoutTokenCount;
+  using VkType::maxObjectEntryCounts;
+  using VkType::minCommandsTokenBufferOffsetAlignment;
+  using VkType::minSequenceCountBufferOffsetAlignment;
+  using VkType::minSequenceIndexBufferOffsetAlignment;
+};
+
+using DeviceGeneratedCommandsLimitsNVXCHain = StructureChain<DeviceGeneratedCommandsLimitsNVX>;
+
+class DeviceGroupPresentCapabilitiesKHR : public Structure<vk::DeviceGroupPresentCapabilitiesKHR> {
+ public:
+  using VkType::modes;
+  using VkType::presentMask;
+};
+
+using DeviceGroupPresentCapabilitiesKHRChain = StructureChain<DeviceGroupPresentCapabilitiesKHR>;
 
 class ExportFenceCreateInfo : public Structure<vk::ExportFenceCreateInfo> {
  public:
@@ -1489,6 +1618,82 @@ class ComputePipelineCreateInfo : public Structure<vk::ComputePipelineCreateInfo
 };
 
 using ComputePipelineCreateInfoChain = StructureChain<ComputePipelineCreateInfo>;
+
+class ConditionalRenderingBeginInfoEXT : public Structure<vk::ConditionalRenderingBeginInfoEXT> {
+ public:
+  using VkType::buffer;
+  using VkType::flags;
+  using VkType::offset;
+};
+
+using ConditionalRenderingBeginInfoEXTChain = StructureChain<ConditionalRenderingBeginInfoEXT>;
+
+class CooperativeMatrixPropertiesNV : public Structure<vk::CooperativeMatrixPropertiesNV> {
+ public:
+  using VkType::AType;
+  using VkType::BType;
+  using VkType::CType;
+  using VkType::DType;
+  using VkType::KSize;
+  using VkType::MSize;
+  using VkType::NSize;
+  using VkType::scope;
+};
+
+using CooperativeMatrixPropertiesNVChain = StructureChain<CooperativeMatrixPropertiesNV>;
+
+class CopyDescriptorSet : public Structure<vk::CopyDescriptorSet> {
+ public:
+  using VkType::descriptorCount;
+  using VkType::dstArrayElement;
+  using VkType::dstBinding;
+  using VkType::dstSet;
+  using VkType::srcArrayElement;
+  using VkType::srcBinding;
+  using VkType::srcSet;
+};
+
+using CopyDescriptorSetChain = StructureChain<CopyDescriptorSet>;
+
+class DebugMarkerMarkerInfoEXT : public Structure<vk::DebugMarkerMarkerInfoEXT> {
+ public:
+  void updateVkStructure() override {
+    pMarkerName = markerName.c_str();
+  }
+
+  std::string markerName;
+  using VkType::color;
+};
+
+using DebugMarkerMarkerInfoEXTChain = StructureChain<DebugMarkerMarkerInfoEXT>;
+
+class DebugMarkerObjectNameInfoEXT : public Structure<vk::DebugMarkerObjectNameInfoEXT> {
+ public:
+  void updateVkStructure() override {
+    pObjectName = objectName.c_str();
+  }
+
+  using VkType::object;
+  using VkType::objectType;
+  std::string objectName;
+};
+
+using DebugMarkerObjectNameInfoEXTChain = StructureChain<DebugMarkerObjectNameInfoEXT>;
+
+class DebugMarkerObjectTagInfoEXT : public Structure<vk::DebugMarkerObjectTagInfoEXT> {
+ public:
+  void updateVkStructure() override {
+    pTag = tag.empty() ? nullptr : tag.data();
+    tagSize = tag.size();
+  }
+
+  using VkType::object;
+  using VkType::objectType;
+  using VkType::tagName;
+  std::vector<std::byte> tag;
+};
+
+using DebugMarkerObjectTagInfoEXTChain = StructureChain<DebugMarkerObjectTagInfoEXT>;
 
 class PipelineVertexInputDivisorStateCreateInfoEXT
   : public Structure<vk::PipelineVertexInputDivisorStateCreateInfoEXT> {
