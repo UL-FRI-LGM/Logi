@@ -19,6 +19,8 @@
 #ifndef LOGI_STRUCTURES_SIMPLE_STRUCTURES_HPP
 #define LOGI_STRUCTURES_SIMPLE_STRUCTURES_HPP
 
+#include "logi/structures/structure.hpp"
+
 namespace logi {
 
 using AllocationCallbacks = vk::AllocationCallbacks;
@@ -107,6 +109,119 @@ using Viewport = vk::Viewport;
 using ViewportSwizzleNV = vk::ViewportSwizzleNV;
 using ViewportWScalingNV = vk::ViewportWScalingNV;
 using XYColorEXT = vk::XYColorEXT;
+
+class CoarseSampleOrderCustomNV : public Structure<vk::CoarseSampleOrderCustomNV> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(sampleLocations, pSampleLocations, sampleLocationCount);
+  }
+
+  using VkType::sampleCount;
+  using VkType::shadingRate;
+  std::vector<CoarseSampleLocationNV> sampleLocations;
+};
+
+class DescriptorSetLayoutBinding : public Structure<vk::DescriptorSetLayoutBinding> {
+ public:
+  void updateVkStructure() override {
+    pImmutableSamplers = immutableSamplers.empty() ? nullptr : immutableSamplers.data();
+  }
+
+  using VkType::binding;
+  using VkType::descriptorCount;
+  using VkType::descriptorType;
+  using VkType::stageFlags;
+  std::vector<vk::Sampler> immutableSamplers;
+};
+
+class PresentRegionKHR : public Structure<vk::PresentRegionKHR> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(rectangles, pRectangles, rectangleCount);
+  }
+
+  std::vector<vk::RectLayerKHR> rectangles;
+};
+
+class ShadingRatePaletteNV : public Structure<vk::ShadingRatePaletteNV> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(shadingRatePaletteEntries, pShadingRatePaletteEntries, shadingRatePaletteEntryCount);
+  }
+
+  std::vector<vk::ShadingRatePaletteEntryNV> shadingRatePaletteEntries;
+};
+
+class SparseBufferMemoryBindInfo : public Structure<vk::SparseBufferMemoryBindInfo> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(binds, pBinds, bindCount);
+  }
+
+  using VkType::buffer;
+  std::vector<vk::SparseMemoryBind> binds;
+};
+
+class SparseImageMemoryBindInfo : public Structure<vk::SparseImageMemoryBindInfo> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(binds, pBinds, bindCount);
+  }
+
+  using VkType::image;
+  std::vector<vk::SparseImageMemoryBind> binds;
+};
+
+class SparseImageOpaqueMemoryBindInfo : public Structure<vk::SparseImageOpaqueMemoryBindInfo> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(binds, pBinds, bindCount);
+  }
+
+  using VkType::image;
+  std::vector<vk::SparseMemoryBind> binds;
+};
+
+class SpecializationInfo : public Structure<vk::SpecializationInfo> {
+  void updateVkStructure() override {
+    vecToCArr(mapEntries, pMapEntries, mapEntryCount);
+    dataSize = data.size();
+    pData = data.empty() ? nullptr : data.data();
+  }
+
+  std::vector<vk::SpecializationMapEntry> mapEntries;
+  std::vector<std::byte> data;
+};
+
+class SubpassDescription : public Structure<vk::SubpassDescription> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(inputAttachments, pInputAttachments, inputAttachmentCount);
+    vecToCArr(colorAttachments, pColorAttachments, colorAttachmentCount);
+    pResolveAttachments = resolveAttachments.empty() ? nullptr : resolveAttachments.data();
+    pDepthStencilAttachment = depthStencilAttachment.has_value() ? &depthStencilAttachment.value() : nullptr;
+    vecToCArr(preserveAttachments, pPreserveAttachments, preserveAttachmentCount);
+  }
+
+  using VkType::flags;
+  using VkType::pipelineBindPoint;
+  std::vector<vk::AttachmentReference> inputAttachments;
+  std::vector<vk::AttachmentReference> colorAttachments;
+  std::vector<vk::AttachmentReference> resolveAttachments;
+  std::optional<vk::AttachmentReference> depthStencilAttachment;
+  std::vector<uint32_t> preserveAttachments;
+};
+
+class SampleLocationsInfoEXT : public Structure<vk::SampleLocationsInfoEXT> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(sampleLocations, pSampleLocations, sampleLocationsCount);
+  }
+
+  using VkType::sampleLocationGridSize;
+  using VkType::sampleLocationsPerPixel;
+  std::vector<vk::SampleLocationEXT> sampleLocations;
+};
 
 } // namespace logi
 
