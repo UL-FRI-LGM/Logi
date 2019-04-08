@@ -802,7 +802,6 @@ class DeviceGroupDeviceCreateInfo : public Structure<vk::DeviceGroupDeviceCreate
     vecToCArr(physicalDevices, pPhysicalDevices, physicalDeviceCount);
   }
 
-  uint32_t physicalDeviceCount;
   std::vector<vk::PhysicalDevice> physicalDevices;
 };
 
@@ -836,6 +835,18 @@ class FenceCreateInfo : public Structure<vk::FenceCreateInfo> {
 
 using FenceCreateInfoChain = StructureChain<FenceCreateInfo, ExportFenceCreateInfo>;
 
+class ExportSemaphoreCreateInfo : public Structure<vk::ExportSemaphoreCreateInfo> {
+ public:
+  using VkType::handleTypes;
+};
+
+class SemaphoreCreateInfo : public Structure<vk::SemaphoreCreateInfo> {
+ public:
+  using VkType::flags;
+};
+
+using SemaphoreCreateInfoChain = StructureChain<SemaphoreCreateInfo, ExportSemaphoreCreateInfo>;
+
 class FormatProperties2 : public Structure<vk::FormatProperties2> {
  public:
   using VkType::formatProperties;
@@ -859,7 +870,6 @@ class ImageFormatListCreateInfoKHR : public Structure<vk::ImageFormatListCreateI
     vecToCArr(viewFormats, pViewFormats, viewFormatCount);
   }
 
-  uint32_t viewFormatCount;
   std::vector<vk::Format> viewFormats;
 };
 
@@ -1463,6 +1473,178 @@ class RenderPassCreateInfo : public Structure<vk::RenderPassCreateInfo> {
 using RenderPassCreateInfoChain =
   StructureChain<RenderPassCreateInfo, RenderPassFragmentDensityMapCreateInfoEXT,
                  RenderPassInputAttachmentAspectCreateInfo, RenderPassMultiviewCreateInfo>;
+
+class DeviceGroupRenderPassBeginInfo : public Structure<vk::DeviceGroupRenderPassBeginInfo> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(deviceRenderAreas, pDeviceRenderAreas, deviceRenderAreaCount);
+  }
+
+  using VkType::deviceMask;
+  std::vector<vk::Rect2D> deviceRenderAreas;
+};
+
+class AttachmentSampleLocationsEXT : public Structure<vk::AttachmentSampleLocationsEXT> {
+ public:
+  void updateVkStructure() override {
+    VkType::sampleLocationsInfo = sampleLocationsInfo.build();
+  }
+
+  using VkType::attachmentIndex;
+  SampleLocationsInfoEXT sampleLocationsInfo;
+};
+
+class SubpassSampleLocationsEXT : public Structure<vk::SubpassSampleLocationsEXT> {
+ public:
+  void updateVkStructure() override {
+    VkType::sampleLocationsInfo = sampleLocationsInfo.build();
+  }
+
+  using VkType::subpassIndex;
+  SampleLocationsInfoEXT sampleLocationsInfo;
+};
+
+class RenderPassSampleLocationsBeginInfoEXT : public Structure<vk::RenderPassSampleLocationsBeginInfoEXT> {
+ public:
+  void updateVkStructure() override {
+    vecLogiToVk(attachmentInitialSampleLocations, vkAttachmentInitialSampleLocations_);
+    vecToCArr(vkAttachmentInitialSampleLocations_, pAttachmentInitialSampleLocations,
+              attachmentInitialSampleLocationsCount);
+    vecLogiToVk(postSubpassSampleLocations, vkPostSubpassSampleLocations_);
+    vecToCArr(vkPostSubpassSampleLocations_, pPostSubpassSampleLocations, postSubpassSampleLocationsCount);
+  }
+
+  std::vector<AttachmentSampleLocationsEXT> attachmentInitialSampleLocations;
+  std::vector<SubpassSampleLocationsEXT> postSubpassSampleLocations;
+
+ private:
+  std::vector<vk::AttachmentSampleLocationsEXT> vkAttachmentInitialSampleLocations_;
+  std::vector<vk::SubpassSampleLocationsEXT> vkPostSubpassSampleLocations_;
+};
+
+class RenderPassBeginInfo : public Structure<vk::RenderPassBeginInfo> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(clearValues, pClearValues, clearValueCount);
+  }
+
+  using VkType::framebuffer;
+  using VkType::renderArea;
+  using VkType::renderPass;
+
+  std::vector<vk::ClearValue> clearValues;
+};
+
+using RenderPassBeginInfoChain =
+  StructureChain<RenderPassBeginInfo, DeviceGroupRenderPassBeginInfo, RenderPassSampleLocationsBeginInfoEXT>;
+
+class DeviceGroupSwapchainCreateInfoKHR : public Structure<vk::DeviceGroupSwapchainCreateInfoKHR> {
+ public:
+  using VkType::modes;
+};
+
+class SwapchainCounterCreateInfoEXT : public Structure<vk::SwapchainCounterCreateInfoEXT> {
+ public:
+  using VkType::surfaceCounters;
+};
+
+class SwapchainCreateInfoKHR : public Structure<vk::SwapchainCreateInfoKHR> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(queueFamilyIndices, pQueueFamilyIndices, queueFamilyIndexCount);
+  }
+
+  using VkType::clipped;
+  using VkType::compositeAlpha;
+  using VkType::flags;
+  using VkType::imageArrayLayers;
+  using VkType::imageColorSpace;
+  using VkType::imageExtent;
+  using VkType::imageFormat;
+  using VkType::imageSharingMode;
+  using VkType::imageUsage;
+  using VkType::minImageCount;
+  using VkType::oldSwapchain;
+  using VkType::presentMode;
+  using VkType::preTransform;
+  using VkType::surface;
+  std::vector<uint32_t> queueFamilyIndices;
+};
+
+using SwapchainCreateInfoKHRChain = StructureChain<SwapchainCreateInfoKHR, DeviceGroupSwapchainCreateInfoKHR,
+                                                   ImageFormatListCreateInfoKHR, SwapchainCounterCreateInfoEXT>;
+
+class SharedPresentSurfaceCapabilitiesKHR : public Structure<vk::SharedPresentSurfaceCapabilitiesKHR> {
+ public:
+  using VkType::sharedPresentSupportedUsageFlags;
+};
+
+class SurfaceCapabilities2KHR : public Structure<vk::SurfaceCapabilities2KHR> {
+ public:
+  using VkType::surfaceCapabilities;
+};
+
+using SurfaceCapabilities2KHRChain = StructureChain<SurfaceCapabilities2KHR, SharedPresentSurfaceCapabilitiesKHR>;
+
+class WriteDescriptorSetAccelerationStructureNV : public Structure<vk::WriteDescriptorSetAccelerationStructureNV> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(accelerationStructures, pAccelerationStructures, accelerationStructureCount);
+  }
+
+  std::vector<vk::AccelerationStructureNV> accelerationStructures;
+};
+
+class WriteDescriptorSetInlineUniformBlockEXT : public Structure<vk::WriteDescriptorSetInlineUniformBlockEXT> {
+ public:
+  void updateVkStructure() override {
+    pData = data.empty() ? nullptr : data.data();
+    dataSize = data.size();
+  }
+
+  std::vector<std::byte> data;
+};
+
+class WriteDescriptorSet : public Structure<vk::WriteDescriptorSet> {
+ public:
+  void updateVkStructure() override {
+    switch (descriptorType) {
+      case vk::DescriptorType::eSampler:
+      case vk::DescriptorType::eCombinedImageSampler:
+      case vk::DescriptorType::eSampledImage:
+      case vk::DescriptorType::eStorageImage:
+      case vk::DescriptorType::eInputAttachment:
+        pImageInfo = imageInfo.empty() ? nullptr : imageInfo.data();
+        break;
+      case vk::DescriptorType::eUniformBuffer:
+      case vk::DescriptorType::eStorageBuffer:
+      case vk::DescriptorType::eUniformBufferDynamic:
+      case vk::DescriptorType::eStorageBufferDynamic:
+        pBufferInfo = bufferInfo.empty() ? nullptr : bufferInfo.data();
+        break;
+      case vk::DescriptorType::eUniformTexelBuffer:
+      case vk::DescriptorType::eStorageTexelBuffer:
+        pTexelBufferView = texelBufferView.empty() ? nullptr : texelBufferView.data();
+        break;
+      case vk::DescriptorType::eAccelerationStructureNV:
+      case vk::DescriptorType::eInlineUniformBlockEXT:
+        // Nothing to do.
+        break;
+    }
+  }
+
+  using VkType::descriptorCount;
+  using VkType::descriptorType;
+  using VkType::dstArrayElement;
+  using VkType::dstBinding;
+  using VkType::dstSet;
+  std::vector<vk::DescriptorImageInfo> imageInfo;
+  std::vector<vk::DescriptorBufferInfo> bufferInfo;
+  std::vector<vk::BufferView> texelBufferView;
+};
+
+using WriteDescriptorSetChain = StructureChain<WriteDescriptorSet, WriteDescriptorSetInlineUniformBlockEXT,
+                                               WriteDescriptorSetAccelerationStructureNV>;
 
 } // namespace logi
 
