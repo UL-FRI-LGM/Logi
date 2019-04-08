@@ -21,9 +21,98 @@
 
 #include <vulkan/vulkan.hpp>
 #include "logi/base/exception.hpp"
+#include "logi/structures/simple_structures.hpp"
 #include "logi/structures/structure.hpp"
 
 namespace logi {
+
+class ApplicationInfo : public Structure<vk::ApplicationInfo> {
+ public:
+  void updateVkStructure() override {
+    pApplicationName = applicationName.c_str();
+    pEngineName = engineName.c_str();
+  }
+
+  using VkType::apiVersion;
+  using VkType::applicationVersion;
+  using VkType::engineVersion;
+  std::string applicationName;
+  std::string engineName;
+};
+
+using ApplicationInfoChain = StructureChain<ApplicationInfo>;
+
+class DebugReportCallbackCreateInfoEXT : public Structure<vk::DebugReportCallbackCreateInfoEXT> {
+ public:
+  using VkType::flags;
+  using VkType::pfnCallback;
+  using VkType::pUserData;
+};
+
+class DebugUtilsMessengerCreateInfoEXT : public Structure<vk::DebugUtilsMessengerCreateInfoEXT> {
+ public:
+  using VkType::flags;
+  using VkType::messageSeverity;
+  using VkType::messageType;
+  using VkType::pfnUserCallback;
+  using VkType::pUserData;
+};
+
+class ValidationFeaturesEXT : public Structure<vk::ValidationFeaturesEXT> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(enabledValidationFeatures, pEnabledValidationFeatures, enabledValidationFeatureCount);
+    vecToCArr(disabledValidationFeatures, pDisabledValidationFeatures, disabledValidationFeatureCount);
+  }
+
+  std::vector<vk::ValidationFeatureEnableEXT> enabledValidationFeatures;
+  std::vector<vk::ValidationFeatureDisableEXT> disabledValidationFeatures;
+};
+
+class ValidationFlagsEXT : public Structure<vk::ValidationFlagsEXT> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(disabledValidationChecks, pDisabledValidationChecks, disabledValidationCheckCount);
+  }
+
+  std::vector<vk::ValidationCheckEXT> disabledValidationChecks;
+};
+
+class InstanceCreateInfo : public Structure<vk::InstanceCreateInfo> {
+ public:
+  void updateVkStructure() override {
+    pApplicationInfo = &applicationInfo.build();
+
+    // Enabled layers.
+    cStrEnabledLayerNames_.clear();
+    cStrEnabledLayerNames_.reserve(enabledLayerNames.size());
+    for (const auto& layer : enabledLayerNames) {
+      cStrEnabledLayerNames_.emplace_back(layer.c_str());
+    }
+    vecToCArr(cStrEnabledLayerNames_, ppEnabledLayerNames, enabledLayerCount);
+
+    // Enabled extensions.
+    cStrEnabledExtensionNames_.clear();
+    cStrEnabledExtensionNames_.reserve(enabledExtensionNames.size());
+    for (const auto& layer : enabledExtensionNames) {
+      cStrEnabledExtensionNames_.emplace_back(layer.c_str());
+    }
+    vecToCArr(cStrEnabledExtensionNames_, ppEnabledExtensionNames, enabledExtensionCount);
+  }
+
+  using VkType::flags;
+  ApplicationInfoChain applicationInfo;
+  std::vector<std::string> enabledLayerNames;
+  std::vector<std::string> enabledExtensionNames;
+
+ private:
+  std::vector<const char*> cStrEnabledLayerNames_;
+  std::vector<const char*> cStrEnabledExtensionNames_;
+};
+
+using InstanceCreateInfoChain =
+  StructureChain<InstanceCreateInfo, DebugReportCallbackCreateInfoEXT, DebugUtilsMessengerCreateInfoEXT,
+                 ValidationFeaturesEXT, ValidationFlagsEXT>;
 
 class BindBufferMemoryDeviceGroupInfo : public Structure<vk::BindBufferMemoryDeviceGroupInfo> {
  public:
@@ -188,6 +277,23 @@ class CommandBufferInheritanceInfo : public Structure<vk::CommandBufferInheritan
 
 using CommandBufferInheritanceInfoChain =
   StructureChain<CommandBufferInheritanceInfo, CommandBufferInheritanceConditionalRenderingInfoEXT>;
+
+class DeviceGroupCommandBufferBeginInfo : public Structure<vk::DeviceGroupCommandBufferBeginInfo> {
+ public:
+  using VkType::deviceMask;
+};
+
+class CommandBufferBeginInfo : public Structure<vk::CommandBufferBeginInfo> {
+ public:
+  void updateVkStructure() override {
+    pInheritanceInfo = &inheritanceInfo.build();
+  }
+
+  using VkType::flags;
+  CommandBufferInheritanceInfoChain inheritanceInfo;
+};
+
+using CommandBufferBeginInfoChain = StructureChain<CommandBufferBeginInfo, DeviceGroupCommandBufferBeginInfo>;
 
 class DescriptorPoolInlineUniformBlockCreateInfoEXT
   : public Structure<vk::DescriptorPoolInlineUniformBlockCreateInfoEXT> {
@@ -852,20 +958,6 @@ class QueueFamilyProperties2 : public Structure<vk::QueueFamilyProperties2> {
 
 using QueueFamilyProperties2Chain = StructureChain<QueueFamilyProperties2, QueueFamilyCheckpointPropertiesNV>;
 
-class DeviceMemoryOverallocationCreateInfoAMD : public Structure<vk::DeviceMemoryOverallocationCreateInfoAMD> {
- public:
-  using VkType::overallocationBehavior;
-};
-
-class DeviceGroupDeviceCreateInfo : public Structure<vk::DeviceGroupDeviceCreateInfo> {
- public:
-  void updateVkStructure() override {
-    vecToCArr(physicalDevices, pPhysicalDevices, physicalDeviceCount);
-  }
-
-  std::vector<vk::PhysicalDevice> physicalDevices;
-};
-
 class DeviceQueueGlobalPriorityCreateInfoEXT : public Structure<vk::DeviceQueueGlobalPriorityCreateInfoEXT> {
  public:
   using VkType::globalPriority;
@@ -883,6 +975,79 @@ class DeviceQueueCreateInfo : public Structure<vk::DeviceQueueCreateInfo> {
 };
 
 using DeviceQueueCreateInfoChain = StructureChain<DeviceQueueCreateInfo, DeviceQueueGlobalPriorityCreateInfoEXT>;
+
+class DeviceMemoryOverallocationCreateInfoAMD : public Structure<vk::DeviceMemoryOverallocationCreateInfoAMD> {
+ public:
+  using VkType::overallocationBehavior;
+};
+
+class DeviceGroupDeviceCreateInfo : public Structure<vk::DeviceGroupDeviceCreateInfo> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(physicalDevices, pPhysicalDevices, physicalDeviceCount);
+  }
+
+  std::vector<vk::PhysicalDevice> physicalDevices;
+};
+
+class DeviceCreateInfo : public Structure<vk::DeviceCreateInfo> {
+ public:
+  void updateVkStructure() override {
+    // Queue create infos
+    vecLogiToVk(queueCreateInfos, vkQueueCreateInfos_);
+    vecToCArr(vkQueueCreateInfos_, pQueueCreateInfos, queueCreateInfoCount);
+
+    // Enabled layers.
+    cStrEnabledLayerNames_.clear();
+    cStrEnabledLayerNames_.reserve(enabledLayerNames.size());
+    for (const auto& layer : enabledLayerNames) {
+      cStrEnabledLayerNames_.emplace_back(layer.c_str());
+    }
+    vecToCArr(cStrEnabledLayerNames_, ppEnabledLayerNames, enabledLayerCount);
+
+    // Enabled extensions.
+    cStrEnabledExtensionNames_.clear();
+    cStrEnabledExtensionNames_.reserve(enabledExtensionNames.size());
+    for (const auto& layer : enabledExtensionNames) {
+      cStrEnabledExtensionNames_.emplace_back(layer.c_str());
+    }
+    vecToCArr(cStrEnabledExtensionNames_, ppEnabledExtensionNames, enabledExtensionCount);
+
+    // Features
+    pEnabledFeatures = &enabledFeatures;
+  }
+
+  using VkType::flags;
+
+  std::vector<DeviceQueueCreateInfoChain> queueCreateInfos;
+  std::vector<std::string> enabledLayerNames;
+  std::vector<std::string> enabledExtensionNames;
+  vk::PhysicalDeviceFeatures enabledFeatures;
+
+ private:
+  std::vector<vk::DeviceQueueCreateInfo> vkQueueCreateInfos_;
+  std::vector<const char*> cStrEnabledLayerNames_;
+  std::vector<const char*> cStrEnabledExtensionNames_;
+};
+
+using DeviceCreateInfoChain =
+  StructureChain<DeviceCreateInfo, DeviceGroupDeviceCreateInfo, DeviceMemoryOverallocationCreateInfoAMD,
+                 PhysicalDeviceFeatures2, PhysicalDevice16BitStorageFeatures, PhysicalDevice8BitStorageFeaturesKHR,
+                 PhysicalDeviceASTCDecodeFeaturesEXT, PhysicalDeviceBlendOperationAdvancedFeaturesEXT,
+                 PhysicalDeviceBufferAddressFeaturesEXT, PhysicalDeviceComputeShaderDerivativesFeaturesNV,
+                 PhysicalDeviceConditionalRenderingFeaturesEXT, PhysicalDeviceCooperativeMatrixFeaturesNV,
+                 PhysicalDeviceCornerSampledImageFeaturesNV, PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV,
+                 PhysicalDeviceDepthClipEnableFeaturesEXT, PhysicalDeviceDescriptorIndexingFeaturesEXT,
+                 PhysicalDeviceExclusiveScissorFeaturesNV, PhysicalDeviceFloat16Int8FeaturesKHR,
+                 PhysicalDeviceFragmentDensityMapFeaturesEXT, PhysicalDeviceFragmentShaderBarycentricFeaturesNV,
+                 PhysicalDeviceInlineUniformBlockFeaturesEXT, PhysicalDeviceMemoryPriorityFeaturesEXT,
+                 PhysicalDeviceMeshShaderFeaturesNV, PhysicalDeviceMultiviewFeatures,
+                 PhysicalDeviceProtectedMemoryFeatures, PhysicalDeviceRepresentativeFragmentTestFeaturesNV,
+                 PhysicalDeviceSamplerYcbcrConversionFeatures, PhysicalDeviceScalarBlockLayoutFeaturesEXT,
+                 PhysicalDeviceShaderAtomicInt64FeaturesKHR, PhysicalDeviceShaderDrawParameterFeatures,
+                 PhysicalDeviceShaderImageFootprintFeaturesNV, PhysicalDeviceShadingRateImageFeaturesNV,
+                 PhysicalDeviceTransformFeedbackFeaturesEXT, PhysicalDeviceVariablePointerFeatures,
+                 PhysicalDeviceVertexAttributeDivisorFeaturesEXT, PhysicalDeviceVulkanMemoryModelFeaturesKHR>;
 
 class ExportFenceCreateInfo : public Structure<vk::ExportFenceCreateInfo> {
  public:
@@ -918,20 +1083,6 @@ using FormatProperties2Chain = StructureChain<FormatProperties2>;
 class ImageSwapchainCreateInfoKHR : public Structure<vk::ImageSwapchainCreateInfoKHR> {
  public:
   using VkType::swapchain;
-};
-
-class ImageStencilUsageCreateInfoEXT : public Structure<vk::ImageStencilUsageCreateInfoEXT> {
- public:
-  using VkType::stencilUsage;
-};
-
-class ImageFormatListCreateInfoKHR : public Structure<vk::ImageFormatListCreateInfoKHR> {
- public:
-  void updateVkStructure() override {
-    vecToCArr(viewFormats, pViewFormats, viewFormatCount);
-  }
-
-  std::vector<vk::Format> viewFormats;
 };
 
 class ImageDrmFormatModifierListCreateInfoEXT : public Structure<vk::ImageDrmFormatModifierListCreateInfoEXT> {
@@ -1398,12 +1549,8 @@ class MemoryAllocateFlagsInfo : public Structure<vk::MemoryAllocateFlagsInfo> {
 
 class ImportMemoryHostPointerInfoEXT : public Structure<vk::ImportMemoryHostPointerInfoEXT> {
  public:
-  void updateVkStructure() override {
-    vecToCArr(hostPointer, pHostPointer, hostPointer);
-  }
-
   using VkType::handleType;
-  std::vector<void> hostPointer;
+  using VkType::pHostPointer;
 };
 
 class ImportMemoryFdInfoKHR : public Structure<vk::ImportMemoryFdInfoKHR> {
