@@ -42,6 +42,9 @@ TEST(Prototype, Vk) {
   vk::DescriptorSetLayoutCreateInfo test = chain;
   int a = 0;
 
+  vk::Device device;
+  vk::CommandBuffer cbuf;
+
   /*
   InstanceCreateInfo ici;
   ici.enable<DebugReportCallbackCreateInfoEXT, ValidationFeaturesEXT>();
