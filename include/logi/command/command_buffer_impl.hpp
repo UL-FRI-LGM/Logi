@@ -159,6 +159,124 @@ class CommandBufferImpl : public VulkanObject<CommandBufferImpl> {
 
   vk::ResultValueType<void>::type end() const;
 
+  void beginRenderPass2KHR(const vk::RenderPassBeginInfo& renderPassBegin,
+                           const vk::SubpassBeginInfoKHR& subpassBeginInfo) const;
+
+  void dispatchBaseKHR(uint32_t baseGroupX, uint32_t baseGroupY, uint32_t baseGroupZ, uint32_t groupCountX,
+                       uint32_t groupCountY, uint32_t groupCountZ) const;
+
+  void drawIndexedIndirectCountKHR(vk::Buffer buffer, vk::DeviceSize offset, vk::Buffer countBuffer,
+                                   vk::DeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride) const;
+
+  void drawIndirectCountKHR(vk::Buffer buffer, vk::DeviceSize offset, vk::Buffer countBuffer,
+                            vk::DeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride) const;
+
+  void endRenderPass2KHR(const vk::SubpassEndInfoKHR& subpassEndInfo) const;
+
+  void nextSubpass2KHR(const vk::SubpassBeginInfoKHR& subpassBeginInfo,
+                       const vk::SubpassEndInfoKHR& subpassEndInfo) const;
+
+  void pushDescriptorSetKHR(vk::PipelineBindPoint pipelineBindPoint, vk::PipelineLayout layout, uint32_t set,
+                            vk::ArrayProxy<const vk::WriteDescriptorSet> descriptorWrites) const;
+
+  void pushDescriptorSetWithTemplateKHR(vk::DescriptorUpdateTemplate descriptorUpdateTemplate,
+                                        vk::PipelineLayout layout, uint32_t set, const void* pData) const;
+
+  void setDeviceMaskKHR(uint32_t deviceMask) const;
+
+  void beginConditionalRenderingEXT(const vk::ConditionalRenderingBeginInfoEXT& conditionalRenderingBegin) const;
+
+  void beginDebugUtilsLabelEXT(const vk::DebugUtilsLabelEXT& labelInfo) const;
+
+  void beginQueryIndexedEXT(vk::QueryPool queryPool, uint32_t query, const vk::QueryControlFlags& flags,
+                            uint32_t index) const;
+
+  void beginTransformFeedbackEXT(uint32_t firstCounterBuffer, vk::ArrayProxy<const vk::Buffer> counterBuffers,
+                                 vk::ArrayProxy<const vk::DeviceSize> counterBufferOffsets) const;
+
+  void bindTransformFeedbackBuffersEXT(uint32_t firstBinding, vk::ArrayProxy<const vk::Buffer> buffers,
+                                       vk::ArrayProxy<const vk::DeviceSize> offsets,
+                                       vk::ArrayProxy<const vk::DeviceSize> sizes) const;
+
+  void debugMarkerBeginEXT(const vk::DebugMarkerMarkerInfoEXT& markerInfo) const;
+
+  void debugMarkerEndEXT() const;
+
+  void debugMarkerInsertEXT(const vk::DebugMarkerMarkerInfoEXT& markerInfo) const;
+
+  void drawIndirectByteCountEXT(uint32_t instanceCount, uint32_t firstInstance, vk::Buffer counterBuffer,
+                                vk::DeviceSize counterBufferOffset, uint32_t counterOffset,
+                                uint32_t vertexStride) const;
+
+  void endConditionalRenderingEXT() const;
+
+  void endDebugUtilsLabelEXT() const;
+
+  void endQueryIndexedEXT(vk::QueryPool queryPool, uint32_t query, uint32_t index) const;
+
+  void endTransformFeedbackEXT(uint32_t firstCounterBuffer, vk::ArrayProxy<const vk::Buffer> counterBuffers,
+                               vk::ArrayProxy<const vk::DeviceSize> counterBufferOffsets) const;
+
+  void insertDebugUtilsLabelEXT(const vk::DebugUtilsLabelEXT& labelInfo) const;
+
+  void setDiscardRectangleEXT(uint32_t firstDiscardRectangle, vk::ArrayProxy<const vk::Rect2D> discardRectangles) const;
+
+  void setSampleLocationsEXT(const vk::SampleLocationsInfoEXT& sampleLocationsInfo) const;
+
+  void bindShadingRateImageNV(vk::ImageView imageView, vk::ImageLayout imageLayout) const;
+
+  void buildAccelerationStructureNV(const vk::AccelerationStructureInfoNV& info, vk::Buffer instanceData,
+                                    vk::DeviceSize instanceOffset, vk::Bool32 update, vk::AccelerationStructureNV dst,
+                                    vk::AccelerationStructureNV src, vk::Buffer scratch,
+                                    vk::DeviceSize scratchOffset) const;
+
+  void copyAccelerationStructureNV(vk::AccelerationStructureNV dst, vk::AccelerationStructureNV src,
+                                   vk::CopyAccelerationStructureModeNV mode) const;
+
+  void drawMeshTasksIndirectCountNV(vk::Buffer buffer, vk::DeviceSize offset, vk::Buffer countBuffer,
+                                    vk::DeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride) const;
+
+  void drawMeshTasksIndirectNV(vk::Buffer buffer, vk::DeviceSize offset, uint32_t drawCount, uint32_t stride) const;
+
+  void drawMeshTasksNV(uint32_t taskCount, uint32_t firstTask) const;
+
+  void setCheckpointNV(const void* pCheckpointMarker) const;
+
+  void setCoarseSampleOrderNV(vk::CoarseSampleOrderTypeNV sampleOrderType,
+                              vk::ArrayProxy<const vk::CoarseSampleOrderCustomNV> customSampleOrders) const;
+
+  void setExclusiveScissorNV(uint32_t firstExclusiveScissor, vk::ArrayProxy<const vk::Rect2D> exclusiveScissors) const;
+
+  void setViewportShadingRatePaletteNV(uint32_t firstViewport,
+                                       vk::ArrayProxy<const vk::ShadingRatePaletteNV> shadingRatePalettes) const;
+
+  void setViewportWScalingNV(uint32_t firstViewport,
+                             vk::ArrayProxy<const vk::ViewportWScalingNV> viewportWScalings) const;
+
+  void traceRaysNV(vk::Buffer raygenShaderBindingTableBuffer, vk::DeviceSize raygenShaderBindingOffset,
+                   vk::Buffer missShaderBindingTableBuffer, vk::DeviceSize missShaderBindingOffset,
+                   vk::DeviceSize missShaderBindingStride, vk::Buffer hitShaderBindingTableBuffer,
+                   vk::DeviceSize hitShaderBindingOffset, vk::DeviceSize hitShaderBindingStride,
+                   vk::Buffer callableShaderBindingTableBuffer, vk::DeviceSize callableShaderBindingOffset,
+                   vk::DeviceSize callableShaderBindingStride, uint32_t width, uint32_t height, uint32_t depth) const;
+
+  void writeAccelerationStructuresPropertiesNV(vk::ArrayProxy<const vk::AccelerationStructureNV> accelerationStructures,
+                                               vk::QueryType queryType, vk::QueryPool queryPool,
+                                               uint32_t firstQuery) const;
+
+  void processCommandsNVX(const vk::CmdProcessCommandsInfoNVX& processCommandsInfo) const;
+
+  void reserveSpaceForCommandsNVX(const vk::CmdReserveSpaceForCommandsInfoNVX& reserveSpaceInfo) const;
+
+  void drawIndexedIndirectCountAMD(vk::Buffer buffer, vk::DeviceSize offset, vk::Buffer countBuffer,
+                                   vk::DeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride) const;
+
+  void drawIndirectCountAMD(vk::Buffer buffer, vk::DeviceSize offset, vk::Buffer countBuffer,
+                            vk::DeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride) const;
+
+  void writeBufferMarkerAMD(vk::PipelineStageFlagBits pipelineStage, vk::Buffer dstBuffer, vk::DeviceSize dstOffset,
+                            uint32_t marker) const;
+
   // endregion
 
   // region Logi Declarations
