@@ -270,6 +270,15 @@ using InstanceCreateInfoChain =
   StructureChain<InstanceCreateInfo, DebugReportCallbackCreateInfoEXT, DebugUtilsMessengerCreateInfoEXT,
                  ValidationFeaturesEXT, ValidationFlagsEXT>;
 
+class MappedMemoryRange : public Structure<vk::MappedMemoryRange> {
+ public:
+  using VkType::memory;
+  using VkType::offset;
+  using VkType::size;
+};
+
+using MappedMemoryRangeChain = StructureChain<MappedMemoryRange>;
+
 class BindBufferMemoryDeviceGroupInfo : public Structure<vk::BindBufferMemoryDeviceGroupInfo> {
  public:
   void updateVkStructure() override {
@@ -903,6 +912,31 @@ using PhysicalDeviceProperties2Chain =
                  PhysicalDeviceSubgroupProperties, PhysicalDeviceTransformFeedbackPropertiesEXT,
                  PhysicalDeviceVertexAttributeDivisorPropertiesEXT>;
 
+class PhysicalDeviceSurfaceInfo2KHR : public Structure<vk::PhysicalDeviceSurfaceInfo2KHR> {
+ public:
+  using VkType::surface;
+};
+
+using PhysicalDeviceSurfaceInfo2KHRChain = StructureChain<PhysicalDeviceSurfaceInfo2KHR>;
+
+class PhysicalDeviceSparseImageFormatInfo2 : public Structure<vk::PhysicalDeviceSparseImageFormatInfo2> {
+ public:
+  using VkType::format;
+  using VkType::samples;
+  using VkType::tiling;
+  using VkType::type;
+  using VkType::usage;
+};
+
+using PhysicalDeviceSparseImageFormatInfo2Chain = StructureChain<PhysicalDeviceSparseImageFormatInfo2>;
+
+class PhysicalDeviceExternalSemaphoreInfo : public Structure<vk::PhysicalDeviceExternalSemaphoreInfo> {
+ public:
+  using VkType::handleType;
+};
+
+using PhysicalDeviceExternalSemaphoreInfoChain = StructureChain<PhysicalDeviceExternalSemaphoreInfo>;
+
 class PhysicalDeviceImageViewImageFormatInfoEXT : public Structure<vk::PhysicalDeviceImageViewImageFormatInfoEXT> {
  public:
   using VkType::imageViewType;
@@ -1187,6 +1221,31 @@ using PhysicalDeviceFeatures2Chain =
                  PhysicalDeviceTransformFeedbackFeaturesEXT, PhysicalDeviceVariablePointerFeatures,
                  PhysicalDeviceVertexAttributeDivisorFeaturesEXT, PhysicalDeviceVulkanMemoryModelFeaturesKHR>;
 
+class PhysicalDeviceGroupProperties : public Structure<vk::PhysicalDeviceGroupProperties> {
+ public:
+  using VkType::physicalDeviceCount;
+  using VkType::physicalDevices;
+  using VkType::subsetAllocation;
+};
+
+using PhysicalDeviceGroupPropertiesChain = StructureChain<PhysicalDeviceGroupProperties>;
+
+class PhysicalDeviceExternalBufferInfo : public Structure<vk::PhysicalDeviceExternalBufferInfo> {
+ public:
+  using VkType::flags;
+  using VkType::handleType;
+  using VkType::usage;
+};
+
+using PhysicalDeviceExternalBufferInfoChain = StructureChain<PhysicalDeviceExternalBufferInfo>;
+
+class PhysicalDeviceExternalFenceInfo : public Structure<vk::PhysicalDeviceExternalFenceInfo> {
+ public:
+  using VkType::handleType;
+};
+
+using PhysicalDeviceExternalFenceInfoChain = StructureChain<PhysicalDeviceExternalFenceInfo>;
+
 class QueueFamilyCheckpointPropertiesNV : public Structure<vk::QueueFamilyCheckpointPropertiesNV> {
  public:
   using VkType::checkpointExecutionStageMask;
@@ -1247,6 +1306,107 @@ class DisplayModeProperties2KHR : public Structure<vk::DisplayModeProperties2KHR
 };
 
 using DisplayModeProperties2KHRChain = StructureChain<DisplayModeProperties2KHR>;
+
+class DisplayPlaneCapabilities2KHR : public Structure<vk::DisplayPlaneCapabilities2KHR> {
+ public:
+  using VkType::capabilities;
+};
+
+using DisplayPlaneCapabilities2KHRChain = StructureChain<DisplayPlaneCapabilities2KHR>;
+
+class DisplayPlaneInfo2KHR : public Structure<vk::DisplayPlaneInfo2KHR> {
+ public:
+  using VkType::mode;
+  using VkType::planeIndex;
+};
+
+using DisplayPlaneInfo2KHRChain = StructureChain<DisplayPlaneInfo2KHR>;
+
+class DisplayPlaneProperties2KHR : public Structure<vk::DisplayPlaneProperties2KHR> {
+ public:
+  using VkType::displayPlaneProperties;
+};
+
+using DisplayPlaneProperties2KHRChain = StructureChain<DisplayPlaneProperties2KHR>;
+
+class DisplayPowerInfoEXT : public Structure<vk::DisplayPowerInfoEXT> {
+ public:
+  using VkType::powerState;
+};
+
+using DisplayPowerInfoEXTChain = StructureChain<DisplayPowerInfoEXT>;
+
+class PresentRegionsKHR : public Structure<vk::PresentRegionsKHR> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(regions, pRegions, swapchainCount);
+  }
+
+  std::vector<vk::PresentRegionKHR> regions;
+};
+
+class DisplayPresentInfoKHR : public Structure<vk::DisplayPresentInfoKHR> {
+ public:
+  using VkType::dstRect;
+  using VkType::persistent;
+  using VkType::srcRect;
+};
+
+class DeviceGroupPresentInfoKHR : public Structure<vk::DeviceGroupPresentInfoKHR> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(deviceMasks, pDeviceMasks, swapchainCount);
+  }
+
+  std::vector<uint32_t> deviceMasks;
+  using VkType::mode;
+};
+
+class PresentInfoKHR : public Structure<vk::PresentInfoKHR> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(waitSemaphores, pWaitSemaphores, waitSemaphoreCount);
+    vecToCArr(swapchains, pSwapchains, swapchainCount);
+    pImageIndices = imageIndices.data();
+    pResults = results.data();
+  }
+
+  std::vector<vk::Semaphore> waitSemaphores;
+  std::vector<vk::SwapchainKHR> swapchains;
+  std::vector<uint32_t> imageIndices;
+  std::vector<vk::Result> results;
+};
+
+using PresentInfoKHRChain =
+  StructureChain<PresentInfoKHR, DeviceGroupPresentInfoKHR, DisplayPresentInfoKHR, PresentRegionsKHR>;
+
+class DisplayProperties2KHR : public Structure<vk::DisplayProperties2KHR> {
+ public:
+  using VkType::displayProperties;
+};
+
+using DisplayProperties2KHRChain = StructureChain<DisplayProperties2KHR>;
+
+class DisplaySurfaceCreateInfoKHR : public Structure<vk::DisplaySurfaceCreateInfoKHR> {
+ public:
+  using VkType::alphaMode;
+  using VkType::displayMode;
+  using VkType::flags;
+  using VkType::globalAlpha;
+  using VkType::imageExtent;
+  using VkType::planeIndex;
+  using VkType::planeStackIndex;
+  using VkType::transform;
+};
+
+using DisplaySurfaceCreateInfoKHRChain = StructureChain<DisplaySurfaceCreateInfoKHR>;
+
+class EventCreateInfo : public Structure<vk::EventCreateInfo> {
+ public:
+  using VkType::flags;
+};
+
+using EventCreateInfoChain = StructureChain<EventCreateInfo>;
 
 class DeviceMemoryOverallocationCreateInfoAMD : public Structure<vk::DeviceMemoryOverallocationCreateInfoAMD> {
  public:
@@ -1366,6 +1526,14 @@ class FenceCreateInfo : public Structure<vk::FenceCreateInfo> {
 
 using FenceCreateInfoChain = StructureChain<FenceCreateInfo, ExportFenceCreateInfo>;
 
+class FenceGetFdInfoKHR : public Structure<vk::FenceGetFdInfoKHR> {
+ public:
+  using VkType::fence;
+  using VkType::handleType;
+};
+
+using FenceGetFdInfoKHRChain = StructureChain<FenceGetFdInfoKHR>;
+
 class ExportSemaphoreCreateInfo : public Structure<vk::ExportSemaphoreCreateInfo> {
  public:
   using VkType::handleTypes;
@@ -1377,6 +1545,22 @@ class SemaphoreCreateInfo : public Structure<vk::SemaphoreCreateInfo> {
 };
 
 using SemaphoreCreateInfoChain = StructureChain<SemaphoreCreateInfo, ExportSemaphoreCreateInfo>;
+
+class ExternalBufferProperties : public Structure<vk::ExternalBufferProperties> {
+ public:
+  using VkType::externalMemoryProperties;
+};
+
+using ExternalBufferPropertiesChain = StructureChain<ExternalBufferProperties>;
+
+class ExternalFenceProperties : public Structure<vk::ExternalFenceProperties> {
+ public:
+  using VkType::compatibleHandleTypes;
+  using VkType::exportFromImportedHandleTypes;
+  using VkType::externalFenceFeatures;
+};
+
+using ExternalFencePropertiesChain = StructureChain<ExternalFenceProperties>;
 
 class SemaphoreGetFdInfoKHR : public Structure<vk::SemaphoreGetFdInfoKHR> {
  public:
@@ -1392,6 +1576,22 @@ class FormatProperties2 : public Structure<vk::FormatProperties2> {
 };
 
 using FormatProperties2Chain = StructureChain<FormatProperties2>;
+
+class FramebufferCreateInfo : public Structure<vk::FramebufferCreateInfo> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(attachments, pAttachments, attachmentCount);
+  }
+
+  using VkType::flags;
+  using VkType::renderPass;
+  std::vector<vk::ImageView> attachments;
+  using VkType::height;
+  using VkType::layers;
+  using VkType::width;
+};
+
+using FramebufferCreateInfoChain = StructureChain<FramebufferCreateInfo>;
 
 class ImageSwapchainCreateInfoKHR : public Structure<vk::ImageSwapchainCreateInfoKHR> {
  public:
@@ -1457,6 +1657,22 @@ using ImageCreateInfoChain =
                  ImageFormatListCreateInfoKHR, ImageDrmFormatModifierListCreateInfoEXT,
                  ImageDrmFormatModifierExplicitCreateInfoEXT, ExternalMemoryImageCreateInfoNV,
                  ExternalMemoryImageCreateInfo, DedicatedAllocationImageCreateInfoNV>;
+
+class ImageDrmFormatModifierPropertiesEXT : public Structure<vk::ImageDrmFormatModifierPropertiesEXT> {
+ public:
+  using VkType::drmFormatModifier;
+};
+
+using ImageDrmFormatModifierPropertiesEXTChain = StructureChain<ImageDrmFormatModifierPropertiesEXT>;
+
+class ExternalSemaphoreProperties : public Structure<vk::ExternalSemaphoreProperties> {
+ public:
+  using VkType::compatibleHandleTypes;
+  using VkType::exportFromImportedHandleTypes;
+  using VkType::externalSemaphoreFeatures;
+};
+
+using ExternalSemaphorePropertiesChain = StructureChain<ExternalSemaphoreProperties>;
 
 class TextureLODGatherFormatPropertiesAMD : public Structure<vk::TextureLODGatherFormatPropertiesAMD> {
  public:
@@ -1816,6 +2032,27 @@ using PipelineViewportStateCreateInfoChain =
                  PipelineViewportSwizzleStateCreateInfoNV, PipelineViewportShadingRateImageStateCreateInfoNV,
                  PipelineViewportExclusiveScissorStateCreateInfoNV, PipelineViewportCoarseSampleOrderStateCreateInfoNV>;
 
+class RayTracingShaderGroupCreateInfoNV : public Structure<vk::RayTracingShaderGroupCreateInfoNV> {
+ public:
+  using VkType::anyHitShader;
+  using VkType::closestHitShader;
+  using VkType::generalShader;
+  using VkType::intersectionShader;
+  using VkType::type;
+};
+
+using RayTracingShaderGroupCreateInfoNVChain = StructureChain<RayTracingShaderGroupCreateInfoNV>;
+
+class QueryPoolCreateInfo : public Structure<vk::QueryPoolCreateInfo> {
+ public:
+  using VkType::flags;
+  using VkType::pipelineStatistics;
+  using VkType::queryCount;
+  using VkType::queryType;
+};
+
+using QueryPoolCreateInfoChain = StructureChain<QueryPoolCreateInfo>;
+
 class PipelineRasterizationStateStreamCreateInfoEXT
   : public Structure<vk::PipelineRasterizationStateStreamCreateInfoEXT> {
  public:
@@ -1891,6 +2128,27 @@ class ImageMemoryRequirementsInfo2 : public Structure<vk::ImageMemoryRequirement
 using ImageMemoryRequirementsInfo2Chain =
   StructureChain<ImageMemoryRequirementsInfo2, ImagePlaneMemoryRequirementsInfo>;
 
+class ImageSparseMemoryRequirementsInfo2 : public Structure<vk::ImageSparseMemoryRequirementsInfo2> {
+ public:
+  using VkType::image;
+};
+
+using ImageSparseMemoryRequirementsInfo2Chain = StructureChain<ImageSparseMemoryRequirementsInfo2>;
+
+class SparseImageFormatProperties2 : public Structure<vk::SparseImageFormatProperties2> {
+ public:
+  using VkType::properties;
+};
+
+using SparseImageFormatProperties2Chain = StructureChain<SparseImageFormatProperties2>;
+
+class SparseImageMemoryRequirements2 : public Structure<vk::SparseImageMemoryRequirements2> {
+ public:
+  using VkType::memoryRequirements;
+};
+
+using SparseImageMemoryRequirements2Chain = StructureChain<SparseImageMemoryRequirements2>;
+
 class SamplerYcbcrConversionInfo : public Structure<vk::SamplerYcbcrConversionInfo> {
  public:
   using VkType::conversion;
@@ -1918,6 +2176,16 @@ class ImageViewCreateInfo : public Structure<vk::ImageViewCreateInfo> {
 
 using ImageViewCreateInfoChain =
   StructureChain<ImageViewCreateInfo, ImageViewASTCDecodeModeEXT, ImageViewUsageCreateInfo, SamplerYcbcrConversionInfo>;
+
+class ImportFenceFdInfoKHR : public Structure<vk::ImportFenceFdInfoKHR> {
+ public:
+  using VkType::fd;
+  using VkType::fence;
+  using VkType::flags;
+  using VkType::handleType;
+};
+
+using ImportFenceFdInfoKHRChain = StructureChain<ImportFenceFdInfoKHR>;
 
 class MemoryPriorityAllocateInfoEXT : public Structure<vk::MemoryPriorityAllocateInfoEXT> {
  public:
@@ -1975,6 +2243,37 @@ using MemoryAllocateInfoChain =
                  ExportMemoryAllocateInfoNV, ImportMemoryFdInfoKHR, ImportMemoryHostPointerInfoEXT,
                  MemoryAllocateFlagsInfo, MemoryDedicatedAllocateInfo, MemoryPriorityAllocateInfoEXT>;
 
+class MemoryBarrier : public Structure<vk::MemoryBarrier> {
+ public:
+  using VkType::dstAccessMask;
+  using VkType::srcAccessMask;
+};
+
+using MemoryBarrierChain = StructureChain<MemoryBarrier>;
+
+class ImportSemaphoreFdInfoKHR : public Structure<vk::ImportSemaphoreFdInfoKHR> {
+ public:
+  using VkType::fd;
+  using VkType::flags;
+  using VkType::handleType;
+  using VkType::semaphore;
+};
+
+using ImportSemaphoreFdInfoKHRChain = StructureChain<ImportSemaphoreFdInfoKHR>;
+
+class IndirectCommandsLayoutCreateInfoNVX : public Structure<vk::IndirectCommandsLayoutCreateInfoNVX> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(tokens, pTokens, tokenCount);
+  }
+
+  using VkType::flags;
+  using VkType::pipelineBindPoint;
+  std::vector<vk::IndirectCommandsLayoutTokenNVX> tokens;
+};
+
+using IndirectCommandsLayoutCreateInfoNVXChain = StructureChain<IndirectCommandsLayoutCreateInfoNVX>;
+
 class MemoryDedicatedRequirements : public Structure<vk::MemoryDedicatedRequirements> {
  public:
   using VkType::prefersDedicatedAllocation;
@@ -1987,6 +2286,55 @@ class MemoryRequirements2 : public Structure<vk::MemoryRequirements2> {
 };
 
 using MemoryRequirements2Chain = StructureChain<MemoryRequirements2, MemoryDedicatedRequirements>;
+
+class MultisamplePropertiesEXT : public Structure<vk::MultisamplePropertiesEXT> {
+ public:
+  using VkType::maxSampleLocationGridSize;
+};
+
+using MultisamplePropertiesEXTChain = StructureChain<MultisamplePropertiesEXT>;
+
+class ObjectTableCreateInfoNVX : public Structure<vk::ObjectTableCreateInfoNVX> {
+ public:
+  void updateVkStructure() override {
+    vecToCArr(objectEntryTypes, pObjectEntryTypes, objectCount);
+    pObjectEntryCounts = objectEntryCounts.empty() ? nullptr : objectEntryCounts.data();
+    pObjectEntryUsageFlags = objectEntryUsageFlags.empty() ? nullptr : objectEntryUsageFlags.data();
+  }
+
+  std::vector<vk::ObjectEntryTypeNVX> objectEntryTypes;
+  std::vector<uint32_t> objectEntryCounts;
+  std::vector<vk::ObjectEntryUsageFlagsNVX> objectEntryUsageFlags;
+  using VkType::maxPipelineLayouts;
+  using VkType::maxSampledImagesPerDescriptor;
+  using VkType::maxStorageBuffersPerDescriptor;
+  using VkType::maxStorageImagesPerDescriptor;
+  using VkType::maxUniformBuffersPerDescriptor;
+};
+
+using ObjectTableCreateInfoNVXChain = StructureChain<ObjectTableCreateInfoNVX>;
+
+class MemoryFdPropertiesKHR : public Structure<vk::MemoryFdPropertiesKHR> {
+ public:
+  using VkType::memoryTypeBits;
+};
+
+using MemoryFdPropertiesKHRChain = StructureChain<MemoryFdPropertiesKHR>;
+
+class MemoryGetFdInfoKHR : public Structure<vk::MemoryGetFdInfoKHR> {
+ public:
+  using VkType::handleType;
+  using VkType::memory;
+};
+
+using MemoryGetFdInfoKHRChain = StructureChain<MemoryGetFdInfoKHR>;
+
+class MemoryHostPointerPropertiesEXT : public Structure<vk::MemoryHostPointerPropertiesEXT> {
+ public:
+  using VkType::memoryTypeBits;
+};
+
+using MemoryHostPointerPropertiesEXTChain = StructureChain<MemoryHostPointerPropertiesEXT>;
 
 class PipelineSampleLocationsStateCreateInfoEXT : public Structure<vk::PipelineSampleLocationsStateCreateInfoEXT> {
  public:
@@ -2148,6 +2496,20 @@ class GraphicsPipelineCreateInfo : public Structure<vk::GraphicsPipelineCreateIn
 using GraphicsPipelineCreateInfoChain =
   StructureChain<GraphicsPipelineCreateInfo, PipelineDiscardRectangleStateCreateInfoEXT,
                  PipelineRepresentativeFragmentTestStateCreateInfoNV>;
+
+class HdrMetadataEXT : public Structure<vk::HdrMetadataEXT> {
+ public:
+  using VkType::displayPrimaryBlue;
+  using VkType::displayPrimaryGreen;
+  using VkType::displayPrimaryRed;
+  using VkType::maxContentLightLevel;
+  using VkType::maxFrameAverageLightLevel;
+  using VkType::maxLuminance;
+  using VkType::minLuminance;
+  using VkType::whitePoint;
+};
+
+using HdrMetadataEXTChain = StructureChain<HdrMetadataEXT>;
 
 class RenderPassFragmentDensityMapCreateInfoEXT : public Structure<vk::RenderPassFragmentDensityMapCreateInfoEXT> {
  public:
