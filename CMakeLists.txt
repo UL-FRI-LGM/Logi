@@ -31,7 +31,7 @@ target_include_directories(logi
         $<INSTALL_INTERFACE:include>
         )
 
-target_link_libraries(logi Vulkan::Vulkan spirv-cross vma)
+target_link_libraries(logi Vulkan::Vulkan spirv-cross-core vma)
 
 if (BUILD_EXAMPLES)
     add_subdirectory(examples)
