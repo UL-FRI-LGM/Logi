@@ -29,11 +29,16 @@ EntryPointInfo::EntryPointInfo(std::string name, vk::ShaderStageFlagBits stage) 
 
 SpecializationConstantInfo::SpecializationConstantInfo(uint32_t id, uint32_t size) : id(id), size(size) {}
 
-DescriptorBindingInfo::DescriptorBindingInfo(uint32_t binding, vk::DescriptorType descriptorType,
+DescriptorBindingInfo::DescriptorBindingInfo(std::string name, uint32_t binding, vk::DescriptorType descriptorType,
                                              uint32_t descriptorCount)
-  : binding(binding), descriptorType(descriptorType), descriptorCount(descriptorCount) {}
+  : name(std::move(name)), binding(binding), descriptorType(descriptorType), descriptorCount(descriptorCount) {}
 
-PushConstantInfo::PushConstantInfo(uint32_t offset, uint32_t size) : offset(offset), size(size) {}
+VertexAttributeInfo::VertexAttributeInfo(std::string name, uint32_t location, uint32_t binding, uint32_t elementSize,
+                                         vk::Format format)
+  : name(std::move(name)), location(location), binding(binding), elementSize(elementSize), format(format) {}
+
+PushConstantInfo::PushConstantInfo(std::string name, uint32_t offset, uint32_t size)
+  : name(std::move(name)), offset(offset), size(size) {}
 
 ShaderModuleImpl::ShaderModuleImpl(LogicalDeviceImpl& logicalDevice, const vk::ShaderModuleCreateInfo& create_info,
                                    const std::optional<vk::AllocationCallbacks>& allocator)
@@ -103,6 +108,18 @@ void ShaderModuleImpl::reflectEntryPoints(const spirv_cross::Compiler& compiler)
   }
 }
 
+void ShaderModuleImpl::reflectSpecializationConstants(const spirv_cross::Compiler& compiler) {
+  const std::vector<spirv_cross::SpecializationConstant> specConstants = compiler.get_specialization_constants();
+
+  for (const auto& entry : specConstants) {
+    const std::string& name = compiler.get_name(entry.id);
+    const spirv_cross::SPIRConstant& constant = compiler.get_constant(entry.id);
+    const spirv_cross::SPIRType& type = compiler.get_type_from_variable(entry.id);
+
+    // TODO
+  }
+}
+
 void ShaderModuleImpl::reflectDescriptorSets(const spirv_cross::Compiler& compiler,
                                              const spirv_cross::ShaderResources& shaderResources) {
   // Look at: http://vulkan-spec-chunked.ahcox.com/ch13s01.html
@@ -158,6 +175,7 @@ void ShaderModuleImpl::reflectDescriptorBinding(const spirv_cross::Compiler& com
   const auto& resource_type = compiler.get_type_from_variable(resourceId);
 
   // Parse data.
+  const std::string& name = compiler.get_name(resourceId);
   uint32_t set = compiler.get_decoration(resourceId, spv::DecorationDescriptorSet);
   uint32_t binding = compiler.get_decoration(resourceId, spv::DecorationBinding);
   uint32_t count = std::accumulate(resource_type.array.begin(), resource_type.array.end(), 1, std::multiplies<>());
@@ -174,52 +192,49 @@ void ShaderModuleImpl::reflectDescriptorBinding(const spirv_cross::Compiler& com
     descriptorSet.begin(), descriptorSet.end(), binding,
     [](const uint32_t binding, const DescriptorBindingInfo& bindingInfo) { return binding < bindingInfo.binding; });
 
-  descriptorSet.emplace(it, binding, type, count);
+  descriptorSet.emplace(it, name, binding, type, count);
 }
 
 void ShaderModuleImpl::reflectPushConstants(const spirv_cross::Compiler& compiler,
                                             const spirv_cross::ShaderResources& resources) {
   for (auto& resource : resources.push_constant_buffers) {
     for (const spirv_cross::BufferRange& constRange : compiler.get_active_buffer_ranges(resource.id)) {
+      const std::string& name = compiler.get_name(resource.id);
+
       // Sorted insert.
       auto it = std::upper_bound(
         pushConstantRanges_.begin(), pushConstantRanges_.end(), constRange.offset,
         [](const uint32_t offset, const PushConstantInfo& constantInfo) { return offset < constantInfo.offset; });
 
-      pushConstantRanges_.emplace(it, constRange.offset, constRange.range);
+      pushConstantRanges_.emplace(it, name, constRange.offset, constRange.range);
     }
   }
 }
 
 void ShaderModuleImpl::reflectVertexAttributes(const spirv_cross::Compiler& compiler,
                                                const spirv_cross::ShaderResources& shaderResources) {
-  auto& vertex_input_state = vertexInputState_.emplace().get<PipelineVertexInputStateCreateInfo>();
+  vertexAttributes_.emplace().reserve(shaderResources.stage_inputs.size());
 
   for (auto& input : shaderResources.stage_inputs) {
+    const std::string& name = compiler.get_name(input.id);
     const uint32_t binding = compiler.get_decoration(input.id, spv::DecorationBinding);
     const uint32_t location = compiler.get_decoration(input.id, spv::DecorationLocation);
     const spirv_cross::SPIRType& resourceType = compiler.get_type_from_variable(input.id);
-    uint32_t offset = 0;
     const vk::Format format = SPIRTypeToVertexBufferFormat(resourceType);
-    const uint32_t stride = (resourceType.width * resourceType.vecsize * resourceType.columns) / 8;
+    const uint32_t elementSize = (resourceType.width * resourceType.vecsize * resourceType.columns) / 8;
 
     // Sorted binding description insert.
     auto bindingIt = std::upper_bound(
-      vertex_input_state.vertexBindingDescription.begin(), vertex_input_state.vertexBindingDescription.end(), binding,
-      [](const uint32_t binding, const vk::VertexInputBindingDescription& bindingDescription) {
-        return binding < bindingDescription.binding;
+      vertexAttributes_.value().begin(), vertexAttributes_.value().end(), std::make_pair(location, binding),
+      [](const std::pair<uint32_t, uint32_t> position, const VertexAttributeInfo& attributeInfo) {
+        if (position.first == attributeInfo.location) {
+          return position.second < attributeInfo.binding;
+        }
+
+        return position.first < attributeInfo.location;
       });
 
-    vertex_input_state.vertexBindingDescription.emplace(bindingIt, binding, stride, vk::VertexInputRate::eVertex);
-
-    // Sorted attribute description insert.
-    auto attributeIt = std::upper_bound(
-      vertex_input_state.vertexAttributeDescriptions.begin(), vertex_input_state.vertexAttributeDescriptions.end(),
-      binding, [](const uint32_t binding, const vk::VertexInputAttributeDescription& attributeDescription) {
-        return binding < attributeDescription.binding;
-      });
-
-    vertex_input_state.vertexAttributeDescriptions.emplace(attributeIt, location, binding, format, offset);
+    vertexAttributes_.value().emplace(bindingIt, name, location, binding, elementSize, format);
   }
 }
 

@@ -62,7 +62,7 @@ TEST(Prototype, Vk) {
   vk::DescriptorSetLayoutCreateInfo test = chain;
 
   ShaderReflector reflector;
-  std::vector<uint32_t> vertex = loadShader("testdata/base.vert.spv");
+  std::vector<uint32_t> vertex = loadShader("testdata/vert.spv");
   std::vector<uint32_t> frag = loadShader("testdata/base.frag.spv");
   std::vector<uint32_t> control = loadShader("testdata/pntriangles.tesc.spv");
   std::vector<uint32_t> eval = loadShader("testdata/pntriangles.tese.spv");

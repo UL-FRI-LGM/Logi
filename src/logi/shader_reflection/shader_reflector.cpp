@@ -171,6 +171,7 @@ void ShaderReflector::reflectVertexAttributes(const spirv_cross::Compiler& compi
   auto& vertex_input_state = vertexInputStateCI.get<PipelineVertexInputStateCreateInfo>();
 
   for (auto& input : shaderResources.stage_inputs) {
+    auto constants = compiler.get_specialization_constants();
     const uint32_t binding = compiler.get_decoration(input.id, spv::DecorationBinding);
     const uint32_t location = compiler.get_decoration(input.id, spv::DecorationLocation);
     const spirv_cross::SPIRType& resourceType = compiler.get_type_from_variable(input.id);

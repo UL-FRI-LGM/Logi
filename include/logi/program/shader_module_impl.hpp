@@ -41,21 +41,35 @@ struct EntryPointInfo {
 struct SpecializationConstantInfo {
   SpecializationConstantInfo(uint32_t id, uint32_t size);
 
+  std::string name;
   uint32_t id;
   uint32_t size;
 };
 
 struct DescriptorBindingInfo {
-  DescriptorBindingInfo(uint32_t binding, vk::DescriptorType descriptorType, uint32_t descriptorCount);
+  DescriptorBindingInfo(std::string name, uint32_t binding, vk::DescriptorType descriptorType,
+                        uint32_t descriptorCount);
 
+  std::string name;
   uint32_t binding;
   vk::DescriptorType descriptorType;
   uint32_t descriptorCount;
 };
 
-struct PushConstantInfo {
-  PushConstantInfo(uint32_t offset, uint32_t size);
+struct VertexAttributeInfo {
+  VertexAttributeInfo(std::string name, uint32_t location, uint32_t binding, uint32_t elementSize, vk::Format format);
 
+  std::string name;
+  uint32_t location;
+  uint32_t binding;
+  uint32_t elementSize;
+  vk::Format format;
+};
+
+struct PushConstantInfo {
+  PushConstantInfo(std::string name, uint32_t offset, uint32_t size);
+
+  std::string name;
   uint32_t offset;
   uint32_t size;
 };
@@ -90,6 +104,8 @@ class ShaderModuleImpl : public VulkanObject<ShaderModuleImpl> {
 
   void reflectEntryPoints(const spirv_cross::Compiler& compiler);
 
+  void reflectSpecializationConstants(const spirv_cross::Compiler& compiler);
+
   void reflectDescriptorSets(const spirv_cross::Compiler& compiler,
                              const spirv_cross::ShaderResources& shaderResources);
 
@@ -112,9 +128,11 @@ class ShaderModuleImpl : public VulkanObject<ShaderModuleImpl> {
   vk::ShaderModule vkShaderModule_;
 
   std::vector<EntryPointInfo> entryPoints_;
+  std::vector<SpecializationConstantInfo> specializationConstants_;
+
   std::vector<std::vector<DescriptorBindingInfo>> descriptorSets_;
-  std::vector<PushConstantRange> pushConstantRanges_;
-  std::optional<PipelineVertexInputStateCreateInfoChain> vertexInputState_;
+  std::vector<PushConstantInfo> pushConstantRanges_;
+  std::optional<std::vector<VertexAttributeInfo>> vertexAttributes_;
 };
 
 } // namespace logi
