@@ -73,8 +73,10 @@ class StructureChain {
   using VkType = typename First::VkType;
 
   explicit StructureChain(bool enable_all = false) {
-    if (enable_all) {
-      enable<Rest...>();
+    if constexpr (sizeof...(Rest) > 0) {
+      if (enable_all) {
+        enable<Rest...>();
+      }
     }
   }
 

@@ -82,41 +82,25 @@ class VulkanError : LogiException {
 /**
  * @brief   IllegalInvocation error.
  */
-class IllegalInvocation : LogiException {
+class IllegalInvocation : public LogiException {
  public:
-  /**
-   * @brief	Forwards message to the std exception class.
-   *
-   * @param	message Exception message.
-   */
-  explicit IllegalInvocation(const std::string& message);
-
-  /**
-   * @brief	Forwards message to the std exception class.
-   *
-   * @param	message Exception message.
-   */
-  explicit IllegalInvocation(const char* message);
+  using LogiException::LogiException;
 };
 
 /**
  * @brief   InitializationError error.
  */
-class InitializationError : LogiException {
+class InitializationError : public LogiException {
  public:
-  /**
-   * @brief	Forwards message to the std exception class.
-   *
-   * @param	message Exception message.
-   */
-  explicit InitializationError(const std::string& message);
+  using LogiException::LogiException;
+};
 
-  /**
-   * @brief	Forwards message to the std exception class.
-   *
-   * @param	message Exception message.
-   */
-  explicit InitializationError(const char* message);
+/**
+ * @brief   ReflectionError error.
+ */
+class ReflectionError : public LogiException {
+ public:
+  using LogiException::LogiException;
 };
 
 } // namespace logi

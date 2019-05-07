@@ -43,22 +43,21 @@ class VulkanInstanceImpl : public VulkanObject<VulkanInstanceImpl>,
                            public VulkanObjectComposite<PhysicalDeviceImpl>,
                            public VulkanObjectComposite<SurfaceKHRImpl> {
  public:
-  /**
-   * @brief Create Vulkan instance.
-   *
-   * @param	create_info Structure specifying instance parameters.
-   */
-  explicit VulkanInstanceImpl(const vk::InstanceCreateInfo& create_info,
-                              PFN_vkCreateInstance pfn_create_instance = &vkCreateInstance,
-                              PFN_vkGetInstanceProcAddr pfn_get_proc_addr = &vkGetInstanceProcAddr,
+  explicit VulkanInstanceImpl(const vk::InstanceCreateInfo& createInfo,
+                              PFN_vkCreateInstance pfnCreateInstance = &vkCreateInstance,
+                              PFN_vkGetInstanceProcAddr pfnGetProcAddr = &vkGetInstanceProcAddr,
                               const std::optional<vk::AllocationCallbacks>& allocator = {});
 
-  DebugReportCallbackEXT createDebugReportCallbackEXT(const vk::DebugReportCallbackCreateInfoEXT& create_info,
+  DebugReportCallbackEXT createDebugReportCallbackEXT(const vk::DebugReportCallbackCreateInfoEXT& createInfo,
                                                       const std::optional<vk::AllocationCallbacks>& allocator);
+
+  void debugReportMessageEXT(const vk::DebugReportFlagsEXT& flags, vk::DebugReportObjectTypeEXT objectType,
+                             uint64_t object, size_t location, int32_t messageCode, const char* layerPrefix,
+                             const char* message) const;
 
   void destroyDebugReportCallbackEXT(size_t id);
 
-  SurfaceKHR registerSurfaceKHR(const vk::SurfaceKHR& vk_surface,
+  SurfaceKHR registerSurfaceKHR(const vk::SurfaceKHR& vkSurface,
                                 const std::optional<vk::AllocationCallbacks>& allocator);
 
   void destroySurfaceKHR(size_t id);
@@ -76,9 +75,9 @@ class VulkanInstanceImpl : public VulkanObject<VulkanInstanceImpl>,
 
  private:
   std::optional<vk::AllocationCallbacks> allocator_;
-  vk::Instance vk_instance_;
+  vk::Instance vkInstance_;
   vk::DispatchLoaderDynamic dispatcher_;
-  std::vector<vk::DebugReportCallbackEXT> debug_callbacks_;
+  std::vector<vk::DebugReportCallbackEXT> debugCallbacks_;
 };
 
 } // namespace logi

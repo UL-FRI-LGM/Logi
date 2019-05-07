@@ -39,7 +39,7 @@ const vk::DispatchLoaderDynamic& DebugReportCallbackEXTImpl::getDispatcher() con
 }
 
 void DebugReportCallbackEXTImpl::destroy() const {
-  instance_.destroyDebugReportCallbackEXT(id());
+  instance_.destroyDebugReportCallbackEXT(*this);
 }
 
 DebugReportCallbackEXTImpl::operator vk::DebugReportCallbackEXT() const {

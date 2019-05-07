@@ -18,6 +18,16 @@ macro(create_test TEST_NAME SOURCES INCLUDES DEPENDENCIES)
             )
     target_link_libraries(${TEST_NAME} ${DEPENDENCIES} gtest gmock gtest_main)
 
+    if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/testdata)
+
+        add_custom_command(TARGET ${TEST_NAME} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:${TEST_NAME}>/testdata"
+                COMMAND ${CMAKE_COMMAND} -E copy_directory
+                ${CMAKE_CURRENT_SOURCE_DIR}/testdata
+                $<TARGET_FILE_DIR:${TEST_NAME}>/testdata
+                )
+    endif ()
+
     add_test(NAME ${TEST_NAME}
             COMMAND ${TEST_NAME}
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})

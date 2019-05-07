@@ -1,5 +1,7 @@
+#include <fstream>
 #include <gtest/gtest.h>
 #include "logi/logi.hpp"
+#include "logi/shader_reflection/shader_reflector.hpp"
 #include "logi/structures/structure.hpp"
 #include "logi/structures/vk_structures.hpp"
 
@@ -35,15 +37,42 @@ struct InstanceCreateInfo : public Structure<vk::InstanceCreateInfo> {
   }
 };
 
+std::vector<uint32_t> loadShader(const std::string& path) {
+  std::ifstream file(path, std::ios::ate | std::ios::binary);
+
+  // Check if the shader file was successfully opened.
+  if (!file.is_open()) {
+    throw std::runtime_error("Failed to load shader file: \"" + path + "\". Make sure that the file exists.");
+  }
+
+  const size_t file_size = static_cast<size_t>(file.tellg());
+  std::vector<uint32_t> buffer(file_size / sizeof(uint32_t));
+
+  file.seekg(0);
+  file.read(reinterpret_cast<char*>(buffer.data()), file_size);
+  file.close();
+
+  return buffer;
+}
+
 TEST(Prototype, Vk) {
   DescriptorSetLayoutCreateInfoChain chain(true);
   chain.get<DescriptorSetLayoutCreateInfo>().bindings.resize(10);
 
   vk::DescriptorSetLayoutCreateInfo test = chain;
-  int a = 0;
 
-  vk::Device device;
-  vk::CommandBuffer cbuf;
+  ShaderReflector reflector;
+  std::vector<uint32_t> vertex = loadShader("testdata/vert.spv");
+  std::vector<uint32_t> frag = loadShader("testdata/base.frag.spv");
+  std::vector<uint32_t> control = loadShader("testdata/pntriangles.tesc.spv");
+  std::vector<uint32_t> eval = loadShader("testdata/pntriangles.tese.spv");
+
+  reflector.reflectShader(vertex.data(), vertex.size(), "main");
+  reflector.reflectShader(frag.data(), frag.size(), "main");
+  reflector.reflectShader(control.data(), control.size(), "main");
+  reflector.reflectShader(eval.data(), eval.size(), "main");
+
+  int a = 0;
 
   /*
   InstanceCreateInfo ici;

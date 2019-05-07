@@ -34,12 +34,4 @@ vk::Result VulkanError::result() const {
   return result_;
 }
 
-IllegalInvocation::IllegalInvocation(const std::string& message) : LogiException(message) {}
-
-IllegalInvocation::IllegalInvocation(const char* const message) : LogiException(message) {}
-
-InitializationError::InitializationError(const std::string& message) : LogiException(message) {}
-
-InitializationError::InitializationError(const char* const message) : LogiException(message) {}
-
 } // namespace logi

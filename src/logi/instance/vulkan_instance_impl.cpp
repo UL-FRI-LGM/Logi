@@ -27,20 +27,19 @@
 
 namespace logi {
 
-VulkanInstanceImpl::VulkanInstanceImpl(const vk::InstanceCreateInfo& create_info,
-                                       PFN_vkCreateInstance pfn_create_instance,
-                                       PFN_vkGetInstanceProcAddr pfn_get_instance_proc_addr,
+VulkanInstanceImpl::VulkanInstanceImpl(const vk::InstanceCreateInfo& createInfo, PFN_vkCreateInstance pfnCreateInstance,
+                                       PFN_vkGetInstanceProcAddr pfnGetProcAddr,
                                        const std::optional<vk::AllocationCallbacks>& allocator)
   : allocator_(allocator) {
   // Create initial dispatch with the given function pointer.
   vk::DispatchLoaderDynamic init_dispatch;
-  init_dispatch.vkCreateInstance = pfn_create_instance;
+  init_dispatch.vkCreateInstance = pfnCreateInstance;
 
-  vk_instance_ = vk::createInstance(create_info, allocator_ ? &allocator_.value() : nullptr, init_dispatch);
-  dispatcher_ = vk::DispatchLoaderDynamic(static_cast<VkInstance>(vk_instance_), pfn_get_instance_proc_addr);
+  vkInstance_ = vk::createInstance(createInfo, allocator_ ? &allocator_.value() : nullptr, init_dispatch);
+  dispatcher_ = vk::DispatchLoaderDynamic(static_cast<VkInstance>(vkInstance_), pfnGetProcAddr);
 
   // Fetch available physical devices.
-  std::vector<vk::PhysicalDevice> devices = vk_instance_.enumeratePhysicalDevices(dispatcher_);
+  std::vector<vk::PhysicalDevice> devices = vkInstance_.enumeratePhysicalDevices(dispatcher_);
 
   // Create Vulkan device handles.
   for (vk::PhysicalDevice& device : devices) {
@@ -49,19 +48,27 @@ VulkanInstanceImpl::VulkanInstanceImpl(const vk::InstanceCreateInfo& create_info
 }
 
 DebugReportCallbackEXT
-  VulkanInstanceImpl::createDebugReportCallbackEXT(const vk::DebugReportCallbackCreateInfoEXT& create_info,
+  VulkanInstanceImpl::createDebugReportCallbackEXT(const vk::DebugReportCallbackCreateInfoEXT& createInfo,
                                                    const std::optional<vk::AllocationCallbacks>& allocator) {
   return DebugReportCallbackEXT(
-    VulkanObjectComposite<DebugReportCallbackEXTImpl>::createObject(*this, create_info, allocator));
+    VulkanObjectComposite<DebugReportCallbackEXTImpl>::createObject(*this, createInfo, allocator));
+}
+
+void VulkanInstanceImpl::debugReportMessageEXT(const vk::DebugReportFlagsEXT& flags,
+                                               vk::DebugReportObjectTypeEXT objectType, uint64_t object,
+                                               size_t location, int32_t messageCode, const char* layerPrefix,
+                                               const char* message) const {
+  vkInstance_.debugReportMessageEXT(flags, objectType, object, location, messageCode, layerPrefix, message,
+                                    getDispatcher());
 }
 
 void VulkanInstanceImpl::destroyDebugReportCallbackEXT(size_t id) {
   VulkanObjectComposite<DebugReportCallbackEXTImpl>::destroyObject(id);
 }
 
-SurfaceKHR VulkanInstanceImpl::registerSurfaceKHR(const vk::SurfaceKHR& vk_surface,
+SurfaceKHR VulkanInstanceImpl::registerSurfaceKHR(const vk::SurfaceKHR& vkSurface,
                                                   const std::optional<vk::AllocationCallbacks>& allocator) {
-  return SurfaceKHR(VulkanObjectComposite<SurfaceKHRImpl>::createObject(*this, vk_surface, allocator));
+  return SurfaceKHR(VulkanObjectComposite<SurfaceKHRImpl>::createObject(*this, vkSurface, allocator));
 }
 
 void VulkanInstanceImpl::destroySurfaceKHR(size_t id) {
@@ -69,12 +76,12 @@ void VulkanInstanceImpl::destroySurfaceKHR(size_t id) {
 }
 
 std::vector<PhysicalDevice> VulkanInstanceImpl::enumeratePhysicalDevices() const {
-  auto devices_map = VulkanObjectComposite<PhysicalDeviceImpl>::getHandles();
+  auto ownedDevices = VulkanObjectComposite<PhysicalDeviceImpl>::getHandles();
 
   std::vector<PhysicalDevice> devices;
-  devices.reserve(devices_map.size());
+  devices.reserve(ownedDevices.size());
 
-  for (const auto& entry : devices_map) {
+  for (const auto& entry : ownedDevices) {
     devices.emplace_back(entry.second);
   }
 
@@ -86,18 +93,17 @@ const vk::DispatchLoaderDynamic& VulkanInstanceImpl::getDispatcher() const {
 }
 
 VulkanInstanceImpl::operator vk::Instance() const {
-  return vk_instance_;
+  return vkInstance_;
 }
 
 void VulkanInstanceImpl::free() {
   VulkanObjectComposite<PhysicalDeviceImpl>::destroyAllObjects();
 
-  for (const auto& callback : debug_callbacks_) {
-    vk_instance_.destroyDebugReportCallbackEXT(callback, nullptr, dispatcher_);
+  for (const auto& callback : debugCallbacks_) {
+    vkInstance_.destroyDebugReportCallbackEXT(callback, nullptr, dispatcher_);
   }
 
-  vk_instance_.destroy(allocator_ ? &allocator_.value() : nullptr);
-  vk_instance_ = nullptr;
+  vkInstance_.destroy(allocator_ ? &allocator_.value() : nullptr);
   VulkanObject::free();
 }
 
