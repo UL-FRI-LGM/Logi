@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGI_QUERY_QUERY_POOL_HPP
-#define LOGI_QUERY_QUERY_POOL_HPP
+#ifndef LOGI_MEMORY_SAMPLER_HPP
+#define LOGI_MEMORY_SAMPLER_HPP
 
 #include <vulkan/vulkan.hpp>
 #include "logi/base/handle.hpp"
-#include "logi/query/query_pool_impl.hpp"
+#include "logi/memory/sampler_impl.hpp"
 
 namespace logi {
 
@@ -29,17 +29,9 @@ class VulkanInstance;
 class PhysicalDevice;
 class LogicalDevice;
 
-class QueryPool : public Handle<QueryPoolImpl> {
+class Sampler : public Handle<SamplerImpl> {
  public:
   using Handle::Handle;
-
-  // region Vulkan Declarations
-
-  template <typename T>
-  vk::Result getResults(uint32_t first_query, uint32_t query_count, vk::ArrayProxy<T> data, vk::DeviceSize stride,
-                        vk::QueryResultFlags flags) const;
-
-  // endregion
 
   // region Logi Declarations
 
@@ -53,17 +45,11 @@ class QueryPool : public Handle<QueryPoolImpl> {
 
   void destroy() const;
 
-  operator vk::QueryPool() const;
+  operator vk::Sampler() const;
 
   // endregion
 };
 
-template <typename T>
-vk::Result QueryPool::getResults(uint32_t first_query, uint32_t query_count, vk::ArrayProxy<T> data,
-                                 vk::DeviceSize stride, vk::QueryResultFlags flags) const {
-  return object_->getResults(first_query, query_count, data, stride, flags);
-}
-
 } // namespace logi
 
-#endif // LOGI_QUERY_QUERY_POOL_HPP
+#endif // LOGI_MEMORY_SAMPLER_HPP

@@ -16,54 +16,54 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGI_QUERY_QUERY_POOL_HPP
-#define LOGI_QUERY_QUERY_POOL_HPP
+#ifndef LOGI_DESCRIPTOR_DESCRIPTOR_POOL_IMPL_HPP
+#define LOGI_DESCRIPTOR_DESCRIPTOR_POOL_IMPL_HPP
 
 #include <vulkan/vulkan.hpp>
-#include "logi/base/handle.hpp"
-#include "logi/query/query_pool_impl.hpp"
+#include "logi/base/vulkan_object.hpp"
 
 namespace logi {
 
-class VulkanInstance;
-class PhysicalDevice;
-class LogicalDevice;
+class VulkanInstanceImpl;
+class PhysicalDeviceImpl;
+class LogicalDeviceImpl;
 
-class QueryPool : public Handle<QueryPoolImpl> {
+class DescriptorPoolImpl : public VulkanObject<DescriptorPoolImpl> {
  public:
-  using Handle::Handle;
+  DescriptorPoolImpl(LogicalDeviceImpl& logical_device, const vk::DescriptorPoolCreateInfo& create_info,
+                     const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   // region Vulkan Declarations
 
-  template <typename T>
-  vk::Result getResults(uint32_t first_query, uint32_t query_count, vk::ArrayProxy<T> data, vk::DeviceSize stride,
-                        vk::QueryResultFlags flags) const;
+  vk::ResultValueType<void>::type reset() const;
 
   // endregion
 
   // region Logi Declarations
 
-  VulkanInstance getInstance() const;
+  VulkanInstanceImpl& getInstance() const;
 
-  PhysicalDevice getPhysicalDevice() const;
+  PhysicalDeviceImpl& getPhysicalDevice() const;
 
-  LogicalDevice getLogicalDevice() const;
+  LogicalDeviceImpl& getLogicalDevice() const;
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
   void destroy() const;
 
-  operator vk::QueryPool() const;
+  operator vk::DescriptorPool() const;
+
+ protected:
+  void free() override;
 
   // endregion
-};
 
-template <typename T>
-vk::Result QueryPool::getResults(uint32_t first_query, uint32_t query_count, vk::ArrayProxy<T> data,
-                                 vk::DeviceSize stride, vk::QueryResultFlags flags) const {
-  return object_->getResults(first_query, query_count, data, stride, flags);
-}
+ private:
+  LogicalDeviceImpl& logicalDevice_;
+  std::optional<vk::AllocationCallbacks> allocator_;
+  vk::DescriptorPool vkDescriptorPool_;
+};
 
 } // namespace logi
 
-#endif // LOGI_QUERY_QUERY_POOL_HPP
+#endif // LOGI_DESCRIPTOR_POOL_IMPL_HPP
