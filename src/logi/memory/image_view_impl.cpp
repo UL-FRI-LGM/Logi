@@ -25,12 +25,12 @@
 
 namespace logi {
 
-ImageViewImpl::ImageViewImpl(logi::ImageImpl& image, vk::ImageViewCreateInfo create_info,
+ImageViewImpl::ImageViewImpl(logi::ImageImpl& image, vk::ImageViewCreateInfo createInfo,
                              const std::optional<vk::AllocationCallbacks>& allocator)
   : image_(image), allocator_(allocator) {
-  vk::Device vk_device = getLogicalDevice();
-  create_info.image = image_;
-  vk_image_view_ = vk_device.createImageView(create_info, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+  vk::Device vkDevice = getLogicalDevice();
+  createInfo.image = image_;
+  vkImageView_ = vkDevice.createImageView(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
 VulkanInstanceImpl& logi::ImageViewImpl::getInstance() const {
@@ -62,12 +62,12 @@ void ImageViewImpl::destroy() const {
 }
 
 ImageViewImpl::operator vk::ImageView() const {
-  return vk_image_view_;
+  return vkImageView_;
 }
 
 void ImageViewImpl::free() {
   vk::Device vk_device = getLogicalDevice();
-  vk_device.destroy(vk_image_view_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+  vk_device.destroy(vkImageView_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }
 

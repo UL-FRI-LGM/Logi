@@ -33,15 +33,15 @@ class ImageView;
 
 class ImageImpl : public VulkanObject<ImageImpl>, public VulkanObjectComposite<ImageViewImpl> {
  public:
-  ImageImpl(MemoryAllocatorImpl& memory_allocator, const vk::ImageCreateInfo& image_create_info,
-            const VmaAllocationCreateInfo& allocation_create_info);
+  ImageImpl(MemoryAllocatorImpl& memoryAllocator, const vk::ImageCreateInfo& imageCreateInfo,
+            const VmaAllocationCreateInfo& allocationCreateInfo);
 
   // region Vulkan Declarations
   // endregion
 
   // region Logi Declarations
 
-  ImageView createImageView(const vk::ImageViewCreateInfo& create_info,
+  ImageView createImageView(const vk::ImageViewCreateInfo& createInfo,
                             const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyImageView(size_t id);
@@ -66,7 +66,7 @@ class ImageImpl : public VulkanObject<ImageImpl>, public VulkanObjectComposite<I
   // endregion
 
  private:
-  MemoryAllocatorImpl* memory_allocator_;
+  MemoryAllocatorImpl* memoryAllocator_;
   vk::Image image_;
   VmaAllocation allocation_;
 };

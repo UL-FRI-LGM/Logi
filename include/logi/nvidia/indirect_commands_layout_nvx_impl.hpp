@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGI_DESCRIPTOR_DESCRIPTOR_POOL_IMPL_HPP
-#define LOGI_DESCRIPTOR_DESCRIPTOR_POOL_IMPL_HPP
+#ifndef LOGI_NVIDIA_INDIRECT_COMMANDS_LAYOUT_NVX_IMPL_HPP
+#define LOGI_NVIDIA_INDIRECT_COMMANDS_LAYOUT_NVX_IMPL_HPP
 
 #include <vulkan/vulkan.hpp>
 #include "logi/base/vulkan_object.hpp"
@@ -28,16 +28,11 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 
-class DescriptorPoolImpl : public VulkanObject<DescriptorPoolImpl> {
+class IndirectCommandsLayoutNVXImpl : public VulkanObject<IndirectCommandsLayoutNVXImpl> {
  public:
-  DescriptorPoolImpl(LogicalDeviceImpl& logicalDevice, const vk::DescriptorPoolCreateInfo& createInfo,
-                     const std::optional<vk::AllocationCallbacks>& allocator = {});
-
-  // region Vulkan Declarations
-
-  vk::ResultValueType<void>::type reset() const;
-
-  // endregion
+  IndirectCommandsLayoutNVXImpl(LogicalDeviceImpl& logicalDevice,
+                                const vk::IndirectCommandsLayoutCreateInfoNVX& createInfo,
+                                const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   // region Logi Declarations
 
@@ -51,7 +46,7 @@ class DescriptorPoolImpl : public VulkanObject<DescriptorPoolImpl> {
 
   void destroy() const;
 
-  operator vk::DescriptorPool() const;
+  operator vk::IndirectCommandsLayoutNVX() const;
 
  protected:
   void free() override;
@@ -61,9 +56,9 @@ class DescriptorPoolImpl : public VulkanObject<DescriptorPoolImpl> {
  private:
   LogicalDeviceImpl& logicalDevice_;
   std::optional<vk::AllocationCallbacks> allocator_;
-  vk::DescriptorPool vkDescriptorPool_;
+  vk::IndirectCommandsLayoutNVX vkIndirectCommandsLayoutNVX_;
 };
 
 } // namespace logi
 
-#endif // LOGI_DESCRIPTOR_POOL_IMPL_HPP
+#endif // LOGI_NVIDIA_INDIRECT_COMMANDS_LAYOUT_NVX_IMPL_HPP

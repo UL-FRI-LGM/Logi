@@ -21,32 +21,32 @@
 
 namespace logi {
 
-FenceImpl::FenceImpl(LogicalDeviceImpl& logical_device, const vk::FenceCreateInfo& create_info,
+FenceImpl::FenceImpl(LogicalDeviceImpl& logicalDevice, const vk::FenceCreateInfo& createInfo,
                      const std::optional<vk::AllocationCallbacks>& allocator)
-  : logical_device_(logical_device), allocator_(allocator) {
-  vk::Device vk_device = logical_device_;
-  vk_fence_ = vk_device.createFence(create_info, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+  : logicalDevice_(logicalDevice), allocator_(allocator) {
+  vk::Device vkDevice = logicalDevice_;
+  vkFence_ = vkDevice.createFence(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
 bool FenceImpl::getStatus() const {
-  vk::Device vk_device;
-  return vk_device.getFenceStatus(vk_fence_, getDispatcher()) == vk::Result::eSuccess;
+  vk::Device vkDevice;
+  return vkDevice.getFenceStatus(vkFence_, getDispatcher()) == vk::Result::eSuccess;
 }
 
 VulkanInstanceImpl& FenceImpl::getInstance() const {
-  return logical_device_.getInstance();
+  return logicalDevice_.getInstance();
 }
 
 PhysicalDeviceImpl& FenceImpl::getPhysicalDevice() const {
-  return logical_device_.getPhysicalDevice();
+  return logicalDevice_.getPhysicalDevice();
 }
 
 LogicalDeviceImpl& FenceImpl::getLogicalDevice() const {
-  return logical_device_;
+  return logicalDevice_;
 }
 
 const vk::DispatchLoaderDynamic& FenceImpl::getDispatcher() const {
-  return logical_device_.getDispatcher();
+  return logicalDevice_.getDispatcher();
 }
 
 void FenceImpl::destroy() const {
@@ -54,12 +54,12 @@ void FenceImpl::destroy() const {
 }
 
 FenceImpl::operator vk::Fence() const {
-  return vk_fence_;
+  return vkFence_;
 }
 
 void FenceImpl::free() {
-  vk::Device vk_device = logical_device_;
-  vk_device.destroy(vk_fence_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+  vk::Device vkDevice = logicalDevice_;
+  vkDevice.destroy(vkFence_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }
 

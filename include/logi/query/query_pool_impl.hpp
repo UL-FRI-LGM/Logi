@@ -30,13 +30,13 @@ class LogicalDeviceImpl;
 
 class QueryPoolImpl : public VulkanObject<QueryPoolImpl> {
  public:
-  QueryPoolImpl(LogicalDeviceImpl& logical_device, const vk::QueryPoolCreateInfo& create_info,
+  QueryPoolImpl(LogicalDeviceImpl& logicalDevice, const vk::QueryPoolCreateInfo& createInfo,
                 const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   // region Vulkan Declarations
 
   template <typename T>
-  vk::Result getResults(uint32_t first_query, uint32_t query_count, vk::ArrayProxy<T> data, vk::DeviceSize stride,
+  vk::Result getResults(uint32_t firstQuery, uint32_t queryCount, vk::ArrayProxy<T> data, vk::DeviceSize stride,
                         vk::QueryResultFlags flags) const;
 
   // endregion
@@ -61,16 +61,16 @@ class QueryPoolImpl : public VulkanObject<QueryPoolImpl> {
   // endregion
 
  private:
-  LogicalDeviceImpl& logical_device_;
+  LogicalDeviceImpl& logicalDevice_;
   std::optional<vk::AllocationCallbacks> allocator_;
-  vk::QueryPool vk_query_pool_;
+  vk::QueryPool vkQueryPool_;
 };
 
 template <typename T>
-vk::Result QueryPoolImpl::getResults(uint32_t first_query, uint32_t query_count, vk::ArrayProxy<T> data,
+vk::Result QueryPoolImpl::getResults(uint32_t firstQuery, uint32_t queryCount, vk::ArrayProxy<T> data,
                                      vk::DeviceSize stride, vk::QueryResultFlags flags) const {
-  vk::Device vk_device;
-  return vk_device.getQueryPoolResults(vk_query_pool_, first_query, query_count, data, stride, flags, getDispatcher());
+  vk::Device vkDevice;
+  return vkDevice.getQueryPoolResults(vkQueryPool_, firstQuery, queryCount, data, stride, flags, getDispatcher());
 }
 
 } // namespace logi

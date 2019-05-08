@@ -30,7 +30,7 @@ class LogicalDeviceImpl;
 
 class EventImpl : public VulkanObject<EventImpl> {
  public:
-  EventImpl(LogicalDeviceImpl& logical_device, const vk::EventCreateInfo& create_info,
+  EventImpl(LogicalDeviceImpl& logicalDevice, const vk::EventCreateInfo& createInfo,
             const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   // region Vulkan Declarations
@@ -63,9 +63,9 @@ class EventImpl : public VulkanObject<EventImpl> {
   // endregion
 
  private:
-  LogicalDeviceImpl& logical_device_;
+  LogicalDeviceImpl& logicalDevice_;
   std::optional<vk::AllocationCallbacks> allocator_;
-  vk::Event vk_event_;
+  vk::Event vkEvent_;
 };
 
 } // namespace logi

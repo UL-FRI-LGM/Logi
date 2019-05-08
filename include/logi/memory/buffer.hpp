@@ -36,10 +36,10 @@ class Buffer : public Handle<BufferImpl> {
 
   // region Logi Declarations
 
-  BufferView createBufferView(const vk::BufferViewCreateInfo& create_info,
+  BufferView createBufferView(const vk::BufferViewCreateInfo& createInfo,
                               const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
-  void destroyBufferView(const BufferView& buffer_view) const;
+  void destroyBufferView(const BufferView& bufferView) const;
 
   VulkanInstance getInstance() const;
 

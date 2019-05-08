@@ -24,46 +24,44 @@
 
 namespace logi {
 
-LogicalDeviceImpl::LogicalDeviceImpl(PhysicalDeviceImpl& physical_device, const vk::DeviceCreateInfo& create_info,
+LogicalDeviceImpl::LogicalDeviceImpl(PhysicalDeviceImpl& physicalDevice, const vk::DeviceCreateInfo& createInfo,
                                      const std::optional<vk::AllocationCallbacks>& allocator)
-  : physical_device_(physical_device), allocator_(allocator) {
-  vk::Instance vk_instance = physical_device.getInstance();
-  vk::PhysicalDevice vk_physical_device = physical_device;
-  const vk::DispatchLoaderDynamic& instance_dispatcher = physical_device.getDispatcher();
+  : physicalDevice_(physicalDevice), allocator_(allocator) {
+  vk::Instance vkInstance = physicalDevice.getInstance();
+  vk::PhysicalDevice vkPhysicalDevice = physicalDevice;
+  const vk::DispatchLoaderDynamic& instanceDispatcher = physicalDevice.getDispatcher();
 
-  vk_device_ =
-    vk_physical_device.createDevice(create_info, allocator_ ? &allocator.value() : nullptr, instance_dispatcher);
+  vkDevice_ = vkPhysicalDevice.createDevice(createInfo, allocator_ ? &allocator.value() : nullptr, instanceDispatcher);
 
   // Initialize device dispatcher.
-  dispatcher_ =
-    vk::DispatchLoaderDynamic(static_cast<VkInstance>(vk_instance), instance_dispatcher.vkGetInstanceProcAddr,
-                              static_cast<VkDevice>(vk_device_), instance_dispatcher.vkGetDeviceProcAddr);
+  dispatcher_ = vk::DispatchLoaderDynamic(static_cast<VkInstance>(vkInstance), instanceDispatcher.vkGetInstanceProcAddr,
+                                          static_cast<VkDevice>(vkDevice_), instanceDispatcher.vkGetDeviceProcAddr);
 
   // Initialize queue families.
-  for (uint32_t i = 0u; i < create_info.queueCreateInfoCount; i++) {
-    VulkanObjectComposite<QueueFamilyImpl>::createObject(*this, create_info.pQueueCreateInfos[i]);
+  for (uint32_t i = 0u; i < createInfo.queueCreateInfoCount; i++) {
+    VulkanObjectComposite<QueueFamilyImpl>::createObject(*this, createInfo.pQueueCreateInfos[i]);
   }
 }
 
 std::vector<QueueFamily> LogicalDeviceImpl::getQueueFamilies() const {
-  auto families_map = VulkanObjectComposite<QueueFamilyImpl>::getHandles();
+  auto familiesMap = VulkanObjectComposite<QueueFamilyImpl>::getHandles();
 
-  std::vector<QueueFamily> queue_families;
-  queue_families.reserve(families_map.size());
+  std::vector<QueueFamily> queueFamilies;
+  queueFamilies.reserve(familiesMap.size());
 
-  for (const auto& entry : families_map) {
-    queue_families.emplace_back(entry.second);
+  for (const auto& entry : familiesMap) {
+    queueFamilies.emplace_back(entry.second);
   }
 
-  return queue_families;
+  return queueFamilies;
 }
 
 VulkanInstanceImpl& LogicalDeviceImpl::getInstance() const {
-  return physical_device_.getInstance();
+  return physicalDevice_.getInstance();
 }
 
 PhysicalDeviceImpl& LogicalDeviceImpl::getPhysicalDevice() const {
-  return physical_device_;
+  return physicalDevice_;
 }
 
 const vk::DispatchLoaderDynamic& LogicalDeviceImpl::getDispatcher() const {
@@ -71,18 +69,18 @@ const vk::DispatchLoaderDynamic& LogicalDeviceImpl::getDispatcher() const {
 }
 
 void LogicalDeviceImpl::destroy() const {
-  physical_device_.destroyLogicalDevice(id());
+  physicalDevice_.destroyLogicalDevice(id());
 }
 
 LogicalDeviceImpl::operator const vk::Device() const {
-  return vk_device_;
+  return vkDevice_;
 }
 
 void LogicalDeviceImpl::free() {
   // TODO (Destroy composited objects)
   VulkanObjectComposite<QueueFamilyImpl>::destroyAllObjects();
-  vk_device_.destroy(allocator_ ? &allocator_.value() : nullptr, dispatcher_);
-  vk_device_ = nullptr;
+  vkDevice_.destroy(allocator_ ? &allocator_.value() : nullptr, dispatcher_);
+  vkDevice_ = nullptr;
   VulkanObject::free();
 }
 

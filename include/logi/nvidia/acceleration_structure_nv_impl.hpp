@@ -30,8 +30,7 @@ class LogicalDeviceImpl;
 
 class AccelerationStructureNVImpl : public VulkanObject<AccelerationStructureNVImpl> {
  public:
-  AccelerationStructureNVImpl(LogicalDeviceImpl& logical_device,
-                              const vk::AccelerationStructureCreateInfoNV& create_info,
+  AccelerationStructureNVImpl(LogicalDeviceImpl& logicalDevice, const vk::AccelerationStructureCreateInfoNV& createInfo,
                               const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   // region Vulkan Declarations
@@ -61,15 +60,15 @@ class AccelerationStructureNVImpl : public VulkanObject<AccelerationStructureNVI
   // endregion
 
  private:
-  LogicalDeviceImpl& logical_device_;
+  LogicalDeviceImpl& logicalDevice_;
   std::optional<vk::AllocationCallbacks> allocator_;
-  vk::AccelerationStructureNV vk_acceleration_structure_nv;
+  vk::AccelerationStructureNV vkAccelerationStructureNV_;
 };
 
 template <typename T>
 vk::ResultValueType<void>::type AccelerationStructureNVImpl::getHandleNV(vk::ArrayProxy<T> data) const {
-  vk::Device vk_device;
-  return vk_device.getAccelerationStructureHandleNV(vk_acceleration_structure_nv, data, getDispatcher());
+  vk::Device vkDevice;
+  return vkDevice.getAccelerationStructureHandleNV(vkAccelerationStructureNV_, data, getDispatcher());
 }
 
 } // namespace logi

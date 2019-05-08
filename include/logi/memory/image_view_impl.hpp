@@ -33,7 +33,7 @@ class ImageImpl;
 
 class ImageViewImpl : public VulkanObject<ImageViewImpl> {
  public:
-  ImageViewImpl(ImageImpl& image, vk::ImageViewCreateInfo create_info,
+  ImageViewImpl(ImageImpl& image, vk::ImageViewCreateInfo createInfo,
                 const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   // region Logi Declarations
@@ -62,7 +62,7 @@ class ImageViewImpl : public VulkanObject<ImageViewImpl> {
  private:
   ImageImpl& image_;
   std::optional<vk::AllocationCallbacks> allocator_;
-  vk::ImageView vk_image_view_;
+  vk::ImageView vkImageView_;
 };
 
 } // namespace logi

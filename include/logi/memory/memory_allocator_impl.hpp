@@ -36,9 +36,8 @@ class MemoryAllocatorImpl : public VulkanObject<MemoryAllocatorImpl>,
                             public VulkanObjectComposite<BufferImpl>,
                             public VulkanObjectComposite<ImageImpl> {
  public:
-  explicit MemoryAllocatorImpl(LogicalDeviceImpl& logical_device, vk::DeviceSize preferred_large_heap_block_size = 0u,
-                               uint32_t frame_in_use_count = 0u,
-                               const std::vector<vk::DeviceSize>& heap_size_limits = {},
+  explicit MemoryAllocatorImpl(LogicalDeviceImpl& logicalDevice, vk::DeviceSize preferredLargeHeapBlockSize = 0u,
+                               uint32_t frameInUseCount = 0u, const std::vector<vk::DeviceSize>& heapSizeLimits = {},
                                const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   // region Vulkan Declarations
@@ -47,13 +46,12 @@ class MemoryAllocatorImpl : public VulkanObject<MemoryAllocatorImpl>,
 
   // region Logi Declarations
 
-  Image createImage(const vk::ImageCreateInfo& image_create_info,
-                    const VmaAllocationCreateInfo& allocation_create_info);
+  Image createImage(const vk::ImageCreateInfo& imageCreateInfo, const VmaAllocationCreateInfo& allocationCreateInfo);
 
   void destroyImage(size_t id);
 
-  Buffer createBuffer(const vk::BufferCreateInfo& buffer_create_info,
-                      const VmaAllocationCreateInfo& allocation_create_info);
+  Buffer createBuffer(const vk::BufferCreateInfo& bufferCreateInfo,
+                      const VmaAllocationCreateInfo& allocationCreateInfo);
 
   void destroyBuffer(size_t id);
 
@@ -75,7 +73,7 @@ class MemoryAllocatorImpl : public VulkanObject<MemoryAllocatorImpl>,
   // endregion
 
  private:
-  LogicalDeviceImpl& logical_device_;
+  LogicalDeviceImpl& logicalDevice_;
   std::optional<vk::AllocationCallbacks> allocator_;
   VmaAllocator vma_;
 };

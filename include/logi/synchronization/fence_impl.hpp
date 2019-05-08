@@ -30,7 +30,7 @@ class LogicalDeviceImpl;
 
 class FenceImpl : public VulkanObject<FenceImpl> {
  public:
-  FenceImpl(LogicalDeviceImpl& logical_device, const vk::FenceCreateInfo& create_info,
+  FenceImpl(LogicalDeviceImpl& logicalDevice, const vk::FenceCreateInfo& createInfo,
             const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   // region Vulkan Declarations
@@ -59,9 +59,9 @@ class FenceImpl : public VulkanObject<FenceImpl> {
   // endregion
 
  private:
-  LogicalDeviceImpl& logical_device_;
+  LogicalDeviceImpl& logicalDevice_;
   std::optional<vk::AllocationCallbacks> allocator_;
-  vk::Fence vk_fence_;
+  vk::Fence vkFence_;
 };
 
 } // namespace logi

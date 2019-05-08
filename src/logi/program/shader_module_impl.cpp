@@ -40,12 +40,12 @@ VertexAttributeInfo::VertexAttributeInfo(std::string name, uint32_t location, ui
 PushConstantInfo::PushConstantInfo(std::string name, uint32_t offset, uint32_t size)
   : name(std::move(name)), offset(offset), size(size) {}
 
-ShaderModuleImpl::ShaderModuleImpl(LogicalDeviceImpl& logicalDevice, const vk::ShaderModuleCreateInfo& create_info,
+ShaderModuleImpl::ShaderModuleImpl(LogicalDeviceImpl& logicalDevice, const vk::ShaderModuleCreateInfo& createInfo,
                                    const std::optional<vk::AllocationCallbacks>& allocator)
   : logicalDevice_(logicalDevice), allocator_(allocator), vkShaderModule_(nullptr) {
-  vk::Device vk_device = logicalDevice;
+  vk::Device vkDevice = logicalDevice;
   vkShaderModule_ =
-    vk_device.createShaderModule(create_info, allocator.has_value() ? nullptr : &allocator.value(), getDispatcher());
+    vkDevice.createShaderModule(createInfo, allocator.has_value() ? nullptr : &allocator.value(), getDispatcher());
 }
 
 VulkanInstanceImpl& ShaderModuleImpl::getInstance() const {
@@ -87,8 +87,8 @@ void ShaderModuleImpl::reflectShader(const uint32_t* code, size_t wordSize) {
   spirv_cross::ShaderResources shaderResources = compiler.get_shader_resources();
 
   // If it's a vertex shader reflect vertex input state.
-  bool hasVertexStage = std::any_of(entryPoints_.begin(), entryPoints_.end(), [](const EntryPointInfo& entry_point) {
-    return entry_point.stage == vk::ShaderStageFlagBits::eVertex;
+  bool hasVertexStage = std::any_of(entryPoints_.begin(), entryPoints_.end(), [](const EntryPointInfo& entryPoint) {
+    return entryPoint.stage == vk::ShaderStageFlagBits::eVertex;
   });
 
   if (hasVertexStage) {
@@ -172,13 +172,13 @@ void ShaderModuleImpl::reflectDescriptorSets(const spirv_cross::Compiler& compil
 
 void ShaderModuleImpl::reflectDescriptorBinding(const spirv_cross::Compiler& compiler, uint32_t resourceId,
                                                 vk::DescriptorType type) {
-  const auto& resource_type = compiler.get_type_from_variable(resourceId);
+  const auto& resourceType = compiler.get_type_from_variable(resourceId);
 
   // Parse data.
   const std::string& name = compiler.get_name(resourceId);
   uint32_t set = compiler.get_decoration(resourceId, spv::DecorationDescriptorSet);
   uint32_t binding = compiler.get_decoration(resourceId, spv::DecorationBinding);
-  uint32_t count = std::accumulate(resource_type.array.begin(), resource_type.array.end(), 1, std::multiplies<>());
+  uint32_t count = std::accumulate(resourceType.array.begin(), resourceType.array.end(), 1, std::multiplies<>());
 
   // Add descriptor sets if set is out of range.
   if (descriptorSets_.size() <= set) {
@@ -273,12 +273,12 @@ vk::ShaderStageFlagBits ShaderModuleImpl::executionModelToStage(spv::ExecutionMo
   }
 }
 
-vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPIRType& format_info) {
-  switch (format_info.width) {
+vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPIRType& formatInfo) {
+  switch (formatInfo.width) {
     case 8:
-      switch (format_info.basetype) {
+      switch (formatInfo.basetype) {
         case spirv_cross::SPIRType::BaseType::Int:
-          switch (format_info.vecsize) {
+          switch (formatInfo.vecsize) {
             case 1:
               return vk::Format::eR8Sint;
             case 2:
@@ -291,7 +291,7 @@ vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPI
               throw ReflectionError("Failed to determine VkFormat.");
           }
         case spirv_cross::SPIRType::BaseType::UInt:
-          switch (format_info.vecsize) {
+          switch (formatInfo.vecsize) {
             case 1:
               return vk::Format::eR8Uint;
             case 2:
@@ -307,9 +307,9 @@ vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPI
           throw ReflectionError("Failed to determine VkFormat.");
       }
     case 16:
-      switch (format_info.basetype) {
+      switch (formatInfo.basetype) {
         case spirv_cross::SPIRType::BaseType::Int:
-          switch (format_info.vecsize) {
+          switch (formatInfo.vecsize) {
             case 1:
               return vk::Format::eR16Sint;
             case 2:
@@ -322,7 +322,7 @@ vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPI
               throw ReflectionError("Failed to determine VkFormat.");
           }
         case spirv_cross::SPIRType::BaseType::UInt:
-          switch (format_info.vecsize) {
+          switch (formatInfo.vecsize) {
             case 1:
               return vk::Format::eR16Uint;
             case 2:
@@ -335,7 +335,7 @@ vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPI
               throw ReflectionError("Failed to determine VkFormat.");
           }
         case spirv_cross::SPIRType::BaseType::Float:
-          switch (format_info.vecsize) {
+          switch (formatInfo.vecsize) {
             case 1:
               return vk::Format::eR16Sfloat;
             case 2:
@@ -351,9 +351,9 @@ vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPI
           throw ReflectionError("Failed to determine VkFormat.");
       }
     case 32:
-      switch (format_info.basetype) {
+      switch (formatInfo.basetype) {
         case spirv_cross::SPIRType::BaseType::Int:
-          switch (format_info.vecsize) {
+          switch (formatInfo.vecsize) {
             case 1:
               return vk::Format::eR32Sint;
             case 2:
@@ -366,7 +366,7 @@ vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPI
               throw ReflectionError("Failed to determine VkFormat.");
           }
         case spirv_cross::SPIRType::BaseType::UInt:
-          switch (format_info.vecsize) {
+          switch (formatInfo.vecsize) {
             case 1:
               return vk::Format::eR32Uint;
             case 2:
@@ -379,7 +379,7 @@ vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPI
               throw ReflectionError("Failed to determine VkFormat.");
           }
         case spirv_cross::SPIRType::BaseType::Float:
-          switch (format_info.vecsize) {
+          switch (formatInfo.vecsize) {
             case 1:
               return vk::Format::eR32Sfloat;
             case 2:
@@ -395,9 +395,9 @@ vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPI
           throw ReflectionError("Failed to determine VkFormat.");
       }
     case 64:
-      switch (format_info.basetype) {
+      switch (formatInfo.basetype) {
         case spirv_cross::SPIRType::BaseType::Int:
-          switch (format_info.vecsize) {
+          switch (formatInfo.vecsize) {
             case 1:
               return vk::Format::eR64Sint;
             case 2:
@@ -410,7 +410,7 @@ vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPI
               throw ReflectionError("Failed to determine VkFormat.");
           }
         case spirv_cross::SPIRType::BaseType::UInt:
-          switch (format_info.vecsize) {
+          switch (formatInfo.vecsize) {
             case 1:
               return vk::Format::eR64Uint;
             case 2:
@@ -423,7 +423,7 @@ vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPI
               throw ReflectionError("Failed to determine VkFormat.");
           }
         case spirv_cross::SPIRType::BaseType::Double:
-          switch (format_info.vecsize) {
+          switch (formatInfo.vecsize) {
             case 1:
               return vk::Format::eR64Sfloat;
             case 2:

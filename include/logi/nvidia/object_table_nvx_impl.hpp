@@ -30,17 +30,17 @@ class LogicalDeviceImpl;
 
 class ObjectTableNVXImpl : public VulkanObject<ObjectTableNVXImpl> {
  public:
-  ObjectTableNVXImpl(LogicalDeviceImpl& logical_device, const vk::ObjectTableCreateInfoNVX& create_info,
+  ObjectTableNVXImpl(LogicalDeviceImpl& logicalDevice, const vk::ObjectTableCreateInfoNVX& createInfo,
                      const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   // region Vulkan Declarations
 
   vk::ResultValueType<void>::type
-    registerObjectsNVX(vk::ArrayProxy<const vk::ObjectTableEntryNVX* const> object_table_entries,
-                       vk::ArrayProxy<const uint32_t> object_indices) const;
+    registerObjectsNVX(vk::ArrayProxy<const vk::ObjectTableEntryNVX* const> objectTableEntries,
+                       vk::ArrayProxy<const uint32_t> objectIndices) const;
 
-  vk::ResultValueType<void>::type unregisterObjectsNVX(vk::ArrayProxy<const vk::ObjectEntryTypeNVX> object_entry_types,
-                                                       vk::ArrayProxy<const uint32_t> object_indices) const;
+  vk::ResultValueType<void>::type unregisterObjectsNVX(vk::ArrayProxy<const vk::ObjectEntryTypeNVX> objectEntryTypes,
+                                                       vk::ArrayProxy<const uint32_t> objectIndices) const;
 
   // endregion
 
@@ -64,9 +64,9 @@ class ObjectTableNVXImpl : public VulkanObject<ObjectTableNVXImpl> {
   // endregion
 
  private:
-  LogicalDeviceImpl& logical_device_;
+  LogicalDeviceImpl& logicalDevice_;
   std::optional<vk::AllocationCallbacks> allocator_;
-  vk::ObjectTableNVX vk_object_table_nvx;
+  vk::ObjectTableNVX vkObjectTableNVX_;
 };
 } // namespace logi
 

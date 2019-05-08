@@ -16,30 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGI_QUERY_QUERY_POOL_HPP
-#define LOGI_QUERY_QUERY_POOL_HPP
+#ifndef LOGI_NVIDIA_INDIRECT_COMMANDS_LAYOUT_NVX_HPP
+#define LOGI_NVIDIA_INDIRECT_COMMANDS_LAYOUT_NVX_HPP
 
 #include <vulkan/vulkan.hpp>
 #include "logi/base/handle.hpp"
-#include "logi/query/query_pool_impl.hpp"
+#include "logi/nvidia/indirect_commands_layout_nvx_impl.hpp"
 
 namespace logi {
 
+class IndirectCommandsLayoutNVXImpl;
 class VulkanInstance;
 class PhysicalDevice;
 class LogicalDevice;
 
-class QueryPool : public Handle<QueryPoolImpl> {
+class IndirectCommandsLayoutNVX : public Handle<IndirectCommandsLayoutNVXImpl> {
  public:
   using Handle::Handle;
-
-  // region Vulkan Declarations
-
-  template <typename T>
-  vk::Result getResults(uint32_t firstQuery, uint32_t queryCount, vk::ArrayProxy<T> data, vk::DeviceSize stride,
-                        vk::QueryResultFlags flags) const;
-
-  // endregion
 
   // region Logi Declarations
 
@@ -53,17 +46,11 @@ class QueryPool : public Handle<QueryPoolImpl> {
 
   void destroy() const;
 
-  operator vk::QueryPool() const;
+  operator vk::IndirectCommandsLayoutNVX() const;
 
   // endregion
 };
 
-template <typename T>
-vk::Result QueryPool::getResults(uint32_t firstQuery, uint32_t queryCount, vk::ArrayProxy<T> data,
-                                 vk::DeviceSize stride, vk::QueryResultFlags flags) const {
-  return object_->getResults(firstQuery, queryCount, data, stride, flags);
-}
-
 } // namespace logi
 
-#endif // LOGI_QUERY_QUERY_POOL_HPP
+#endif // LOGI_NVIDIA_INDIRECT_COMMANDS_LAYOUT_NVX_HPP

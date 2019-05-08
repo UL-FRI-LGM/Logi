@@ -33,7 +33,7 @@ class BufferImpl;
 
 class BufferViewImpl : public VulkanObject<BufferViewImpl> {
  public:
-  BufferViewImpl(BufferImpl& buffer, vk::BufferViewCreateInfo create_info,
+  BufferViewImpl(BufferImpl& buffer, vk::BufferViewCreateInfo createInfo,
                  const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   // region Logi Declarations
@@ -62,7 +62,7 @@ class BufferViewImpl : public VulkanObject<BufferViewImpl> {
  private:
   BufferImpl& buffer_;
   std::optional<vk::AllocationCallbacks> allocator_;
-  vk::BufferView vk_buffer_view_;
+  vk::BufferView vkBufferView_;
 };
 
 } // namespace logi

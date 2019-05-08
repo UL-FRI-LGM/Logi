@@ -23,192 +23,192 @@
 
 namespace logi {
 
-PhysicalDeviceImpl::PhysicalDeviceImpl(VulkanInstanceImpl& instance, const vk::PhysicalDevice& vk_physical_device)
-  : instance_(instance), vk_physical_device_(vk_physical_device) {}
+PhysicalDeviceImpl::PhysicalDeviceImpl(VulkanInstanceImpl& instance, const vk::PhysicalDevice& vkPhysicalDevice)
+  : instance_(instance), vkPhysicalDevice_(vkPhysicalDevice) {}
 
 typename vk::ResultValueType<std::vector<vk::ExtensionProperties>>::type
-  PhysicalDeviceImpl::enumerateDeviceExtensionProperties(const std::string* layer_name) const {
-  return vk_physical_device_.enumerateDeviceExtensionProperties(layer_name, getDispatcher());
+  PhysicalDeviceImpl::enumerateDeviceExtensionProperties(const std::string* layerName) const {
+  return vkPhysicalDevice_.enumerateDeviceExtensionProperties(layerName, getDispatcher());
 }
 
 typename vk::ResultValueType<std::vector<vk::LayerProperties>>::type
   PhysicalDeviceImpl::enumerateDeviceLayerProperties() const {
-  return vk_physical_device_.enumerateDeviceLayerProperties(getDispatcher());
+  return vkPhysicalDevice_.enumerateDeviceLayerProperties(getDispatcher());
 }
 
 vk::ExternalBufferProperties PhysicalDeviceImpl::getExternalBufferProperties(
-  const vk::PhysicalDeviceExternalBufferInfo& external_buffer_info) const {
-  return vk_physical_device_.getExternalBufferProperties(external_buffer_info, getDispatcher());
+  const vk::PhysicalDeviceExternalBufferInfo& externalBufferInfo) const {
+  return vkPhysicalDevice_.getExternalBufferProperties(externalBufferInfo, getDispatcher());
 }
 
 vk::ExternalBufferPropertiesKHR PhysicalDeviceImpl::getExternalBufferPropertiesKHR(
-  const vk::PhysicalDeviceExternalBufferInfoKHR& external_buffer_info) const {
-  return vk_physical_device_.getExternalBufferPropertiesKHR(external_buffer_info, getDispatcher());
+  const vk::PhysicalDeviceExternalBufferInfoKHR& externalBufferInfo) const {
+  return vkPhysicalDevice_.getExternalBufferPropertiesKHR(externalBufferInfo, getDispatcher());
 }
 
 vk::ExternalFenceProperties
-  PhysicalDeviceImpl::getExternalFenceProperties(const vk::PhysicalDeviceExternalFenceInfo& external_fence_info) const {
-  return vk_physical_device_.getExternalFenceProperties(external_fence_info, getDispatcher());
+  PhysicalDeviceImpl::getExternalFenceProperties(const vk::PhysicalDeviceExternalFenceInfo& externalFenceInfo) const {
+  return vkPhysicalDevice_.getExternalFenceProperties(externalFenceInfo, getDispatcher());
 }
 
 vk::ExternalFencePropertiesKHR PhysicalDeviceImpl::getExternalFencePropertiesKHR(
-  const vk::PhysicalDeviceExternalFenceInfoKHR& external_fence_info) const {
-  return vk_physical_device_.getExternalFencePropertiesKHR(external_fence_info, getDispatcher());
+  const vk::PhysicalDeviceExternalFenceInfoKHR& externalFenceInfo) const {
+  return vkPhysicalDevice_.getExternalFencePropertiesKHR(externalFenceInfo, getDispatcher());
 }
 
 vk::ExternalSemaphoreProperties PhysicalDeviceImpl::getExternalSemaphoreProperties(
-  const vk::PhysicalDeviceExternalSemaphoreInfo& external_semaphore_info) const {
-  return vk_physical_device_.getExternalSemaphoreProperties(external_semaphore_info, getDispatcher());
+  const vk::PhysicalDeviceExternalSemaphoreInfo& externalSemaphoreInfo) const {
+  return vkPhysicalDevice_.getExternalSemaphoreProperties(externalSemaphoreInfo, getDispatcher());
 }
 
 vk::ExternalSemaphorePropertiesKHR PhysicalDeviceImpl::getExternalSemaphorePropertiesKHR(
-  const vk::PhysicalDeviceExternalSemaphoreInfoKHR& external_semaphore_info) const {
-  return vk_physical_device_.getExternalSemaphorePropertiesKHR(external_semaphore_info, getDispatcher());
+  const vk::PhysicalDeviceExternalSemaphoreInfoKHR& externalSemaphoreInfo) const {
+  return vkPhysicalDevice_.getExternalSemaphorePropertiesKHR(externalSemaphoreInfo, getDispatcher());
 }
 
 vk::PhysicalDeviceFeatures PhysicalDeviceImpl::getFeatures() const {
-  return vk_physical_device_.getFeatures(getDispatcher());
+  return vkPhysicalDevice_.getFeatures(getDispatcher());
 }
 
 vk::PhysicalDeviceFeatures2 PhysicalDeviceImpl::getFeatures2() const {
-  return vk_physical_device_.getFeatures2(getDispatcher());
+  return vkPhysicalDevice_.getFeatures2(getDispatcher());
 }
 
 vk::PhysicalDeviceFeatures2KHR PhysicalDeviceImpl::getFeatures2KHR() const {
-  return vk_physical_device_.getFeatures2KHR(getDispatcher());
+  return vkPhysicalDevice_.getFeatures2KHR(getDispatcher());
 }
 
 vk::FormatProperties PhysicalDeviceImpl::getFormatProperties(vk::Format format) const {
-  return vk_physical_device_.getFormatProperties(format, getDispatcher());
+  return vkPhysicalDevice_.getFormatProperties(format, getDispatcher());
 }
 
 vk::FormatProperties2 PhysicalDeviceImpl::getFormatProperties2(vk::Format format) const {
-  return vk_physical_device_.getFormatProperties2(format, getDispatcher());
+  return vkPhysicalDevice_.getFormatProperties2(format, getDispatcher());
 }
 
 vk::FormatProperties2KHR PhysicalDeviceImpl::getFormatProperties2KHR(vk::Format format) const {
-  return vk_physical_device_.getFormatProperties2KHR(format, getDispatcher());
+  return vkPhysicalDevice_.getFormatProperties2KHR(format, getDispatcher());
 }
 
 vk::ImageFormatProperties PhysicalDeviceImpl::getImageFormatProperties(vk::Format format, vk::ImageType type,
                                                                        vk::ImageTiling tiling,
                                                                        const vk::ImageUsageFlags& usage,
                                                                        const vk::ImageCreateFlags& flags) const {
-  return vk_physical_device_.getImageFormatProperties(format, type, tiling, usage, flags, getDispatcher());
+  return vkPhysicalDevice_.getImageFormatProperties(format, type, tiling, usage, flags, getDispatcher());
 }
 
 vk::ImageFormatProperties2
-  PhysicalDeviceImpl::getImageFormatProperties2(const vk::PhysicalDeviceImageFormatInfo2& format_info) const {
-  return vk_physical_device_.getImageFormatProperties2(format_info, getDispatcher());
+  PhysicalDeviceImpl::getImageFormatProperties2(const vk::PhysicalDeviceImageFormatInfo2& formatInfo) const {
+  return vkPhysicalDevice_.getImageFormatProperties2(formatInfo, getDispatcher());
 }
 
 vk::ImageFormatProperties2KHR
-  PhysicalDeviceImpl::getImageFormatProperties2KHR(const vk::PhysicalDeviceImageFormatInfo2& format_info) const {
-  return vk_physical_device_.getImageFormatProperties2KHR(format_info, getDispatcher());
+  PhysicalDeviceImpl::getImageFormatProperties2KHR(const vk::PhysicalDeviceImageFormatInfo2& formatInfo) const {
+  return vkPhysicalDevice_.getImageFormatProperties2KHR(formatInfo, getDispatcher());
 }
 
 vk::PhysicalDeviceMemoryProperties PhysicalDeviceImpl::getMemoryProperties() const {
-  return vk_physical_device_.getMemoryProperties(getDispatcher());
+  return vkPhysicalDevice_.getMemoryProperties(getDispatcher());
 }
 
 vk::PhysicalDeviceMemoryProperties2 PhysicalDeviceImpl::getMemoryProperties2() const {
-  return vk_physical_device_.getMemoryProperties2(getDispatcher());
+  return vkPhysicalDevice_.getMemoryProperties2(getDispatcher());
 }
 
 vk::PhysicalDeviceMemoryProperties2KHR PhysicalDeviceImpl::getMemoryProperties2KHR() const {
-  return vk_physical_device_.getMemoryProperties2KHR(getDispatcher());
+  return vkPhysicalDevice_.getMemoryProperties2KHR(getDispatcher());
 }
 
 vk::PhysicalDeviceProperties PhysicalDeviceImpl::getProperties() const {
-  return vk_physical_device_.getProperties(getDispatcher());
+  return vkPhysicalDevice_.getProperties(getDispatcher());
 }
 
 vk::PhysicalDeviceProperties2 PhysicalDeviceImpl::getProperties2() const {
-  return vk_physical_device_.getProperties2(getDispatcher());
+  return vkPhysicalDevice_.getProperties2(getDispatcher());
 }
 
 vk::PhysicalDeviceProperties2KHR PhysicalDeviceImpl::getProperties2KHR() const {
-  return vk_physical_device_.getProperties2KHR(getDispatcher());
+  return vkPhysicalDevice_.getProperties2KHR(getDispatcher());
 }
 
 std::vector<vk::QueueFamilyProperties> PhysicalDeviceImpl::getQueueFamilyProperties() const {
-  return vk_physical_device_.getQueueFamilyProperties(getDispatcher());
+  return vkPhysicalDevice_.getQueueFamilyProperties(getDispatcher());
 }
 
 std::vector<vk::QueueFamilyProperties2> PhysicalDeviceImpl::getQueueFamilyProperties2() const {
-  return vk_physical_device_.getQueueFamilyProperties2(getDispatcher());
+  return vkPhysicalDevice_.getQueueFamilyProperties2(getDispatcher());
 }
 std::vector<vk::QueueFamilyProperties2KHR> PhysicalDeviceImpl::getQueueFamilyProperties2KHR() const {
-  return vk_physical_device_.getQueueFamilyProperties2KHR(getDispatcher());
+  return vkPhysicalDevice_.getQueueFamilyProperties2KHR(getDispatcher());
 }
 
 std::vector<vk::SparseImageFormatProperties>
   PhysicalDeviceImpl::getSparseImageFormatProperties(vk::Format format, vk::ImageType type,
                                                      vk::SampleCountFlagBits samples, const vk::ImageUsageFlags& usage,
                                                      vk::ImageTiling tiling) const {
-  return vk_physical_device_.getSparseImageFormatProperties(format, type, samples, usage, tiling, getDispatcher());
+  return vkPhysicalDevice_.getSparseImageFormatProperties(format, type, samples, usage, tiling, getDispatcher());
 }
 
 std::vector<vk::SparseImageFormatProperties2> PhysicalDeviceImpl::getSparseImageFormatProperties2(
-  const vk::PhysicalDeviceSparseImageFormatInfo2& p_sparse_image_format_properties) const {
-  return vk_physical_device_.getSparseImageFormatProperties2(p_sparse_image_format_properties, getDispatcher());
+  const vk::PhysicalDeviceSparseImageFormatInfo2& pSparseImageFormatProperties) const {
+  return vkPhysicalDevice_.getSparseImageFormatProperties2(pSparseImageFormatProperties, getDispatcher());
 }
 
 std::vector<vk::SparseImageFormatProperties2KHR> PhysicalDeviceImpl::getSparseImageFormatProperties2KHR(
-  const vk::PhysicalDeviceSparseImageFormatInfo2KHR& p_sparse_image_format_properties) const {
-  return vk_physical_device_.getSparseImageFormatProperties2KHR(p_sparse_image_format_properties, getDispatcher());
+  const vk::PhysicalDeviceSparseImageFormatInfo2KHR& pSparseImageFormatProperties) const {
+  return vkPhysicalDevice_.getSparseImageFormatProperties2KHR(pSparseImageFormatProperties, getDispatcher());
 }
 
 vk::ResultValueType<std::vector<vk::Rect2D>>::type
   PhysicalDeviceImpl::getPresentRectanglesKHR(vk::SurfaceKHR surface) const {
-  return vk_physical_device_.getPresentRectanglesKHR(surface, getDispatcher());
+  return vkPhysicalDevice_.getPresentRectanglesKHR(surface, getDispatcher());
 }
 
 vk::ResultValueType<vk::SurfaceCapabilitiesKHR>::type
   PhysicalDeviceImpl::getSurfaceCapabilitiesKHR(vk::SurfaceKHR surface) const {
-  return vk_physical_device_.getSurfaceCapabilitiesKHR(surface, getDispatcher());
+  return vkPhysicalDevice_.getSurfaceCapabilitiesKHR(surface, getDispatcher());
 }
 
 vk::ResultValueType<std::vector<vk::SurfaceFormatKHR>>::type
   PhysicalDeviceImpl::getSurfaceFormatsKHR(vk::SurfaceKHR surface) const {
-  return vk_physical_device_.getSurfaceFormatsKHR(surface, getDispatcher());
+  return vkPhysicalDevice_.getSurfaceFormatsKHR(surface, getDispatcher());
 }
 
 vk::ResultValueType<vk::SurfaceCapabilities2KHR>::type
-  PhysicalDeviceImpl::getSurfaceCapabilities2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surface_info) const {
-  return vk_physical_device_.getSurfaceCapabilities2KHR(surface_info, getDispatcher());
+  PhysicalDeviceImpl::getSurfaceCapabilities2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surfaceInfo) const {
+  return vkPhysicalDevice_.getSurfaceCapabilities2KHR(surfaceInfo, getDispatcher());
 }
 
 vk::ResultValueType<std::vector<vk::SurfaceFormat2KHR>>::type
-  PhysicalDeviceImpl::getSurfaceFormats2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surface_info) const {
-  return vk_physical_device_.getSurfaceFormats2KHR(surface_info, getDispatcher());
+  PhysicalDeviceImpl::getSurfaceFormats2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surfaceInfo) const {
+  return vkPhysicalDevice_.getSurfaceFormats2KHR(surfaceInfo, getDispatcher());
 }
 
 vk::ResultValueType<std::vector<vk::PresentModeKHR>>::type
   PhysicalDeviceImpl::getSurfacePresentModesKHR(vk::SurfaceKHR surface) const {
-  return vk_physical_device_.getSurfacePresentModesKHR(surface, getDispatcher());
+  return vkPhysicalDevice_.getSurfacePresentModesKHR(surface, getDispatcher());
 }
 
-vk::ResultValueType<vk::Bool32>::type PhysicalDeviceImpl::getSurfaceSupportKHR(uint32_t queue_index,
+vk::ResultValueType<vk::Bool32>::type PhysicalDeviceImpl::getSurfaceSupportKHR(uint32_t queueIndex,
                                                                                vk::SurfaceKHR surface) const {
-  return vk_physical_device_.getSurfaceSupportKHR(queue_index, surface, getDispatcher());
+  return vkPhysicalDevice_.getSurfaceSupportKHR(queueIndex, surface, getDispatcher());
 }
 
 vk::ExternalImageFormatPropertiesNV PhysicalDeviceImpl::getExternalImageFormatPropertiesNV(
   vk::Format format, vk::ImageType type, vk::ImageTiling tiling, const vk::ImageUsageFlags& usage,
-  const vk::ImageCreateFlags& flags, const vk::ExternalMemoryHandleTypeFlagsNV& external_handle_type) const {
-  return vk_physical_device_.getExternalImageFormatPropertiesNV(format, type, tiling, usage, flags,
-                                                                external_handle_type, getDispatcher());
+  const vk::ImageCreateFlags& flags, const vk::ExternalMemoryHandleTypeFlagsNV& externalHandleType) const {
+  return vkPhysicalDevice_.getExternalImageFormatPropertiesNV(format, type, tiling, usage, flags, externalHandleType,
+                                                              getDispatcher());
 }
 
 vk::DeviceGeneratedCommandsLimitsNVX
   PhysicalDeviceImpl::getGeneratedCommandsPropertiesNVX(vk::DeviceGeneratedCommandsFeaturesNVX& features) const {
-  return vk_physical_device_.getGeneratedCommandsPropertiesNVX(features, getDispatcher());
+  return vkPhysicalDevice_.getGeneratedCommandsPropertiesNVX(features, getDispatcher());
 }
 
-LogicalDevice PhysicalDeviceImpl::createLogicalDevice(const vk::DeviceCreateInfo& create_info,
+LogicalDevice PhysicalDeviceImpl::createLogicalDevice(const vk::DeviceCreateInfo& createInfo,
                                                       const std::optional<vk::AllocationCallbacks>& allocator) {
-  return LogicalDevice(VulkanObjectComposite<LogicalDeviceImpl>::createObject(*this, create_info, allocator));
+  return LogicalDevice(VulkanObjectComposite<LogicalDeviceImpl>::createObject(*this, createInfo, allocator));
 }
 
 void PhysicalDeviceImpl::destroyLogicalDevice(size_t id) {
@@ -224,12 +224,12 @@ const vk::DispatchLoaderDynamic& PhysicalDeviceImpl::getDispatcher() const {
 }
 
 PhysicalDeviceImpl::operator vk::PhysicalDevice() const {
-  return vk_physical_device_;
+  return vkPhysicalDevice_;
 }
 
 void PhysicalDeviceImpl::free() {
   VulkanObjectComposite<LogicalDeviceImpl>::destroyAllObjects();
-  vk_physical_device_ = nullptr;
+  vkPhysicalDevice_ = nullptr;
   VulkanObject::free();
 }
 

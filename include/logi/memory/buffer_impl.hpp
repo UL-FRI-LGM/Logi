@@ -33,15 +33,15 @@ class BufferViewImpl;
 
 class BufferImpl : public VulkanObject<BufferImpl>, public VulkanObjectComposite<BufferViewImpl> {
  public:
-  BufferImpl(MemoryAllocatorImpl& memory_allocator, const vk::BufferCreateInfo& buffer_create_info,
-             const VmaAllocationCreateInfo& allocation_create_info);
+  BufferImpl(MemoryAllocatorImpl& memoryAllocator, const vk::BufferCreateInfo& bufferCreateInfo,
+             const VmaAllocationCreateInfo& allocationCreateInfo);
 
   // region Vulkan Declarations
   // endregion
 
   // region Logi Declarations
 
-  BufferView createBufferView(const vk::BufferViewCreateInfo& create_info,
+  BufferView createBufferView(const vk::BufferViewCreateInfo& createInfo,
                               const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyBufferView(size_t id);
@@ -66,7 +66,7 @@ class BufferImpl : public VulkanObject<BufferImpl>, public VulkanObjectComposite
   // endregion
 
  private:
-  MemoryAllocatorImpl* memory_allocator_;
+  MemoryAllocatorImpl* memoryAllocator_;
   vk::Buffer buffer_;
   VmaAllocation allocation_;
 };

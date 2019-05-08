@@ -25,17 +25,16 @@
 
 namespace logi {
 
-BufferImpl::BufferImpl(MemoryAllocatorImpl& memory_allocator, const vk::BufferCreateInfo& buffer_create_info,
-                       const VmaAllocationCreateInfo& allocation_create_info)
-  : memory_allocator_(&memory_allocator), allocation_(nullptr) {
-  vmaCreateBuffer(memory_allocator_->getVmaAllocator(),
-                  reinterpret_cast<const VkBufferCreateInfo*>(&buffer_create_info), &allocation_create_info,
-                  reinterpret_cast<VkBuffer*>(&buffer_), &allocation_, nullptr);
+BufferImpl::BufferImpl(MemoryAllocatorImpl& memoryAllocator, const vk::BufferCreateInfo& bufferCreateInfo,
+                       const VmaAllocationCreateInfo& allocationCreateInfo)
+  : memoryAllocator_(&memoryAllocator), allocation_(nullptr) {
+  vmaCreateBuffer(memoryAllocator_->getVmaAllocator(), reinterpret_cast<const VkBufferCreateInfo*>(&bufferCreateInfo),
+                  &allocationCreateInfo, reinterpret_cast<VkBuffer*>(&buffer_), &allocation_, nullptr);
 }
 
-BufferView BufferImpl::createBufferView(const vk::BufferViewCreateInfo& create_info,
+BufferView BufferImpl::createBufferView(const vk::BufferViewCreateInfo& createInfo,
                                         const std::optional<vk::AllocationCallbacks>& allocator) {
-  return BufferView(VulkanObjectComposite<BufferViewImpl>::createObject(*this, create_info, allocator));
+  return BufferView(VulkanObjectComposite<BufferViewImpl>::createObject(*this, createInfo, allocator));
 }
 
 void BufferImpl::destroyBufferView(size_t id) {
@@ -43,27 +42,27 @@ void BufferImpl::destroyBufferView(size_t id) {
 }
 
 VulkanInstanceImpl& BufferImpl::getInstance() const {
-  return memory_allocator_->getInstance();
+  return memoryAllocator_->getInstance();
 }
 
 PhysicalDeviceImpl& BufferImpl::getPhysicalDevice() const {
-  return memory_allocator_->getPhysicalDevice();
+  return memoryAllocator_->getPhysicalDevice();
 }
 
 LogicalDeviceImpl& BufferImpl::getLogicalDevice() const {
-  return memory_allocator_->getLogicalDevice();
+  return memoryAllocator_->getLogicalDevice();
 }
 
 MemoryAllocatorImpl& BufferImpl::getMemoryAllocator() const {
-  return *memory_allocator_;
+  return *memoryAllocator_;
 }
 
 const vk::DispatchLoaderDynamic& BufferImpl::getDispatcher() const {
-  return memory_allocator_->getDispatcher();
+  return memoryAllocator_->getDispatcher();
 }
 
 void BufferImpl::destroy() const {
-  memory_allocator_->destroyBuffer(id());
+  memoryAllocator_->destroyBuffer(id());
 }
 
 BufferImpl::operator vk::Buffer() const {
@@ -73,9 +72,9 @@ BufferImpl::operator vk::Buffer() const {
 void BufferImpl::free() {
   VulkanObjectComposite<BufferViewImpl>::destroyAllObjects();
 
-  if (memory_allocator_ != nullptr) {
+  if (memoryAllocator_ != nullptr) {
     vmaDestroyBuffer(getMemoryAllocator().getVmaAllocator(), static_cast<VkBuffer>(buffer_), allocation_);
-    memory_allocator_ = nullptr;
+    memoryAllocator_ = nullptr;
   }
 
   VulkanObject::free();

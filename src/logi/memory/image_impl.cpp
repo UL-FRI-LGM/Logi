@@ -25,16 +25,16 @@
 
 namespace logi {
 
-ImageImpl::ImageImpl(MemoryAllocatorImpl& memory_allocator, const vk::ImageCreateInfo& image_create_info,
-                     const VmaAllocationCreateInfo& allocation_create_info)
-  : memory_allocator_(&memory_allocator), allocation_(nullptr) {
-  vmaCreateImage(memory_allocator_->getVmaAllocator(), reinterpret_cast<const VkImageCreateInfo*>(&image_create_info),
-                 &allocation_create_info, reinterpret_cast<VkImage*>(&image_), &allocation_, nullptr);
+ImageImpl::ImageImpl(MemoryAllocatorImpl& memoryAllocator, const vk::ImageCreateInfo& imageCreateInfo,
+                     const VmaAllocationCreateInfo& allocationCreateInfo)
+  : memoryAllocator_(&memoryAllocator), allocation_(nullptr) {
+  vmaCreateImage(memoryAllocator_->getVmaAllocator(), reinterpret_cast<const VkImageCreateInfo*>(&imageCreateInfo),
+                 &allocationCreateInfo, reinterpret_cast<VkImage*>(&image_), &allocation_, nullptr);
 }
 
-ImageView ImageImpl::createImageView(const vk::ImageViewCreateInfo& create_info,
+ImageView ImageImpl::createImageView(const vk::ImageViewCreateInfo& createInfo,
                                      const std::optional<vk::AllocationCallbacks>& allocator) {
-  return ImageView(VulkanObjectComposite<ImageViewImpl>::createObject(*this, create_info, allocator));
+  return ImageView(VulkanObjectComposite<ImageViewImpl>::createObject(*this, createInfo, allocator));
 }
 
 void ImageImpl::destroyImageView(size_t id) {
@@ -42,27 +42,27 @@ void ImageImpl::destroyImageView(size_t id) {
 }
 
 VulkanInstanceImpl& ImageImpl::getInstance() const {
-  return memory_allocator_->getInstance();
+  return memoryAllocator_->getInstance();
 }
 
 PhysicalDeviceImpl& ImageImpl::getPhysicalDevice() const {
-  return memory_allocator_->getPhysicalDevice();
+  return memoryAllocator_->getPhysicalDevice();
 }
 
 LogicalDeviceImpl& ImageImpl::getLogicalDevice() const {
-  return memory_allocator_->getLogicalDevice();
+  return memoryAllocator_->getLogicalDevice();
 }
 
 MemoryAllocatorImpl& ImageImpl::getMemoryAllocator() const {
-  return *memory_allocator_;
+  return *memoryAllocator_;
 }
 
 const vk::DispatchLoaderDynamic& ImageImpl::getDispatcher() const {
-  return memory_allocator_->getDispatcher();
+  return memoryAllocator_->getDispatcher();
 }
 
 void ImageImpl::destroy() const {
-  memory_allocator_->destroyImage(id());
+  memoryAllocator_->destroyImage(id());
 }
 
 ImageImpl::operator vk::Image() const {
@@ -72,9 +72,9 @@ ImageImpl::operator vk::Image() const {
 void ImageImpl::free() {
   VulkanObjectComposite<ImageViewImpl>::destroyAllObjects();
 
-  if (memory_allocator_ != nullptr) {
+  if (memoryAllocator_ != nullptr) {
     vmaDestroyImage(getMemoryAllocator().getVmaAllocator(), static_cast<VkImage>(image_), allocation_);
-    memory_allocator_ = nullptr;
+    memoryAllocator_ = nullptr;
   }
 
   VulkanObject::free();

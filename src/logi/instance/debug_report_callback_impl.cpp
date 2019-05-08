@@ -22,12 +22,12 @@
 namespace logi {
 
 DebugReportCallbackEXTImpl::DebugReportCallbackEXTImpl(VulkanInstanceImpl& instance,
-                                                       const vk::DebugReportCallbackCreateInfoEXT& create_info,
+                                                       const vk::DebugReportCallbackCreateInfoEXT& createInfo,
                                                        const std::optional<vk::AllocationCallbacks>& allocator)
   : instance_(instance), allocator_(allocator) {
-  vk::Instance vk_instance = instance_;
-  vk_callback_ =
-    vk_instance.createDebugReportCallbackEXT(create_info, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+  vk::Instance vkInstance = instance_;
+  vkCallback_ =
+    vkInstance.createDebugReportCallbackEXT(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
 VulkanInstanceImpl& DebugReportCallbackEXTImpl::getInstance() const {
@@ -43,13 +43,13 @@ void DebugReportCallbackEXTImpl::destroy() const {
 }
 
 DebugReportCallbackEXTImpl::operator vk::DebugReportCallbackEXT() const {
-  return vk_callback_;
+  return vkCallback_;
 }
 
 void DebugReportCallbackEXTImpl::free() {
-  vk::Instance vk_instance = instance_;
-  vk_instance.destroyDebugReportCallbackEXT(vk_callback_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
-  vk_callback_ = nullptr;
+  vk::Instance vkInstance = instance_;
+  vkInstance.destroyDebugReportCallbackEXT(vkCallback_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+  vkCallback_ = nullptr;
   VulkanObject::free();
 }
 

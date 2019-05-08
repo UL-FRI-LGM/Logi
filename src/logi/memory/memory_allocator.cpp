@@ -25,18 +25,18 @@
 
 namespace logi {
 
-Image MemoryAllocator::createImage(const vk::ImageCreateInfo& image_create_info,
-                                   const VmaAllocationCreateInfo& allocation_create_info) const {
-  return object_->createImage(image_create_info, allocation_create_info);
+Image MemoryAllocator::createImage(const vk::ImageCreateInfo& imageCreateInfo,
+                                   const VmaAllocationCreateInfo& allocationCreateInfo) const {
+  return object_->createImage(imageCreateInfo, allocationCreateInfo);
 }
 
 void MemoryAllocator::destroyImage(const Image& image) const {
   object_->destroyImage(image.id());
 }
 
-Buffer MemoryAllocator::createBuffer(const vk::BufferCreateInfo& buffer_create_info,
-                                     const VmaAllocationCreateInfo& allocation_create_info) const {
-  return object_->createBuffer(buffer_create_info, allocation_create_info);
+Buffer MemoryAllocator::createBuffer(const vk::BufferCreateInfo& bufferCreateInfo,
+                                     const VmaAllocationCreateInfo& allocationCreateInfo) const {
+  return object_->createBuffer(bufferCreateInfo, allocationCreateInfo);
 }
 
 void MemoryAllocator::destroyBuffer(const Buffer& buffer) const {

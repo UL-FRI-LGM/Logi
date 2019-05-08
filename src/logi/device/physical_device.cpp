@@ -34,33 +34,33 @@ typename vk::ResultValueType<std::vector<vk::LayerProperties>>::type
 }
 
 vk::ExternalBufferProperties
-  PhysicalDevice::getExternalBufferProperties(const vk::PhysicalDeviceExternalBufferInfo& external_buffer_info) const {
-  return object_->getExternalBufferProperties(external_buffer_info);
+  PhysicalDevice::getExternalBufferProperties(const vk::PhysicalDeviceExternalBufferInfo& externalBufferInfo) const {
+  return object_->getExternalBufferProperties(externalBufferInfo);
 }
 
 vk::ExternalBufferPropertiesKHR PhysicalDevice::getExternalBufferPropertiesKHR(
-  const vk::PhysicalDeviceExternalBufferInfoKHR& external_buffer_info) const {
-  return object_->getExternalBufferPropertiesKHR(external_buffer_info);
+  const vk::PhysicalDeviceExternalBufferInfoKHR& externalBufferInfo) const {
+  return object_->getExternalBufferPropertiesKHR(externalBufferInfo);
 }
 
 vk::ExternalFenceProperties
-  PhysicalDevice::getExternalFenceProperties(const vk::PhysicalDeviceExternalFenceInfo& external_fence_info) const {
-  return object_->getExternalFenceProperties(external_fence_info);
+  PhysicalDevice::getExternalFenceProperties(const vk::PhysicalDeviceExternalFenceInfo& externalFenceInfo) const {
+  return object_->getExternalFenceProperties(externalFenceInfo);
 }
 
-vk::ExternalFencePropertiesKHR PhysicalDevice::getExternalFencePropertiesKHR(
-  const vk::PhysicalDeviceExternalFenceInfoKHR& external_fence_info) const {
-  return object_->getExternalFencePropertiesKHR(external_fence_info);
+vk::ExternalFencePropertiesKHR
+  PhysicalDevice::getExternalFencePropertiesKHR(const vk::PhysicalDeviceExternalFenceInfoKHR& externalFenceInfo) const {
+  return object_->getExternalFencePropertiesKHR(externalFenceInfo);
 }
 
 vk::ExternalSemaphoreProperties PhysicalDevice::getExternalSemaphoreProperties(
-  const vk::PhysicalDeviceExternalSemaphoreInfo& external_semaphore_info) const {
-  return object_->getExternalSemaphoreProperties(external_semaphore_info);
+  const vk::PhysicalDeviceExternalSemaphoreInfo& externalSemaphoreInfo) const {
+  return object_->getExternalSemaphoreProperties(externalSemaphoreInfo);
 }
 
 vk::ExternalSemaphorePropertiesKHR PhysicalDevice::getExternalSemaphorePropertiesKHR(
-  const vk::PhysicalDeviceExternalSemaphoreInfoKHR& external_semaphore_info) const {
-  return object_->getExternalSemaphorePropertiesKHR(external_semaphore_info);
+  const vk::PhysicalDeviceExternalSemaphoreInfoKHR& externalSemaphoreInfo) const {
+  return object_->getExternalSemaphorePropertiesKHR(externalSemaphoreInfo);
 }
 
 vk::PhysicalDeviceFeatures PhysicalDevice::getFeatures() const {
@@ -95,13 +95,13 @@ vk::ImageFormatProperties PhysicalDevice::getImageFormatProperties(vk::Format fo
 }
 
 vk::ImageFormatProperties2
-  PhysicalDevice::getImageFormatProperties2(const vk::PhysicalDeviceImageFormatInfo2& format_info) const {
-  return object_->getImageFormatProperties2(format_info);
+  PhysicalDevice::getImageFormatProperties2(const vk::PhysicalDeviceImageFormatInfo2& formatInfo) const {
+  return object_->getImageFormatProperties2(formatInfo);
 }
 
 vk::ImageFormatProperties2KHR
-  PhysicalDevice::getImageFormatProperties2KHR(const vk::PhysicalDeviceImageFormatInfo2& format_info) const {
-  return object_->getImageFormatProperties2KHR(format_info);
+  PhysicalDevice::getImageFormatProperties2KHR(const vk::PhysicalDeviceImageFormatInfo2& formatInfo) const {
+  return object_->getImageFormatProperties2KHR(formatInfo);
 }
 
 vk::PhysicalDeviceMemoryProperties PhysicalDevice::getMemoryProperties() const {
@@ -147,13 +147,13 @@ std::vector<vk::SparseImageFormatProperties>
 }
 
 std::vector<vk::SparseImageFormatProperties2> PhysicalDevice::getSparseImageFormatProperties2(
-  const vk::PhysicalDeviceSparseImageFormatInfo2& sparse_image_format_properties) const {
-  return object_->getSparseImageFormatProperties2(sparse_image_format_properties);
+  const vk::PhysicalDeviceSparseImageFormatInfo2& sparseImageFormatProperties) const {
+  return object_->getSparseImageFormatProperties2(sparseImageFormatProperties);
 }
 
 std::vector<vk::SparseImageFormatProperties2KHR> PhysicalDevice::getSparseImageFormatProperties2KHR(
-  const vk::PhysicalDeviceSparseImageFormatInfo2KHR& sparse_image_format_properties) const {
-  return object_->getSparseImageFormatProperties2KHR(sparse_image_format_properties);
+  const vk::PhysicalDeviceSparseImageFormatInfo2KHR& sparseImageFormatProperties) const {
+  return object_->getSparseImageFormatProperties2KHR(sparseImageFormatProperties);
 }
 
 vk::ResultValueType<std::vector<vk::Rect2D>>::type
@@ -167,8 +167,8 @@ vk::ResultValueType<vk::SurfaceCapabilitiesKHR>::type
 }
 
 vk::ResultValueType<vk::SurfaceCapabilities2KHR>::type
-  PhysicalDevice::getSurfaceCapabilities2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surface_info) const {
-  return object_->getSurfaceCapabilities2KHR(surface_info);
+  PhysicalDevice::getSurfaceCapabilities2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surfaceInfo) const {
+  return object_->getSurfaceCapabilities2KHR(surfaceInfo);
 }
 
 vk::ResultValueType<std::vector<vk::SurfaceFormatKHR>>::type
@@ -177,8 +177,8 @@ vk::ResultValueType<std::vector<vk::SurfaceFormatKHR>>::type
 }
 
 vk::ResultValueType<std::vector<vk::SurfaceFormat2KHR>>::type
-  PhysicalDevice::getSurfaceFormats2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surface_info) const {
-  return object_->getSurfaceFormats2KHR(surface_info);
+  PhysicalDevice::getSurfaceFormats2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surfaceInfo) const {
+  return object_->getSurfaceFormats2KHR(surfaceInfo);
 }
 
 vk::ResultValueType<std::vector<vk::PresentModeKHR>>::type
@@ -186,15 +186,15 @@ vk::ResultValueType<std::vector<vk::PresentModeKHR>>::type
   return object_->getSurfacePresentModesKHR(surface);
 }
 
-vk::ResultValueType<vk::Bool32>::type PhysicalDevice::getSurfaceSupportKHR(uint32_t queue_index,
+vk::ResultValueType<vk::Bool32>::type PhysicalDevice::getSurfaceSupportKHR(uint32_t queueIndex,
                                                                            vk::SurfaceKHR surface) const {
-  return object_->getSurfaceSupportKHR(queue_index, surface);
+  return object_->getSurfaceSupportKHR(queueIndex, surface);
 }
 
 vk::ExternalImageFormatPropertiesNV PhysicalDevice::getExternalImageFormatPropertiesNV(
   vk::Format format, vk::ImageType type, vk::ImageTiling tiling, const vk::ImageUsageFlags& usage,
-  const vk::ImageCreateFlags& flags, const vk::ExternalMemoryHandleTypeFlagsNV& external_handle_type) const {
-  return object_->getExternalImageFormatPropertiesNV(format, type, tiling, usage, flags, external_handle_type);
+  const vk::ImageCreateFlags& flags, const vk::ExternalMemoryHandleTypeFlagsNV& externalHandleType) const {
+  return object_->getExternalImageFormatPropertiesNV(format, type, tiling, usage, flags, externalHandleType);
 }
 
 vk::DeviceGeneratedCommandsLimitsNVX
@@ -202,9 +202,9 @@ vk::DeviceGeneratedCommandsLimitsNVX
   return object_->getGeneratedCommandsPropertiesNVX(features);
 }
 
-LogicalDevice PhysicalDevice::createLogicalDevice(const vk::DeviceCreateInfo& create_info,
+LogicalDevice PhysicalDevice::createLogicalDevice(const vk::DeviceCreateInfo& createInfo,
                                                   const std::optional<vk::AllocationCallbacks>& allocator) {
-  return object_->createLogicalDevice(create_info, allocator);
+  return object_->createLogicalDevice(createInfo, allocator);
 }
 
 void PhysicalDevice::destroyLogicalDevice(const LogicalDevice& device) {

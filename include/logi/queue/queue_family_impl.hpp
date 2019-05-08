@@ -31,13 +31,13 @@ class Queue;
 
 class QueueFamilyImpl : public VulkanObject<QueueFamilyImpl>, public VulkanObjectComposite<QueueImpl> {
  public:
-  QueueFamilyImpl(LogicalDeviceImpl& logical_device, const vk::DeviceQueueCreateInfo& queue_create_info);
+  QueueFamilyImpl(LogicalDeviceImpl& logicalDevice, const vk::DeviceQueueCreateInfo& createInfo);
 
   // region Logi Declarations
 
-  Queue getQueue(uint32_t queue_index);
+  Queue getQueue(uint32_t queueIndex);
 
-  Queue getQueue2(uint32_t queue_index, const vk::DeviceQueueCreateFlags& flags = {});
+  Queue getQueue2(uint32_t queueIndex, const vk::DeviceQueueCreateFlags& flags = {});
 
   void destroyQueue(size_t id);
 
@@ -61,9 +61,9 @@ class QueueFamilyImpl : public VulkanObject<QueueFamilyImpl>, public VulkanObjec
   // endregion
 
  private:
-  LogicalDeviceImpl& logical_device_;
-  uint32_t queue_family_index_;
-  uint32_t queue_count_;
+  LogicalDeviceImpl& logicalDevice_;
+  uint32_t queueFamilyIndex_;
+  uint32_t queueCount_;
 };
 
 } // namespace logi

@@ -25,13 +25,13 @@
 
 namespace logi {
 
-BufferView Buffer::createBufferView(const vk::BufferViewCreateInfo& create_info,
+BufferView Buffer::createBufferView(const vk::BufferViewCreateInfo& createInfo,
                                     const std::optional<vk::AllocationCallbacks>& allocator) const {
-  return object_->createBufferView(create_info, allocator);
+  return object_->createBufferView(createInfo, allocator);
 }
 
-void Buffer::destroyBufferView(const BufferView& buffer_view) const {
-  object_->destroyBufferView(buffer_view.id());
+void Buffer::destroyBufferView(const BufferView& bufferView) const {
+  object_->destroyBufferView(bufferView.id());
 }
 
 VulkanInstance Buffer::getInstance() const {

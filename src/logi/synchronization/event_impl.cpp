@@ -21,42 +21,42 @@
 
 namespace logi {
 
-EventImpl::EventImpl(LogicalDeviceImpl& logical_device, const vk::EventCreateInfo& create_info,
+EventImpl::EventImpl(LogicalDeviceImpl& logicalDevice, const vk::EventCreateInfo& createInfo,
                      const std::optional<vk::AllocationCallbacks>& allocator)
-  : logical_device_(logical_device), allocator_(allocator) {
-  vk::Device vk_device = logical_device_;
-  vk_event_ = vk_device.createEvent(create_info, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+  : logicalDevice_(logicalDevice), allocator_(allocator) {
+  vk::Device vkDevice = logicalDevice_;
+  vkEvent_ = vkDevice.createEvent(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
 bool EventImpl::getStatus() const {
-  vk::Device vk_device;
-  return vk_device.getEventStatus(vk_event_, getDispatcher()) == vk::Result::eSuccess;
+  vk::Device vkDevice;
+  return vkDevice.getEventStatus(vkEvent_, getDispatcher()) == vk::Result::eSuccess;
 }
 
 vk::ResultValueType<void>::type EventImpl::reset() const {
-  vk::Device vk_device;
-  return vk_device.resetEvent(vk_event_, getDispatcher());
+  vk::Device vkDevice;
+  return vkDevice.resetEvent(vkEvent_, getDispatcher());
 }
 
 vk::ResultValueType<void>::type EventImpl::set() const {
-  vk::Device vk_device;
-  return vk_device.setEvent(vk_event_, getDispatcher());
+  vk::Device vkDevice;
+  return vkDevice.setEvent(vkEvent_, getDispatcher());
 }
 
 VulkanInstanceImpl& EventImpl::getInstance() const {
-  return logical_device_.getInstance();
+  return logicalDevice_.getInstance();
 }
 
 PhysicalDeviceImpl& EventImpl::getPhysicalDevice() const {
-  return logical_device_.getPhysicalDevice();
+  return logicalDevice_.getPhysicalDevice();
 }
 
 LogicalDeviceImpl& EventImpl::getLogicalDevice() const {
-  return logical_device_;
+  return logicalDevice_;
 }
 
 const vk::DispatchLoaderDynamic& EventImpl::getDispatcher() const {
-  return logical_device_.getDispatcher();
+  return logicalDevice_.getDispatcher();
 }
 
 void EventImpl::destroy() const {
@@ -64,12 +64,12 @@ void EventImpl::destroy() const {
 }
 
 EventImpl::operator vk::Event() const {
-  return vk_event_;
+  return vkEvent_;
 }
 
 void EventImpl::free() {
-  vk::Device vk_device = logical_device_;
-  vk_device.destroy(vk_event_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+  vk::Device vkDevice = logicalDevice_;
+  vkDevice.destroy(vkEvent_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }
 

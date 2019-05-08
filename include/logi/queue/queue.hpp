@@ -37,12 +37,12 @@ class Queue : public Handle<QueueImpl> {
 
   vk::ResultValueType<void>::type submit(const std::vector<vk::SubmitInfo>& submits, vk::Fence fence = {}) const;
 
-  vk::ResultValueType<void>::type bindSparse(const std::vector<vk::BindSparseInfo>& bind_info,
+  vk::ResultValueType<void>::type bindSparse(const std::vector<vk::BindSparseInfo>& bindInfo,
                                              vk::Fence fence = {}) const;
 
   vk::ResultValueType<void>::type waitIdle() const;
 
-  vk::Result presentKHR(const vk::PresentInfoKHR& present_info) const;
+  vk::Result presentKHR(const vk::PresentInfoKHR& presentInfo) const;
 
   void beginDebugUtilsLabelEXT(const vk::DebugUtilsLabelEXT& label) const;
 

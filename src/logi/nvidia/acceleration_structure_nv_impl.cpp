@@ -21,29 +21,29 @@
 
 namespace logi {
 
-AccelerationStructureNVImpl::AccelerationStructureNVImpl(LogicalDeviceImpl& logical_device,
-                                                         const vk::AccelerationStructureCreateInfoNV& create_info,
+AccelerationStructureNVImpl::AccelerationStructureNVImpl(LogicalDeviceImpl& logicalDevice,
+                                                         const vk::AccelerationStructureCreateInfoNV& createInfo,
                                                          const std::optional<vk::AllocationCallbacks>& allocator)
-  : logical_device_(logical_device), allocator_(allocator) {
-  vk::Device vk_device = logical_device_;
-  vk_acceleration_structure_nv =
-    vk_device.createAccelerationStructureNV(create_info, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+  : logicalDevice_(logicalDevice), allocator_(allocator) {
+  vk::Device vkDevice = logicalDevice_;
+  vkAccelerationStructureNV_ =
+    vkDevice.createAccelerationStructureNV(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
 VulkanInstanceImpl& AccelerationStructureNVImpl::getInstance() const {
-  return logical_device_.getInstance();
+  return logicalDevice_.getInstance();
 }
 
 PhysicalDeviceImpl& AccelerationStructureNVImpl::getPhysicalDevice() const {
-  return logical_device_.getPhysicalDevice();
+  return logicalDevice_.getPhysicalDevice();
 }
 
 LogicalDeviceImpl& AccelerationStructureNVImpl::getLogicalDevice() const {
-  return logical_device_;
+  return logicalDevice_;
 }
 
 const vk::DispatchLoaderDynamic& AccelerationStructureNVImpl::getDispatcher() const {
-  return logical_device_.getDispatcher();
+  return logicalDevice_.getDispatcher();
 }
 
 void AccelerationStructureNVImpl::destroy() const {
@@ -51,12 +51,12 @@ void AccelerationStructureNVImpl::destroy() const {
 }
 
 AccelerationStructureNVImpl::operator vk::AccelerationStructureNV() const {
-  return vk_acceleration_structure_nv;
+  return vkAccelerationStructureNV_;
 }
 
 void AccelerationStructureNVImpl::free() {
-  vk::Device vk_device = logical_device_;
-  vk_device.destroy(vk_acceleration_structure_nv, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+  vk::Device vkDevice = logicalDevice_;
+  vkDevice.destroy(vkAccelerationStructureNV_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }
 

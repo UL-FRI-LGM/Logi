@@ -23,9 +23,9 @@
 namespace logi {
 
 DebugReportCallbackEXT
-  VulkanInstance::createDebugReportCallbackEXT(const vk::DebugReportCallbackCreateInfoEXT& create_info,
+  VulkanInstance::createDebugReportCallbackEXT(const vk::DebugReportCallbackCreateInfoEXT& createInfo,
                                                const std::optional<vk::AllocationCallbacks>& allocator = {}) const {
-  return object_->createDebugReportCallbackEXT(create_info, allocator);
+  return object_->createDebugReportCallbackEXT(createInfo, allocator);
 }
 void VulkanInstance::destroyDebugReportCallbackEXT(const DebugReportCallbackEXT& callback) const {
   object_->destroyDebugReportCallbackEXT(callback.id());
@@ -47,23 +47,22 @@ void VulkanInstance::destroy() {
   object_->destroy();
 }
 
-VulkanInstance createInstance(const vk::InstanceCreateInfo& create_info, PFN_vkCreateInstance pfn_create_instance,
-                              PFN_vkGetInstanceProcAddr pfn_get_proc_addr,
+VulkanInstance createInstance(const vk::InstanceCreateInfo& createInfo, PFN_vkCreateInstance pfnCreateInstance,
+                              PFN_vkGetInstanceProcAddr pfnGetProcAddr,
                               const std::optional<vk::AllocationCallbacks>& allocator) {
-  return VulkanInstance(
-    std::make_shared<VulkanInstanceImpl>(create_info, pfn_create_instance, pfn_get_proc_addr, allocator));
+  return VulkanInstance(std::make_shared<VulkanInstanceImpl>(createInfo, pfnCreateInstance, pfnGetProcAddr, allocator));
 }
 
 bool checkValidationLayerSupport(const std::vector<const char*>& layers) {
   // Fetch validation layers
-  std::vector<vk::LayerProperties> available_layers = vk::enumerateInstanceLayerProperties();
+  std::vector<vk::LayerProperties> availableLayers = vk::enumerateInstanceLayerProperties();
 
   // Check if all requested validation layers are present among the available layers.
   for (const char* layer : layers) {
     bool found = false;
 
-    for (const auto& layer_properties : available_layers) {
-      if (strcmp(layer, layer_properties.layerName) == 0) {
+    for (const auto& layerProperties : availableLayers) {
+      if (strcmp(layer, layerProperties.layerName) == 0) {
         found = true;
         break;
       }
