@@ -21,27 +21,27 @@
 
 namespace logi {
 
-QueryPoolImpl::QueryPoolImpl(LogicalDeviceImpl& logical_device, const vk::QueryPoolCreateInfo& create_info,
+QueryPoolImpl::QueryPoolImpl(LogicalDeviceImpl& logicalDevice, const vk::QueryPoolCreateInfo& createInfo,
                              const std::optional<vk::AllocationCallbacks>& allocator)
-  : logical_device_(logical_device), allocator_(allocator) {
-  vk::Device vk_device = logical_device_;
-  vk_query_pool_ = vk_device.createQueryPool(create_info, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+  : logicalDevice_(logicalDevice), allocator_(allocator) {
+  vk::Device vkDevice = logicalDevice_;
+  vkQueryPool_ = vkDevice.createQueryPool(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
 VulkanInstanceImpl& QueryPoolImpl::getInstance() const {
-  return logical_device_.getInstance();
+  return logicalDevice_.getInstance();
 }
 
 PhysicalDeviceImpl& QueryPoolImpl::getPhysicalDevice() const {
-  return logical_device_.getPhysicalDevice();
+  return logicalDevice_.getPhysicalDevice();
 }
 
 LogicalDeviceImpl& QueryPoolImpl::getLogicalDevice() const {
-  return logical_device_;
+  return logicalDevice_;
 }
 
 const vk::DispatchLoaderDynamic& QueryPoolImpl::getDispatcher() const {
-  return logical_device_.getDispatcher();
+  return logicalDevice_.getDispatcher();
 }
 
 void QueryPoolImpl::destroy() const {
@@ -49,12 +49,12 @@ void QueryPoolImpl::destroy() const {
 }
 
 QueryPoolImpl::operator vk::QueryPool() const {
-  return vk_query_pool_;
+  return vkQueryPool_;
 }
 
 void QueryPoolImpl::free() {
-  vk::Device vk_device = logical_device_;
-  vk_device.destroy(vk_query_pool_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+  vk::Device vkDevice = logicalDevice_;
+  vkDevice.destroy(vkQueryPool_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }
 

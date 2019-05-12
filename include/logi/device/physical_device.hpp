@@ -39,46 +39,46 @@ class PhysicalDevice : public Handle<PhysicalDeviceImpl> {
   typename vk::ResultValueType<std::vector<vk::LayerProperties>>::type enumerateDeviceLayerProperties() const;
 
   vk::ExternalBufferProperties
-    getExternalBufferProperties(const vk::PhysicalDeviceExternalBufferInfo& external_buffer_info) const;
+    getExternalBufferProperties(const vk::PhysicalDeviceExternalBufferInfo& externalBufferInfo) const;
 
   template <typename X, typename Y, typename... Z>
   vk::StructureChain<X, Y, Z...>
-    getExternalBufferProperties(const vk::PhysicalDeviceExternalBufferInfo& external_buffer_info) const;
+    getExternalBufferProperties(const vk::PhysicalDeviceExternalBufferInfo& externalBufferInfo) const;
 
   vk::ExternalBufferPropertiesKHR
-    getExternalBufferPropertiesKHR(const vk::PhysicalDeviceExternalBufferInfoKHR& external_buffer_info) const;
+    getExternalBufferPropertiesKHR(const vk::PhysicalDeviceExternalBufferInfoKHR& externalBufferInfo) const;
 
   template <typename X, typename Y, typename... Z>
   vk::StructureChain<X, Y, Z...>
-    getExternalBufferPropertiesKHR(const vk::PhysicalDeviceExternalBufferInfoKHR& external_buffer_info) const;
+    getExternalBufferPropertiesKHR(const vk::PhysicalDeviceExternalBufferInfoKHR& externalBufferInfo) const;
 
   vk::ExternalFenceProperties
-    getExternalFenceProperties(const vk::PhysicalDeviceExternalFenceInfo& external_fence_info) const;
+    getExternalFenceProperties(const vk::PhysicalDeviceExternalFenceInfo& externalFenceInfo) const;
 
   template <typename X, typename Y, typename... Z>
   vk::StructureChain<X, Y, Z...>
-    getExternalFenceProperties(const vk::PhysicalDeviceExternalFenceInfo& external_fence_info) const;
+    getExternalFenceProperties(const vk::PhysicalDeviceExternalFenceInfo& externalFenceInfo) const;
 
   vk::ExternalFencePropertiesKHR
-    getExternalFencePropertiesKHR(const vk::PhysicalDeviceExternalFenceInfoKHR& external_fence_info) const;
+    getExternalFencePropertiesKHR(const vk::PhysicalDeviceExternalFenceInfoKHR& externalFenceInfo) const;
 
   template <typename X, typename Y, typename... Z>
   vk::StructureChain<X, Y, Z...>
-    getExternalFencePropertiesKHR(const vk::PhysicalDeviceExternalFenceInfoKHR& external_fence_info) const;
+    getExternalFencePropertiesKHR(const vk::PhysicalDeviceExternalFenceInfoKHR& externalFenceInfo) const;
 
   vk::ExternalSemaphoreProperties
-    getExternalSemaphoreProperties(const vk::PhysicalDeviceExternalSemaphoreInfo& external_semaphore_info) const;
+    getExternalSemaphoreProperties(const vk::PhysicalDeviceExternalSemaphoreInfo& externalSemaphoreInfo) const;
 
   template <typename X, typename Y, typename... Z>
   vk::StructureChain<X, Y, Z...>
-    getExternalSemaphoreProperties(const vk::PhysicalDeviceExternalSemaphoreInfo& external_semaphore_info) const;
+    getExternalSemaphoreProperties(const vk::PhysicalDeviceExternalSemaphoreInfo& externalSemaphoreInfo) const;
 
   vk::ExternalSemaphorePropertiesKHR
-    getExternalSemaphorePropertiesKHR(const vk::PhysicalDeviceExternalSemaphoreInfoKHR& external_semaphore_info) const;
+    getExternalSemaphorePropertiesKHR(const vk::PhysicalDeviceExternalSemaphoreInfoKHR& externalSemaphoreInfo) const;
 
   template <typename X, typename Y, typename... Z>
   vk::StructureChain<X, Y, Z...>
-    getExternalSemaphorePropertiesKHR(const vk::PhysicalDeviceExternalSemaphoreInfoKHR& external_semaphore_info) const;
+    getExternalSemaphorePropertiesKHR(const vk::PhysicalDeviceExternalSemaphoreInfoKHR& externalSemaphoreInfo) const;
 
   vk::PhysicalDeviceFeatures getFeatures() const;
 
@@ -108,17 +108,17 @@ class PhysicalDevice : public Handle<PhysicalDeviceImpl> {
                                                      const vk::ImageUsageFlags& usage,
                                                      const vk::ImageCreateFlags& flags) const;
 
-  vk::ImageFormatProperties2 getImageFormatProperties2(const vk::PhysicalDeviceImageFormatInfo2& format_info) const;
+  vk::ImageFormatProperties2 getImageFormatProperties2(const vk::PhysicalDeviceImageFormatInfo2& formatInfo) const;
 
   template <typename X, typename Y, typename... Z>
-  vk::StructureChain<X, Y, Z...> getImageFormatProperties2(const vk::PhysicalDeviceImageFormatInfo2& format_info) const;
+  vk::StructureChain<X, Y, Z...> getImageFormatProperties2(const vk::PhysicalDeviceImageFormatInfo2& formatInfo) const;
 
   vk::ImageFormatProperties2KHR
-    getImageFormatProperties2KHR(const vk::PhysicalDeviceImageFormatInfo2& format_info) const;
+    getImageFormatProperties2KHR(const vk::PhysicalDeviceImageFormatInfo2& formatInfo) const;
 
   template <typename X, typename Y, typename... Z>
   vk::StructureChain<X, Y, Z...>
-    getImageFormatProperties2KHR(const vk::PhysicalDeviceImageFormatInfo2KHR& format_info) const;
+    getImageFormatProperties2KHR(const vk::PhysicalDeviceImageFormatInfo2KHR& formatInfo) const;
 
   vk::PhysicalDeviceMemoryProperties getMemoryProperties() const;
 
@@ -161,19 +161,19 @@ class PhysicalDevice : public Handle<PhysicalDeviceImpl> {
                                                                               const vk::ImageUsageFlags& usage,
                                                                               vk::ImageTiling tiling) const;
 
-  std::vector<vk::SparseImageFormatProperties2> getSparseImageFormatProperties2(
-    const vk::PhysicalDeviceSparseImageFormatInfo2& sparse_image_format_properties) const;
+  std::vector<vk::SparseImageFormatProperties2>
+    getSparseImageFormatProperties2(const vk::PhysicalDeviceSparseImageFormatInfo2& sparseImageFormatProperties) const;
 
   template <typename X, typename Y, typename... Z>
-  std::vector<vk::StructureChain<X, Y, Z...>> getSparseImageFormatProperties2(
-    const vk::PhysicalDeviceSparseImageFormatInfo2& sparse_image_format_properties) const;
+  std::vector<vk::StructureChain<X, Y, Z...>>
+    getSparseImageFormatProperties2(const vk::PhysicalDeviceSparseImageFormatInfo2& sparseImageFormatProperties) const;
 
   std::vector<vk::SparseImageFormatProperties2KHR> getSparseImageFormatProperties2KHR(
-    const vk::PhysicalDeviceSparseImageFormatInfo2KHR& sparse_image_format_properties) const;
+    const vk::PhysicalDeviceSparseImageFormatInfo2KHR& sparseImageFormatProperties) const;
 
   template <typename X, typename Y, typename... Z>
   std::vector<vk::StructureChain<X, Y, Z...>> getSparseImageFormatProperties2KHR(
-    const vk::PhysicalDeviceSparseImageFormatInfo2KHR& sparse_image_format_properties) const;
+    const vk::PhysicalDeviceSparseImageFormatInfo2KHR& sparseImageFormatProperties) const;
 
   vk::ResultValueType<std::vector<vk::Rect2D>>::type getPresentRectanglesKHR(vk::SurfaceKHR surface) const;
 
@@ -181,28 +181,28 @@ class PhysicalDevice : public Handle<PhysicalDeviceImpl> {
 
   template <typename X, typename Y, typename... Z>
   typename vk::ResultValueType<vk::StructureChain<X, Y, Z...>>::type
-    getSurfaceCapabilities2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surface_info) const;
+    getSurfaceCapabilities2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surfaceInfo) const;
 
   vk::ResultValueType<vk::SurfaceCapabilities2KHR>::type
-    getSurfaceCapabilities2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surface_info) const;
+    getSurfaceCapabilities2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surfaceInfo) const;
 
   vk::ResultValueType<std::vector<vk::SurfaceFormatKHR>>::type getSurfaceFormatsKHR(vk::SurfaceKHR surface) const;
 
   template <typename X, typename Y, typename... Z>
   typename vk::ResultValueType<vk::StructureChain<X, Y, Z...>>::type
-    getSurfaceFormats2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surface_info) const;
+    getSurfaceFormats2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surfaceInfo) const;
 
   vk::ResultValueType<std::vector<vk::SurfaceFormat2KHR>>::type
-    getSurfaceFormats2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surface_info) const;
+    getSurfaceFormats2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surfaceInfo) const;
 
   vk::ResultValueType<std::vector<vk::PresentModeKHR>>::type getSurfacePresentModesKHR(vk::SurfaceKHR surface) const;
 
-  vk::ResultValueType<vk::Bool32>::type getSurfaceSupportKHR(uint32_t queue_index, vk::SurfaceKHR surface) const;
+  vk::ResultValueType<vk::Bool32>::type getSurfaceSupportKHR(uint32_t queueIndex, vk::SurfaceKHR surface) const;
 
   vk::ExternalImageFormatPropertiesNV
     getExternalImageFormatPropertiesNV(vk::Format format, vk::ImageType type, vk::ImageTiling tiling,
                                        const vk::ImageUsageFlags& usage, const vk::ImageCreateFlags& flags,
-                                       const vk::ExternalMemoryHandleTypeFlagsNV& external_handle_type) const;
+                                       const vk::ExternalMemoryHandleTypeFlagsNV& externalHandleType) const;
 
   vk::DeviceGeneratedCommandsLimitsNVX
     getGeneratedCommandsPropertiesNVX(vk::DeviceGeneratedCommandsFeaturesNVX& features) const;
@@ -215,7 +215,7 @@ class PhysicalDevice : public Handle<PhysicalDeviceImpl> {
 
   // region Logi Declarations
 
-  LogicalDevice createLogicalDevice(const vk::DeviceCreateInfo& create_info,
+  LogicalDevice createLogicalDevice(const vk::DeviceCreateInfo& createInfo,
                                     const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyLogicalDevice(const LogicalDevice& device);
@@ -233,38 +233,38 @@ class PhysicalDevice : public Handle<PhysicalDeviceImpl> {
 
 template <typename X, typename Y, typename... Z>
 vk::StructureChain<X, Y, Z...>
-  PhysicalDevice::getExternalBufferProperties(const vk::PhysicalDeviceExternalBufferInfo& external_buffer_info) const {
-  return object_->getExternalBufferProperties<X, Y, Z...>(external_buffer_info);
+  PhysicalDevice::getExternalBufferProperties(const vk::PhysicalDeviceExternalBufferInfo& externalBufferInfo) const {
+  return object_->getExternalBufferProperties<X, Y, Z...>(externalBufferInfo);
 }
 
 template <typename X, typename Y, typename... Z>
 vk::StructureChain<X, Y, Z...> PhysicalDevice::getExternalBufferPropertiesKHR(
-  const vk::PhysicalDeviceExternalBufferInfoKHR& external_buffer_info) const {
-  return object_->getExternalBufferPropertiesKHR<X, Y, Z...>(external_buffer_info);
+  const vk::PhysicalDeviceExternalBufferInfoKHR& externalBufferInfo) const {
+  return object_->getExternalBufferPropertiesKHR<X, Y, Z...>(externalBufferInfo);
 }
 
 template <typename X, typename Y, typename... Z>
 vk::StructureChain<X, Y, Z...>
-  PhysicalDevice::getExternalFenceProperties(const vk::PhysicalDeviceExternalFenceInfo& external_fence_info) const {
-  return object_->getExternalFenceProperties<X, Y, Z...>(external_fence_info);
+  PhysicalDevice::getExternalFenceProperties(const vk::PhysicalDeviceExternalFenceInfo& externalFenceInfo) const {
+  return object_->getExternalFenceProperties<X, Y, Z...>(externalFenceInfo);
 }
 
 template <typename X, typename Y, typename... Z>
-vk::StructureChain<X, Y, Z...> PhysicalDevice::getExternalFencePropertiesKHR(
-  const vk::PhysicalDeviceExternalFenceInfoKHR& external_fence_info) const {
-  return object_->getExternalFencePropertiesKHR<X, Y, Z...>(external_fence_info);
+vk::StructureChain<X, Y, Z...>
+  PhysicalDevice::getExternalFencePropertiesKHR(const vk::PhysicalDeviceExternalFenceInfoKHR& externalFenceInfo) const {
+  return object_->getExternalFencePropertiesKHR<X, Y, Z...>(externalFenceInfo);
 }
 
 template <typename X, typename Y, typename... Z>
 vk::StructureChain<X, Y, Z...> PhysicalDevice::getExternalSemaphoreProperties(
-  const vk::PhysicalDeviceExternalSemaphoreInfo& external_semaphore_info) const {
-  return object_->getExternalSemaphoreProperties<X, Y, Z...>(external_semaphore_info);
+  const vk::PhysicalDeviceExternalSemaphoreInfo& externalSemaphoreInfo) const {
+  return object_->getExternalSemaphoreProperties<X, Y, Z...>(externalSemaphoreInfo);
 }
 
 template <typename X, typename Y, typename... Z>
 vk::StructureChain<X, Y, Z...> PhysicalDevice::getExternalSemaphorePropertiesKHR(
-  const vk::PhysicalDeviceExternalSemaphoreInfoKHR& external_semaphore_info) const {
-  return object_->getExternalSemaphorePropertiesKHR<X, Y, Z...>(external_semaphore_info);
+  const vk::PhysicalDeviceExternalSemaphoreInfoKHR& externalSemaphoreInfo) const {
+  return object_->getExternalSemaphorePropertiesKHR<X, Y, Z...>(externalSemaphoreInfo);
 }
 
 template <typename X, typename Y, typename... Z>
@@ -289,14 +289,14 @@ vk::StructureChain<X, Y, Z...> PhysicalDevice::getFormatProperties2KHR(vk::Forma
 
 template <typename X, typename Y, typename... Z>
 vk::StructureChain<X, Y, Z...>
-  PhysicalDevice::getImageFormatProperties2(const vk::PhysicalDeviceImageFormatInfo2& format_info) const {
-  return object_->getImageFormatProperties2<X, Y, Z...>(format_info);
+  PhysicalDevice::getImageFormatProperties2(const vk::PhysicalDeviceImageFormatInfo2& formatInfo) const {
+  return object_->getImageFormatProperties2<X, Y, Z...>(formatInfo);
 }
 
 template <typename X, typename Y, typename... Z>
 vk::StructureChain<X, Y, Z...>
-  PhysicalDevice::getImageFormatProperties2KHR(const vk::PhysicalDeviceImageFormatInfo2KHR& format_info) const {
-  return object_->getImageFormatProperties2KHR<X, Y, Z...>(format_info);
+  PhysicalDevice::getImageFormatProperties2KHR(const vk::PhysicalDeviceImageFormatInfo2KHR& formatInfo) const {
+  return object_->getImageFormatProperties2KHR<X, Y, Z...>(formatInfo);
 }
 
 template <typename X, typename Y, typename... Z>
@@ -331,26 +331,26 @@ std::vector<vk::StructureChain<X, Y, Z...>> PhysicalDevice::getQueueFamilyProper
 
 template <typename X, typename Y, typename... Z>
 std::vector<vk::StructureChain<X, Y, Z...>> PhysicalDevice::getSparseImageFormatProperties2(
-  const vk::PhysicalDeviceSparseImageFormatInfo2& sparse_image_format_properties) const {
-  return object_->getSparseImageFormatProperties2<X, Y, Z...>(sparse_image_format_properties);
+  const vk::PhysicalDeviceSparseImageFormatInfo2& sparseImageFormatProperties) const {
+  return object_->getSparseImageFormatProperties2<X, Y, Z...>(sparseImageFormatProperties);
 }
 
 template <typename X, typename Y, typename... Z>
 std::vector<vk::StructureChain<X, Y, Z...>> PhysicalDevice::getSparseImageFormatProperties2KHR(
-  const vk::PhysicalDeviceSparseImageFormatInfo2KHR& sparse_image_format_properties) const {
-  return object_->getSparseImageFormatProperties2KHR<X, Y, Z...>(sparse_image_format_properties);
+  const vk::PhysicalDeviceSparseImageFormatInfo2KHR& sparseImageFormatProperties) const {
+  return object_->getSparseImageFormatProperties2KHR<X, Y, Z...>(sparseImageFormatProperties);
 }
 
 template <typename X, typename Y, typename... Z>
 typename vk::ResultValueType<vk::StructureChain<X, Y, Z...>>::type
-  PhysicalDevice::getSurfaceCapabilities2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surface_info) const {
-  return object_->getSurfaceCapabilities2KHR(surface_info);
+  PhysicalDevice::getSurfaceCapabilities2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surfaceInfo) const {
+  return object_->getSurfaceCapabilities2KHR(surfaceInfo);
 }
 
 template <typename X, typename Y, typename... Z>
 typename vk::ResultValueType<vk::StructureChain<X, Y, Z...>>::type
-  PhysicalDevice::getSurfaceFormats2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surface_info) const {
-  return object_->getSurfaceFormats2KHR(surface_info);
+  PhysicalDevice::getSurfaceFormats2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surfaceInfo) const {
+  return object_->getSurfaceFormats2KHR(surfaceInfo);
 }
 
 template <typename X, typename Y, typename... Z>

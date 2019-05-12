@@ -25,7 +25,6 @@
 
 namespace logi {
 
-class QueryPoolImpl;
 class VulkanInstance;
 class PhysicalDevice;
 class LogicalDevice;
@@ -37,7 +36,7 @@ class QueryPool : public Handle<QueryPoolImpl> {
   // region Vulkan Declarations
 
   template <typename T>
-  vk::Result getResults(uint32_t first_query, uint32_t query_count, vk::ArrayProxy<T> data, vk::DeviceSize stride,
+  vk::Result getResults(uint32_t firstQuery, uint32_t queryCount, vk::ArrayProxy<T> data, vk::DeviceSize stride,
                         vk::QueryResultFlags flags) const;
 
   // endregion
@@ -60,9 +59,9 @@ class QueryPool : public Handle<QueryPoolImpl> {
 };
 
 template <typename T>
-vk::Result QueryPool::getResults(uint32_t first_query, uint32_t query_count, vk::ArrayProxy<T> data,
+vk::Result QueryPool::getResults(uint32_t firstQuery, uint32_t queryCount, vk::ArrayProxy<T> data,
                                  vk::DeviceSize stride, vk::QueryResultFlags flags) const {
-  return object_->getResults(first_query, query_count, data, stride, flags);
+  return object_->getResults(firstQuery, queryCount, data, stride, flags);
 }
 
 } // namespace logi

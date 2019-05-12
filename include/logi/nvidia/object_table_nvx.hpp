@@ -37,11 +37,11 @@ class ObjectTableNVX : public Handle<ObjectTableNVXImpl> {
   // region Vulkan Declarations
 
   vk::ResultValueType<void>::type
-    registerObjectsNVX(vk::ArrayProxy<const vk::ObjectTableEntryNVX* const> object_table_entries,
-                       vk::ArrayProxy<const uint32_t> object_indices) const;
+    registerObjectsNVX(vk::ArrayProxy<const vk::ObjectTableEntryNVX* const> objectTableEntries,
+                       vk::ArrayProxy<const uint32_t> objectIndices) const;
 
-  vk::ResultValueType<void>::type unregisterObjectsNVX(vk::ArrayProxy<const vk::ObjectEntryTypeNVX> object_entry_types,
-                                                       vk::ArrayProxy<const uint32_t> object_indices) const;
+  vk::ResultValueType<void>::type unregisterObjectsNVX(vk::ArrayProxy<const vk::ObjectEntryTypeNVX> objectEntryTypes,
+                                                       vk::ArrayProxy<const uint32_t> objectIndices) const;
 
   // endregion
 

@@ -26,63 +26,62 @@
 namespace logi {
 
 VmaVulkanFunctions dispatcherToVmaFunctions(const vk::DispatchLoaderDynamic& dispatcher) {
-  VmaVulkanFunctions vma_functions = {};
-  vma_functions.vkGetPhysicalDeviceProperties = dispatcher.vkGetPhysicalDeviceProperties;
-  vma_functions.vkGetPhysicalDeviceMemoryProperties = dispatcher.vkGetPhysicalDeviceMemoryProperties;
-  vma_functions.vkAllocateMemory = dispatcher.vkAllocateMemory;
-  vma_functions.vkFreeMemory = dispatcher.vkFreeMemory;
-  vma_functions.vkMapMemory = dispatcher.vkMapMemory;
-  vma_functions.vkUnmapMemory = dispatcher.vkUnmapMemory;
-  vma_functions.vkFlushMappedMemoryRanges = dispatcher.vkFlushMappedMemoryRanges;
-  vma_functions.vkInvalidateMappedMemoryRanges = dispatcher.vkInvalidateMappedMemoryRanges;
-  vma_functions.vkBindBufferMemory = dispatcher.vkBindBufferMemory;
-  vma_functions.vkBindImageMemory = dispatcher.vkBindImageMemory;
-  vma_functions.vkGetBufferMemoryRequirements = dispatcher.vkGetBufferMemoryRequirements;
-  vma_functions.vkGetImageMemoryRequirements = dispatcher.vkGetImageMemoryRequirements;
-  vma_functions.vkCreateBuffer = dispatcher.vkCreateBuffer;
-  vma_functions.vkDestroyBuffer = dispatcher.vkDestroyBuffer;
-  vma_functions.vkCreateImage = dispatcher.vkCreateImage;
-  vma_functions.vkDestroyImage = dispatcher.vkDestroyImage;
-  vma_functions.vkCmdCopyBuffer = dispatcher.vkCmdCopyBuffer;
+  VmaVulkanFunctions vmaFunctions = {};
+  vmaFunctions.vkGetPhysicalDeviceProperties = dispatcher.vkGetPhysicalDeviceProperties;
+  vmaFunctions.vkGetPhysicalDeviceMemoryProperties = dispatcher.vkGetPhysicalDeviceMemoryProperties;
+  vmaFunctions.vkAllocateMemory = dispatcher.vkAllocateMemory;
+  vmaFunctions.vkFreeMemory = dispatcher.vkFreeMemory;
+  vmaFunctions.vkMapMemory = dispatcher.vkMapMemory;
+  vmaFunctions.vkUnmapMemory = dispatcher.vkUnmapMemory;
+  vmaFunctions.vkFlushMappedMemoryRanges = dispatcher.vkFlushMappedMemoryRanges;
+  vmaFunctions.vkInvalidateMappedMemoryRanges = dispatcher.vkInvalidateMappedMemoryRanges;
+  vmaFunctions.vkBindBufferMemory = dispatcher.vkBindBufferMemory;
+  vmaFunctions.vkBindImageMemory = dispatcher.vkBindImageMemory;
+  vmaFunctions.vkGetBufferMemoryRequirements = dispatcher.vkGetBufferMemoryRequirements;
+  vmaFunctions.vkGetImageMemoryRequirements = dispatcher.vkGetImageMemoryRequirements;
+  vmaFunctions.vkCreateBuffer = dispatcher.vkCreateBuffer;
+  vmaFunctions.vkDestroyBuffer = dispatcher.vkDestroyBuffer;
+  vmaFunctions.vkCreateImage = dispatcher.vkCreateImage;
+  vmaFunctions.vkDestroyImage = dispatcher.vkDestroyImage;
+  vmaFunctions.vkCmdCopyBuffer = dispatcher.vkCmdCopyBuffer;
 #if VMA_DEDICATED_ALLOCATION
-  vma_functions.vkGetBufferMemoryRequirements2KHR = dispatcher.vkGetBufferMemoryRequirements2KHR;
-  vma_functions.vkGetImageMemoryRequirements2KHR = dispatcher.vkGetImageMemoryRequirements2KHR;
+  vmaFunctions.vkGetBufferMemoryRequirements2KHR = dispatcher.vkGetBufferMemoryRequirements2KHR;
+  vmaFunctions.vkGetImageMemoryRequirements2KHR = dispatcher.vkGetImageMemoryRequirements2KHR;
 #endif
 
-  return vma_functions;
+  return vmaFunctions;
 }
 
-MemoryAllocatorImpl::MemoryAllocatorImpl(LogicalDeviceImpl& logical_device,
-                                         vk::DeviceSize preferred_large_heap_block_size, uint32_t frame_in_use_count,
-                                         const std::vector<vk::DeviceSize>& heap_size_limits,
+MemoryAllocatorImpl::MemoryAllocatorImpl(LogicalDeviceImpl& logicalDevice, vk::DeviceSize preferredLargeHeapBlockSize,
+                                         uint32_t frameInUseCount, const std::vector<vk::DeviceSize>& heapSizeLimits,
                                          const std::optional<vk::AllocationCallbacks>& allocator)
-  : logical_device_(logical_device), allocator_(allocator), vma_(nullptr) {
-  VmaAllocatorCreateInfo create_info = {};
-  create_info.physicalDevice = static_cast<VkPhysicalDevice>(static_cast<vk::PhysicalDevice>(getPhysicalDevice()));
-  create_info.device = static_cast<VkDevice>(static_cast<vk::Device>(getLogicalDevice()));
-  create_info.preferredLargeHeapBlockSize = preferred_large_heap_block_size;
-  create_info.frameInUseCount = frame_in_use_count;
-  create_info.pAllocationCallbacks =
+  : logicalDevice_(logicalDevice), allocator_(allocator), vma_(nullptr) {
+  VmaAllocatorCreateInfo createInfo = {};
+  createInfo.physicalDevice = static_cast<VkPhysicalDevice>(static_cast<vk::PhysicalDevice>(getPhysicalDevice()));
+  createInfo.device = static_cast<VkDevice>(static_cast<vk::Device>(getLogicalDevice()));
+  createInfo.preferredLargeHeapBlockSize = preferredLargeHeapBlockSize;
+  createInfo.frameInUseCount = frameInUseCount;
+  createInfo.pAllocationCallbacks =
     allocator ? reinterpret_cast<const VkAllocationCallbacks*>(&allocator.value()) : nullptr;
 
   VmaVulkanFunctions functions = dispatcherToVmaFunctions(getDispatcher());
-  create_info.pVulkanFunctions = &functions;
+  createInfo.pVulkanFunctions = &functions;
 
-  vmaCreateAllocator(&create_info, &vma_);
+  vmaCreateAllocator(&createInfo, &vma_);
 }
 
-Image MemoryAllocatorImpl::createImage(const vk::ImageCreateInfo& image_create_info,
-                                       const VmaAllocationCreateInfo& allocation_create_info) {
-  return Image(VulkanObjectComposite<ImageImpl>::createObject(*this, image_create_info, allocation_create_info));
+Image MemoryAllocatorImpl::createImage(const vk::ImageCreateInfo& imageCreateInfo,
+                                       const VmaAllocationCreateInfo& allocationCreateInfo) {
+  return Image(VulkanObjectComposite<ImageImpl>::createObject(*this, imageCreateInfo, allocationCreateInfo));
 }
 
 void MemoryAllocatorImpl::destroyImage(size_t id) {
   VulkanObjectComposite<ImageImpl>::destroyObject(id);
 }
 
-Buffer MemoryAllocatorImpl::createBuffer(const vk::BufferCreateInfo& buffer_create_info,
-                                         const VmaAllocationCreateInfo& allocation_create_info) {
-  return Buffer(VulkanObjectComposite<BufferImpl>::createObject(*this, buffer_create_info, allocation_create_info));
+Buffer MemoryAllocatorImpl::createBuffer(const vk::BufferCreateInfo& bufferCreateInfo,
+                                         const VmaAllocationCreateInfo& allocationCreateInfo) {
+  return Buffer(VulkanObjectComposite<BufferImpl>::createObject(*this, bufferCreateInfo, allocationCreateInfo));
 }
 
 void MemoryAllocatorImpl::destroyBuffer(size_t id) {
@@ -90,19 +89,19 @@ void MemoryAllocatorImpl::destroyBuffer(size_t id) {
 }
 
 VulkanInstanceImpl& MemoryAllocatorImpl::getInstance() const {
-  return logical_device_.getInstance();
+  return logicalDevice_.getInstance();
 }
 
 PhysicalDeviceImpl& MemoryAllocatorImpl::getPhysicalDevice() const {
-  return logical_device_.getPhysicalDevice();
+  return logicalDevice_.getPhysicalDevice();
 }
 
 LogicalDeviceImpl& MemoryAllocatorImpl::getLogicalDevice() const {
-  return logical_device_;
+  return logicalDevice_;
 }
 
 const vk::DispatchLoaderDynamic& MemoryAllocatorImpl::getDispatcher() const {
-  return logical_device_.getDispatcher();
+  return logicalDevice_.getDispatcher();
 }
 
 VmaAllocator MemoryAllocatorImpl::getVmaAllocator() const {

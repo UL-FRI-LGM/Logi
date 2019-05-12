@@ -29,7 +29,7 @@ class VulkanInstanceImpl;
 
 class DebugReportCallbackEXTImpl : public VulkanObject<DebugReportCallbackEXTImpl> {
  public:
-  DebugReportCallbackEXTImpl(VulkanInstanceImpl& instance, const vk::DebugReportCallbackCreateInfoEXT& create_info,
+  DebugReportCallbackEXTImpl(VulkanInstanceImpl& instance, const vk::DebugReportCallbackCreateInfoEXT& createInfo,
                              const std::optional<vk::AllocationCallbacks>& allocator);
 
   VulkanInstanceImpl& getInstance() const;
@@ -46,7 +46,7 @@ class DebugReportCallbackEXTImpl : public VulkanObject<DebugReportCallbackEXTImp
  private:
   VulkanInstanceImpl& instance_;
   std::optional<vk::AllocationCallbacks> allocator_;
-  vk::DebugReportCallbackEXT vk_callback_;
+  vk::DebugReportCallbackEXT vkCallback_;
 };
 
 } // namespace logi

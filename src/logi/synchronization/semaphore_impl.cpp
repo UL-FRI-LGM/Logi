@@ -21,27 +21,27 @@
 
 namespace logi {
 
-SemaphoreImpl::SemaphoreImpl(LogicalDeviceImpl& logical_device, const vk::SemaphoreCreateInfo& create_info,
+SemaphoreImpl::SemaphoreImpl(LogicalDeviceImpl& logicalDevice, const vk::SemaphoreCreateInfo& createInfo,
                              const std::optional<vk::AllocationCallbacks>& allocator)
-  : logical_device_(logical_device), allocator_(allocator) {
-  vk::Device vk_device = logical_device_;
-  vk_semaphore_ = vk_device.createSemaphore(create_info, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+  : logicalDevice_(logicalDevice), allocator_(allocator) {
+  vk::Device vkDevice = logicalDevice_;
+  vkSemaphore_ = vkDevice.createSemaphore(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
 VulkanInstanceImpl& SemaphoreImpl::getInstance() const {
-  return logical_device_.getInstance();
+  return logicalDevice_.getInstance();
 }
 
 PhysicalDeviceImpl& SemaphoreImpl::getPhysicalDevice() const {
-  return logical_device_.getPhysicalDevice();
+  return logicalDevice_.getPhysicalDevice();
 }
 
 LogicalDeviceImpl& SemaphoreImpl::getLogicalDevice() const {
-  return logical_device_;
+  return logicalDevice_;
 }
 
 const vk::DispatchLoaderDynamic& SemaphoreImpl::getDispatcher() const {
-  return logical_device_.getDispatcher();
+  return logicalDevice_.getDispatcher();
 }
 
 void SemaphoreImpl::destroy() const {
@@ -49,12 +49,12 @@ void SemaphoreImpl::destroy() const {
 }
 
 SemaphoreImpl::operator vk::Semaphore() const {
-  return vk_semaphore_;
+  return vkSemaphore_;
 }
 
 void SemaphoreImpl::free() {
-  vk::Device vk_device = logical_device_;
-  vk_device.destroy(vk_semaphore_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+  vk::Device vkDevice = logicalDevice_;
+  vkDevice.destroy(vkSemaphore_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }
 

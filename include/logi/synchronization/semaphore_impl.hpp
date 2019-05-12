@@ -30,7 +30,7 @@ class LogicalDeviceImpl;
 
 class SemaphoreImpl : public VulkanObject<SemaphoreImpl> {
  public:
-  SemaphoreImpl(LogicalDeviceImpl& logical_device, const vk::SemaphoreCreateInfo& create_info,
+  SemaphoreImpl(LogicalDeviceImpl& logicalDevice, const vk::SemaphoreCreateInfo& createInfo,
                 const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   // region Logi Declarations
@@ -53,9 +53,9 @@ class SemaphoreImpl : public VulkanObject<SemaphoreImpl> {
   // endregion
 
  private:
-  LogicalDeviceImpl& logical_device_;
+  LogicalDeviceImpl& logicalDevice_;
   std::optional<vk::AllocationCallbacks> allocator_;
-  vk::Semaphore vk_semaphore_;
+  vk::Semaphore vkSemaphore_;
 };
 
 } // namespace logi

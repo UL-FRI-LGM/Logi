@@ -32,10 +32,10 @@ VulkanInstanceImpl::VulkanInstanceImpl(const vk::InstanceCreateInfo& createInfo,
                                        const std::optional<vk::AllocationCallbacks>& allocator)
   : allocator_(allocator) {
   // Create initial dispatch with the given function pointer.
-  vk::DispatchLoaderDynamic init_dispatch;
-  init_dispatch.vkCreateInstance = pfnCreateInstance;
+  vk::DispatchLoaderDynamic initDispatch;
+  initDispatch.vkCreateInstance = pfnCreateInstance;
 
-  vkInstance_ = vk::createInstance(createInfo, allocator_ ? &allocator_.value() : nullptr, init_dispatch);
+  vkInstance_ = vk::createInstance(createInfo, allocator_ ? &allocator_.value() : nullptr, initDispatch);
   dispatcher_ = vk::DispatchLoaderDynamic(static_cast<VkInstance>(vkInstance_), pfnGetProcAddr);
 
   // Fetch available physical devices.

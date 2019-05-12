@@ -110,7 +110,7 @@ class ShaderModuleImpl : public VulkanObject<ShaderModuleImpl> {
 
   static vk::ShaderStageFlagBits executionModelToStage(spv::ExecutionModel execModel);
 
-  static vk::Format SPIRTypeToVertexBufferFormat(const spirv_cross::SPIRType& format_info);
+  static vk::Format SPIRTypeToVertexBufferFormat(const spirv_cross::SPIRType& formatInfo);
 
   // endregion
 

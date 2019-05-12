@@ -36,7 +36,7 @@ class Image : public Handle<ImageImpl> {
 
   // region Logi Declarations
 
-  ImageView createImageView(const vk::ImageViewCreateInfo& create_info,
+  ImageView createImageView(const vk::ImageViewCreateInfo& createInfo,
                             const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyImageView(const ImageView& image);

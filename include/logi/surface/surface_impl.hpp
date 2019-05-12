@@ -27,7 +27,7 @@ class VulkanInstanceImpl;
 
 class SurfaceKHRImpl : public VulkanObject<SurfaceKHRImpl> {
  public:
-  SurfaceKHRImpl(VulkanInstanceImpl& instance, const vk::SurfaceKHR& vk_surface,
+  SurfaceKHRImpl(VulkanInstanceImpl& instance, const vk::SurfaceKHR& vkSurface,
                  const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   // region Logi Declarations
@@ -48,7 +48,7 @@ class SurfaceKHRImpl : public VulkanObject<SurfaceKHRImpl> {
  private:
   VulkanInstanceImpl& instance_;
   std::optional<vk::AllocationCallbacks> allocator_;
-  vk::SurfaceKHR vk_surface_;
+  vk::SurfaceKHR vkSurface_;
 };
 
 } // namespace logi

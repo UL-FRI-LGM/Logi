@@ -25,11 +25,11 @@
 
 namespace logi {
 
-Queue QueueFamily::getQueue(uint32_t queue_index) {
-  return object_->getQueue(queue_index);
+Queue QueueFamily::getQueue(uint32_t queueIndex) {
+  return object_->getQueue(queueIndex);
 }
-Queue QueueFamily::getQueue2(uint32_t queue_index, const vk::DeviceQueueCreateFlags& flags) {
-  return object_->getQueue2(queue_index, flags);
+Queue QueueFamily::getQueue2(uint32_t queueIndex, const vk::DeviceQueueCreateFlags& flags) {
+  return object_->getQueue2(queueIndex, flags);
 }
 
 VulkanInstance QueueFamily::getInstance() const {

@@ -34,7 +34,7 @@ class VulkanInstance : public Handle<VulkanInstanceImpl> {
 
   // region Logi Declarations
 
-  DebugReportCallbackEXT createDebugReportCallbackEXT(const vk::DebugReportCallbackCreateInfoEXT& create_info,
+  DebugReportCallbackEXT createDebugReportCallbackEXT(const vk::DebugReportCallbackCreateInfoEXT& createInfo,
                                                       const std::optional<vk::AllocationCallbacks>& allocator) const;
 
   void destroyDebugReportCallbackEXT(const DebugReportCallbackEXT& callback) const;
@@ -50,9 +50,9 @@ class VulkanInstance : public Handle<VulkanInstanceImpl> {
   // endregion
 };
 
-VulkanInstance createInstance(const vk::InstanceCreateInfo& create_info,
-                              PFN_vkCreateInstance pfn_create_instance = &vkCreateInstance,
-                              PFN_vkGetInstanceProcAddr pfn_get_proc_addr = &vkGetInstanceProcAddr,
+VulkanInstance createInstance(const vk::InstanceCreateInfo& createInfo,
+                              PFN_vkCreateInstance pfnCreateInstance = &vkCreateInstance,
+                              PFN_vkGetInstanceProcAddr pfnGetProcAddr = &vkGetInstanceProcAddr,
                               const std::optional<vk::AllocationCallbacks>& allocator = {});
 
 bool checkValidationLayerSupport(const std::vector<const char*>& layers);

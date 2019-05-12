@@ -25,9 +25,9 @@
 
 namespace logi {
 
-ImageView Image::createImageView(const vk::ImageViewCreateInfo& create_info,
+ImageView Image::createImageView(const vk::ImageViewCreateInfo& createInfo,
                                  const std::optional<vk::AllocationCallbacks>& allocator) {
-  return object_->createImageView(create_info, allocator);
+  return object_->createImageView(createInfo, allocator);
 }
 
 void Image::destroyImageView(const ImageView& image) {

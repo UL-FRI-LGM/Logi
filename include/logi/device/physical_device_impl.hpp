@@ -39,58 +39,58 @@ class PhysicalDeviceImpl : public VulkanObject<PhysicalDeviceImpl>, public Vulka
    * @brief Vulkan physical device.
    *
    * @param instance            Instance handle
-   * @param	vk_physical_device  Vulkan physical device handle.
+   * @param	vkPhysicalDevice  Vulkan physical device handle.
    */
-  explicit PhysicalDeviceImpl(VulkanInstanceImpl& instance, const vk::PhysicalDevice& vk_physical_device);
+  explicit PhysicalDeviceImpl(VulkanInstanceImpl& instance, const vk::PhysicalDevice& vkPhysicalDevice);
 
   // region Vulkan Declarations
 
   typename vk::ResultValueType<std::vector<vk::ExtensionProperties>>::type
-    enumerateDeviceExtensionProperties(const std::string* layer = nullptr) const;
+    enumerateDeviceExtensionProperties(const std::string* layerName = nullptr) const;
 
   typename vk::ResultValueType<std::vector<vk::LayerProperties>>::type enumerateDeviceLayerProperties() const;
 
   vk::ExternalBufferProperties
-    getExternalBufferProperties(const vk::PhysicalDeviceExternalBufferInfo& external_buffer_info) const;
+    getExternalBufferProperties(const vk::PhysicalDeviceExternalBufferInfo& externalBufferInfo) const;
 
   template <typename X, typename Y, typename... Z>
   vk::StructureChain<X, Y, Z...>
-    getExternalBufferProperties(const vk::PhysicalDeviceExternalBufferInfo& external_buffer_info) const;
+    getExternalBufferProperties(const vk::PhysicalDeviceExternalBufferInfo& externalBufferInfo) const;
 
   vk::ExternalBufferPropertiesKHR
-    getExternalBufferPropertiesKHR(const vk::PhysicalDeviceExternalBufferInfoKHR& external_buffer_info) const;
+    getExternalBufferPropertiesKHR(const vk::PhysicalDeviceExternalBufferInfoKHR& externalBufferInfo) const;
 
   template <typename X, typename Y, typename... Z>
   vk::StructureChain<X, Y, Z...>
-    getExternalBufferPropertiesKHR(const vk::PhysicalDeviceExternalBufferInfoKHR& external_buffer_info) const;
+    getExternalBufferPropertiesKHR(const vk::PhysicalDeviceExternalBufferInfoKHR& externalBufferInfo) const;
 
   vk::ExternalFenceProperties
-    getExternalFenceProperties(const vk::PhysicalDeviceExternalFenceInfo& external_fence_info) const;
+    getExternalFenceProperties(const vk::PhysicalDeviceExternalFenceInfo& externalFenceInfo) const;
 
   template <typename X, typename Y, typename... Z>
   vk::StructureChain<X, Y, Z...>
-    getExternalFenceProperties(const vk::PhysicalDeviceExternalFenceInfo& external_fence_info) const;
+    getExternalFenceProperties(const vk::PhysicalDeviceExternalFenceInfo& externalFenceInfo) const;
 
   vk::ExternalFencePropertiesKHR
-    getExternalFencePropertiesKHR(const vk::PhysicalDeviceExternalFenceInfoKHR& external_fence_info) const;
+    getExternalFencePropertiesKHR(const vk::PhysicalDeviceExternalFenceInfoKHR& externalFenceInfo) const;
 
   template <typename X, typename Y, typename... Z>
   vk::StructureChain<X, Y, Z...>
-    getExternalFencePropertiesKHR(const vk::PhysicalDeviceExternalFenceInfoKHR& external_fence_info) const;
+    getExternalFencePropertiesKHR(const vk::PhysicalDeviceExternalFenceInfoKHR& externalFenceInfo) const;
 
   vk::ExternalSemaphoreProperties
-    getExternalSemaphoreProperties(const vk::PhysicalDeviceExternalSemaphoreInfo& external_semaphore_info) const;
+    getExternalSemaphoreProperties(const vk::PhysicalDeviceExternalSemaphoreInfo& externalSemaphoreInfo) const;
 
   template <typename X, typename Y, typename... Z>
   vk::StructureChain<X, Y, Z...>
-    getExternalSemaphoreProperties(const vk::PhysicalDeviceExternalSemaphoreInfo& external_semaphore_info) const;
+    getExternalSemaphoreProperties(const vk::PhysicalDeviceExternalSemaphoreInfo& externalSemaphoreInfo) const;
 
   vk::ExternalSemaphorePropertiesKHR
-    getExternalSemaphorePropertiesKHR(const vk::PhysicalDeviceExternalSemaphoreInfoKHR& external_semaphore_info) const;
+    getExternalSemaphorePropertiesKHR(const vk::PhysicalDeviceExternalSemaphoreInfoKHR& externalSemaphoreInfo) const;
 
   template <typename X, typename Y, typename... Z>
   vk::StructureChain<X, Y, Z...>
-    getExternalSemaphorePropertiesKHR(const vk::PhysicalDeviceExternalSemaphoreInfoKHR& external_semaphore_info) const;
+    getExternalSemaphorePropertiesKHR(const vk::PhysicalDeviceExternalSemaphoreInfoKHR& externalSemaphoreInfo) const;
 
   vk::PhysicalDeviceFeatures getFeatures() const;
 
@@ -120,17 +120,17 @@ class PhysicalDeviceImpl : public VulkanObject<PhysicalDeviceImpl>, public Vulka
                                                      const vk::ImageUsageFlags& usage,
                                                      const vk::ImageCreateFlags& flags) const;
 
-  vk::ImageFormatProperties2 getImageFormatProperties2(const vk::PhysicalDeviceImageFormatInfo2& format_info) const;
+  vk::ImageFormatProperties2 getImageFormatProperties2(const vk::PhysicalDeviceImageFormatInfo2& formatInfo) const;
 
   template <typename X, typename Y, typename... Z>
-  vk::StructureChain<X, Y, Z...> getImageFormatProperties2(const vk::PhysicalDeviceImageFormatInfo2& format_info) const;
+  vk::StructureChain<X, Y, Z...> getImageFormatProperties2(const vk::PhysicalDeviceImageFormatInfo2& formatInfo) const;
 
   vk::ImageFormatProperties2KHR
-    getImageFormatProperties2KHR(const vk::PhysicalDeviceImageFormatInfo2& format_info) const;
+    getImageFormatProperties2KHR(const vk::PhysicalDeviceImageFormatInfo2& formatInfo) const;
 
   template <typename X, typename Y, typename... Z>
   vk::StructureChain<X, Y, Z...>
-    getImageFormatProperties2KHR(const vk::PhysicalDeviceImageFormatInfo2KHR& format_info) const;
+    getImageFormatProperties2KHR(const vk::PhysicalDeviceImageFormatInfo2KHR& formatInfo) const;
 
   vk::PhysicalDeviceMemoryProperties getMemoryProperties() const;
 
@@ -173,19 +173,19 @@ class PhysicalDeviceImpl : public VulkanObject<PhysicalDeviceImpl>, public Vulka
                                                                               const vk::ImageUsageFlags& usage,
                                                                               vk::ImageTiling tiling) const;
 
-  std::vector<vk::SparseImageFormatProperties2> getSparseImageFormatProperties2(
-    const vk::PhysicalDeviceSparseImageFormatInfo2& p_sparse_image_format_properties) const;
+  std::vector<vk::SparseImageFormatProperties2>
+    getSparseImageFormatProperties2(const vk::PhysicalDeviceSparseImageFormatInfo2& pSparseImageFormatProperties) const;
 
   template <typename X, typename Y, typename... Z>
-  std::vector<vk::StructureChain<X, Y, Z...>> getSparseImageFormatProperties2(
-    const vk::PhysicalDeviceSparseImageFormatInfo2& p_sparse_image_format_properties) const;
+  std::vector<vk::StructureChain<X, Y, Z...>>
+    getSparseImageFormatProperties2(const vk::PhysicalDeviceSparseImageFormatInfo2& pSparseImageFormatProperties) const;
 
   std::vector<vk::SparseImageFormatProperties2KHR> getSparseImageFormatProperties2KHR(
-    const vk::PhysicalDeviceSparseImageFormatInfo2KHR& p_sparse_image_format_properties) const;
+    const vk::PhysicalDeviceSparseImageFormatInfo2KHR& pSparseImageFormatProperties) const;
 
   template <typename X, typename Y, typename... Z>
   std::vector<vk::StructureChain<X, Y, Z...>> getSparseImageFormatProperties2KHR(
-    const vk::PhysicalDeviceSparseImageFormatInfo2KHR& p_sparse_image_format_properties) const;
+    const vk::PhysicalDeviceSparseImageFormatInfo2KHR& pSparseImageFormatProperties) const;
 
   vk::ResultValueType<std::vector<vk::Rect2D>>::type getPresentRectanglesKHR(vk::SurfaceKHR surface) const;
 
@@ -193,28 +193,28 @@ class PhysicalDeviceImpl : public VulkanObject<PhysicalDeviceImpl>, public Vulka
 
   template <typename X, typename Y, typename... Z>
   typename vk::ResultValueType<vk::StructureChain<X, Y, Z...>>::type
-    getSurfaceCapabilities2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surface_info) const;
+    getSurfaceCapabilities2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surfaceInfo) const;
 
   vk::ResultValueType<vk::SurfaceCapabilities2KHR>::type
-    getSurfaceCapabilities2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surface_info) const;
+    getSurfaceCapabilities2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surfaceInfo) const;
 
   vk::ResultValueType<std::vector<vk::SurfaceFormatKHR>>::type getSurfaceFormatsKHR(vk::SurfaceKHR surface) const;
 
   template <typename X, typename Y, typename... Z>
   typename vk::ResultValueType<vk::StructureChain<X, Y, Z...>>::type
-    getSurfaceFormats2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surface_info) const;
+    getSurfaceFormats2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surfaceInfo) const;
 
   vk::ResultValueType<std::vector<vk::SurfaceFormat2KHR>>::type
-    getSurfaceFormats2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surface_info) const;
+    getSurfaceFormats2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surfaceInfo) const;
 
   vk::ResultValueType<std::vector<vk::PresentModeKHR>>::type getSurfacePresentModesKHR(vk::SurfaceKHR surface) const;
 
-  vk::ResultValueType<vk::Bool32>::type getSurfaceSupportKHR(uint32_t queue_index, vk::SurfaceKHR surface) const;
+  vk::ResultValueType<vk::Bool32>::type getSurfaceSupportKHR(uint32_t queueIndex, vk::SurfaceKHR surface) const;
 
   vk::ExternalImageFormatPropertiesNV
     getExternalImageFormatPropertiesNV(vk::Format format, vk::ImageType type, vk::ImageTiling tiling,
                                        const vk::ImageUsageFlags& usage, const vk::ImageCreateFlags& flags,
-                                       const vk::ExternalMemoryHandleTypeFlagsNV& external_handle_type) const;
+                                       const vk::ExternalMemoryHandleTypeFlagsNV& externalHandleType) const;
 
   vk::DeviceGeneratedCommandsLimitsNVX
     getGeneratedCommandsPropertiesNVX(vk::DeviceGeneratedCommandsFeaturesNVX& features) const;
@@ -227,7 +227,7 @@ class PhysicalDeviceImpl : public VulkanObject<PhysicalDeviceImpl>, public Vulka
 
   // region Logi Declarations
 
-  LogicalDevice createLogicalDevice(const vk::DeviceCreateInfo& create_info,
+  LogicalDevice createLogicalDevice(const vk::DeviceCreateInfo& createInfo,
                                     const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyLogicalDevice(size_t id);
@@ -255,139 +255,139 @@ class PhysicalDeviceImpl : public VulkanObject<PhysicalDeviceImpl>, public Vulka
   /**
    * Vulkan physical device handle.
    */
-  vk::PhysicalDevice vk_physical_device_;
+  vk::PhysicalDevice vkPhysicalDevice_;
 };
 
 // region Template Definitions
 
 template <typename X, typename Y, typename... Z>
 vk::StructureChain<X, Y, Z...> PhysicalDeviceImpl::getExternalBufferProperties(
-  const vk::PhysicalDeviceExternalBufferInfo& external_buffer_info) const {
-  return vk_physical_device_.getExternalBufferProperties<X, Y, Z...>(external_buffer_info, getDispatcher());
+  const vk::PhysicalDeviceExternalBufferInfo& externalBufferInfo) const {
+  return vkPhysicalDevice_.getExternalBufferProperties<X, Y, Z...>(externalBufferInfo, getDispatcher());
 }
 
 template <typename X, typename Y, typename... Z>
 vk::StructureChain<X, Y, Z...> PhysicalDeviceImpl::getExternalBufferPropertiesKHR(
-  const vk::PhysicalDeviceExternalBufferInfoKHR& external_buffer_info) const {
-  return vk_physical_device_.getExternalBufferPropertiesKHR<X, Y, Z...>(external_buffer_info, getDispatcher());
+  const vk::PhysicalDeviceExternalBufferInfoKHR& externalBufferInfo) const {
+  return vkPhysicalDevice_.getExternalBufferPropertiesKHR<X, Y, Z...>(externalBufferInfo, getDispatcher());
 }
 
 template <typename X, typename Y, typename... Z>
 vk::StructureChain<X, Y, Z...>
-  PhysicalDeviceImpl::getExternalFenceProperties(const vk::PhysicalDeviceExternalFenceInfo& external_fence_info) const {
-  return vk_physical_device_.getExternalFenceProperties<X, Y, Z...>(external_fence_info, getDispatcher());
+  PhysicalDeviceImpl::getExternalFenceProperties(const vk::PhysicalDeviceExternalFenceInfo& externalFenceInfo) const {
+  return vkPhysicalDevice_.getExternalFenceProperties<X, Y, Z...>(externalFenceInfo, getDispatcher());
 }
 
 template <typename X, typename Y, typename... Z>
 vk::StructureChain<X, Y, Z...> PhysicalDeviceImpl::getExternalFencePropertiesKHR(
-  const vk::PhysicalDeviceExternalFenceInfoKHR& external_fence_info) const {
-  return vk_physical_device_.getExternalFencePropertiesKHR<X, Y, Z...>(external_fence_info, getDispatcher());
+  const vk::PhysicalDeviceExternalFenceInfoKHR& externalFenceInfo) const {
+  return vkPhysicalDevice_.getExternalFencePropertiesKHR<X, Y, Z...>(externalFenceInfo, getDispatcher());
 }
 
 template <typename X, typename Y, typename... Z>
 vk::StructureChain<X, Y, Z...> PhysicalDeviceImpl::getExternalSemaphoreProperties(
-  const vk::PhysicalDeviceExternalSemaphoreInfo& external_semaphore_info) const {
-  return vk_physical_device_.getExternalSemaphoreProperties<X, Y, Z...>(external_semaphore_info, getDispatcher());
+  const vk::PhysicalDeviceExternalSemaphoreInfo& externalSemaphoreInfo) const {
+  return vkPhysicalDevice_.getExternalSemaphoreProperties<X, Y, Z...>(externalSemaphoreInfo, getDispatcher());
 }
 
 template <typename X, typename Y, typename... Z>
 vk::StructureChain<X, Y, Z...> PhysicalDeviceImpl::getExternalSemaphorePropertiesKHR(
-  const vk::PhysicalDeviceExternalSemaphoreInfoKHR& external_semaphore_info) const {
-  return vk_physical_device_.getExternalSemaphorePropertiesKHR<X, Y, Z...>(external_semaphore_info, getDispatcher());
+  const vk::PhysicalDeviceExternalSemaphoreInfoKHR& externalSemaphoreInfo) const {
+  return vkPhysicalDevice_.getExternalSemaphorePropertiesKHR<X, Y, Z...>(externalSemaphoreInfo, getDispatcher());
 }
 
 template <typename X, typename Y, typename... Z>
 vk::StructureChain<X, Y, Z...> PhysicalDeviceImpl::getFeatures2() const {
-  return vk_physical_device_.getFeatures2<X, Y, Z...>(getDispatcher());
+  return vkPhysicalDevice_.getFeatures2<X, Y, Z...>(getDispatcher());
 }
 
 template <typename X, typename Y, typename... Z>
 vk::StructureChain<X, Y, Z...> PhysicalDeviceImpl::getFeatures2KHR() const {
-  return vk_physical_device_.getFeatures2KHR<X, Y, Z...>(getDispatcher());
+  return vkPhysicalDevice_.getFeatures2KHR<X, Y, Z...>(getDispatcher());
 }
 
 template <typename X, typename Y, typename... Z>
 vk::StructureChain<X, Y, Z...> PhysicalDeviceImpl::getFormatProperties2(vk::Format format) const {
-  return vk_physical_device_.getFormatProperties2<X, Y, Z...>(format, getDispatcher());
+  return vkPhysicalDevice_.getFormatProperties2<X, Y, Z...>(format, getDispatcher());
 }
 
 template <typename X, typename Y, typename... Z>
 vk::StructureChain<X, Y, Z...> PhysicalDeviceImpl::getFormatProperties2KHR(vk::Format format) const {
-  return vk_physical_device_.getFormatProperties2KHR<X, Y, Z...>(format, getDispatcher());
+  return vkPhysicalDevice_.getFormatProperties2KHR<X, Y, Z...>(format, getDispatcher());
 }
 
 template <typename X, typename Y, typename... Z>
 vk::StructureChain<X, Y, Z...>
-  PhysicalDeviceImpl::getImageFormatProperties2(const vk::PhysicalDeviceImageFormatInfo2& format_info) const {
-  return vk_physical_device_.getImageFormatProperties2<X, Y, Z...>(format_info, getDispatcher());
+  PhysicalDeviceImpl::getImageFormatProperties2(const vk::PhysicalDeviceImageFormatInfo2& formatInfo) const {
+  return vkPhysicalDevice_.getImageFormatProperties2<X, Y, Z...>(formatInfo, getDispatcher());
 }
 
 template <typename X, typename Y, typename... Z>
 vk::StructureChain<X, Y, Z...>
-  PhysicalDeviceImpl::getImageFormatProperties2KHR(const vk::PhysicalDeviceImageFormatInfo2KHR& format_info) const {
-  return vk_physical_device_.getImageFormatProperties2KHR<X, Y, Z...>(format_info, getDispatcher());
+  PhysicalDeviceImpl::getImageFormatProperties2KHR(const vk::PhysicalDeviceImageFormatInfo2KHR& formatInfo) const {
+  return vkPhysicalDevice_.getImageFormatProperties2KHR<X, Y, Z...>(formatInfo, getDispatcher());
 }
 
 template <typename X, typename Y, typename... Z>
 vk::StructureChain<X, Y, Z...> PhysicalDeviceImpl::getMemoryProperties2() const {
-  return vk_physical_device_.getMemoryProperties2<X, Y, Z...>(getDispatcher());
+  return vkPhysicalDevice_.getMemoryProperties2<X, Y, Z...>(getDispatcher());
 }
 
 template <typename X, typename Y, typename... Z>
 vk::StructureChain<X, Y, Z...> PhysicalDeviceImpl::getMemoryProperties2KHR() const {
-  return vk_physical_device_.getMemoryProperties2KHR<X, Y, Z...>(getDispatcher());
+  return vkPhysicalDevice_.getMemoryProperties2KHR<X, Y, Z...>(getDispatcher());
 }
 
 template <typename X, typename Y, typename... Z>
 vk::StructureChain<X, Y, Z...> PhysicalDeviceImpl::getProperties2() const {
-  return vk_physical_device_.getProperties2<X, Y, Z...>(getDispatcher());
+  return vkPhysicalDevice_.getProperties2<X, Y, Z...>(getDispatcher());
 }
 
 template <typename X, typename Y, typename... Z>
 vk::StructureChain<X, Y, Z...> PhysicalDeviceImpl::getProperties2KHR() const {
-  return vk_physical_device_.getProperties2KHR<X, Y, Z...>(getDispatcher());
+  return vkPhysicalDevice_.getProperties2KHR<X, Y, Z...>(getDispatcher());
 }
 
 template <typename X, typename Y, typename... Z>
 std::vector<vk::StructureChain<X, Y, Z...>> PhysicalDeviceImpl::getQueueFamilyProperties2() const {
-  return vk_physical_device_.getQueueFamilyProperties2<vk::StructureChain<X, Y, Z...>>(getDispatcher());
+  return vkPhysicalDevice_.getQueueFamilyProperties2<vk::StructureChain<X, Y, Z...>>(getDispatcher());
 }
 
 template <typename X, typename Y, typename... Z>
 std::vector<vk::StructureChain<X, Y, Z...>> PhysicalDeviceImpl::getQueueFamilyProperties2KHR() const {
-  return vk_physical_device_.getQueueFamilyProperties2KHR<vk::StructureChain<X, Y, Z...>>(getDispatcher());
+  return vkPhysicalDevice_.getQueueFamilyProperties2KHR<vk::StructureChain<X, Y, Z...>>(getDispatcher());
 }
 
 template <typename X, typename Y, typename... Z>
 std::vector<vk::StructureChain<X, Y, Z...>> PhysicalDeviceImpl::getSparseImageFormatProperties2(
-  const vk::PhysicalDeviceSparseImageFormatInfo2& p_sparse_image_format_properties) const {
-  return vk_physical_device_.getSparseImageFormatProperties2<vk::StructureChain<X, Y, Z...>>(
-    p_sparse_image_format_properties, getDispatcher());
+  const vk::PhysicalDeviceSparseImageFormatInfo2& pSparseImageFormatProperties) const {
+  return vkPhysicalDevice_.getSparseImageFormatProperties2<vk::StructureChain<X, Y, Z...>>(pSparseImageFormatProperties,
+                                                                                           getDispatcher());
 }
 
 template <typename X, typename Y, typename... Z>
 std::vector<vk::StructureChain<X, Y, Z...>> PhysicalDeviceImpl::getSparseImageFormatProperties2KHR(
-  const vk::PhysicalDeviceSparseImageFormatInfo2KHR& p_sparse_image_format_properties) const {
-  return vk_physical_device_.getSparseImageFormatProperties2KHR<vk::StructureChain<X, Y, Z...>>(
-    p_sparse_image_format_properties, getDispatcher());
+  const vk::PhysicalDeviceSparseImageFormatInfo2KHR& pSparseImageFormatProperties) const {
+  return vkPhysicalDevice_.getSparseImageFormatProperties2KHR<vk::StructureChain<X, Y, Z...>>(
+    pSparseImageFormatProperties, getDispatcher());
 }
 
 template <typename X, typename Y, typename... Z>
 vk::StructureChain<X, Y, Z...>
   PhysicalDeviceImpl::getGeneratedCommandsPropertiesNVX(vk::DeviceGeneratedCommandsFeaturesNVX& features) const {
-  return vk_physical_device_.getGeneratedCommandsPropertiesNVX<X, Y, Z...>(features, getDispatcher());
+  return vkPhysicalDevice_.getGeneratedCommandsPropertiesNVX<X, Y, Z...>(features, getDispatcher());
 }
 
 template <typename X, typename Y, typename... Z>
 typename vk::ResultValueType<vk::StructureChain<X, Y, Z...>>::type
-  PhysicalDeviceImpl::getSurfaceCapabilities2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surface_info) const {
-  return vk_physical_device_.getSurfaceCapabilities2KHR<X, Y, Z...>(surface_info, getDispatcher());
+  PhysicalDeviceImpl::getSurfaceCapabilities2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surfaceInfo) const {
+  return vkPhysicalDevice_.getSurfaceCapabilities2KHR<X, Y, Z...>(surfaceInfo, getDispatcher());
 }
 
 template <typename X, typename Y, typename... Z>
 typename vk::ResultValueType<vk::StructureChain<X, Y, Z...>>::type
-  PhysicalDeviceImpl::getSurfaceFormats2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surface_info) const {
-  return vk_physical_device_.getSurfaceFormats2KHR<X, Y, Z...>(surface_info, getDispatcher());
+  PhysicalDeviceImpl::getSurfaceFormats2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surfaceInfo) const {
+  return vkPhysicalDevice_.getSurfaceFormats2KHR<X, Y, Z...>(surfaceInfo, getDispatcher());
 }
 
 // endregion

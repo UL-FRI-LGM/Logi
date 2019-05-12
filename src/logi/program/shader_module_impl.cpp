@@ -16,11 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "logi/program/shader_module_impl.hpp"
+
 #include <numeric>
 #include <spirv_cross.hpp>
 #include <utility>
 #include "logi/device/logical_device_impl.hpp"
+#include "logi/program/shader_module_impl.hpp"
 
 namespace logi {
 
@@ -255,12 +256,12 @@ vk::ShaderStageFlagBits ShaderModuleImpl::executionModelToStage(spv::ExecutionMo
   }
 }
 
-vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPIRType& format_info) {
-  switch (format_info.width) {
+vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPIRType& formatInfo) {
+  switch (formatInfo.width) {
     case 8:
-      switch (format_info.basetype) {
+      switch (formatInfo.basetype) {
         case spirv_cross::SPIRType::BaseType::Int:
-          switch (format_info.vecsize) {
+          switch (formatInfo.vecsize) {
             case 1:
               return vk::Format::eR8Sint;
             case 2:
@@ -273,7 +274,7 @@ vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPI
               throw ReflectionError("Failed to determine VkFormat.");
           }
         case spirv_cross::SPIRType::BaseType::UInt:
-          switch (format_info.vecsize) {
+          switch (formatInfo.vecsize) {
             case 1:
               return vk::Format::eR8Uint;
             case 2:
@@ -289,9 +290,9 @@ vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPI
           throw ReflectionError("Failed to determine VkFormat.");
       }
     case 16:
-      switch (format_info.basetype) {
+      switch (formatInfo.basetype) {
         case spirv_cross::SPIRType::BaseType::Int:
-          switch (format_info.vecsize) {
+          switch (formatInfo.vecsize) {
             case 1:
               return vk::Format::eR16Sint;
             case 2:
@@ -304,7 +305,7 @@ vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPI
               throw ReflectionError("Failed to determine VkFormat.");
           }
         case spirv_cross::SPIRType::BaseType::UInt:
-          switch (format_info.vecsize) {
+          switch (formatInfo.vecsize) {
             case 1:
               return vk::Format::eR16Uint;
             case 2:
@@ -317,7 +318,7 @@ vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPI
               throw ReflectionError("Failed to determine VkFormat.");
           }
         case spirv_cross::SPIRType::BaseType::Float:
-          switch (format_info.vecsize) {
+          switch (formatInfo.vecsize) {
             case 1:
               return vk::Format::eR16Sfloat;
             case 2:
@@ -333,9 +334,9 @@ vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPI
           throw ReflectionError("Failed to determine VkFormat.");
       }
     case 32:
-      switch (format_info.basetype) {
+      switch (formatInfo.basetype) {
         case spirv_cross::SPIRType::BaseType::Int:
-          switch (format_info.vecsize) {
+          switch (formatInfo.vecsize) {
             case 1:
               return vk::Format::eR32Sint;
             case 2:
@@ -348,7 +349,7 @@ vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPI
               throw ReflectionError("Failed to determine VkFormat.");
           }
         case spirv_cross::SPIRType::BaseType::UInt:
-          switch (format_info.vecsize) {
+          switch (formatInfo.vecsize) {
             case 1:
               return vk::Format::eR32Uint;
             case 2:
@@ -361,7 +362,7 @@ vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPI
               throw ReflectionError("Failed to determine VkFormat.");
           }
         case spirv_cross::SPIRType::BaseType::Float:
-          switch (format_info.vecsize) {
+          switch (formatInfo.vecsize) {
             case 1:
               return vk::Format::eR32Sfloat;
             case 2:
@@ -377,9 +378,9 @@ vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPI
           throw ReflectionError("Failed to determine VkFormat.");
       }
     case 64:
-      switch (format_info.basetype) {
+      switch (formatInfo.basetype) {
         case spirv_cross::SPIRType::BaseType::Int:
-          switch (format_info.vecsize) {
+          switch (formatInfo.vecsize) {
             case 1:
               return vk::Format::eR64Sint;
             case 2:
@@ -392,7 +393,7 @@ vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPI
               throw ReflectionError("Failed to determine VkFormat.");
           }
         case spirv_cross::SPIRType::BaseType::UInt:
-          switch (format_info.vecsize) {
+          switch (formatInfo.vecsize) {
             case 1:
               return vk::Format::eR64Uint;
             case 2:
@@ -405,7 +406,7 @@ vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPI
               throw ReflectionError("Failed to determine VkFormat.");
           }
         case spirv_cross::SPIRType::BaseType::Double:
-          switch (format_info.vecsize) {
+          switch (formatInfo.vecsize) {
             case 1:
               return vk::Format::eR64Sfloat;
             case 2:

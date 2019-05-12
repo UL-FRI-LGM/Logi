@@ -25,20 +25,19 @@
 
 namespace logi {
 
-QueueFamilyImpl::QueueFamilyImpl(LogicalDeviceImpl& logical_device, const vk::DeviceQueueCreateInfo& queue_create_info)
-  : logical_device_(logical_device), queue_family_index_(queue_create_info.queueFamilyIndex),
-    queue_count_(queue_create_info.queueCount) {}
+QueueFamilyImpl::QueueFamilyImpl(LogicalDeviceImpl& logicalDevice, const vk::DeviceQueueCreateInfo& createInfo)
+  : logicalDevice_(logicalDevice), queueFamilyIndex_(createInfo.queueFamilyIndex), queueCount_(createInfo.queueCount) {}
 
-Queue QueueFamilyImpl::getQueue(uint32_t queue_index) {
-  vk::Device vk_device = logical_device_;
+Queue QueueFamilyImpl::getQueue(uint32_t queueIndex) {
+  vk::Device vk_device = logicalDevice_;
   return Queue(VulkanObjectComposite<QueueImpl>::createObject(
-    *this, vk_device.getQueue(queue_family_index_, queue_index, getDispatcher())));
+    *this, vk_device.getQueue(queueFamilyIndex_, queueIndex, getDispatcher())));
 }
 
-Queue QueueFamilyImpl::getQueue2(uint32_t queue_index, const vk::DeviceQueueCreateFlags& flags) {
-  vk::Device vk_device = logical_device_;
+Queue QueueFamilyImpl::getQueue2(uint32_t queueIndex, const vk::DeviceQueueCreateFlags& flags) {
+  vk::Device vk_device = logicalDevice_;
   return Queue(VulkanObjectComposite<QueueImpl>::createObject(
-    *this, vk_device.getQueue2(vk::DeviceQueueInfo2(flags, queue_family_index_, queue_index), getDispatcher())));
+    *this, vk_device.getQueue2(vk::DeviceQueueInfo2(flags, queueFamilyIndex_, queueIndex), getDispatcher())));
 }
 
 void QueueFamilyImpl::destroyQueue(size_t id) {
@@ -46,31 +45,31 @@ void QueueFamilyImpl::destroyQueue(size_t id) {
 }
 
 VulkanInstanceImpl& QueueFamilyImpl::getInstance() const {
-  return logical_device_.getInstance();
+  return logicalDevice_.getInstance();
 }
 
 PhysicalDeviceImpl& QueueFamilyImpl::getPhysicalDevice() const {
-  return logical_device_.getPhysicalDevice();
+  return logicalDevice_.getPhysicalDevice();
 }
 
 LogicalDeviceImpl& QueueFamilyImpl::getLogicalDevice() const {
-  return logical_device_;
+  return logicalDevice_;
 }
 
 const vk::DispatchLoaderDynamic& QueueFamilyImpl::getDispatcher() const {
-  return logical_device_.getDispatcher();
+  return logicalDevice_.getDispatcher();
 }
 
 uint32_t QueueFamilyImpl::queueCount() const {
-  return queue_count_;
+  return queueCount_;
 }
 
 uint32_t QueueFamilyImpl::getIndex() const {
-  return queue_family_index_;
+  return queueFamilyIndex_;
 }
 
 QueueFamilyImpl::operator uint32_t() const {
-  return queue_family_index_;
+  return queueFamilyIndex_;
 }
 
 void QueueFamilyImpl::free() {

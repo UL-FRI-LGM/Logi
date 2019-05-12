@@ -21,9 +21,9 @@
 
 namespace logi {
 
-SurfaceKHRImpl::SurfaceKHRImpl(VulkanInstanceImpl& instance, const vk::SurfaceKHR& vk_surface,
+SurfaceKHRImpl::SurfaceKHRImpl(VulkanInstanceImpl& instance, const vk::SurfaceKHR& vkSurface,
                                const std::optional<vk::AllocationCallbacks>& allocator)
-  : instance_(instance), allocator_(allocator), vk_surface_(vk_surface) {}
+  : instance_(instance), allocator_(allocator), vkSurface_(vkSurface) {}
 
 VulkanInstanceImpl& SurfaceKHRImpl::getInstance() const {
   return instance_;
@@ -38,13 +38,13 @@ void SurfaceKHRImpl::destroy() const {
 }
 
 SurfaceKHRImpl::operator vk::SurfaceKHR() const {
-  return vk_surface_;
+  return vkSurface_;
 }
 
 void SurfaceKHRImpl::free() {
-  vk::Instance vk_instance = instance_;
-  vk_instance.destroySurfaceKHR(vk_surface_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
-  vk_surface_ = nullptr;
+  vk::Instance vkInstance = instance_;
+  vkInstance.destroySurfaceKHR(vkSurface_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+  vkSurface_ = nullptr;
   VulkanObject::free();
 }
 

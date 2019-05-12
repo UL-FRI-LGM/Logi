@@ -30,18 +30,18 @@ class QueueFamilyImpl;
 
 class QueueImpl : public VulkanObject<QueueImpl> {
  public:
-  QueueImpl(QueueFamilyImpl& queue_family, vk::Queue vk_queue);
+  QueueImpl(QueueFamilyImpl& queueFamily, vk::Queue vkQueue);
 
   // region Vulkan Declarations
 
   vk::ResultValueType<void>::type submit(const std::vector<vk::SubmitInfo>& submits, vk::Fence fence = {}) const;
 
-  vk::ResultValueType<void>::type bindSparse(const std::vector<vk::BindSparseInfo>& bind_info,
+  vk::ResultValueType<void>::type bindSparse(const std::vector<vk::BindSparseInfo>& bindInfo,
                                              vk::Fence fence = {}) const;
 
   vk::ResultValueType<void>::type waitIdle() const;
 
-  vk::Result presentKHR(const vk::PresentInfoKHR& present_info) const;
+  vk::Result presentKHR(const vk::PresentInfoKHR& presentInfo) const;
 
   void beginDebugUtilsLabelEXT(const vk::DebugUtilsLabelEXT& label) const;
 
@@ -75,8 +75,8 @@ class QueueImpl : public VulkanObject<QueueImpl> {
   // endregion
 
  private:
-  QueueFamilyImpl& queue_family_;
-  vk::Queue vk_queue_;
+  QueueFamilyImpl& queueFamily_;
+  vk::Queue vkQueue_;
 };
 
 } // namespace logi

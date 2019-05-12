@@ -21,9 +21,9 @@
 namespace logi {
 
 size_t generateUniqueId() {
-  static std::atomic<size_t> id_generator = 0u;
+  static std::atomic<size_t> idGenerator = 0u;
 
-  return id_generator++;
+  return idGenerator++;
 }
 
 } // namespace logi

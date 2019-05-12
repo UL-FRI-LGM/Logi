@@ -31,17 +31,17 @@ vk::ResultValueType<void>::type Queue::submit(const std::vector<vk::SubmitInfo>&
   return object_->submit(submits, fence);
 }
 
-vk::ResultValueType<void>::type Queue::bindSparse(const std::vector<vk::BindSparseInfo>& bind_info,
+vk::ResultValueType<void>::type Queue::bindSparse(const std::vector<vk::BindSparseInfo>& bindInfo,
                                                   vk::Fence fence) const {
-  return object_->bindSparse(bind_info, fence);
+  return object_->bindSparse(bindInfo, fence);
 }
 
 vk::ResultValueType<void>::type Queue::waitIdle() const {
   return object_->waitIdle();
 }
 
-vk::Result Queue::presentKHR(const vk::PresentInfoKHR& present_info) const {
-  return object_->presentKHR(present_info);
+vk::Result Queue::presentKHR(const vk::PresentInfoKHR& presentInfo) const {
+  return object_->presentKHR(presentInfo);
 }
 
 void Queue::beginDebugUtilsLabelEXT(const vk::DebugUtilsLabelEXT& label) const {

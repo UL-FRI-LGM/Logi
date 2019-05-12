@@ -26,15 +26,15 @@
 namespace logi {
 
 vk::ResultValueType<void>::type
-  ObjectTableNVX::registerObjectsNVX(vk::ArrayProxy<const vk::ObjectTableEntryNVX* const> object_table_entries,
-                                     vk::ArrayProxy<const uint32_t> object_indices) const {
-  return object_->registerObjectsNVX(object_table_entries, object_indices);
+  ObjectTableNVX::registerObjectsNVX(vk::ArrayProxy<const vk::ObjectTableEntryNVX* const> objectTableEntries,
+                                     vk::ArrayProxy<const uint32_t> objectIndices) const {
+  return object_->registerObjectsNVX(objectTableEntries, objectIndices);
 }
 
 vk::ResultValueType<void>::type
-  ObjectTableNVX::unregisterObjectsNVX(vk::ArrayProxy<const vk::ObjectEntryTypeNVX> object_entry_types,
-                                       vk::ArrayProxy<const uint32_t> object_indices) const {
-  return object_->unregisterObjectsNVX(object_entry_types, object_indices);
+  ObjectTableNVX::unregisterObjectsNVX(vk::ArrayProxy<const vk::ObjectEntryTypeNVX> objectEntryTypes,
+                                       vk::ArrayProxy<const uint32_t> objectIndices) const {
+  return object_->unregisterObjectsNVX(objectEntryTypes, objectIndices);
 }
 
 VulkanInstance ObjectTableNVX::getInstance() const {

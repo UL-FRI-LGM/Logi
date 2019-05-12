@@ -25,13 +25,12 @@
 
 namespace logi {
 
-BufferViewImpl::BufferViewImpl(BufferImpl& buffer, vk::BufferViewCreateInfo create_info,
+BufferViewImpl::BufferViewImpl(BufferImpl& buffer, vk::BufferViewCreateInfo createInfo,
                                const std::optional<vk::AllocationCallbacks>& allocator)
   : buffer_(buffer), allocator_(allocator) {
-  vk::Device vk_device = getLogicalDevice();
-  create_info.buffer = buffer_;
-  vk_buffer_view_ =
-    vk_device.createBufferView(create_info, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+  vk::Device vkDevice = getLogicalDevice();
+  createInfo.buffer = buffer_;
+  vkBufferView_ = vkDevice.createBufferView(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
 VulkanInstanceImpl& BufferViewImpl::getInstance() const {
@@ -63,12 +62,12 @@ void BufferViewImpl::destroy() const {
 }
 
 BufferViewImpl::operator vk::BufferView() const {
-  return vk_buffer_view_;
+  return vkBufferView_;
 }
 
 void BufferViewImpl::free() {
   vk::Device vk_device = getLogicalDevice();
-  vk_device.destroy(vk_buffer_view_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+  vk_device.destroy(vkBufferView_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }
 
