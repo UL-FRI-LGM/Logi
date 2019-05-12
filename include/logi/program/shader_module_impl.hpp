@@ -85,6 +85,14 @@ class ShaderModuleImpl : public VulkanObject<ShaderModuleImpl> {
 
   // region Logi Declarations
 
+  std::vector<EntryPointInfo> reflectEntryPoints() const;
+
+  std::vector<std::vector<DescriptorBindingInfo>> reflectDescriptorSets() const;
+
+  std::vector<PushConstantInfo> reflectPushConstants() const;
+
+  std::vector<VertexAttributeInfo> reflectVertexAttributes() const;
+
   VulkanInstanceImpl& getInstance() const;
 
   PhysicalDeviceImpl& getPhysicalDevice() const;
@@ -100,22 +108,6 @@ class ShaderModuleImpl : public VulkanObject<ShaderModuleImpl> {
  protected:
   void free() override;
 
-  void reflectShader(const uint32_t* code, size_t wordSize);
-
-  void reflectEntryPoints(const spirv_cross::Compiler& compiler);
-
-  void reflectSpecializationConstants(const spirv_cross::Compiler& compiler);
-
-  void reflectDescriptorSets(const spirv_cross::Compiler& compiler,
-                             const spirv_cross::ShaderResources& shaderResources);
-
-  void reflectDescriptorBinding(const spirv_cross::Compiler& compiler, uint32_t resourceId, vk::DescriptorType type);
-
-  void reflectPushConstants(const spirv_cross::Compiler& compiler, const spirv_cross::ShaderResources& resources);
-
-  void reflectVertexAttributes(const spirv_cross::Compiler& compiler,
-                               const spirv_cross::ShaderResources& shaderResources);
-
   static vk::ShaderStageFlagBits executionModelToStage(spv::ExecutionModel execModel);
 
   static vk::Format SPIRTypeToVertexBufferFormat(const spirv_cross::SPIRType& format_info);
@@ -127,12 +119,7 @@ class ShaderModuleImpl : public VulkanObject<ShaderModuleImpl> {
   std::optional<vk::AllocationCallbacks> allocator_;
   vk::ShaderModule vkShaderModule_;
 
-  std::vector<EntryPointInfo> entryPoints_;
-  std::vector<SpecializationConstantInfo> specializationConstants_;
-
-  std::vector<std::vector<DescriptorBindingInfo>> descriptorSets_;
-  std::vector<PushConstantInfo> pushConstantRanges_;
-  std::optional<std::vector<VertexAttributeInfo>> vertexAttributes_;
+  spirv_cross::Compiler compiler_;
 };
 
 } // namespace logi

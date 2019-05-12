@@ -50,6 +50,10 @@ class Structure : protected VkStructureType {
    */
   virtual void updateVkStructure(){};
 
+  operator const VkStructureType&() {
+    return build();
+  }
+
  protected:
   template <typename EntryType>
   static void vecToCArr(const std::vector<EntryType>& vec, const EntryType*& data, uint32_t& size) {
@@ -142,6 +146,11 @@ class StructureChain {
 
   operator const typename First::VkType&() {
     return build();
+  }
+
+  template <typename T>
+  explicit operator T&() {
+    return get<T>();
   }
 
  private:

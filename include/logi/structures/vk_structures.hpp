@@ -1374,7 +1374,7 @@ class PresentInfoKHR : public Structure<vk::PresentInfoKHR> {
   std::vector<vk::Semaphore> waitSemaphores;
   std::vector<vk::SwapchainKHR> swapchains;
   std::vector<uint32_t> imageIndices;
-  std::vector<vk::Result> results;
+  std::vector<vk::Result> results; // TODO: (results must have size of swapchainCount)
 };
 
 using PresentInfoKHRChain =
