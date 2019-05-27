@@ -22,6 +22,8 @@
 #include "logi/device/physical_device_impl.hpp"
 #include "logi/instance/debug_report_callback.hpp"
 #include "logi/instance/debug_report_callback_impl.hpp"
+#include "logi/instance/debug_utils_messenger_ext.hpp"
+#include "logi/instance/debug_utils_messenger_ext_impl.hpp"
 #include "logi/surface/surface.hpp"
 #include "logi/surface/surface_impl.hpp"
 
@@ -47,6 +49,8 @@ VulkanInstanceImpl::VulkanInstanceImpl(const vk::InstanceCreateInfo& createInfo,
   }
 }
 
+// region Sub-Handles
+
 DebugReportCallbackEXT
   VulkanInstanceImpl::createDebugReportCallbackEXT(const vk::DebugReportCallbackCreateInfoEXT& createInfo,
                                                    const std::optional<vk::AllocationCallbacks>& allocator) {
@@ -54,16 +58,19 @@ DebugReportCallbackEXT
     VulkanObjectComposite<DebugReportCallbackEXTImpl>::createObject(*this, createInfo, allocator));
 }
 
-void VulkanInstanceImpl::debugReportMessageEXT(const vk::DebugReportFlagsEXT& flags,
-                                               vk::DebugReportObjectTypeEXT objectType, uint64_t object,
-                                               size_t location, int32_t messageCode, const char* layerPrefix,
-                                               const char* message) const {
-  vkInstance_.debugReportMessageEXT(flags, objectType, object, location, messageCode, layerPrefix, message,
-                                    getDispatcher());
-}
-
 void VulkanInstanceImpl::destroyDebugReportCallbackEXT(size_t id) {
   VulkanObjectComposite<DebugReportCallbackEXTImpl>::destroyObject(id);
+}
+
+DebugUtilsMessengerEXT
+  VulkanInstanceImpl::createDebugUtilsMessengerEXT(const vk::DebugUtilsMessengerCreateInfoEXT& createInfo,
+                                                   const std::optional<vk::AllocationCallbacks>& allocator) {
+  return DebugUtilsMessengerEXT(
+    VulkanObjectComposite<DebugUtilsMessengerEXTImpl>::createObject(*this, createInfo, allocator));
+}
+
+void VulkanInstanceImpl::destroyDebugUtilsMessengerEXT(size_t id) {
+  VulkanObjectComposite<DebugUtilsMessengerEXTImpl>::destroyObject(id);
 }
 
 SurfaceKHR VulkanInstanceImpl::registerSurfaceKHR(const vk::SurfaceKHR& vkSurface,
@@ -71,9 +78,96 @@ SurfaceKHR VulkanInstanceImpl::registerSurfaceKHR(const vk::SurfaceKHR& vkSurfac
   return SurfaceKHR(VulkanObjectComposite<SurfaceKHRImpl>::createObject(*this, vkSurface, allocator));
 }
 
+#ifdef VK_USE_PLATFORM_ANDROID_KHR
+SurfaceKHR VulkanInstanceImpl::createAndroidSurfaceKHR(const vk::AndroidSurfaceCreateInfoKHR& createInfo,
+                                                       const std::optional<vk::AllocationCallbacks>& allocator) {
+  return SurfaceKHR(VulkanObjectComposite<SurfaceKHRImpl>::createObject(*this, createInfo, allocator));
+}
+#endif /*VK_USE_PLATFORM_ANDROID_KHR*/
+
+SurfaceKHR VulkanInstanceImpl::createDisplayPlaneSurfaceKHR(const vk::DisplaySurfaceCreateInfoKHR& createInfo,
+                                                            const std::optional<vk::AllocationCallbacks>& allocator) {
+  return SurfaceKHR(VulkanObjectComposite<SurfaceKHRImpl>::createObject(*this, createInfo, allocator));
+}
+
+#ifdef VK_USE_PLATFORM_IOS_MVK
+SurfaceKHR VulkanInstanceImpl::createIOSSurfaceMVK(const vk::IOSSurfaceCreateInfoMVK& createInfo,
+                                                   const std::optional<vk::AllocationCallbacks>& allocator) {
+  return SurfaceKHR(VulkanObjectComposite<SurfaceKHRImpl>::createObject(*this, createInfo, allocator));
+}
+#endif /*VK_USE_PLATFORM_IOS_MVK*/
+
+#ifdef VK_USE_PLATFORM_FUCHSIA
+SurfaceKHR VulkanInstanceImpl::createImagePipeSurfaceFUCHSIA(const vk::ImagePipeSurfaceCreateInfoFUCHSIA& createInfo,
+                                                             const std::optional<vk::AllocationCallbacks>& allocator) {
+  return SurfaceKHR(VulkanObjectComposite<SurfaceKHRImpl>::createObject(*this, createInfo, allocator));
+}
+#endif /*VK_USE_PLATFORM_FUCHSIA*/
+
+#ifdef VK_USE_PLATFORM_MACOS_MVK
+SurfaceKHR VulkanInstanceImpl::createMacOSSurfaceMVK(const vk::MacOSSurfaceCreateInfoMVK& createInfo,
+                                                     const std::optional<vk::AllocationCallbacks>& allocator) {
+  return SurfaceKHR(VulkanObjectComposite<SurfaceKHRImpl>::createObject(*this, createInfo, allocator));
+}
+#endif /*VK_USE_PLATFORM_MACOS_MVK*/
+
+#ifdef VK_USE_PLATFORM_METAL_EXT
+SurfaceKHR VulkanInstanceImpl::createMetalSurfaceEXT(const vk::MetalSurfaceCreateInfoEXT& createInfo,
+                                                     const std::optional<vk::AllocationCallbacks>& allocator) {
+  return SurfaceKHR(VulkanObjectComposite<SurfaceKHRImpl>::createObject(*this, createInfo, allocator));
+}
+#endif /*VK_USE_PLATFORM_METAL_EXT*/
+
+#ifdef VK_USE_PLATFORM_GGP
+SurfaceKHR
+  VulkanInstanceImpl::createStreamDescriptorSurfaceGGP(const vk::StreamDescriptorSurfaceCreateInfoGGP& createInfo,
+                                                       const std::optional<vk::AllocationCallbacks>& allocator) {
+  return SurfaceKHR(VulkanObjectComposite<SurfaceKHRImpl>::createObject(*this, createInfo, allocator));
+}
+#endif /*VK_USE_PLATFORM_GGP*/
+
+#ifdef VK_USE_PLATFORM_VI_NN
+SurfaceKHR VulkanInstanceImpl::createViSurfaceNN(const vk::ViSurfaceCreateInfoNN& createInfo,
+                                                 const std::optional<vk::AllocationCallbacks>& allocator) {
+  return SurfaceKHR(VulkanObjectComposite<SurfaceKHRImpl>::createObject(*this, createInfo, allocator));
+}
+#endif /*VK_USE_PLATFORM_VI_NN*/
+
+#ifdef VK_USE_PLATFORM_WAYLAND_KHR
+SurfaceKHR VulkanInstanceImpl::createWaylandSurfaceKHR(const vk::WaylandSurfaceCreateInfoKHR& createInfo,
+                                                       const std::optional<vk::AllocationCallbacks>& allocator) {
+  return SurfaceKHR(VulkanObjectComposite<SurfaceKHRImpl>::createObject(*this, createInfo, allocator));
+}
+#endif /*VK_USE_PLATFORM_WAYLAND_KHR*/
+
+#ifdef VK_USE_PLATFORM_WIN32_KHR
+SurfaceKHR VulkanInstanceImpl::createWin32SurfaceKHR(const vk::Win32SurfaceCreateInfoKHR& createInfo,
+                                                     const std::optional<vk::AllocationCallbacks>& allocator) {
+  return SurfaceKHR(VulkanObjectComposite<SurfaceKHRImpl>::createObject(*this, createInfo, allocator));
+}
+#endif /*VK_USE_PLATFORM_WIN32_KHR*/
+
+#ifdef VK_USE_PLATFORM_XCB_KHR
+SurfaceKHR VulkanInstanceImpl::createXcbSurfaceKHR(const vk::XcbSurfaceCreateInfoKHR& createInfo,
+                                                   const std::optional<vk::AllocationCallbacks>& allocator) {
+  return SurfaceKHR(VulkanObjectComposite<SurfaceKHRImpl>::createObject(*this, createInfo, allocator));
+}
+#endif /*VK_USE_PLATFORM_XCB_KHR*/
+
+#ifdef VK_USE_PLATFORM_XLIB_KHR
+SurfaceKHR VulkanInstanceImpl::createXlibSurfaceKHR(const vk::XlibSurfaceCreateInfoKHR& createInfo,
+                                                    const std::optional<vk::AllocationCallbacks>& allocator) {
+  return SurfaceKHR(VulkanObjectComposite<SurfaceKHRImpl>::createObject(*this, createInfo, allocator));
+}
+#endif /*VK_USE_PLATFORM_XLIB_KHR*/
+
 void VulkanInstanceImpl::destroySurfaceKHR(size_t id) {
   VulkanObjectComposite<SurfaceKHRImpl>::destroyObject(id);
 }
+
+// endregion
+
+// region Vulkan Commands
 
 std::vector<PhysicalDevice> VulkanInstanceImpl::enumeratePhysicalDevices() const {
   auto ownedDevices = VulkanObjectComposite<PhysicalDeviceImpl>::getHandles();
@@ -88,6 +182,26 @@ std::vector<PhysicalDevice> VulkanInstanceImpl::enumeratePhysicalDevices() const
   return devices;
 }
 
+void VulkanInstanceImpl::debugReportMessageEXT(const vk::DebugReportFlagsEXT& flags,
+                                               vk::DebugReportObjectTypeEXT objectType, uint64_t object,
+                                               size_t location, int32_t messageCode, const std::string& layerPrefix,
+                                               const std::string& message) const {
+  vkInstance_.debugReportMessageEXT(flags, objectType, object, location, messageCode, layerPrefix, message,
+                                    getDispatcher());
+}
+
+void VulkanInstanceImpl::submitDebugUtilsMessageEXT(vk::DebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
+                                                    const vk::DebugUtilsMessageTypeFlagsEXT& messageTypes,
+                                                    const vk::DebugUtilsMessengerCallbackDataEXT& callbackData) const {
+  vkInstance_.submitDebugUtilsMessageEXT(messageSeverity, messageTypes, callbackData, getDispatcher());
+}
+
+PFN_vkVoidFunction VulkanInstanceImpl::getInstanceProcAddr(const std::string& name) const {
+  return vkInstance_.getProcAddr(name, getDispatcher());
+}
+
+// endregion Vulkan Commands
+
 const vk::DispatchLoaderDynamic& VulkanInstanceImpl::getDispatcher() const {
   return dispatcher_;
 }
@@ -98,10 +212,6 @@ VulkanInstanceImpl::operator vk::Instance() const {
 
 void VulkanInstanceImpl::free() {
   VulkanObjectComposite<PhysicalDeviceImpl>::destroyAllObjects();
-
-  for (const auto& callback : debugCallbacks_) {
-    vkInstance_.destroyDebugReportCallbackEXT(callback, nullptr, dispatcher_);
-  }
 
   vkInstance_.destroy(allocator_ ? &allocator_.value() : nullptr);
   VulkanObject::free();

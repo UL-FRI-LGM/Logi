@@ -16,30 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGI_BASE_DEBUG_UTIL_MESSENGER_EXT_HPP
-#define LOGI_BASE_DEBUG_UTIL_MESSENGER_EXT_HPP
-
-#include <vulkan/vulkan.hpp>
-#include "logi/base/handle.hpp"
+#include "logi/instance/debug_utils_messenger_ext.hpp"
+#include "logi/instance/debug_utils_messenger_ext_impl.hpp"
+#include "logi/instance/vulkan_instance.hpp"
+#include "logi/instance/vulkan_instance_impl.hpp"
 
 namespace logi {
 
-class VulkanInstance;
-class DebugUtilsMessengerEXTImpl;
+VulkanInstance DebugUtilsMessengerEXT::getInstance() const {
+  return VulkanInstance(object_->getInstance().shared_from_this());
+}
 
-class DebugUtilsMessengerEXT : public Handle<DebugUtilsMessengerEXTImpl> {
- public:
-  using Handle::Handle;
+const vk::DispatchLoaderDynamic& DebugUtilsMessengerEXT::getDispatcher() const {
+  return object_->getDispatcher();
+}
 
-  VulkanInstance getInstance() const;
+void DebugUtilsMessengerEXT::destroy() const {
+  object_->destroy();
+}
 
-  const vk::DispatchLoaderDynamic& getDispatcher() const;
-
-  void destroy() const;
-
-  operator vk::DebugUtilsMessengerEXT() const;
-};
+DebugUtilsMessengerEXT::operator vk::DebugUtilsMessengerEXT() const {
+  return *object_;
+}
 
 } // namespace logi
-
-#endif // LOGI_BASE_DEBUG_UTIL_MESSENGER_EXT_HPP

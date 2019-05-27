@@ -30,6 +30,8 @@ namespace logi {
 
 class DebugReportCallbackEXT;
 class DebugReportCallbackEXTImpl;
+class DebugUtilsMessengerEXT;
+class DebugUtilsMessengerEXTImpl;
 class PhysicalDevice;
 class PhysicalDeviceImpl;
 class SurfaceKHR;
@@ -40,6 +42,7 @@ class SurfaceKHRImpl;
  */
 class VulkanInstanceImpl : public VulkanObject<VulkanInstanceImpl>,
                            public VulkanObjectComposite<DebugReportCallbackEXTImpl>,
+                           public VulkanObjectComposite<DebugUtilsMessengerEXTImpl>,
                            public VulkanObjectComposite<PhysicalDeviceImpl>,
                            public VulkanObjectComposite<SurfaceKHRImpl> {
  public:
@@ -48,21 +51,100 @@ class VulkanInstanceImpl : public VulkanObject<VulkanInstanceImpl>,
                               PFN_vkGetInstanceProcAddr pfnGetProcAddr = &vkGetInstanceProcAddr,
                               const std::optional<vk::AllocationCallbacks>& allocator = {});
 
+  // region Sub-Handles
+
   DebugReportCallbackEXT createDebugReportCallbackEXT(const vk::DebugReportCallbackCreateInfoEXT& createInfo,
                                                       const std::optional<vk::AllocationCallbacks>& allocator);
 
-  void debugReportMessageEXT(const vk::DebugReportFlagsEXT& flags, vk::DebugReportObjectTypeEXT objectType,
-                             uint64_t object, size_t location, int32_t messageCode, const char* layerPrefix,
-                             const char* message) const;
-
   void destroyDebugReportCallbackEXT(size_t id);
+
+  DebugUtilsMessengerEXT createDebugUtilsMessengerEXT(const vk::DebugUtilsMessengerCreateInfoEXT& createInfo,
+                                                      const std::optional<vk::AllocationCallbacks>& allocator);
+
+  void destroyDebugUtilsMessengerEXT(size_t id);
 
   SurfaceKHR registerSurfaceKHR(const vk::SurfaceKHR& vkSurface,
                                 const std::optional<vk::AllocationCallbacks>& allocator);
 
+#ifdef VK_USE_PLATFORM_ANDROID_KHR
+  SurfaceKHR createAndroidSurfaceKHR(const vk::AndroidSurfaceCreateInfoKHR& createInfo,
+                                     const std::optional<vk::AllocationCallbacks>& allocator = {});
+#endif /*VK_USE_PLATFORM_ANDROID_KHR*/
+
+  SurfaceKHR createDisplayPlaneSurfaceKHR(const vk::DisplaySurfaceCreateInfoKHR& createInfo,
+                                          const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+#ifdef VK_USE_PLATFORM_IOS_MVK
+  SurfaceKHR createIOSSurfaceMVK(const vk::IOSSurfaceCreateInfoMVK& createInfo,
+                                 const std::optional<vk::AllocationCallbacks>& allocator = {});
+#endif /*VK_USE_PLATFORM_IOS_MVK*/
+
+#ifdef VK_USE_PLATFORM_FUCHSIA
+  SurfaceKHR createImagePipeSurfaceFUCHSIA(const vk::ImagePipeSurfaceCreateInfoFUCHSIA& createInfo,
+                                           const std::optional<vk::AllocationCallbacks>& allocator = {});
+#endif /*VK_USE_PLATFORM_FUCHSIA*/
+
+#ifdef VK_USE_PLATFORM_MACOS_MVK
+  SurfaceKHR createMacOSSurfaceMVK(const vk::MacOSSurfaceCreateInfoMVK& createInfo,
+                                   const std::optional<vk::AllocationCallbacks>& allocator = {});
+#endif /*VK_USE_PLATFORM_MACOS_MVK*/
+
+#ifdef VK_USE_PLATFORM_METAL_EXT
+  SurfaceKHR createMetalSurfaceEXT(const vk::MetalSurfaceCreateInfoEXT& createInfo,
+                                   const std::optional<vk::AllocationCallbacks>& allocator = {});
+#endif /*VK_USE_PLATFORM_METAL_EXT*/
+
+#ifdef VK_USE_PLATFORM_GGP
+  SurfaceKHR createStreamDescriptorSurfaceGGP(const vk::StreamDescriptorSurfaceCreateInfoGGP& createInfo,
+                                              const std::optional<vk::AllocationCallbacks>& allocator = {});
+#endif /*VK_USE_PLATFORM_GGP*/
+
+#ifdef VK_USE_PLATFORM_VI_NN
+  SurfaceKHR createViSurfaceNN(const vk::ViSurfaceCreateInfoNN& createInfo,
+                               const std::optional<vk::AllocationCallbacks>& allocator = {});
+#endif /*VK_USE_PLATFORM_VI_NN*/
+
+#ifdef VK_USE_PLATFORM_WAYLAND_KHR
+  SurfaceKHR createWaylandSurfaceKHR(const vk::WaylandSurfaceCreateInfoKHR& createInfo,
+                                     const std::optional<vk::AllocationCallbacks>& allocator = {});
+#endif /*VK_USE_PLATFORM_WAYLAND_KHR*/
+
+#ifdef VK_USE_PLATFORM_WIN32_KHR
+  SurfaceKHR createWin32SurfaceKHR(const vk::Win32SurfaceCreateInfoKHR& createInfo,
+                                   const std::optional<vk::AllocationCallbacks>& allocator = {});
+#endif /*VK_USE_PLATFORM_WIN32_KHR*/
+
+#ifdef VK_USE_PLATFORM_XCB_KHR
+  SurfaceKHR createXcbSurfaceKHR(const vk::XcbSurfaceCreateInfoKHR& createInfo,
+                                 const std::optional<vk::AllocationCallbacks>& allocator = {});
+#endif /*VK_USE_PLATFORM_XCB_KHR*/
+
+#ifdef VK_USE_PLATFORM_XLIB_KHR
+  SurfaceKHR createXlibSurfaceKHR(const vk::XlibSurfaceCreateInfoKHR& createInfo,
+                                  const std::optional<vk::AllocationCallbacks>& allocator = {});
+#endif /*VK_USE_PLATFORM_XLIB_KHR*/
+
   void destroySurfaceKHR(size_t id);
 
+  // endregion
+
+  // region Vulkan Commands
+
   std::vector<PhysicalDevice> enumeratePhysicalDevices() const;
+
+  void debugReportMessageEXT(const vk::DebugReportFlagsEXT& flags, vk::DebugReportObjectTypeEXT objectType,
+                             uint64_t object, size_t location, int32_t messageCode, const std::string& layerPrefix,
+                             const std::string& message) const;
+
+  void submitDebugUtilsMessageEXT(vk::DebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
+                                  const vk::DebugUtilsMessageTypeFlagsEXT& messageTypes,
+                                  const vk::DebugUtilsMessengerCallbackDataEXT& callbackData) const;
+
+  PFN_vkVoidFunction getInstanceProcAddr(const std::string& name) const;
+
+  // endregion
+
+  // region Logi
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
@@ -73,11 +155,12 @@ class VulkanInstanceImpl : public VulkanObject<VulkanInstanceImpl>,
  protected:
   void free() override;
 
+  // endregion
+
  private:
   std::optional<vk::AllocationCallbacks> allocator_;
   vk::Instance vkInstance_;
   vk::DispatchLoaderDynamic dispatcher_;
-  std::vector<vk::DebugReportCallbackEXT> debugCallbacks_;
 };
 
 } // namespace logi
