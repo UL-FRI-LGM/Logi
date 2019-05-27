@@ -34,6 +34,18 @@ class CommandPool : public Handle<CommandPoolImpl> {
  public:
   using Handle::Handle;
 
+  // region Vulkan Declarations
+
+  void freeCommandBuffers(vk::ArrayProxy<const vk::CommandBuffer> commandBuffers) const;
+
+  vk::ResultValueType<void>::type reset(const vk::CommandPoolResetFlags& flags = vk::CommandPoolResetFlags()) const;
+
+  void trim(const vk::CommandPoolTrimFlags& flags = vk::CommandPoolTrimFlags()) const;
+
+  void trimKHR(const vk::CommandPoolTrimFlags& flags = vk::CommandPoolTrimFlags()) const;
+
+  // end region
+
   // region Logi Declarations
 
   VulkanInstance getInstance() const;

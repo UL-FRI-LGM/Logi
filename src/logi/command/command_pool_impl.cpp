@@ -28,6 +28,32 @@ CommandPoolImpl::CommandPoolImpl(LogicalDeviceImpl& logicalDevice, const vk::Com
   vkCommandPool_ = vkDevice.createCommandPool(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
+// region Vulkan Definitions
+
+void CommandPoolImpl::freeCommandBuffers(vk::ArrayProxy<const vk::CommandBuffer> commandBuffers) const {
+  vk::Device vkDevice = logicalDevice_;
+  vkDevice.freeCommandBuffers(vkCommandPool_, commandBuffers, getDispatcher());
+}
+
+vk::ResultValueType<void>::type CommandPoolImpl::reset(const vk::CommandPoolResetFlags& flags) const {
+  vk::Device vkDevice = logicalDevice_;
+  vkDevice.resetCommandPool(vkCommandPool_, flags, getDispatcher());
+}
+
+void CommandPoolImpl::trim(const vk::CommandPoolTrimFlags& flags) const {
+  vk::Device vkDevice = logicalDevice_;
+  vkDevice.trimCommandPool(vkCommandPool_, flags, getDispatcher());
+}
+
+void CommandPoolImpl::trimKHR(const vk::CommandPoolTrimFlags& flags) const {
+  vk::Device vkDevice = logicalDevice_;
+  vkDevice.trimCommandPoolKHR(vkCommandPool_, flags, getDispatcher());
+}
+
+// endregion
+
+// region Logi Definitions
+
 VulkanInstanceImpl& CommandPoolImpl::getInstance() const {
   return logicalDevice_.getInstance();
 }
@@ -57,5 +83,7 @@ void CommandPoolImpl::free() {
   vkDevice.destroy(vkCommandPool_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }
+
+// endregion
 
 }

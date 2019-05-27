@@ -30,6 +30,8 @@ IndirectCommandsLayoutNVXImpl::IndirectCommandsLayoutNVXImpl(LogicalDeviceImpl& 
     vkDevice.createIndirectCommandsLayoutNVX(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
+// region Logi Definitions
+
 VulkanInstanceImpl& IndirectCommandsLayoutNVXImpl::getInstance() const {
   return logicalDevice_.getInstance();
 }
@@ -59,5 +61,7 @@ void IndirectCommandsLayoutNVXImpl::free() {
   vkDevice.destroy(vkIndirectCommandsLayoutNVX_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }
+
+// endregion
 
 } // namespace logi

@@ -105,8 +105,9 @@ class CommandBufferImpl : public VulkanObject<CommandBufferImpl> {
 
   void nextSubpass(vk::SubpassContents contents) const;
 
-  void pipelineBarrier(vk::PipelineStageFlags srcStageMask, vk::PipelineStageFlags dstStageMask,
-                       vk::DependencyFlags dependencyFlags, vk::ArrayProxy<const vk::MemoryBarrier> memoryBarriers,
+  void pipelineBarrier(const vk::PipelineStageFlags& srcStageMask, vk::PipelineStageFlags dstStageMask,
+                       const vk::DependencyFlags& dependencyFlags,
+                       vk::ArrayProxy<const vk::MemoryBarrier> memoryBarriers,
                        vk::ArrayProxy<const vk::BufferMemoryBarrier> bufferMemoryBarriers,
                        vk::ArrayProxy<const vk::ImageMemoryBarrier> imageMemoryBarriers) const;
 
@@ -116,7 +117,7 @@ class CommandBufferImpl : public VulkanObject<CommandBufferImpl> {
     vkCommandBuffer_.pushConstants(layout, stageFlags, offset, values, getDispatcher());
   }
 
-  void resetEvent(vk::Event event, vk::PipelineStageFlags stageMask) const;
+  void resetEvent(vk::Event event, const vk::PipelineStageFlags& stageMask) const;
 
   void resetQueryPool(vk::QueryPool queryPool, uint32_t firstQuery, uint32_t queryCount) const;
 

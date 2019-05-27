@@ -33,6 +33,13 @@ class DescriptorPool : public Handle<DescriptorPoolImpl> {
  public:
   using Handle::Handle;
 
+  // region Vulkan Declarations
+
+  vk::ResultValueType<void>::type
+    reset(const vk::DescriptorPoolResetFlags& flags = vk::DescriptorPoolResetFlags()) const;
+
+  // endregion
+
   // region Logi Declarations
 
   VulkanInstance getInstance() const;

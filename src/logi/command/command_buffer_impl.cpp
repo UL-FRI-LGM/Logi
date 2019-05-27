@@ -160,8 +160,8 @@ void CommandBufferImpl::nextSubpass(vk::SubpassContents contents) const {
   vkCommandBuffer_.nextSubpass(contents, getDispatcher());
 }
 
-void CommandBufferImpl::pipelineBarrier(vk::PipelineStageFlags srcStageMask, vk::PipelineStageFlags dstStageMask,
-                                        vk::DependencyFlags dependencyFlags,
+void CommandBufferImpl::pipelineBarrier(const vk::PipelineStageFlags& srcStageMask, vk::PipelineStageFlags dstStageMask,
+                                        const vk::DependencyFlags& dependencyFlags,
                                         vk::ArrayProxy<const vk::MemoryBarrier> memoryBarriers,
                                         vk::ArrayProxy<const vk::BufferMemoryBarrier> bufferMemoryBarriers,
                                         vk::ArrayProxy<const vk::ImageMemoryBarrier> imageMemoryBarriers) const {
@@ -169,7 +169,7 @@ void CommandBufferImpl::pipelineBarrier(vk::PipelineStageFlags srcStageMask, vk:
                                    imageMemoryBarriers, getDispatcher());
 }
 
-void CommandBufferImpl::resetEvent(vk::Event event, vk::PipelineStageFlags stageMask) const {
+void CommandBufferImpl::resetEvent(vk::Event event, const vk::PipelineStageFlags& stageMask) const {
   vkCommandBuffer_.resetEvent(event, stageMask, getDispatcher());
 }
 

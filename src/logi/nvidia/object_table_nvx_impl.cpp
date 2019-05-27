@@ -29,6 +29,8 @@ ObjectTableNVXImpl::ObjectTableNVXImpl(LogicalDeviceImpl& logicalDevice, const v
     vkDevice.createObjectTableNVX(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
+// region Vulkan Definitions
+
 vk::ResultValueType<void>::type
   ObjectTableNVXImpl::registerObjectsNVX(vk::ArrayProxy<const vk::ObjectTableEntryNVX* const> objectTableEntries,
                                          vk::ArrayProxy<const uint32_t> objectIndices) const {
@@ -42,6 +44,10 @@ vk::ResultValueType<void>::type
   vk::Device vkDevice;
   vkDevice.unregisterObjectsNVX(vkObjectTableNVX_, objectEntryTypes, objectIndices, getDispatcher());
 }
+
+// endregion
+
+// region Logi Definitions
 
 VulkanInstanceImpl& ObjectTableNVXImpl::getInstance() const {
   return logicalDevice_.getInstance();
@@ -72,5 +78,7 @@ void ObjectTableNVXImpl::free() {
   vkDevice.destroy(vkObjectTableNVX_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }
+
+// endregion
 
 } // namespace logi

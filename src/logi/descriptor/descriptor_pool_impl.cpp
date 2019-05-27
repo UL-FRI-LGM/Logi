@@ -29,9 +29,16 @@ DescriptorPoolImpl::DescriptorPoolImpl(LogicalDeviceImpl& logicalDevice, const v
     vkDevice.createDescriptorPool(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
-vk::ResultValueType<void>::type DescriptorPoolImpl::reset() const {
-  // TODO
+// region Vulkan Declarations
+
+vk::ResultValueType<void>::type DescriptorPoolImpl::reset(const vk::DescriptorPoolResetFlags& flags) const {
+  vk::Device vkDevice = logicalDevice_;
+  vkDevice.resetDescriptorPool(vkDescriptorPool_, flags, getDispatcher());
 }
+
+// endregion
+
+// region Logi Declarations
 
 VulkanInstanceImpl& DescriptorPoolImpl::getInstance() const {
   return logicalDevice_.getInstance();
@@ -62,5 +69,7 @@ void DescriptorPoolImpl::free() {
   vkDevice.destroy(vkDescriptorPool_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }
+
+// endregion
 
 } // namespace logi

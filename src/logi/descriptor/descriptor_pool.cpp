@@ -23,6 +23,16 @@
 
 namespace logi {
 
+// region Vulkan Definitions
+
+vk::ResultValueType<void>::type DescriptorPool::reset(const vk::DescriptorPoolResetFlags& flags) const {
+  return object_->reset(flags);
+}
+
+// endregion
+
+// region Logi Definitions
+
 VulkanInstance DescriptorPool::getInstance() const {
   return VulkanInstance(object_->getInstance().shared_from_this());
 }
@@ -46,5 +56,7 @@ void DescriptorPool::destroy() const {
 DescriptorPool::operator vk::DescriptorPool() const {
   return object_->operator vk::DescriptorPool();
 }
+
+// endregion
 
 } // namespace logi
