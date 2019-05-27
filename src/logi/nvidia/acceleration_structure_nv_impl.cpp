@@ -30,6 +30,8 @@ AccelerationStructureNVImpl::AccelerationStructureNVImpl(LogicalDeviceImpl& logi
     vkDevice.createAccelerationStructureNV(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
+// region Logi Definitions
+
 VulkanInstanceImpl& AccelerationStructureNVImpl::getInstance() const {
   return logicalDevice_.getInstance();
 }
@@ -59,5 +61,7 @@ void AccelerationStructureNVImpl::free() {
   vkDevice.destroy(vkAccelerationStructureNV_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }
+
+// endregion
 
 } // namespace logi

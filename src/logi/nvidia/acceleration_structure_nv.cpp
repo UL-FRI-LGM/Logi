@@ -25,6 +25,8 @@
 
 namespace logi {
 
+// region Logi Definitions
+
 VulkanInstance AccelerationStructureNV::getInstance() const {
   return VulkanInstance(object_->getInstance().shared_from_this());
 }
@@ -48,5 +50,7 @@ void AccelerationStructureNV::destroy() const {
 AccelerationStructureNV::operator vk::AccelerationStructureNV() const {
   return object_->operator vk::AccelerationStructureNV();
 }
+
+// endregion
 
 } // namespace logi

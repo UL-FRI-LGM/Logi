@@ -25,6 +25,8 @@
 
 namespace logi {
 
+// region Logi Definitions
+
 VulkanInstance IndirectCommandsLayoutNVX::getInstance() const {
   return VulkanInstance(object_->getInstance().shared_from_this());
 }
@@ -48,5 +50,7 @@ void IndirectCommandsLayoutNVX::destroy() const {
 IndirectCommandsLayoutNVX::operator vk::IndirectCommandsLayoutNVX() const {
   return object_->operator vk::IndirectCommandsLayoutNVX();
 }
+
+// endregion
 
 } // namespace logi

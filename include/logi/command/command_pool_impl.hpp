@@ -33,6 +33,18 @@ class CommandPoolImpl : public VulkanObject<CommandPoolImpl> {
   CommandPoolImpl(LogicalDeviceImpl& logicalDevice, const vk::CommandPoolCreateInfo& createInfo,
                   const std::optional<vk::AllocationCallbacks>& allocator = {});
 
+  // region Vulkan Declarations
+
+  void freeCommandBuffers(vk::ArrayProxy<const vk::CommandBuffer> commandBuffers) const;
+
+  vk::ResultValueType<void>::type reset(const vk::CommandPoolResetFlags& flags = vk::CommandPoolResetFlags()) const;
+
+  void trim(const vk::CommandPoolTrimFlags& flags = vk::CommandPoolTrimFlags()) const;
+
+  void trimKHR(const vk::CommandPoolTrimFlags& flags = vk::CommandPoolTrimFlags()) const;
+
+  // endregion
+
   // region Logi Declarations
 
   VulkanInstanceImpl& getInstance() const;

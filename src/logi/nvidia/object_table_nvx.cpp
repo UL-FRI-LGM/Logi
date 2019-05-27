@@ -25,6 +25,8 @@
 
 namespace logi {
 
+// region Vulkan Definitions
+
 vk::ResultValueType<void>::type
   ObjectTableNVX::registerObjectsNVX(vk::ArrayProxy<const vk::ObjectTableEntryNVX* const> objectTableEntries,
                                      vk::ArrayProxy<const uint32_t> objectIndices) const {
@@ -36,6 +38,10 @@ vk::ResultValueType<void>::type
                                        vk::ArrayProxy<const uint32_t> objectIndices) const {
   return object_->unregisterObjectsNVX(objectEntryTypes, objectIndices);
 }
+
+// endregion
+
+// region Logi Definitions
 
 VulkanInstance ObjectTableNVX::getInstance() const {
   return VulkanInstance(object_->getInstance().shared_from_this());
@@ -60,5 +66,7 @@ void ObjectTableNVX::destroy() const {
 ObjectTableNVX::operator vk::ObjectTableNVX() const {
   return object_->operator vk::ObjectTableNVX();
 }
+
+// endregion
 
 } // namespace logi

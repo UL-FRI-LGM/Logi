@@ -35,7 +35,8 @@ class DescriptorPoolImpl : public VulkanObject<DescriptorPoolImpl> {
 
   // region Vulkan Declarations
 
-  vk::ResultValueType<void>::type reset() const;
+  vk::ResultValueType<void>::type
+    reset(const vk::DescriptorPoolResetFlags& flags = vk::DescriptorPoolResetFlags()) const;
 
   // endregion
 
