@@ -1,6 +1,6 @@
 /**
  * Project Logi source code
- * Copyright (C) 2019 Primoz Lavric
+ * Copyright (C) 2019 Lana Besevic
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,42 @@
 #ifndef LOGI_DEVICE_DISPLAY_KHR_IMPL_HPP
 #define LOGI_DEVICE_DISPLAY_KHR_IMPL_HPP
 
-namespace logi {}
+#include <iostream>
+#include <vulkan/vulkan.hpp>
+#include "logi/base/vulkan_object.hpp"
+
+namespace logi {
+
+class VulkanInstanceImpl;
+class PhysicalDeviceImpl;
+
+class DisplayKHRImpl : public VulkanObject<DisplayKHRImpl> {
+ public:
+  DisplayKHRImpl(PhysicalDeviceImpl& physicalDevice, const vk::DisplayPropertiesKHR& displayProperties);
+
+  // region Logi Declarations
+
+  VulkanInstanceImpl& getInstance() const;
+
+  PhysicalDeviceImpl& getPhysicalDevice() const;
+
+  const vk::DispatchLoaderDynamic& getDispatcher() const;
+
+  operator vk::DisplayKHR() const;
+
+  // endregion
+
+ private:
+  PhysicalDeviceImpl& physicalDevice_;
+  vk::DisplayKHR vkDisplayKHR_;
+  std::string displayName_;
+  vk::Extent2D physicalDimensions_;
+  vk::Extent2D physicalResolution_;
+  vk::SurfaceTransformFlagsKHR supportedTransforms_;
+  vk::Bool32 planeReorderPossible_;
+  vk::Bool32 persistentContent_;
+};
+
+} // namespace logi
 
 #endif // LOGI_DEVICE_DISPLAY_KHR_IMPL_HPP

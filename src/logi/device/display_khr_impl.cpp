@@ -1,6 +1,6 @@
 /**
  * Project Logi source code
- * Copyright (C) 2019 Primoz Lavric
+ * Copyright (C) 2019 Lana Besevic
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,5 +17,32 @@
  */
 
 #include "logi/device/display_khr_impl.hpp"
+#include "logi/device/physical_device_impl.hpp"
 
-namespace logi {}
+namespace logi {
+
+DisplayKHRImpl::DisplayKHRImpl(PhysicalDeviceImpl& physicalDevice, const vk::DisplayPropertiesKHR& displayProperties)
+  : physicalDevice_(physicalDevice), vkDisplayKHR_(displayProperties.display),
+    displayName_(displayProperties.displayName), physicalDimensions_(displayProperties.physicalDimensions),
+    physicalResolution_(displayProperties.physicalResolution),
+    supportedTransforms_(displayProperties.supportedTransforms),
+    planeReorderPossible_(displayProperties.planeReorderPossible),
+    persistentContent_(displayProperties.persistentContent) {}
+
+VulkanInstanceImpl& DisplayKHRImpl::getInstance() const {
+  return physicalDevice_.getInstance();
+}
+
+PhysicalDeviceImpl& DisplayKHRImpl::getPhysicalDevice() const {
+  return physicalDevice_;
+}
+
+const vk::DispatchLoaderDynamic& DisplayKHRImpl::getDispatcher() const {
+  return physicalDevice_.getDispatcher();
+}
+
+DisplayKHRImpl::operator vk::DisplayKHR() const {
+  return vkDisplayKHR_;
+}
+
+}

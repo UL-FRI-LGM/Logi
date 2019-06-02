@@ -30,7 +30,7 @@ class LogicalDeviceImpl;
 
 class PipelineLayoutImpl : public VulkanObject<PipelineLayoutImpl> {
  public:
-  PipelineLayoutImpl(LogicalDeviceImpl& logical_device, const vk::PipelineLayoutCreateInfo& create_info,
+  PipelineLayoutImpl(LogicalDeviceImpl& logicalDevice, const vk::PipelineLayoutCreateInfo& createInfo,
                      const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   // region Logi Declarations
