@@ -17,6 +17,7 @@
  */
 
 #include "logi/command/command_pool_impl.hpp"
+#include "logi/command/command_buffer_impl.hpp"
 #include "logi/device/logical_device_impl.hpp"
 
 namespace logi {
@@ -30,9 +31,18 @@ CommandPoolImpl::CommandPoolImpl(LogicalDeviceImpl& logicalDevice, const vk::Com
 
 // region Vulkan Definitions
 
-void CommandPoolImpl::freeCommandBuffers(vk::ArrayProxy<const vk::CommandBuffer> commandBuffers) const {
-  vk::Device vkDevice = logicalDevice_;
-  vkDevice.freeCommandBuffers(vkCommandPool_, commandBuffers, getDispatcher());
+void CommandPoolImpl::freeCommandBuffers(const std::vector<size_t>& cmdBufferIds) {
+  std::vector<vk::CommandBuffer> vkCmdBuffers;
+  vkCmdBuffers.reserve(cmdBufferIds.size());
+
+  // Collect VK handles and destroy logi command buffers.
+  for (size_t id : cmdBufferIds) {
+    vkCmdBuffers.emplace_back(static_cast<vk::CommandBuffer>(*VulkanObjectComposite<CommandBufferImpl>::getObject(id)));
+    VulkanObjectComposite<CommandBufferImpl>::destroyObject(id);
+  }
+
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  vkDevice.freeCommandBuffers(vkCommandPool_, vkCmdBuffers, getDispatcher());
 }
 
 vk::ResultValueType<void>::type CommandPoolImpl::reset(const vk::CommandPoolResetFlags& flags) const {
@@ -71,7 +81,7 @@ const vk::DispatchLoaderDynamic& CommandPoolImpl::getDispatcher() const {
 }
 
 void CommandPoolImpl::destroy() const {
-  // TODO
+  logicalDevice_.destroyCommandPool(id());
 }
 
 CommandPoolImpl::operator vk::CommandPool() const {
@@ -79,9 +89,26 @@ CommandPoolImpl::operator vk::CommandPool() const {
 }
 
 void CommandPoolImpl::free() {
-  vk::Device vkDevice = logicalDevice_;
+  VulkanObjectComposite<CommandBufferImpl>::destroyAllObjects();
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.destroy(vkCommandPool_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
+}
+
+std::vector<std::shared_ptr<CommandBufferImpl>> CommandPoolImpl::allocateCommandBuffers(vk::CommandBufferLevel level,
+                                                                                        uint32_t commandBufferCount) {
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  vk::CommandBufferAllocateInfo allocateInfo(vkCommandPool_, level, commandBufferCount);
+
+  std::vector<vk::CommandBuffer> cmdBuffers = vkDevice.allocateCommandBuffers(allocateInfo, getDispatcher());
+  std::vector<std::shared_ptr<CommandBufferImpl>> logiCmdBuffers;
+  logiCmdBuffers.reserve(cmdBuffers.size());
+
+  for (const auto& buffer : cmdBuffers) {
+    logiCmdBuffers.emplace_back(VulkanObjectComposite<CommandBufferImpl>::createObject(*this, buffer));
+  }
+
+  return logiCmdBuffers;
 }
 
 // endregion

@@ -33,6 +33,14 @@ class PipelineCacheImpl : public VulkanObject<PipelineCacheImpl> {
   PipelineCacheImpl(LogicalDeviceImpl& logical_device, const vk::PipelineCacheCreateInfo& create_info,
                     const std::optional<vk::AllocationCallbacks>& allocator = {});
 
+  // region Vulkan Commands
+
+  typename vk::ResultValueType<std::vector<uint8_t>>::type getPipelineCacheData() const;
+
+  vk::ResultValueType<void>::type mergeCaches(const vk::ArrayProxy<const vk::PipelineCache>& caches) const;
+
+  // endregion
+
   // region Logi Declarations
 
   VulkanInstanceImpl& getInstance() const;

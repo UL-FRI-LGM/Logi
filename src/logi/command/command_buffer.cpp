@@ -170,6 +170,10 @@ void CommandBuffer::pipelineBarrier(const vk::PipelineStageFlags& srcStageMask, 
                            imageMemoryBarriers);
 }
 
+vk::ResultValueType<void>::type CommandBuffer::reset(const vk::CommandBufferResetFlags& flags) const {
+  return object_->reset(flags);
+}
+
 void CommandBuffer::resetEvent(vk::Event event, const vk::PipelineStageFlags& stageMask) const {
   object_->resetEvent(event, stageMask);
 }

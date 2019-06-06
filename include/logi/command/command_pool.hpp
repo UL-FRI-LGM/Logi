@@ -21,6 +21,8 @@
 
 #include <vulkan/vulkan.hpp>
 #include "logi/base/handle.hpp"
+#include "logi/command/command_buffer.hpp"
+#include "logi/command/command_buffer_impl.hpp"
 #include "logi/command/command_pool_impl.hpp"
 
 namespace logi {
@@ -29,14 +31,25 @@ class CommandPoolImpl;
 class VulkanInstance;
 class PhysicalDevice;
 class LogicalDevice;
+class CommandBuffer;
 
 class CommandPool : public Handle<CommandPoolImpl> {
  public:
   using Handle::Handle;
 
+  // region Sub-Handles
+
+  std::vector<CommandBuffer> allocateCommandBuffers(vk::CommandBufferLevel level, uint32_t commandBufferCount);
+
+  template <typename NextType>
+  std::vector<CommandBuffer> allocateCommandBuffers(vk::CommandBufferLevel level, uint32_t commandBufferCount,
+                                                    const NextType& next);
+
+  // endregion
+
   // region Vulkan Declarations
 
-  void freeCommandBuffers(vk::ArrayProxy<const vk::CommandBuffer> commandBuffers) const;
+  void freeCommandBuffers(const std::vector<CommandBuffer>& commandBuffers) const;
 
   vk::ResultValueType<void>::type reset(const vk::CommandPoolResetFlags& flags = vk::CommandPoolResetFlags()) const;
 
@@ -62,6 +75,14 @@ class CommandPool : public Handle<CommandPoolImpl> {
 
   // endregion
 };
+
+template <typename NextType>
+std::vector<CommandBuffer> CommandPool::allocateCommandBuffers(vk::CommandBufferLevel level,
+                                                               uint32_t commandBufferCount, const NextType& next) {
+  std::vector<std::shared_ptr<CommandBufferImpl>> cmdBuffersImpl =
+    object_->allocateCommandBuffers(level, commandBufferCount, next);
+  return std::vector<CommandBuffer>(cmdBuffersImpl.begin(), cmdBuffersImpl.end());
+}
 
 } // namespace logi
 

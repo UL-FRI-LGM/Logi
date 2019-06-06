@@ -23,6 +23,15 @@
 
 namespace logi {
 
+typename vk::ResultValueType<std::vector<uint8_t>>::type PipelineCache::getPipelineCacheData() const {
+  return object_->getPipelineCacheData();
+}
+
+vk::ResultValueType<void>::type
+  PipelineCache::mergeCaches(const vk::ArrayProxy<const vk::PipelineCache>& caches) const {
+  return object_->mergeCaches(caches);
+}
+
 VulkanInstance PipelineCache::getInstance() const {
   return VulkanInstance(object_->getInstance().shared_from_this());
 }

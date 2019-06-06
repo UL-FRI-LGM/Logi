@@ -169,6 +169,10 @@ void CommandBufferImpl::pipelineBarrier(const vk::PipelineStageFlags& srcStageMa
                                    imageMemoryBarriers, getDispatcher());
 }
 
+vk::ResultValueType<void>::type CommandBufferImpl::reset(const vk::CommandBufferResetFlags& flags) const {
+  return vkCommandBuffer_.reset(flags, getDispatcher());
+}
+
 void CommandBufferImpl::resetEvent(vk::Event event, const vk::PipelineStageFlags& stageMask) const {
   vkCommandBuffer_.resetEvent(event, stageMask, getDispatcher());
 }
@@ -508,7 +512,7 @@ const vk::DispatchLoaderDynamic& CommandBufferImpl::getDispatcher() const {
 }
 
 void CommandBufferImpl::destroy() const {
-  // TODO
+  commandPool_.freeCommandBuffers({id()});
 }
 
 CommandBufferImpl::operator vk::CommandBuffer() const {

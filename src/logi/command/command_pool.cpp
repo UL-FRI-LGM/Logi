@@ -17,6 +17,8 @@
  */
 
 #include "logi/command/command_pool.hpp"
+#include "logi/command/command_buffer_impl.hpp"
+#include "logi/command/command_pool_impl.hpp"
 #include "logi/device/logical_device_impl.hpp"
 #include "logi/device/physical_device_impl.hpp"
 #include "logi/instance/vulkan_instance.hpp"
@@ -24,10 +26,24 @@
 
 namespace logi {
 
+std::vector<CommandBuffer> CommandPool::allocateCommandBuffers(vk::CommandBufferLevel level,
+                                                               uint32_t commandBufferCount) {
+  std::vector<std::shared_ptr<CommandBufferImpl>> cmdBuffersImpl =
+    object_->allocateCommandBuffers(level, commandBufferCount);
+  return std::vector<CommandBuffer>(cmdBuffersImpl.begin(), cmdBuffersImpl.end());
+}
+
 // region Vulkan Definitions
 
-void CommandPool::freeCommandBuffers(vk::ArrayProxy<const vk::CommandBuffer> commandBuffers) const {
-  object_->freeCommandBuffers(commandBuffers);
+void CommandPool::freeCommandBuffers(const std::vector<CommandBuffer>& commandBuffers) const {
+  std::vector<size_t> ids;
+  ids.reserve(commandBuffers.size());
+
+  for (const auto& cmdBuffer : commandBuffers) {
+    ids.emplace_back(cmdBuffer.id());
+  }
+
+  object_->freeCommandBuffers(ids);
 }
 
 vk::ResultValueType<void>::type CommandPool::reset(const vk::CommandPoolResetFlags& flags) const {

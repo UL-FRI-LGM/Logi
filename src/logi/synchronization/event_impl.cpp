@@ -60,7 +60,7 @@ const vk::DispatchLoaderDynamic& EventImpl::getDispatcher() const {
 }
 
 void EventImpl::destroy() const {
-  // TODO
+  logicalDevice_.destroyEvent(id());
 }
 
 EventImpl::operator vk::Event() const {

@@ -45,7 +45,7 @@ const vk::DispatchLoaderDynamic& QueryPoolImpl::getDispatcher() const {
 }
 
 void QueryPoolImpl::destroy() const {
-  // TODO
+  logicalDevice_.destroyQueryPool(id());
 }
 
 QueryPoolImpl::operator vk::QueryPool() const {

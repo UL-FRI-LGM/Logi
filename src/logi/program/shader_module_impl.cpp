@@ -16,12 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
+#include "logi/program/shader_module_impl.hpp"
 #include <numeric>
 #include <spirv_cross.hpp>
 #include <utility>
 #include "logi/device/logical_device_impl.hpp"
-#include "logi/program/shader_module_impl.hpp"
 
 namespace logi {
 
@@ -208,7 +207,7 @@ const vk::DispatchLoaderDynamic& ShaderModuleImpl::getDispatcher() const {
 }
 
 void ShaderModuleImpl::destroy() const {
-  // TODO
+  logicalDevice_.destroyShaderModule(id());
 }
 
 ShaderModuleImpl::operator vk::ShaderModule() const {
@@ -427,4 +426,4 @@ vk::Format ShaderModuleImpl::SPIRTypeToVertexBufferFormat(const spirv_cross::SPI
   }
 }
 
-}
+} // namespace logi

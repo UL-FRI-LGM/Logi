@@ -206,9 +206,10 @@ vk::DeviceGeneratedCommandsLimitsNVX
   return vkPhysicalDevice_.getGeneratedCommandsPropertiesNVX(features, getDispatcher());
 }
 
-LogicalDevice PhysicalDeviceImpl::createLogicalDevice(const vk::DeviceCreateInfo& createInfo,
-                                                      const std::optional<vk::AllocationCallbacks>& allocator) {
-  return LogicalDevice(VulkanObjectComposite<LogicalDeviceImpl>::createObject(*this, createInfo, allocator));
+const std::shared_ptr<LogicalDeviceImpl>&
+  PhysicalDeviceImpl::createLogicalDevice(const vk::DeviceCreateInfo& createInfo,
+                                          const std::optional<vk::AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<LogicalDeviceImpl>::createObject(*this, createInfo, allocator);
 }
 
 void PhysicalDeviceImpl::destroyLogicalDevice(size_t id) {

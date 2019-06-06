@@ -17,10 +17,18 @@
  */
 
 #include "logi/device/logical_device_impl.hpp"
+#include "logi/command/command_pool_impl.hpp"
 #include "logi/device/physical_device_impl.hpp"
 #include "logi/instance/vulkan_instance_impl.hpp"
-#include "logi/queue/queue_family.hpp"
+#include "logi/program/descriptor_set_layout_impl.hpp"
+#include "logi/program/pipeline_cache_impl.hpp"
+#include "logi/program/pipeline_layout_impl.hpp"
+#include "logi/program/shader_module_impl.hpp"
+#include "logi/query/query_pool_impl.hpp"
 #include "logi/queue/queue_family_impl.hpp"
+#include "logi/synchronization/event_impl.hpp"
+#include "logi/synchronization/fence_impl.hpp"
+#include "logi/synchronization/semaphore_impl.hpp"
 
 namespace logi {
 
@@ -43,10 +51,100 @@ LogicalDeviceImpl::LogicalDeviceImpl(PhysicalDeviceImpl& physicalDevice, const v
   }
 }
 
-std::vector<QueueFamily> LogicalDeviceImpl::getQueueFamilies() const {
-  auto familiesMap = VulkanObjectComposite<QueueFamilyImpl>::getHandles();
+const std::shared_ptr<ShaderModuleImpl>&
+  LogicalDeviceImpl::createShaderModule(const vk::ShaderModuleCreateInfo& createInfo,
+                                        const std::optional<vk::AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<ShaderModuleImpl>::createObject(*this, createInfo, allocator);
+}
 
-  std::vector<QueueFamily> queueFamilies;
+void LogicalDeviceImpl::destroyShaderModule(size_t id) {
+  VulkanObjectComposite<ShaderModuleImpl>::destroyObject(id);
+}
+
+const std::shared_ptr<PipelineCacheImpl>&
+  LogicalDeviceImpl::createPipelineCache(const vk::PipelineCacheCreateInfo& createInfo,
+                                         const std::optional<AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<PipelineCacheImpl>::createObject(*this, createInfo, allocator);
+}
+
+void LogicalDeviceImpl::destroyPipelineCache(size_t id) {
+  VulkanObjectComposite<PipelineCacheImpl>::destroyObject(id);
+}
+
+const std::shared_ptr<DescriptorSetLayoutImpl>&
+  LogicalDeviceImpl::createDescriptorSetLayout(const vk::DescriptorSetLayoutCreateInfo& createInfo,
+                                               const std::optional<AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<DescriptorSetLayoutImpl>::createObject(*this, createInfo, allocator);
+}
+
+void LogicalDeviceImpl::destroyDescriptorSetLayout(size_t id) {
+  VulkanObjectComposite<DescriptorSetLayoutImpl>::destroyObject(id);
+}
+
+const std::shared_ptr<PipelineLayoutImpl>&
+  LogicalDeviceImpl::createPipelineLayout(const vk::PipelineLayoutCreateInfo& createInfo,
+                                          const std::optional<AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<PipelineLayoutImpl>::createObject(*this, createInfo, allocator);
+}
+
+void LogicalDeviceImpl::destroyPipelineLayout(size_t id) {
+  VulkanObjectComposite<PipelineLayoutImpl>::destroyObject(id);
+}
+
+const std::shared_ptr<CommandPoolImpl>&
+  LogicalDeviceImpl::createCommandPool(const vk::CommandPoolCreateInfo& createInfo,
+                                       const std::optional<AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<CommandPoolImpl>::createObject(*this, createInfo, allocator);
+}
+
+void LogicalDeviceImpl::destroyCommandPool(size_t id) {
+  VulkanObjectComposite<CommandPoolImpl>::destroyObject(id);
+}
+
+const std::shared_ptr<QueryPoolImpl>&
+  LogicalDeviceImpl::createQueryPool(const vk::QueryPoolCreateInfo& createInfo,
+                                     const std::optional<AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<QueryPoolImpl>::createObject(*this, createInfo, allocator);
+}
+void LogicalDeviceImpl::destroyQueryPool(size_t id) {
+  VulkanObjectComposite<QueryPoolImpl>::destroyObject(id);
+}
+
+const std::shared_ptr<EventImpl>&
+  LogicalDeviceImpl::createEvent(const vk::EventCreateInfo& createInfo,
+                                 const std::optional<vk::AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<EventImpl>::createObject(*this, createInfo, allocator);
+}
+
+void LogicalDeviceImpl::destroyEvent(size_t id) {
+  VulkanObjectComposite<EventImpl>::destroyObject(id);
+}
+
+const std::shared_ptr<FenceImpl>&
+  LogicalDeviceImpl::createFence(const vk::FenceCreateInfo& createInfo,
+                                 const std::optional<vk::AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<FenceImpl>::createObject(*this, createInfo, allocator);
+}
+
+void LogicalDeviceImpl::destroyFence(size_t id) {
+  VulkanObjectComposite<FenceImpl>::destroyObject(id);
+}
+
+const std::shared_ptr<SemaphoreImpl>&
+  LogicalDeviceImpl::createSemaphore(const vk::SemaphoreCreateInfo& createInfo,
+                                     const std::optional<vk::AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<SemaphoreImpl>::createObject(*this, createInfo, allocator);
+}
+
+void LogicalDeviceImpl::destroySemaphore(size_t id) {
+  VulkanObjectComposite<SemaphoreImpl>::destroyObject(id);
+}
+
+std::vector<std::shared_ptr<QueueFamilyImpl>> LogicalDeviceImpl::enumerateQueueFamilies() const {
+  std::unordered_map<size_t, std::shared_ptr<QueueFamilyImpl>> familiesMap =
+    VulkanObjectComposite<QueueFamilyImpl>::getHandles();
+
+  std::vector<std::shared_ptr<QueueFamilyImpl>> queueFamilies;
   queueFamilies.reserve(familiesMap.size());
 
   for (const auto& entry : familiesMap) {

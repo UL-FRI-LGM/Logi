@@ -45,7 +45,7 @@ const vk::DispatchLoaderDynamic& SemaphoreImpl::getDispatcher() const {
 }
 
 void SemaphoreImpl::destroy() const {
-  // TODO
+  logicalDevice_.destroySemaphore(id());
 }
 
 SemaphoreImpl::operator vk::Semaphore() const {

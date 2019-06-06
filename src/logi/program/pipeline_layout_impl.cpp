@@ -46,7 +46,7 @@ const vk::DispatchLoaderDynamic& PipelineLayoutImpl::getDispatcher() const {
 }
 
 void PipelineLayoutImpl::destroy() const {
-  // TODO
+  logicalDevice_.destroyPipelineLayout(id());
 }
 
 PipelineLayoutImpl::operator vk::PipelineLayout() const {

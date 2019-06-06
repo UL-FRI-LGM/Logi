@@ -16,10 +16,22 @@ class Structure {
   }
 };
 
+class SubpassDescription {};
+
 class InstanceCreateInfo : public Structure<vk::InstanceCreateInfo> {
  private:
   vk::InstanceCreateFlags& flags = structure_.flags;
 };
+
+vk::SubpassDescription generateSubpassDescription() {
+  std::vector<vk::AttachmentReference> references;
+
+  vk::SubpassDescription description;
+  description.colorAttachmentCount = references.size();
+  description.pColorAttachments = references.data();
+
+  return description;
+}
 
 TEST(ShaderReflection, Basic) {
   vk::ApplicationInfo appInfo;

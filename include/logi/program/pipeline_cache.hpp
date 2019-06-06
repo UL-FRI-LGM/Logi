@@ -33,6 +33,14 @@ class PipelineCache : public Handle<PipelineCacheImpl> {
  public:
   using Handle::Handle;
 
+  // region Vulkan Commands
+
+  typename vk::ResultValueType<std::vector<uint8_t>>::type getPipelineCacheData() const;
+
+  vk::ResultValueType<void>::type mergeCaches(const vk::ArrayProxy<const vk::PipelineCache>& caches) const;
+
+  // endregion Vulkan Commands
+
   // region Logi Declarations
 
   VulkanInstance getInstance() const;

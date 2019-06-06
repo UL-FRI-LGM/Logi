@@ -227,8 +227,9 @@ class PhysicalDeviceImpl : public VulkanObject<PhysicalDeviceImpl>, public Vulka
 
   // region Logi Declarations
 
-  LogicalDevice createLogicalDevice(const vk::DeviceCreateInfo& createInfo,
-                                    const std::optional<vk::AllocationCallbacks>& allocator = {});
+  const std::shared_ptr<LogicalDeviceImpl>&
+    createLogicalDevice(const vk::DeviceCreateInfo& createInfo,
+                        const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyLogicalDevice(size_t id);
 

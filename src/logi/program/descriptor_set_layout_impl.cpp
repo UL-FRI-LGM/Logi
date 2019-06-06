@@ -47,7 +47,7 @@ const vk::DispatchLoaderDynamic& DescriptorSetLayoutImpl::getDispatcher() const 
 }
 
 void DescriptorSetLayoutImpl::destroy() const {
-  // TODO
+  logicalDevice_.destroyDescriptorSetLayout(id());
 }
 
 DescriptorSetLayoutImpl::operator vk::DescriptorSetLayout() const {

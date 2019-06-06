@@ -50,7 +50,7 @@ const vk::DispatchLoaderDynamic& FenceImpl::getDispatcher() const {
 }
 
 void FenceImpl::destroy() const {
-  // TODO
+  logicalDevice_.destroyFence(id());
 }
 
 FenceImpl::operator vk::Fence() const {

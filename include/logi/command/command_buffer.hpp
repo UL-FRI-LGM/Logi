@@ -119,6 +119,8 @@ class CommandBuffer : public Handle<CommandBufferImpl> {
     object_->pushConstants(layout, stageFlags, offset, values, getDispatcher());
   }
 
+  vk::ResultValueType<void>::type reset(const vk::CommandBufferResetFlags& flags) const;
+
   void resetEvent(vk::Event event, const vk::PipelineStageFlags& stageMask) const;
 
   void resetQueryPool(vk::QueryPool queryPool, uint32_t firstQuery, uint32_t queryCount) const;

@@ -24,9 +24,20 @@ namespace logi {
 PipelineCacheImpl::PipelineCacheImpl(LogicalDeviceImpl& logicalDevice, const vk::PipelineCacheCreateInfo& createInfo,
                                      const std::optional<vk::AllocationCallbacks>& allocator)
   : logicalDevice_(logicalDevice), allocator_(allocator) {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
   vkPipelineCache_ =
     vkDevice.createPipelineCache(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+}
+
+typename vk::ResultValueType<std::vector<uint8_t>>::type PipelineCacheImpl::getPipelineCacheData() const {
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
+  return vkDevice.getPipelineCacheData(vkPipelineCache_, getDispatcher());
+}
+
+vk::ResultValueType<void>::type
+  PipelineCacheImpl::mergeCaches(const vk::ArrayProxy<const vk::PipelineCache>& caches) const {
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
+  return vkDevice.mergePipelineCaches(vkPipelineCache_, caches, getDispatcher());
 }
 
 VulkanInstanceImpl& PipelineCacheImpl::getInstance() const {
@@ -46,7 +57,7 @@ const vk::DispatchLoaderDynamic& PipelineCacheImpl::getDispatcher() const {
 }
 
 void PipelineCacheImpl::destroy() const {
-  // TODO
+  logicalDevice_.destroyPipelineCache(id());
 }
 
 PipelineCacheImpl::operator vk::PipelineCache() const {

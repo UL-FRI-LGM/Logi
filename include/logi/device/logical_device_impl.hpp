@@ -27,14 +27,92 @@ namespace logi {
 class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class QueueFamilyImpl;
-class QueueFamily;
+class ShaderModuleImpl;
+class PipelineCacheImpl;
+class EventImpl;
+class FenceImpl;
+class SemaphoreImpl;
+class QueryPoolImpl;
+class CommandPoolImpl;
+class DescriptorSetLayoutImpl;
+class PipelineLayoutImpl;
 
-class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>, public VulkanObjectComposite<QueueFamilyImpl> {
+class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
+                          public VulkanObjectComposite<QueueFamilyImpl>,
+                          public VulkanObjectComposite<CommandPoolImpl>,
+                          public VulkanObjectComposite<QueryPoolImpl>,
+                          public VulkanObjectComposite<EventImpl>,
+                          public VulkanObjectComposite<FenceImpl>,
+                          public VulkanObjectComposite<SemaphoreImpl>,
+                          public VulkanObjectComposite<ShaderModuleImpl>,
+                          public VulkanObjectComposite<PipelineCacheImpl>,
+                          public VulkanObjectComposite<DescriptorSetLayoutImpl>,
+                          public VulkanObjectComposite<PipelineLayoutImpl> {
  public:
   LogicalDeviceImpl(PhysicalDeviceImpl& physicalDevice, const vk::DeviceCreateInfo& createInfo,
                     const std::optional<vk::AllocationCallbacks>& allocator = {});
 
-  std::vector<QueueFamily> getQueueFamilies() const;
+  // region Sub-Handles
+
+  void destroySemaphore(size_t id);
+
+  const std::shared_ptr<ShaderModuleImpl>&
+    createShaderModule(const vk::ShaderModuleCreateInfo& createInfo,
+                       const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyShaderModule(size_t id);
+
+  const std::shared_ptr<PipelineCacheImpl>&
+    createPipelineCache(const vk::PipelineCacheCreateInfo& createInfo,
+                        const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyPipelineCache(size_t id);
+
+  const std::shared_ptr<DescriptorSetLayoutImpl>&
+    createDescriptorSetLayout(const vk::DescriptorSetLayoutCreateInfo& createInfo,
+                              const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyDescriptorSetLayout(size_t id);
+
+  const std::shared_ptr<PipelineLayoutImpl>&
+    createPipelineLayout(const vk::PipelineLayoutCreateInfo& createInfo,
+                         const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyPipelineLayout(size_t id);
+
+  const std::shared_ptr<CommandPoolImpl>&
+    createCommandPool(const vk::CommandPoolCreateInfo& createInfo,
+                      const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyCommandPool(size_t id);
+
+  const std::shared_ptr<QueryPoolImpl>& createQueryPool(const vk::QueryPoolCreateInfo& createInfo,
+                                                        const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyQueryPool(size_t id);
+
+  const std::shared_ptr<EventImpl>& createEvent(const vk::EventCreateInfo& createInfo,
+                                                const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyEvent(size_t id);
+
+  const std::shared_ptr<FenceImpl>& createFence(const vk::FenceCreateInfo& createInfo,
+                                                const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyFence(size_t id);
+
+  const std::shared_ptr<SemaphoreImpl>& createSemaphore(const vk::SemaphoreCreateInfo& createInfo,
+                                                        const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  std::vector<std::shared_ptr<QueueFamilyImpl>> enumerateQueueFamilies() const;
+
+  // endregion
+
+  // region Vulkan Declarations
+
+  // endregion
+
+  // region Logi Declarations
 
   VulkanInstanceImpl& getInstance() const;
 
@@ -48,6 +126,8 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>, public VulkanO
 
  protected:
   void free() override;
+
+  // endregion
 
  private:
   PhysicalDeviceImpl& physicalDevice_;
