@@ -21,6 +21,9 @@
 
 namespace logi {
 
+CommandBufferImpl::CommandBufferImpl(CommandPoolImpl& commandPool, const vk::CommandBuffer& vkCommandBuffer)
+  : commandPool_(commandPool), vkCommandBuffer_(vkCommandBuffer) {}
+
 // region Vulkan Definitions
 
 vk::ResultValueType<void>::type CommandBufferImpl::begin(const vk::CommandBufferBeginInfo& beginInfo) const {
@@ -487,9 +490,6 @@ void CommandBufferImpl::writeBufferMarkerAMD(vk::PipelineStageFlagBits pipelineS
 // endregion
 
 // region Logi Definitions
-
-CommandBufferImpl::CommandBufferImpl(CommandPoolImpl& commandPool, const vk::CommandBuffer& vkCommandBuffer)
-  : commandPool_(commandPool), vkCommandBuffer_(vkCommandBuffer) {}
 
 VulkanInstanceImpl& CommandBufferImpl::getInstance() const {
   return commandPool_.getInstance();
