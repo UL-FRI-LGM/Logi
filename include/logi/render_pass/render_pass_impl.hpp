@@ -30,7 +30,10 @@ class LogicalDeviceImpl;
 
 class RenderPassImpl : public VulkanObject<RenderPassImpl> {
  public:
-  RenderPassImpl(LogicalDeviceImpl& logical_device, const vk::RenderPassCreateInfo& create_info,
+  RenderPassImpl(LogicalDeviceImpl& logicalDevice, const vk::RenderPassCreateInfo& createInfo,
+                 const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  RenderPassImpl(LogicalDeviceImpl& logicalDevice, const vk::RenderPassCreateInfo2KHR& createInfo,
                  const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   // region Logi Declarations

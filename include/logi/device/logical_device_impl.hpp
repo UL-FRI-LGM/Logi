@@ -36,9 +36,15 @@ class QueryPoolImpl;
 class CommandPoolImpl;
 class DescriptorSetLayoutImpl;
 class PipelineLayoutImpl;
+class MemoryAllocatorImpl;
+class SamplerImpl;
+class RenderPassImpl;
+class FramebufferImpl;
 
 class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
                           public VulkanObjectComposite<QueueFamilyImpl>,
+                          public VulkanObjectComposite<MemoryAllocatorImpl>,
+                          public VulkanObjectComposite<SamplerImpl>,
                           public VulkanObjectComposite<CommandPoolImpl>,
                           public VulkanObjectComposite<QueryPoolImpl>,
                           public VulkanObjectComposite<EventImpl>,
@@ -47,14 +53,26 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
                           public VulkanObjectComposite<ShaderModuleImpl>,
                           public VulkanObjectComposite<PipelineCacheImpl>,
                           public VulkanObjectComposite<DescriptorSetLayoutImpl>,
-                          public VulkanObjectComposite<PipelineLayoutImpl> {
+                          public VulkanObjectComposite<PipelineLayoutImpl>,
+                          public VulkanObjectComposite<RenderPassImpl>,
+                          public VulkanObjectComposite<FramebufferImpl> {
  public:
   LogicalDeviceImpl(PhysicalDeviceImpl& physicalDevice, const vk::DeviceCreateInfo& createInfo,
                     const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   // region Sub-Handles
 
-  void destroySemaphore(size_t id);
+  const std::shared_ptr<MemoryAllocatorImpl>&
+    createMemoryAllocator(vk::DeviceSize preferredLargeHeapBlockSize = 0u, uint32_t frameInUseCount = 0u,
+                          const std::vector<vk::DeviceSize>& heapSizeLimits = {},
+                          const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyMemoryAllocator(size_t id);
+
+  const std::shared_ptr<SamplerImpl>& createSampler(const vk::SamplerCreateInfo& createInfo,
+                                                    const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroySampler(size_t id);
 
   const std::shared_ptr<ShaderModuleImpl>&
     createShaderModule(const vk::ShaderModuleCreateInfo& createInfo,
@@ -103,6 +121,22 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
 
   const std::shared_ptr<SemaphoreImpl>& createSemaphore(const vk::SemaphoreCreateInfo& createInfo,
                                                         const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroySemaphore(size_t id);
+
+  const std::shared_ptr<RenderPassImpl>& createRenderPass(const vk::RenderPassCreateInfo& createInfo,
+                                                          const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  const std::shared_ptr<RenderPassImpl>& createRenderPass(const vk::RenderPassCreateInfo2KHR& createInfo,
+                                                          const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyRenderPass(size_t id);
+
+  const std::shared_ptr<FramebufferImpl>&
+    createFramebuffer(const vk::FramebufferCreateInfo& createInfo,
+                      const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyFramebuffer(size_t id);
 
   std::vector<std::shared_ptr<QueueFamilyImpl>> enumerateQueueFamilies() const;
 

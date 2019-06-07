@@ -16,7 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define VMA_IMPLEMENTATION
 #include "logi/memory/memory_allocator_impl.hpp"
+#include <vk_mem_alloc.h>
 #include "logi/device/logical_device_impl.hpp"
 #include "logi/device/physical_device_impl.hpp"
 #include "logi/instance/vulkan_instance_impl.hpp"
@@ -109,7 +111,7 @@ VmaAllocator MemoryAllocatorImpl::getVmaAllocator() const {
 }
 
 void MemoryAllocatorImpl::destroy() const {
-  // TODO
+  logicalDevice_.destroyMemoryAllocator(id());
 }
 
 void MemoryAllocatorImpl::free() {

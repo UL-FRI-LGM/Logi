@@ -28,6 +28,14 @@ RenderPassImpl::RenderPassImpl(LogicalDeviceImpl& logicalDevice, const vk::Rende
   vkRenderPass_ = vkDevice.createRenderPass(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
+RenderPassImpl::RenderPassImpl(LogicalDeviceImpl& logicalDevice, const vk::RenderPassCreateInfo2KHR& createInfo,
+                               const std::optional<vk::AllocationCallbacks>& allocator)
+  : logicalDevice_(logicalDevice), allocator_(allocator) {
+  vk::Device vkDevice = logicalDevice_;
+  vkRenderPass_ =
+    vkDevice.createRenderPass2KHR(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+}
+
 VulkanInstanceImpl& RenderPassImpl::getInstance() const {
   return logicalDevice_.getInstance();
 }
@@ -45,7 +53,7 @@ const vk::DispatchLoaderDynamic& RenderPassImpl::getDispatcher() const {
 }
 
 void RenderPassImpl::destroy() const {
-  // TODO
+  logicalDevice_.destroyRenderPass(id());
 }
 
 RenderPassImpl::operator vk::RenderPass() const {

@@ -45,7 +45,7 @@ const vk::DispatchLoaderDynamic& SamplerImpl::getDispatcher() const {
 }
 
 void SamplerImpl::destroy() const {
-  // TODO
+  logicalDevice_.destroySampler(id());
 }
 
 SamplerImpl::operator vk::Sampler() const {

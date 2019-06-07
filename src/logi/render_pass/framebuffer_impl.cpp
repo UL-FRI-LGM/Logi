@@ -45,7 +45,7 @@ const vk::DispatchLoaderDynamic& FramebufferImpl::getDispatcher() const {
 }
 
 void FramebufferImpl::destroy() const {
-  // TODO
+  logicalDevice_.destroyFramebuffer(id());
 }
 
 FramebufferImpl::operator vk::Framebuffer() const {

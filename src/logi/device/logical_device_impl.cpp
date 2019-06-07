@@ -20,12 +20,16 @@
 #include "logi/command/command_pool_impl.hpp"
 #include "logi/device/physical_device_impl.hpp"
 #include "logi/instance/vulkan_instance_impl.hpp"
+#include "logi/memory/memory_allocator_impl.hpp"
+#include "logi/memory/sampler_impl.hpp"
 #include "logi/program/descriptor_set_layout_impl.hpp"
 #include "logi/program/pipeline_cache_impl.hpp"
 #include "logi/program/pipeline_layout_impl.hpp"
 #include "logi/program/shader_module_impl.hpp"
 #include "logi/query/query_pool_impl.hpp"
 #include "logi/queue/queue_family_impl.hpp"
+#include "logi/render_pass/framebuffer_impl.hpp"
+#include "logi/render_pass/render_pass_impl.hpp"
 #include "logi/synchronization/event_impl.hpp"
 #include "logi/synchronization/fence_impl.hpp"
 #include "logi/synchronization/semaphore_impl.hpp"
@@ -49,6 +53,28 @@ LogicalDeviceImpl::LogicalDeviceImpl(PhysicalDeviceImpl& physicalDevice, const v
   for (uint32_t i = 0u; i < createInfo.queueCreateInfoCount; i++) {
     VulkanObjectComposite<QueueFamilyImpl>::createObject(*this, createInfo.pQueueCreateInfos[i]);
   }
+}
+
+const std::shared_ptr<MemoryAllocatorImpl>&
+  LogicalDeviceImpl::createMemoryAllocator(vk::DeviceSize preferredLargeHeapBlockSize, uint32_t frameInUseCount,
+                                           const std::vector<vk::DeviceSize>& heapSizeLimits,
+                                           const std::optional<AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<MemoryAllocatorImpl>::createObject(*this, preferredLargeHeapBlockSize, frameInUseCount,
+                                                                  heapSizeLimits, allocator);
+}
+
+void LogicalDeviceImpl::destroyMemoryAllocator(size_t id) {
+  VulkanObjectComposite<MemoryAllocatorImpl>::destroyObject(id);
+}
+
+const std::shared_ptr<SamplerImpl>&
+  LogicalDeviceImpl::createSampler(const vk::SamplerCreateInfo& createInfo,
+                                   const std::optional<AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<SamplerImpl>::createObject(*this, createInfo, allocator);
+}
+
+void LogicalDeviceImpl::destroySampler(size_t id) {
+  VulkanObjectComposite<SamplerImpl>::destroyObject(id);
 }
 
 const std::shared_ptr<ShaderModuleImpl>&
@@ -138,6 +164,32 @@ const std::shared_ptr<SemaphoreImpl>&
 
 void LogicalDeviceImpl::destroySemaphore(size_t id) {
   VulkanObjectComposite<SemaphoreImpl>::destroyObject(id);
+}
+
+const std::shared_ptr<RenderPassImpl>&
+  LogicalDeviceImpl::createRenderPass(const vk::RenderPassCreateInfo& createInfo,
+                                      const std::optional<AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<RenderPassImpl>::createObject(*this, createInfo, allocator);
+}
+
+const std::shared_ptr<RenderPassImpl>&
+  LogicalDeviceImpl::createRenderPass(const vk::RenderPassCreateInfo2KHR& createInfo,
+                                      const std::optional<AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<RenderPassImpl>::createObject(*this, createInfo, allocator);
+}
+
+void LogicalDeviceImpl::destroyRenderPass(size_t id) {
+  VulkanObjectComposite<RenderPassImpl>::destroyObject(id);
+}
+
+const std::shared_ptr<FramebufferImpl>&
+  LogicalDeviceImpl::createFramebuffer(const vk::FramebufferCreateInfo& createInfo,
+                                       const std::optional<AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<FramebufferImpl>::createObject(*this, createInfo, allocator);
+}
+
+void LogicalDeviceImpl::destroyFramebuffer(size_t id) {
+  VulkanObjectComposite<FramebufferImpl>::destroyObject(id);
 }
 
 std::vector<std::shared_ptr<QueueFamilyImpl>> LogicalDeviceImpl::enumerateQueueFamilies() const {
