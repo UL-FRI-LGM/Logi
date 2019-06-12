@@ -31,6 +31,24 @@ CommandPoolImpl::CommandPoolImpl(LogicalDeviceImpl& logicalDevice, const vk::Com
 
 // region Vulkan Definitions
 
+std::vector<std::shared_ptr<CommandBufferImpl>>
+  CommandPoolImpl::allocateCommandBuffers(vk::CommandBufferLevel level, uint32_t commandBufferCount,
+                                          const ConstVkNextProxy<vk::CommandBufferAllocateInfo>& next) {
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  vk::CommandBufferAllocateInfo allocateInfo(vkCommandPool_, level, commandBufferCount);
+  allocateInfo.pNext = next;
+
+  std::vector<vk::CommandBuffer> cmdBuffers = vkDevice.allocateCommandBuffers(allocateInfo, getDispatcher());
+  std::vector<std::shared_ptr<CommandBufferImpl>> logiCmdBuffers;
+  logiCmdBuffers.reserve(cmdBuffers.size());
+
+  for (const auto& buffer : cmdBuffers) {
+    logiCmdBuffers.emplace_back(VulkanObjectComposite<CommandBufferImpl>::createObject(*this, buffer));
+  }
+
+  return logiCmdBuffers;
+}
+
 void CommandPoolImpl::freeCommandBuffers(const std::vector<size_t>& cmdBufferIds) {
   std::vector<vk::CommandBuffer> vkCmdBuffers;
   vkCmdBuffers.reserve(cmdBufferIds.size());
@@ -93,22 +111,6 @@ void CommandPoolImpl::free() {
   auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.destroy(vkCommandPool_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
-}
-
-std::vector<std::shared_ptr<CommandBufferImpl>> CommandPoolImpl::allocateCommandBuffers(vk::CommandBufferLevel level,
-                                                                                        uint32_t commandBufferCount) {
-  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
-  vk::CommandBufferAllocateInfo allocateInfo(vkCommandPool_, level, commandBufferCount);
-
-  std::vector<vk::CommandBuffer> cmdBuffers = vkDevice.allocateCommandBuffers(allocateInfo, getDispatcher());
-  std::vector<std::shared_ptr<CommandBufferImpl>> logiCmdBuffers;
-  logiCmdBuffers.reserve(cmdBuffers.size());
-
-  for (const auto& buffer : cmdBuffers) {
-    logiCmdBuffers.emplace_back(VulkanObjectComposite<CommandBufferImpl>::createObject(*this, buffer));
-  }
-
-  return logiCmdBuffers;
 }
 
 // endregion

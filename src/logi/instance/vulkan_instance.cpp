@@ -29,7 +29,7 @@ namespace logi {
 
 DebugReportCallbackEXT
   VulkanInstance::createDebugReportCallbackEXT(const vk::DebugReportCallbackCreateInfoEXT& createInfo,
-                                               const std::optional<vk::AllocationCallbacks>& allocator = {}) const {
+                                               const std::optional<vk::AllocationCallbacks>& allocator) const {
   return DebugReportCallbackEXT(object_->createDebugReportCallbackEXT(createInfo, allocator));
 }
 

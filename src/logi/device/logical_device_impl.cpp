@@ -227,7 +227,19 @@ LogicalDeviceImpl::operator const vk::Device() const {
 }
 
 void LogicalDeviceImpl::free() {
-  // TODO (Destroy composited objects)
+  VulkanObjectComposite<MemoryAllocatorImpl>::destroyAllObjects();
+  VulkanObjectComposite<SamplerImpl>::destroyAllObjects();
+  VulkanObjectComposite<CommandPoolImpl>::destroyAllObjects();
+  VulkanObjectComposite<QueryPoolImpl>::destroyAllObjects();
+  VulkanObjectComposite<EventImpl>::destroyAllObjects();
+  VulkanObjectComposite<FenceImpl>::destroyAllObjects();
+  VulkanObjectComposite<SemaphoreImpl>::destroyAllObjects();
+  VulkanObjectComposite<ShaderModuleImpl>::destroyAllObjects();
+  VulkanObjectComposite<PipelineCacheImpl>::destroyAllObjects();
+  VulkanObjectComposite<DescriptorSetLayoutImpl>::destroyAllObjects();
+  VulkanObjectComposite<PipelineLayoutImpl>::destroyAllObjects();
+  VulkanObjectComposite<RenderPassImpl>::destroyAllObjects();
+  VulkanObjectComposite<FramebufferImpl>::destroyAllObjects();
   VulkanObjectComposite<QueueFamilyImpl>::destroyAllObjects();
   vkDevice_.destroy(allocator_ ? &allocator_.value() : nullptr, dispatcher_);
   vkDevice_ = nullptr;

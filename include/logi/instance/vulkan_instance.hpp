@@ -34,18 +34,20 @@ class VulkanInstance : public Handle<VulkanInstanceImpl> {
   using Handle::Handle;
 
   // region Sub-Handles
-  DebugReportCallbackEXT createDebugReportCallbackEXT(const vk::DebugReportCallbackCreateInfoEXT& createInfo,
-                                                      const std::optional<vk::AllocationCallbacks>& allocator) const;
+  DebugReportCallbackEXT
+    createDebugReportCallbackEXT(const vk::DebugReportCallbackCreateInfoEXT& createInfo,
+                                 const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
   void destroyDebugReportCallbackEXT(const DebugReportCallbackEXT& callback) const;
 
-  DebugUtilsMessengerEXT createDebugUtilsMessengerEXT(const vk::DebugUtilsMessengerCreateInfoEXT& createInfo,
-                                                      const std::optional<vk::AllocationCallbacks>& allocator) const;
+  DebugUtilsMessengerEXT
+    createDebugUtilsMessengerEXT(const vk::DebugUtilsMessengerCreateInfoEXT& createInfo,
+                                 const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
   void destroyDebugUtilsMessengerEXT(const DebugUtilsMessengerEXT& messenger) const;
 
   SurfaceKHR registerSurfaceKHR(const vk::SurfaceKHR& vkSurface,
-                                const std::optional<vk::AllocationCallbacks>& allocator) const;
+                                const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
 #ifdef VK_USE_PLATFORM_ANDROID_KHR
   SurfaceKHR createAndroidSurfaceKHR(const vk::AndroidSurfaceCreateInfoKHR& createInfo,

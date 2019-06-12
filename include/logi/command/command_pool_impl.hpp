@@ -22,6 +22,7 @@
 #include <vulkan/vulkan.hpp>
 #include "logi/base/vulkan_object.hpp"
 #include "logi/device/logical_device_impl.hpp"
+#include "logi/structures/extension.hpp"
 
 namespace logi {
 
@@ -35,13 +36,9 @@ class CommandPoolImpl : public VulkanObject<CommandPoolImpl>, public VulkanObjec
                   const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   // region Sub-Handles
-
-  std::vector<std::shared_ptr<CommandBufferImpl>> allocateCommandBuffers(vk::CommandBufferLevel level,
-                                                                         uint32_t commandBufferCount);
-
-  template <typename NextType>
   std::vector<std::shared_ptr<CommandBufferImpl>>
-    allocateCommandBuffers(vk::CommandBufferLevel level, uint32_t commandBufferCount, const NextType& next);
+    allocateCommandBuffers(vk::CommandBufferLevel level, uint32_t commandBufferCount,
+                           const ConstVkNextProxy<vk::CommandBufferAllocateInfo>& next = {});
 
   // endregion
 
@@ -81,28 +78,6 @@ class CommandPoolImpl : public VulkanObject<CommandPoolImpl>, public VulkanObjec
   std::optional<vk::AllocationCallbacks> allocator_;
   vk::CommandPool vkCommandPool_;
 };
-
-template <typename NextType>
-std::vector<std::shared_ptr<CommandBufferImpl>> CommandPoolImpl::allocateCommandBuffers(vk::CommandBufferLevel level,
-                                                                                        uint32_t commandBufferCount,
-                                                                                        const NextType& next) {
-  static_assert(vk::isStructureChainValid<vk::CommandBufferAllocateInfo, NextType>::value,
-                "NextType must extend vk::CommandBufferAllocateInfo.");
-
-  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
-  vk::CommandBufferAllocateInfo allocateInfo(vkCommandPool_, level, commandBufferCount);
-  allocateInfo.pNext = &next;
-
-  std::vector<vk::CommandBuffer> cmdBuffers = vkDevice.allocateCommandBuffers(allocateInfo, getDispatcher());
-  std::vector<std::shared_ptr<CommandBufferImpl>> logiCmdBuffers;
-  logiCmdBuffers.reserve(cmdBuffers.size());
-
-  for (const auto& buffer : cmdBuffers) {
-    logiCmdBuffers.emplace_back(VulkanObjectComposite<CommandBufferImpl>::createObject(*this, buffer));
-  }
-
-  return logiCmdBuffers;
-}
 
 } // namespace logi
 

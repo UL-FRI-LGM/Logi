@@ -222,7 +222,10 @@ VulkanInstanceImpl::operator vk::Instance() const {
 }
 
 void VulkanInstanceImpl::free() {
+  VulkanObjectComposite<DebugReportCallbackEXTImpl>::destroyAllObjects();
+  VulkanObjectComposite<DebugUtilsMessengerEXTImpl>::destroyAllObjects();
   VulkanObjectComposite<PhysicalDeviceImpl>::destroyAllObjects();
+  VulkanObjectComposite<SurfaceKHRImpl>::destroyAllObjects();
 
   vkInstance_.destroy(allocator_ ? &allocator_.value() : nullptr);
   VulkanObject::free();

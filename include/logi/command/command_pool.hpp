@@ -39,11 +39,9 @@ class CommandPool : public Handle<CommandPoolImpl> {
 
   // region Sub-Handles
 
-  std::vector<CommandBuffer> allocateCommandBuffers(vk::CommandBufferLevel level, uint32_t commandBufferCount);
-
-  template <typename NextType>
-  std::vector<CommandBuffer> allocateCommandBuffers(vk::CommandBufferLevel level, uint32_t commandBufferCount,
-                                                    const NextType& next);
+  std::vector<CommandBuffer>
+    allocateCommandBuffers(vk::CommandBufferLevel level, uint32_t commandBufferCount,
+                           const ConstVkNextProxy<vk::CommandBufferAllocateInfo>& next = {}) const;
 
   // endregion
 
@@ -75,14 +73,6 @@ class CommandPool : public Handle<CommandPoolImpl> {
 
   // endregion
 };
-
-template <typename NextType>
-std::vector<CommandBuffer> CommandPool::allocateCommandBuffers(vk::CommandBufferLevel level,
-                                                               uint32_t commandBufferCount, const NextType& next) {
-  std::vector<std::shared_ptr<CommandBufferImpl>> cmdBuffersImpl =
-    object_->allocateCommandBuffers(level, commandBufferCount, next);
-  return std::vector<CommandBuffer>(cmdBuffersImpl.begin(), cmdBuffersImpl.end());
-}
 
 } // namespace logi
 

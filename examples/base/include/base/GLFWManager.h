@@ -5,44 +5,43 @@
 #include <vector>
 #include "base/Monitor.h"
 #include "base/Window.h"
-#include "logi/base/PhysicalDevice.h"
 
 class GLFWManager {
-public:
-	GLFWManager(const GLFWManager&) = delete;
-	GLFWManager& operator=(const GLFWManager&) = delete;
-	GLFWManager(GLFWManager&&) = delete;
-	GLFWManager& operator=(GLFWManager&&) = delete;
+ public:
+  GLFWManager(const GLFWManager&) = delete;
+  GLFWManager& operator=(const GLFWManager&) = delete;
+  GLFWManager(GLFWManager&&) = delete;
+  GLFWManager& operator=(GLFWManager&&) = delete;
 
-	static GLFWManager& instance() {
-		static GLFWManager instance;
+  static GLFWManager& instance() {
+    static GLFWManager instance;
 
-		return instance;
-	}
+    return instance;
+  }
 
-	std::vector<Monitor> getMonitors() const;
+  std::vector<Monitor> getMonitors() const;
 
-	Monitor getPrimaryMonitor() const;
+  Monitor getPrimaryMonitor() const;
 
-	void pollEvents() const;
+  void pollEvents() const;
 
   template <typename... Args>
   Window createWindow(Args... args) {
-	  return Window(args...);
+    return Window(args...);
   }
 
 #ifdef GLFW_INCLUDE_VULKAN
-	bool vulkanSupported() const;
+  bool vulkanSupported() const;
 
-	std::vector<const char*> getRequiredInstanceExtensions() const;
+  std::vector<const char*> getRequiredInstanceExtensions() const;
 #endif
 
-private:
-	GLFWManager() {
-		if (!glfwInit()) {
-			throw std::runtime_error("Failed to initialize GLFW.");
-		}
-	}
+ private:
+  GLFWManager() {
+    if (!glfwInit()) {
+      throw std::runtime_error("Failed to initialize GLFW.");
+    }
+  }
 };
 
 #endif // BASE_GLFW_MANAGER_H

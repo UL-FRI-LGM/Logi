@@ -26,10 +26,11 @@
 
 namespace logi {
 
-std::vector<CommandBuffer> CommandPool::allocateCommandBuffers(vk::CommandBufferLevel level,
-                                                               uint32_t commandBufferCount) {
+std::vector<CommandBuffer>
+  CommandPool::allocateCommandBuffers(vk::CommandBufferLevel level, uint32_t commandBufferCount,
+                                      const ConstVkNextProxy<vk::CommandBufferAllocateInfo>& next) const {
   std::vector<std::shared_ptr<CommandBufferImpl>> cmdBuffersImpl =
-    object_->allocateCommandBuffers(level, commandBufferCount);
+    object_->allocateCommandBuffers(level, commandBufferCount, next);
   return std::vector<CommandBuffer>(cmdBuffersImpl.begin(), cmdBuffersImpl.end());
 }
 
