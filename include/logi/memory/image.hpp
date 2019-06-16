@@ -34,6 +34,18 @@ class Image : public Handle<ImageImpl> {
  public:
   using Handle::Handle;
 
+  // region Vulkan Declarations
+
+  vk::MemoryRequirements getMemoryRequirements() const;
+
+  std::vector<vk::SparseImageMemoryRequirements> getSparseMemoryRequirements() const;
+
+  vk::SubresourceLayout getImageSubresourceLayout(const vk::ImageSubresource& subresource) const;
+
+  vk::ResultValueType<vk::ImageDrmFormatModifierPropertiesEXT>::type getDrmFormatModifierPropertiesEXT() const;
+
+  // endregion
+
   // region Logi Declarations
 
   ImageView createImageView(const vk::ImageViewCreateInfo& createInfo,

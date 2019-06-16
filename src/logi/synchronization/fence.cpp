@@ -25,8 +25,32 @@
 
 namespace logi {
 
-bool Fence::getStatus() const {
+vk::Result Fence::getStatus() const {
   return object_->getStatus();
+}
+
+vk::Result Fence::wait(const std::vector<vk::Fence>& fences, vk::Bool32 waitAll, uint64_t timeout) const {
+  return object_->wait(fences, waitAll, timeout);
+}
+vk::Result Fence::wait(uint64_t timeout) const {
+  return object_->wait(timeout);
+}
+
+vk::ResultValueType<void>::type Fence::reset(const std::vector<vk::Fence>& fences) const {
+  return object_->reset(fences);
+}
+
+vk::ResultValueType<void>::type Fence::reset() const {
+  return object_->reset();
+}
+
+vk::Result Fence::wait(const std::vector<Fence>& fences, vk::Bool32 waitAll, uint64_t timeout) {
+  std::vector<vk::Fence> vkFences(fences.begin(), fences.end());
+  return fences[0].wait(vkFences, waitAll, timeout);
+}
+
+vk::ResultValueType<void>::type Fence::reset(const std::vector<Fence>& fences) {
+  return fences[0].reset(std::vector<vk::Fence>(fences.begin(), fences.end()));
 }
 
 VulkanInstance Fence::getInstance() const {

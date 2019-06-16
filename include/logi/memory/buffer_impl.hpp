@@ -37,6 +37,9 @@ class BufferImpl : public VulkanObject<BufferImpl>, public VulkanObjectComposite
              const VmaAllocationCreateInfo& allocationCreateInfo);
 
   // region Vulkan Declarations
+
+  vk::MemoryRequirements getMemoryRequirements() const;
+
   // endregion
 
   // region Logi Declarations

@@ -25,6 +25,10 @@
 
 namespace logi {
 
+vk::MemoryRequirements Buffer::getMemoryRequirements() const {
+  return object_->getMemoryRequirements();
+}
+
 BufferView Buffer::createBufferView(const vk::BufferViewCreateInfo& createInfo,
                                     const std::optional<vk::AllocationCallbacks>& allocator) const {
   return object_->createBufferView(createInfo, allocator);

@@ -28,9 +28,28 @@ FenceImpl::FenceImpl(LogicalDeviceImpl& logicalDevice, const vk::FenceCreateInfo
   vkFence_ = vkDevice.createFence(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
-bool FenceImpl::getStatus() const {
+vk::Result FenceImpl::getStatus() const {
   vk::Device vkDevice;
-  return vkDevice.getFenceStatus(vkFence_, getDispatcher()) == vk::Result::eSuccess;
+  return vkDevice.getFenceStatus(vkFence_, getDispatcher());
+}
+
+vk::Result FenceImpl::wait(const std::vector<vk::Fence>& fences, vk::Bool32 waitAll, uint64_t timeout) const {
+  vk::Device vkDevice;
+  return vkDevice.waitForFences(fences, waitAll, timeout, getDispatcher());
+}
+vk::Result FenceImpl::wait(uint64_t timeout) const {
+  vk::Device vkDevice;
+  return vkDevice.waitForFences({vkFence_}, true, timeout, getDispatcher());
+}
+
+vk::ResultValueType<void>::type FenceImpl::reset(const std::vector<vk::Fence>& fences) const {
+  vk::Device vkDevice;
+  return vkDevice.resetFences(fences, getDispatcher());
+}
+
+vk::ResultValueType<void>::type FenceImpl::reset() const {
+  vk::Device vkDevice;
+  return vkDevice.resetFences({vkFence_}, getDispatcher());
 }
 
 VulkanInstanceImpl& FenceImpl::getInstance() const {

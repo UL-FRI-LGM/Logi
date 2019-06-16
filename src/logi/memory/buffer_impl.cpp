@@ -32,6 +32,11 @@ BufferImpl::BufferImpl(MemoryAllocatorImpl& memoryAllocator, const vk::BufferCre
                   &allocationCreateInfo, reinterpret_cast<VkBuffer*>(&buffer_), &allocation_, nullptr);
 }
 
+vk::MemoryRequirements BufferImpl::getMemoryRequirements() const {
+  vk::Device vkDevice = getLogicalDevice();
+  return vkDevice.getBufferMemoryRequirements(buffer_);
+}
+
 BufferView BufferImpl::createBufferView(const vk::BufferViewCreateInfo& createInfo,
                                         const std::optional<vk::AllocationCallbacks>& allocator) {
   return BufferView(VulkanObjectComposite<BufferViewImpl>::createObject(*this, createInfo, allocator));

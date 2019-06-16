@@ -27,6 +27,7 @@ namespace logi {
 class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class QueueFamilyImpl;
+class SwapchainKHRImpl;
 class ShaderModuleImpl;
 class PipelineCacheImpl;
 class EventImpl;
@@ -35,6 +36,7 @@ class SemaphoreImpl;
 class QueryPoolImpl;
 class CommandPoolImpl;
 class DescriptorSetLayoutImpl;
+class DescriptorPoolImpl;
 class PipelineLayoutImpl;
 class MemoryAllocatorImpl;
 class SamplerImpl;
@@ -44,6 +46,7 @@ class FramebufferImpl;
 class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
                           public VulkanObjectComposite<QueueFamilyImpl>,
                           public VulkanObjectComposite<MemoryAllocatorImpl>,
+                          public VulkanObjectComposite<SwapchainKHRImpl>,
                           public VulkanObjectComposite<SamplerImpl>,
                           public VulkanObjectComposite<CommandPoolImpl>,
                           public VulkanObjectComposite<QueryPoolImpl>,
@@ -53,6 +56,7 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
                           public VulkanObjectComposite<ShaderModuleImpl>,
                           public VulkanObjectComposite<PipelineCacheImpl>,
                           public VulkanObjectComposite<DescriptorSetLayoutImpl>,
+                          public VulkanObjectComposite<DescriptorPoolImpl>,
                           public VulkanObjectComposite<PipelineLayoutImpl>,
                           public VulkanObjectComposite<RenderPassImpl>,
                           public VulkanObjectComposite<FramebufferImpl> {
@@ -91,6 +95,12 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
                               const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyDescriptorSetLayout(size_t id);
+
+  const std::shared_ptr<DescriptorPoolImpl>&
+    createDescriptorPool(const vk::DescriptorPoolCreateInfo& createInfo,
+                         const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyDescriptorPool(size_t id);
 
   const std::shared_ptr<PipelineLayoutImpl>&
     createPipelineLayout(const vk::PipelineLayoutCreateInfo& createInfo,
@@ -137,6 +147,12 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
                       const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyFramebuffer(size_t id);
+
+  const std::shared_ptr<SwapchainKHRImpl>&
+    createSwapchainKHR(const vk::SwapchainCreateInfoKHR& createInfo,
+                       const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroySwapchainKHR(size_t id);
 
   std::vector<std::shared_ptr<QueueFamilyImpl>> enumerateQueueFamilies() const;
 

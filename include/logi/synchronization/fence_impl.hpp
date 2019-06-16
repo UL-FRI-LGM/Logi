@@ -35,7 +35,15 @@ class FenceImpl : public VulkanObject<FenceImpl> {
 
   // region Vulkan Declarations
 
-  bool getStatus() const;
+  vk::Result getStatus() const;
+
+  vk::Result wait(const std::vector<vk::Fence>& fences, vk::Bool32 waitAll, uint64_t timeout) const;
+
+  vk::Result wait(uint64_t timeout) const;
+
+  vk::ResultValueType<void>::type reset(const std::vector<vk::Fence>& fences) const;
+
+  vk::ResultValueType<void>::type reset() const;
 
   // endregion
 

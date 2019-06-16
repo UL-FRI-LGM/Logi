@@ -85,7 +85,7 @@ const vk::DispatchLoaderDynamic& SwapchainKHRImpl::getDispatcher() const {
 }
 
 void SwapchainKHRImpl::destroy() const {
-  // TODO
+  logicalDevice_.destroySwapchainKHR(id());
 }
 
 SwapchainKHRImpl::operator vk::SwapchainKHR() const {

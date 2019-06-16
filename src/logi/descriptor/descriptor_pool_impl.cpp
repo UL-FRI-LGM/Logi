@@ -57,7 +57,7 @@ const vk::DispatchLoaderDynamic& DescriptorPoolImpl::getDispatcher() const {
 }
 
 void DescriptorPoolImpl::destroy() const {
-  // TODO
+  logicalDevice_.destroyDescriptorPool(id());
 }
 
 DescriptorPoolImpl::operator vk::DescriptorPool() const {

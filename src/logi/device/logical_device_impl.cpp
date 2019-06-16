@@ -18,6 +18,7 @@
 
 #include "logi/device/logical_device_impl.hpp"
 #include "logi/command/command_pool_impl.hpp"
+#include "logi/descriptor/descriptor_pool_impl.hpp"
 #include "logi/device/physical_device_impl.hpp"
 #include "logi/instance/vulkan_instance_impl.hpp"
 #include "logi/memory/memory_allocator_impl.hpp"
@@ -30,6 +31,7 @@
 #include "logi/queue/queue_family_impl.hpp"
 #include "logi/render_pass/framebuffer_impl.hpp"
 #include "logi/render_pass/render_pass_impl.hpp"
+#include "logi/swapchain/swapchain_khr_impl.hpp"
 #include "logi/synchronization/event_impl.hpp"
 #include "logi/synchronization/fence_impl.hpp"
 #include "logi/synchronization/semaphore_impl.hpp"
@@ -105,6 +107,15 @@ const std::shared_ptr<DescriptorSetLayoutImpl>&
 
 void LogicalDeviceImpl::destroyDescriptorSetLayout(size_t id) {
   VulkanObjectComposite<DescriptorSetLayoutImpl>::destroyObject(id);
+}
+
+const std::shared_ptr<DescriptorPoolImpl>&
+  LogicalDeviceImpl::createDescriptorPool(const vk::DescriptorPoolCreateInfo& createInfo,
+                                          const std::optional<AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<DescriptorPoolImpl>::createObject(*this, createInfo, allocator);
+}
+void LogicalDeviceImpl::destroyDescriptorPool(size_t id) {
+  VulkanObjectComposite<DescriptorPoolImpl>::destroyObject(id);
 }
 
 const std::shared_ptr<PipelineLayoutImpl>&
@@ -192,6 +203,16 @@ void LogicalDeviceImpl::destroyFramebuffer(size_t id) {
   VulkanObjectComposite<FramebufferImpl>::destroyObject(id);
 }
 
+const std::shared_ptr<SwapchainKHRImpl>&
+  LogicalDeviceImpl::createSwapchainKHR(const vk::SwapchainCreateInfoKHR& createInfo,
+                                        const std::optional<AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<SwapchainKHRImpl>::createObject(createInfo, allocator);
+}
+
+void LogicalDeviceImpl::destroySwapchainKHR(size_t id) {
+  return VulkanObjectComposite<SwapchainKHRImpl>::destroyObject(id);
+}
+
 std::vector<std::shared_ptr<QueueFamilyImpl>> LogicalDeviceImpl::enumerateQueueFamilies() const {
   std::unordered_map<size_t, std::shared_ptr<QueueFamilyImpl>> familiesMap =
     VulkanObjectComposite<QueueFamilyImpl>::getHandles();
@@ -236,10 +257,12 @@ void LogicalDeviceImpl::free() {
   VulkanObjectComposite<SemaphoreImpl>::destroyAllObjects();
   VulkanObjectComposite<ShaderModuleImpl>::destroyAllObjects();
   VulkanObjectComposite<PipelineCacheImpl>::destroyAllObjects();
+  VulkanObjectComposite<DescriptorPoolImpl>::destroyAllObjects();
   VulkanObjectComposite<DescriptorSetLayoutImpl>::destroyAllObjects();
   VulkanObjectComposite<PipelineLayoutImpl>::destroyAllObjects();
   VulkanObjectComposite<RenderPassImpl>::destroyAllObjects();
   VulkanObjectComposite<FramebufferImpl>::destroyAllObjects();
+  VulkanObjectComposite<SwapchainKHRImpl>::destroyAllObjects();
   VulkanObjectComposite<QueueFamilyImpl>::destroyAllObjects();
   vkDevice_.destroy(allocator_ ? &allocator_.value() : nullptr, dispatcher_);
   vkDevice_ = nullptr;

@@ -25,6 +25,21 @@
 
 namespace logi {
 
+vk::MemoryRequirements Image::getMemoryRequirements() const {
+  return object_->getMemoryRequirements();
+}
+
+std::vector<vk::SparseImageMemoryRequirements> Image::getSparseMemoryRequirements() const {
+  return object_->getSparseMemoryRequirements();
+}
+vk::SubresourceLayout Image::getImageSubresourceLayout(const vk::ImageSubresource& subresource) const {
+  return object_->getImageSubresourceLayout(subresource);
+}
+
+vk::ResultValueType<vk::ImageDrmFormatModifierPropertiesEXT>::type Image::getDrmFormatModifierPropertiesEXT() const {
+  return object_->getDrmFormatModifierPropertiesEXT();
+}
+
 ImageView Image::createImageView(const vk::ImageViewCreateInfo& createInfo,
                                  const std::optional<vk::AllocationCallbacks>& allocator) {
   return object_->createImageView(createInfo, allocator);

@@ -34,6 +34,12 @@ class Buffer : public Handle<BufferImpl> {
  public:
   using Handle::Handle;
 
+  // region Vulkan Declarations
+
+  vk::MemoryRequirements getMemoryRequirements() const;
+
+  // endregion
+
   // region Logi Declarations
 
   BufferView createBufferView(const vk::BufferViewCreateInfo& createInfo,

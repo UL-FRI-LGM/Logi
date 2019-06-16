@@ -32,6 +32,27 @@ ImageImpl::ImageImpl(MemoryAllocatorImpl& memoryAllocator, const vk::ImageCreate
                  &allocationCreateInfo, reinterpret_cast<VkImage*>(&image_), &allocation_, nullptr);
 }
 
+vk::MemoryRequirements ImageImpl::getMemoryRequirements() const {
+  vk::Device device = getLogicalDevice();
+  return device.getImageMemoryRequirements(image_, getDispatcher());
+}
+
+std::vector<vk::SparseImageMemoryRequirements> ImageImpl::getSparseMemoryRequirements() const {
+  vk::Device device = getLogicalDevice();
+  return device.getImageSparseMemoryRequirements(image_, getDispatcher());
+}
+
+vk::SubresourceLayout ImageImpl::getImageSubresourceLayout(const vk::ImageSubresource& subresource) const {
+  vk::Device device = getLogicalDevice();
+  return device.getImageSubresourceLayout(image_, subresource, getDispatcher());
+}
+
+vk::ResultValueType<vk::ImageDrmFormatModifierPropertiesEXT>::type
+  ImageImpl::getDrmFormatModifierPropertiesEXT() const {
+  vk::Device device = getLogicalDevice();
+  return device.getImageDrmFormatModifierPropertiesEXT(image_, getDispatcher());
+}
+
 ImageView ImageImpl::createImageView(const vk::ImageViewCreateInfo& createInfo,
                                      const std::optional<vk::AllocationCallbacks>& allocator) {
   return ImageView(VulkanObjectComposite<ImageViewImpl>::createObject(*this, createInfo, allocator));
