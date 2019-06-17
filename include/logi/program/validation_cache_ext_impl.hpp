@@ -16,10 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGI_DEVICE_DISPLAY_KHR_IMPL_HPP
-#define LOGI_DEVICE_DISPLAY_KHR_IMPL_HPP
+#ifndef LOGI_PROGRAM_VALIDATION_CACHE_EXT_IMPL_HPP
+#define LOGI_PROGRAM_VALIDATION_CACHE_EXT_IMPL_HPP
 
-#include <iostream>
 #include <vulkan/vulkan.hpp>
 #include "logi/base/vulkan_object.hpp"
 
@@ -27,12 +26,19 @@ namespace logi {
 
 class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
+class LogicalDeviceImpl;
 
-class DisplayKHRImpl : public VulkanObject<DisplayKHRImpl> {
+class ValidationCacheEXTImpl : public VulkanObject<ValidationCacheEXTImpl> {
  public:
-  DisplayKHRImpl(PhysicalDeviceImpl& physicalDevice, const vk::DisplayPropertiesKHR& displayProperties);
+  ValidationCacheEXTImpl(LogicalDeviceImpl& logicalDevice, const vk::ValidationCacheCreateInfoEXT& createInfo,
+                         const std::optional<vk::AllocationCallbacks>& allocator = {});
 
-  // region Vulkan Declarations
+  // region Vulkan Commands
+
+  vk::ResultValueType<void>::type
+    mergeValidationCachesEXT(vk::ArrayProxy<const vk::ValidationCacheEXT> srcCaches) const;
+
+  typename vk::ResultValueType<std::vector<uint8_t>>::type getValidationCacheDataEXT() const;
 
   // endregion
 
@@ -42,23 +48,25 @@ class DisplayKHRImpl : public VulkanObject<DisplayKHRImpl> {
 
   PhysicalDeviceImpl& getPhysicalDevice() const;
 
+  LogicalDeviceImpl& getLogicalDevice() const;
+
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
-  operator vk::DisplayKHR() const;
+  void destroy() const;
+
+  operator vk::ValidationCacheEXT() const;
+
+ protected:
+  void free() override;
 
   // endregion
 
  private:
-  PhysicalDeviceImpl& physicalDevice_;
-  vk::DisplayKHR vkDisplayKHR_;
-  std::string displayName_;
-  vk::Extent2D physicalDimensions_;
-  vk::Extent2D physicalResolution_;
-  vk::SurfaceTransformFlagsKHR supportedTransforms_;
-  vk::Bool32 planeReorderPossible_;
-  vk::Bool32 persistentContent_;
+  LogicalDeviceImpl& logicalDevice_;
+  std::optional<vk::AllocationCallbacks> allocator_;
+  vk::ValidationCacheEXT vkValidationCacheEXT_;
 };
 
 } // namespace logi
 
-#endif // LOGI_DEVICE_DISPLAY_KHR_IMPL_HPP
+#endif // LOGI_PROGRAM_VALIDATION_CACHE_EXT_IMPL_HPP

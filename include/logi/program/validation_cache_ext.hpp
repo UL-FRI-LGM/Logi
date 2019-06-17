@@ -16,49 +16,49 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGI_DEVICE_DISPLAY_KHR_IMPL_HPP
-#define LOGI_DEVICE_DISPLAY_KHR_IMPL_HPP
+#ifndef LOGI_PROGRAM_VALIDATION_CACHE_EXT_HPP
+#define LOGI_PROGRAM_VALIDATION_CACHE_EXT_HPP
 
-#include <iostream>
 #include <vulkan/vulkan.hpp>
-#include "logi/base/vulkan_object.hpp"
+#include "logi/base/handle.hpp"
+#include "logi/program/validation_cache_ext_impl.hpp"
 
 namespace logi {
 
-class VulkanInstanceImpl;
-class PhysicalDeviceImpl;
+class VulkanInstance;
+class PhysicalDevice;
+class LogicalDevice;
 
-class DisplayKHRImpl : public VulkanObject<DisplayKHRImpl> {
+class ValidationCacheEXT : public Handle<ValidationCacheEXTImpl> {
  public:
-  DisplayKHRImpl(PhysicalDeviceImpl& physicalDevice, const vk::DisplayPropertiesKHR& displayProperties);
+  using Handle::Handle;
 
-  // region Vulkan Declarations
+  // region Vulkan Commands
 
-  // endregion
+  vk::ResultValueType<void>::type
+    mergeValidationCachesEXT(vk::ArrayProxy<const vk::ValidationCacheEXT> srcCaches) const;
+
+  typename vk::ResultValueType<std::vector<uint8_t>>::type getValidationCacheDataEXT() const;
+
+  // endregion Vulkan Commands
 
   // region Logi Declarations
 
-  VulkanInstanceImpl& getInstance() const;
+  VulkanInstance getInstance() const;
 
-  PhysicalDeviceImpl& getPhysicalDevice() const;
+  PhysicalDevice getPhysicalDevice() const;
+
+  LogicalDevice getLogicalDevice() const;
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
-  operator vk::DisplayKHR() const;
+  void destroy() const;
+
+  operator vk::ValidationCacheEXT() const;
 
   // endregion
-
- private:
-  PhysicalDeviceImpl& physicalDevice_;
-  vk::DisplayKHR vkDisplayKHR_;
-  std::string displayName_;
-  vk::Extent2D physicalDimensions_;
-  vk::Extent2D physicalResolution_;
-  vk::SurfaceTransformFlagsKHR supportedTransforms_;
-  vk::Bool32 planeReorderPossible_;
-  vk::Bool32 persistentContent_;
 };
 
 } // namespace logi
 
-#endif // LOGI_DEVICE_DISPLAY_KHR_IMPL_HPP
+#endif // LOGI_PROGRAM_VALIDATION_CACHE_EXT_HPP

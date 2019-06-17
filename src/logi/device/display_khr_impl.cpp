@@ -29,6 +29,10 @@ DisplayKHRImpl::DisplayKHRImpl(PhysicalDeviceImpl& physicalDevice, const vk::Dis
     planeReorderPossible_(displayProperties.planeReorderPossible),
     persistentContent_(displayProperties.persistentContent) {}
 
+// region Vulkan Definitions
+
+// endregion
+
 VulkanInstanceImpl& DisplayKHRImpl::getInstance() const {
   return physicalDevice_.getInstance();
 }
