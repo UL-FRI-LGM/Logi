@@ -16,48 +16,44 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGI_PROGRAM_DESCRIPTOR_SET_LAYOUT_IMPL_HPP
-#define LOGI_PROGRAM_DESCRIPTOR_SET_LAYOUT_IMPL_HPP
+#ifndef LOGI_PROGRAM_PIPELINE_HPP
+#define LOGI_PROGRAM_PIPELINE_HPP
 
 #include <vulkan/vulkan.hpp>
-#include "logi/base/vulkan_object.hpp"
+#include "logi/base/handle.hpp"
 
 namespace logi {
 
-class VulkanInstanceImpl;
-class PhysicalDeviceImpl;
-class LogicalDeviceImpl;
+class VulkanInstance;
+class PhysicalDevice;
+class LogicalDevice;
+class PipelineImpl;
 
-class DescriptorSetLayoutImpl : public VulkanObject<DescriptorSetLayoutImpl> {
+class Pipeline : public Handle<PipelineImpl> {
  public:
-  DescriptorSetLayoutImpl(LogicalDeviceImpl& logicalDevice, const vk::DescriptorSetLayoutCreateInfo& createInfo,
-                          const std::optional<vk::AllocationCallbacks>& allocator = {});
+  using Handle::Handle;
+
+  // region Vulkan Declarations
+
+  // endregion
 
   // region Logi Declarations
 
-  VulkanInstanceImpl& getInstance() const;
+  VulkanInstance getInstance() const;
 
-  PhysicalDeviceImpl& getPhysicalDevice() const;
+  PhysicalDevice getPhysicalDevice() const;
 
-  LogicalDeviceImpl& getLogicalDevice() const;
+  LogicalDevice getLogicalDevice() const;
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
   void destroy() const;
 
-  operator vk::DescriptorSetLayout() const;
-
- protected:
-  void free() override;
+  operator vk::Pipeline() const;
 
   // endregion
-
- private:
-  LogicalDeviceImpl& logicalDevice_;
-  std::optional<vk::AllocationCallbacks> allocator_;
-  vk::DescriptorSetLayout vkDescriptorSetLayout_;
 };
 
 } // namespace logi
 
-#endif // LOGI_PROGRAM_DESCRIPTOR_SET_LAYOUT_IMPL_HPP
+#endif // LOGI_PROGRAM_PIPELINE_HPP

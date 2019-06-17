@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGI_PROGRAM_DESCRIPTOR_SET_LAYOUT_IMPL_HPP
-#define LOGI_PROGRAM_DESCRIPTOR_SET_LAYOUT_IMPL_HPP
+#ifndef LOGI_PROGRAM_PIPELINE_IMPL_HPP
+#define LOGI_PROGRAM_PIPELINE_IMPL_HPP
 
 #include <vulkan/vulkan.hpp>
 #include "logi/base/vulkan_object.hpp"
@@ -28,10 +28,14 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 
-class DescriptorSetLayoutImpl : public VulkanObject<DescriptorSetLayoutImpl> {
+class PipelineImpl : public VulkanObject<PipelineImpl> {
  public:
-  DescriptorSetLayoutImpl(LogicalDeviceImpl& logicalDevice, const vk::DescriptorSetLayoutCreateInfo& createInfo,
-                          const std::optional<vk::AllocationCallbacks>& allocator = {});
+  PipelineImpl(LogicalDeviceImpl& logicalDevice, const vk::Pipeline& vkPipeline,
+               const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  // region Vulkan Declarations
+
+  // endregion
 
   // region Logi Declarations
 
@@ -45,7 +49,7 @@ class DescriptorSetLayoutImpl : public VulkanObject<DescriptorSetLayoutImpl> {
 
   void destroy() const;
 
-  operator vk::DescriptorSetLayout() const;
+  operator vk::Pipeline() const;
 
  protected:
   void free() override;
@@ -55,9 +59,9 @@ class DescriptorSetLayoutImpl : public VulkanObject<DescriptorSetLayoutImpl> {
  private:
   LogicalDeviceImpl& logicalDevice_;
   std::optional<vk::AllocationCallbacks> allocator_;
-  vk::DescriptorSetLayout vkDescriptorSetLayout_;
+  vk::Pipeline vkPipeline_;
 };
 
 } // namespace logi
 
-#endif // LOGI_PROGRAM_DESCRIPTOR_SET_LAYOUT_IMPL_HPP
+#endif // LOGI_PROGRAM_PIPELINE_IMPL_HPP

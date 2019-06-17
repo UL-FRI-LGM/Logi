@@ -30,7 +30,7 @@ class LogicalDeviceImpl;
 
 class PipelineCacheImpl : public VulkanObject<PipelineCacheImpl> {
  public:
-  PipelineCacheImpl(LogicalDeviceImpl& logical_device, const vk::PipelineCacheCreateInfo& create_info,
+  PipelineCacheImpl(LogicalDeviceImpl& logicalDevice, const vk::PipelineCacheCreateInfo& createInfo,
                     const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   // region Vulkan Commands
