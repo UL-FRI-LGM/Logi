@@ -17,6 +17,7 @@
  */
 
 #include "logi/descriptor/descriptor_pool.hpp"
+#include "logi/descriptor/descriptor_set.hpp"
 #include "logi/device/logical_device_impl.hpp"
 #include "logi/device/physical_device_impl.hpp"
 #include "logi/instance/vulkan_instance.hpp"
@@ -24,6 +25,26 @@
 namespace logi {
 
 // region Vulkan Definitions
+
+std::vector<DescriptorSet>
+  DescriptorPool::allocateDescriptorSets(const std::vector<vk::DescriptorSetLayout>& descriptorSetLayouts,
+                                         const ConstVkNextProxy<vk::DescriptorSetAllocateInfo>& next) const {
+  std::vector<std::shared_ptr<DescriptorSetImpl>> descriptorSetImpls =
+    object_->allocateDescriptorSets(descriptorSetLayouts, next);
+  return std::vector<DescriptorSet>(descriptorSetImpls.begin(), descriptorSetImpls.end());
+}
+
+vk::ResultValueType<void>::type
+  DescriptorPool::freeDescriptorSets(const std::vector<DescriptorSet>& descriptorSets) const {
+  std::vector<size_t> ids;
+  ids.reserve(descriptorSets.size());
+
+  for (const auto& set : descriptorSets) {
+    ids.emplace_back(set.id());
+  }
+
+  return object_->freeDescriptorSets(ids);
+}
 
 vk::ResultValueType<void>::type DescriptorPool::reset(const vk::DescriptorPoolResetFlags& flags) const {
   return object_->reset(flags);

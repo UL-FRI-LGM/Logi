@@ -206,7 +206,7 @@ void LogicalDeviceImpl::destroyFramebuffer(size_t id) {
 const std::shared_ptr<SwapchainKHRImpl>&
   LogicalDeviceImpl::createSwapchainKHR(const vk::SwapchainCreateInfoKHR& createInfo,
                                         const std::optional<AllocationCallbacks>& allocator) {
-  return VulkanObjectComposite<SwapchainKHRImpl>::createObject(createInfo, allocator);
+  return VulkanObjectComposite<SwapchainKHRImpl>::createObject(*this, createInfo, allocator);
 }
 
 void LogicalDeviceImpl::destroySwapchainKHR(size_t id) {
@@ -225,6 +225,22 @@ std::vector<std::shared_ptr<QueueFamilyImpl>> LogicalDeviceImpl::enumerateQueueF
   }
 
   return queueFamilies;
+}
+
+void LogicalDeviceImpl::updateDescriptorSets(
+  const vk::ArrayProxy<const vk::WriteDescriptorSet>& descriptorWrites,
+  const vk::ArrayProxy<const vk::CopyDescriptorSet>& descriptorCopies) const {
+  vkDevice_.updateDescriptorSets(descriptorWrites, descriptorCopies, getDispatcher());
+}
+
+vk::ResultValueType<void>::type
+  LogicalDeviceImpl::setDebugUtilsObjectNameEXT(const vk::DebugUtilsObjectNameInfoEXT& nameInfo) const {
+  return vkDevice_.setDebugUtilsObjectNameEXT(nameInfo, getDispatcher());
+}
+
+vk::ResultValueType<void>::type
+  LogicalDeviceImpl::setDebugUtilsObjectTagEXT(const vk::DebugUtilsObjectTagInfoEXT& tagInfo) const {
+  return vkDevice_.setDebugUtilsObjectTagEXT(tagInfo, getDispatcher());
 }
 
 VulkanInstanceImpl& LogicalDeviceImpl::getInstance() const {

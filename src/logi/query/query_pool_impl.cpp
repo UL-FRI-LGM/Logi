@@ -28,6 +28,11 @@ QueryPoolImpl::QueryPoolImpl(LogicalDeviceImpl& logicalDevice, const vk::QueryPo
   vkQueryPool_ = vkDevice.createQueryPool(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
+void QueryPoolImpl::resetQueryPoolEXT(uint32_t firstQuery, uint32_t queryCount) const {
+  vk::Device vkDevice = logicalDevice_;
+  vkDevice.resetQueryPoolEXT(vkQueryPool_, firstQuery, queryCount, getDispatcher());
+}
+
 VulkanInstanceImpl& QueryPoolImpl::getInstance() const {
   return logicalDevice_.getInstance();
 }

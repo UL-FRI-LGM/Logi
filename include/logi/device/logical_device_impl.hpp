@@ -160,6 +160,13 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
 
   // region Vulkan Declarations
 
+  void updateDescriptorSets(const vk::ArrayProxy<const vk::WriteDescriptorSet>& descriptorWrites,
+                            const vk::ArrayProxy<const vk::CopyDescriptorSet>& descriptorCopies) const;
+
+  vk::ResultValueType<void>::type setDebugUtilsObjectNameEXT(const vk::DebugUtilsObjectNameInfoEXT& nameInfo) const;
+
+  vk::ResultValueType<void>::type setDebugUtilsObjectTagEXT(const vk::DebugUtilsObjectTagInfoEXT& tagInfo) const;
+
   // endregion
 
   // region Logi Declarations

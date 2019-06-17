@@ -25,6 +25,10 @@
 
 namespace logi {
 
+void QueryPool::resetQueryPoolEXT(uint32_t firstQuery, uint32_t queryCount) const {
+  object_->resetQueryPoolEXT(firstQuery, queryCount);
+}
+
 VulkanInstance QueryPool::getInstance() const {
   return VulkanInstance(object_->getInstance().shared_from_this());
 }

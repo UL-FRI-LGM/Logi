@@ -58,7 +58,7 @@ const vk::DispatchLoaderDynamic& DescriptorSetImpl::getDispatcher() const {
 }
 
 void DescriptorSetImpl::destroy() const {
-  // TODO
+  descriptorPool_.freeDescriptorSets({id()});
 }
 
 DescriptorSetImpl::operator vk::DescriptorSet() const {

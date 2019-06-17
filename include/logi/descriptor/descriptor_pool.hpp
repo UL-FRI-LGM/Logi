@@ -28,12 +28,19 @@ namespace logi {
 class VulkanInstance;
 class PhysicalDevice;
 class LogicalDevice;
+class DescriptorSet;
 
 class DescriptorPool : public Handle<DescriptorPoolImpl> {
  public:
   using Handle::Handle;
 
   // region Vulkan Declarations
+
+  std::vector<DescriptorSet>
+    allocateDescriptorSets(const std::vector<vk::DescriptorSetLayout>& descriptorSetLayouts,
+                           const ConstVkNextProxy<vk::DescriptorSetAllocateInfo>& next = {}) const;
+
+  vk::ResultValueType<void>::type freeDescriptorSets(const std::vector<DescriptorSet>& descriptorSets) const;
 
   vk::ResultValueType<void>::type
     reset(const vk::DescriptorPoolResetFlags& flags = vk::DescriptorPoolResetFlags()) const;

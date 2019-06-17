@@ -17,6 +17,7 @@
  */
 
 #include "logi/descriptor/descriptor_pool_impl.hpp"
+#include "logi/descriptor/descriptor_set_impl.hpp"
 #include "logi/device/logical_device_impl.hpp"
 
 namespace logi {
@@ -34,6 +35,40 @@ DescriptorPoolImpl::DescriptorPoolImpl(LogicalDeviceImpl& logicalDevice, const v
 vk::ResultValueType<void>::type DescriptorPoolImpl::reset(const vk::DescriptorPoolResetFlags& flags) const {
   vk::Device vkDevice = logicalDevice_;
   vkDevice.resetDescriptorPool(vkDescriptorPool_, flags, getDispatcher());
+}
+
+std::vector<std::shared_ptr<DescriptorSetImpl>>
+  DescriptorPoolImpl::allocateDescriptorSets(const std::vector<vk::DescriptorSetLayout>& descriptorSetLayouts,
+                                             const ConstVkNextProxy<vk::DescriptorSetAllocateInfo>& next) {
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  vk::DescriptorSetAllocateInfo allocateInfo(vkDescriptorPool_, descriptorSetLayouts.size(),
+                                             descriptorSetLayouts.data());
+  allocateInfo.pNext = next;
+
+  std::vector<vk::DescriptorSet> descriptorSets = vkDevice.allocateDescriptorSets(allocateInfo, getDispatcher());
+  std::vector<std::shared_ptr<DescriptorSetImpl>> logiDescriptorSets;
+  logiDescriptorSets.reserve(descriptorSets.size());
+
+  for (const auto& set : descriptorSets) {
+    logiDescriptorSets.emplace_back(VulkanObjectComposite<DescriptorSetImpl>::createObject(*this, set));
+  }
+
+  return logiDescriptorSets;
+}
+
+vk::ResultValueType<void>::type DescriptorPoolImpl::freeDescriptorSets(const std::vector<size_t>& descriptorSetIds) {
+  std::vector<vk::DescriptorSet> vkDescriptorSets;
+  vkDescriptorSets.reserve(descriptorSetIds.size());
+
+  // Collect VK handles and destroy logi command buffers.
+  for (size_t id : descriptorSetIds) {
+    vkDescriptorSets.emplace_back(
+      static_cast<vk::DescriptorSet>(*VulkanObjectComposite<DescriptorSetImpl>::getObject(id)));
+    VulkanObjectComposite<DescriptorSetImpl>::destroyObject(id);
+  }
+
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  return vkDevice.freeDescriptorSets(vkDescriptorPool_, vkDescriptorSets, getDispatcher());
 }
 
 // endregion

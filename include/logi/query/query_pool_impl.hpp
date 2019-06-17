@@ -39,6 +39,8 @@ class QueryPoolImpl : public VulkanObject<QueryPoolImpl> {
   vk::Result getResults(uint32_t firstQuery, uint32_t queryCount, vk::ArrayProxy<T> data, vk::DeviceSize stride,
                         vk::QueryResultFlags flags) const;
 
+  void resetQueryPoolEXT(uint32_t firstQuery, uint32_t queryCount) const;
+
   // endregion
 
   // region Logi Declarations

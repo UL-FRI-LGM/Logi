@@ -21,19 +21,27 @@
 
 #include <vulkan/vulkan.hpp>
 #include "logi/base/vulkan_object.hpp"
+#include "logi/structures/extension.hpp"
 
 namespace logi {
 
 class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
+class DescriptorSetImpl;
 
-class DescriptorPoolImpl : public VulkanObject<DescriptorPoolImpl> {
+class DescriptorPoolImpl : public VulkanObject<DescriptorPoolImpl>, public VulkanObjectComposite<DescriptorSetImpl> {
  public:
   DescriptorPoolImpl(LogicalDeviceImpl& logicalDevice, const vk::DescriptorPoolCreateInfo& createInfo,
                      const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   // region Vulkan Declarations
+
+  std::vector<std::shared_ptr<DescriptorSetImpl>>
+    allocateDescriptorSets(const std::vector<vk::DescriptorSetLayout>& descriptorSetLayouts,
+                           const ConstVkNextProxy<vk::DescriptorSetAllocateInfo>& next = {});
+
+  vk::ResultValueType<void>::type freeDescriptorSets(const std::vector<size_t>& descriptorSetIds);
 
   vk::ResultValueType<void>::type
     reset(const vk::DescriptorPoolResetFlags& flags = vk::DescriptorPoolResetFlags()) const;
