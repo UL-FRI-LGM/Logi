@@ -60,7 +60,7 @@ LogicalDeviceImpl::LogicalDeviceImpl(PhysicalDeviceImpl& physicalDevice, const v
 const std::shared_ptr<MemoryAllocatorImpl>&
   LogicalDeviceImpl::createMemoryAllocator(vk::DeviceSize preferredLargeHeapBlockSize, uint32_t frameInUseCount,
                                            const std::vector<vk::DeviceSize>& heapSizeLimits,
-                                           const std::optional<AllocationCallbacks>& allocator) {
+                                           const std::optional<vk::AllocationCallbacks>& allocator) {
   return VulkanObjectComposite<MemoryAllocatorImpl>::createObject(*this, preferredLargeHeapBlockSize, frameInUseCount,
                                                                   heapSizeLimits, allocator);
 }
@@ -71,7 +71,7 @@ void LogicalDeviceImpl::destroyMemoryAllocator(size_t id) {
 
 const std::shared_ptr<SamplerImpl>&
   LogicalDeviceImpl::createSampler(const vk::SamplerCreateInfo& createInfo,
-                                   const std::optional<AllocationCallbacks>& allocator) {
+                                   const std::optional<vk::AllocationCallbacks>& allocator) {
   return VulkanObjectComposite<SamplerImpl>::createObject(*this, createInfo, allocator);
 }
 
@@ -91,7 +91,7 @@ void LogicalDeviceImpl::destroyShaderModule(size_t id) {
 
 const std::shared_ptr<PipelineCacheImpl>&
   LogicalDeviceImpl::createPipelineCache(const vk::PipelineCacheCreateInfo& createInfo,
-                                         const std::optional<AllocationCallbacks>& allocator) {
+                                         const std::optional<vk::AllocationCallbacks>& allocator) {
   return VulkanObjectComposite<PipelineCacheImpl>::createObject(*this, createInfo, allocator);
 }
 
@@ -101,7 +101,7 @@ void LogicalDeviceImpl::destroyPipelineCache(size_t id) {
 
 const std::shared_ptr<DescriptorSetLayoutImpl>&
   LogicalDeviceImpl::createDescriptorSetLayout(const vk::DescriptorSetLayoutCreateInfo& createInfo,
-                                               const std::optional<AllocationCallbacks>& allocator) {
+                                               const std::optional<vk::AllocationCallbacks>& allocator) {
   return VulkanObjectComposite<DescriptorSetLayoutImpl>::createObject(*this, createInfo, allocator);
 }
 
@@ -111,7 +111,7 @@ void LogicalDeviceImpl::destroyDescriptorSetLayout(size_t id) {
 
 const std::shared_ptr<DescriptorPoolImpl>&
   LogicalDeviceImpl::createDescriptorPool(const vk::DescriptorPoolCreateInfo& createInfo,
-                                          const std::optional<AllocationCallbacks>& allocator) {
+                                          const std::optional<vk::AllocationCallbacks>& allocator) {
   return VulkanObjectComposite<DescriptorPoolImpl>::createObject(*this, createInfo, allocator);
 }
 void LogicalDeviceImpl::destroyDescriptorPool(size_t id) {
@@ -120,7 +120,7 @@ void LogicalDeviceImpl::destroyDescriptorPool(size_t id) {
 
 const std::shared_ptr<PipelineLayoutImpl>&
   LogicalDeviceImpl::createPipelineLayout(const vk::PipelineLayoutCreateInfo& createInfo,
-                                          const std::optional<AllocationCallbacks>& allocator) {
+                                          const std::optional<vk::AllocationCallbacks>& allocator) {
   return VulkanObjectComposite<PipelineLayoutImpl>::createObject(*this, createInfo, allocator);
 }
 
@@ -130,7 +130,7 @@ void LogicalDeviceImpl::destroyPipelineLayout(size_t id) {
 
 const std::shared_ptr<CommandPoolImpl>&
   LogicalDeviceImpl::createCommandPool(const vk::CommandPoolCreateInfo& createInfo,
-                                       const std::optional<AllocationCallbacks>& allocator) {
+                                       const std::optional<vk::AllocationCallbacks>& allocator) {
   return VulkanObjectComposite<CommandPoolImpl>::createObject(*this, createInfo, allocator);
 }
 
@@ -140,7 +140,7 @@ void LogicalDeviceImpl::destroyCommandPool(size_t id) {
 
 const std::shared_ptr<QueryPoolImpl>&
   LogicalDeviceImpl::createQueryPool(const vk::QueryPoolCreateInfo& createInfo,
-                                     const std::optional<AllocationCallbacks>& allocator) {
+                                     const std::optional<vk::AllocationCallbacks>& allocator) {
   return VulkanObjectComposite<QueryPoolImpl>::createObject(*this, createInfo, allocator);
 }
 void LogicalDeviceImpl::destroyQueryPool(size_t id) {
@@ -179,13 +179,13 @@ void LogicalDeviceImpl::destroySemaphore(size_t id) {
 
 const std::shared_ptr<RenderPassImpl>&
   LogicalDeviceImpl::createRenderPass(const vk::RenderPassCreateInfo& createInfo,
-                                      const std::optional<AllocationCallbacks>& allocator) {
+                                      const std::optional<vk::AllocationCallbacks>& allocator) {
   return VulkanObjectComposite<RenderPassImpl>::createObject(*this, createInfo, allocator);
 }
 
 const std::shared_ptr<RenderPassImpl>&
   LogicalDeviceImpl::createRenderPass(const vk::RenderPassCreateInfo2KHR& createInfo,
-                                      const std::optional<AllocationCallbacks>& allocator) {
+                                      const std::optional<vk::AllocationCallbacks>& allocator) {
   return VulkanObjectComposite<RenderPassImpl>::createObject(*this, createInfo, allocator);
 }
 
@@ -195,7 +195,7 @@ void LogicalDeviceImpl::destroyRenderPass(size_t id) {
 
 const std::shared_ptr<FramebufferImpl>&
   LogicalDeviceImpl::createFramebuffer(const vk::FramebufferCreateInfo& createInfo,
-                                       const std::optional<AllocationCallbacks>& allocator) {
+                                       const std::optional<vk::AllocationCallbacks>& allocator) {
   return VulkanObjectComposite<FramebufferImpl>::createObject(*this, createInfo, allocator);
 }
 
@@ -205,7 +205,7 @@ void LogicalDeviceImpl::destroyFramebuffer(size_t id) {
 
 const std::shared_ptr<SwapchainKHRImpl>&
   LogicalDeviceImpl::createSwapchainKHR(const vk::SwapchainCreateInfoKHR& createInfo,
-                                        const std::optional<AllocationCallbacks>& allocator) {
+                                        const std::optional<vk::AllocationCallbacks>& allocator) {
   return VulkanObjectComposite<SwapchainKHRImpl>::createObject(*this, createInfo, allocator);
 }
 

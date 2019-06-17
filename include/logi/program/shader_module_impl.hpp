@@ -23,7 +23,6 @@
 #include <spirv_cross.hpp>
 #include <vulkan/vulkan.hpp>
 #include "logi/base/vulkan_object.hpp"
-#include "logi/structures/vk_structures.hpp"
 
 namespace logi {
 
