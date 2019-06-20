@@ -35,6 +35,8 @@ class PipelineImpl : public VulkanObject<PipelineImpl> {
 
   // region Vulkan Declarations
 
+  vk::ResultValueType<void>::type compileDeferredNV(uint32_t shader) const;
+
   // endregion
 
   // region Logi Declarations

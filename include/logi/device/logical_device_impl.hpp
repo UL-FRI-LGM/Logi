@@ -40,8 +40,10 @@ class DescriptorPoolImpl;
 class PipelineLayoutImpl;
 class MemoryAllocatorImpl;
 class SamplerImpl;
+class PipelineImpl;
 class RenderPassImpl;
 class FramebufferImpl;
+class ValidationCacheEXTImpl;
 
 class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
                           public VulkanObjectComposite<QueueFamilyImpl>,
@@ -58,8 +60,10 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
                           public VulkanObjectComposite<DescriptorSetLayoutImpl>,
                           public VulkanObjectComposite<DescriptorPoolImpl>,
                           public VulkanObjectComposite<PipelineLayoutImpl>,
+                          public VulkanObjectComposite<PipelineImpl>,
                           public VulkanObjectComposite<RenderPassImpl>,
-                          public VulkanObjectComposite<FramebufferImpl> {
+                          public VulkanObjectComposite<FramebufferImpl>,
+                          public VulkanObjectComposite<ValidationCacheEXTImpl> {
  public:
   LogicalDeviceImpl(PhysicalDeviceImpl& physicalDevice, const vk::DeviceCreateInfo& createInfo,
                     const std::optional<vk::AllocationCallbacks>& allocator = {});
@@ -108,6 +112,36 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
 
   void destroyPipelineLayout(size_t id);
 
+  std::vector<std::shared_ptr<PipelineImpl>>
+    createComputePipelines(const vk::ArrayProxy<const vk::ComputePipelineCreateInfo>& create_infos,
+                           const vk::PipelineCache& cache = nullptr,
+                           const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  std::shared_ptr<PipelineImpl> createComputePipeline(const vk::ComputePipelineCreateInfo& create_infos,
+                                                      const vk::PipelineCache& cache = nullptr,
+                                                      const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  std::vector<std::shared_ptr<PipelineImpl>>
+    createGraphicsPipelines(const vk::ArrayProxy<const vk::GraphicsPipelineCreateInfo>& create_infos,
+                            const vk::PipelineCache& cache = nullptr,
+                            const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  std::shared_ptr<PipelineImpl> createGraphicsPipeline(const vk::GraphicsPipelineCreateInfo& create_info,
+                                                       const vk::PipelineCache& cache = nullptr,
+                                                       const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  std::vector<std::shared_ptr<PipelineImpl>>
+    createRayTracingPipelinesNV(const vk::ArrayProxy<const vk::RayTracingPipelineCreateInfoNV>& create_infos,
+                                const vk::PipelineCache& cache = nullptr,
+                                const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  std::shared_ptr<PipelineImpl>
+    createRayTracingPipelinesNV(const vk::RayTracingPipelineCreateInfoNV& create_info,
+                                const vk::PipelineCache& cache = nullptr,
+                                const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyPipeline(size_t id);
+
   const std::shared_ptr<CommandPoolImpl>&
     createCommandPool(const vk::CommandPoolCreateInfo& createInfo,
                       const std::optional<vk::AllocationCallbacks>& allocator = {});
@@ -154,6 +188,12 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
 
   void destroySwapchainKHR(size_t id);
 
+  const std::shared_ptr<ValidationCacheEXTImpl>&
+    createValidationCacheEXT(const vk::ValidationCacheCreateInfoEXT& createInfo,
+                             const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyValidationCacheEXT(size_t id);
+
   std::vector<std::shared_ptr<QueueFamilyImpl>> enumerateQueueFamilies() const;
 
   // endregion
@@ -166,6 +206,15 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
   vk::ResultValueType<void>::type setDebugUtilsObjectNameEXT(const vk::DebugUtilsObjectNameInfoEXT& nameInfo) const;
 
   vk::ResultValueType<void>::type setDebugUtilsObjectTagEXT(const vk::DebugUtilsObjectTagInfoEXT& tagInfo) const;
+
+  vk::ResultValueType<void>::type debugMarkerSetObjectNameEXT(const vk::DebugMarkerObjectNameInfoEXT& nameInfo) const;
+
+  vk::ResultValueType<void>::type debugMarkerSetObjectTagEXT(const vk::DebugMarkerObjectTagInfoEXT& tagInfo) const;
+
+  vk::ResultValueType<void>::type waitIdle() const;
+
+  vk::ResultValueType<void>::type displayPowerControlEXT(const vk::DisplayKHR& display,
+                                                         const vk::DisplayPowerInfoEXT& powerInfo) const;
 
   // endregion
 

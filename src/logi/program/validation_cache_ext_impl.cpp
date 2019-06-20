@@ -40,7 +40,7 @@ vk::ResultValueType<void>::type
 
 typename vk::ResultValueType<std::vector<uint8_t>>::type ValidationCacheEXTImpl::getValidationCacheDataEXT() const {
   vk::Device vkDevice;
-  vkDevice.getValidationCacheDataEXT(vkValidationCacheEXT_, getDispatcher());
+  return vkDevice.getValidationCacheDataEXT(vkValidationCacheEXT_, getDispatcher());
 }
 
 // endregion
@@ -64,7 +64,7 @@ const vk::DispatchLoaderDynamic& ValidationCacheEXTImpl::getDispatcher() const {
 }
 
 void ValidationCacheEXTImpl::destroy() const {
-  // TODO
+  logicalDevice_.destroyValidationCacheEXT(id());
 }
 
 ValidationCacheEXTImpl::operator vk::ValidationCacheEXT() const {

@@ -27,6 +27,11 @@ PipelineImpl::PipelineImpl(LogicalDeviceImpl& logicalDevice, const vk::Pipeline&
 
 // region Vulkan Definitions
 
+vk::ResultValueType<void>::type PipelineImpl::compileDeferredNV(uint32_t shader) const {
+  vk::Device vkDevice = static_cast<vk::Device>(logicalDevice_);
+  return vkDevice.compileDeferredNV(vkPipeline_, shader, getDispatcher());
+}
+
 // endregion
 
 // region Logi Definitions
@@ -48,7 +53,7 @@ const vk::DispatchLoaderDynamic& PipelineImpl::getDispatcher() const {
 }
 
 void PipelineImpl::destroy() const {
-  // TODO
+  logicalDevice_.destroyPipeline(id());
 }
 
 PipelineImpl::operator vk::Pipeline() const {
@@ -56,7 +61,9 @@ PipelineImpl::operator vk::Pipeline() const {
 }
 
 void PipelineImpl::free() {
-  // TODO
+  vk::Device vkDevice = static_cast<vk::Device>(logicalDevice_);
+  vkDevice.destroy(vkPipeline_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+  VulkanObject::free();
 }
 
 // endregion
