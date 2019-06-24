@@ -54,10 +54,6 @@ LogicalDeviceImpl& logi::ImageViewImpl::getLogicalDevice() const {
   return image_.getLogicalDevice();
 }
 
-MemoryAllocatorImpl& logi::ImageViewImpl::getMemoryAllocator() const {
-  return image_.getMemoryAllocator();
-}
-
 ImageImpl& logi::ImageViewImpl::getImage() const {
   return image_;
 }

@@ -21,36 +21,39 @@
 #include "logi/device/physical_device_impl.hpp"
 #include "logi/instance/vulkan_instance_impl.hpp"
 #include "logi/memory/image_view.hpp"
-#include "logi/memory/memory_allocator_impl.hpp"
+#include "logi/swapchain/swapchain_khr_impl.hpp"
 
 namespace logi {
 
-ImageImpl::ImageImpl(MemoryAllocatorImpl& memoryAllocator, const vk::ImageCreateInfo& imageCreateInfo,
-                     const VmaAllocationCreateInfo& allocationCreateInfo)
-  : memoryAllocator_(&memoryAllocator), allocation_(nullptr) {
-  vmaCreateImage(memoryAllocator_->getVmaAllocator(), reinterpret_cast<const VkImageCreateInfo*>(&imageCreateInfo),
-                 &allocationCreateInfo, reinterpret_cast<VkImage*>(&image_), &allocation_, nullptr);
+ImageImpl::ImageImpl(LogicalDeviceImpl& logicalDevice, const vk::ImageCreateInfo& createInfo,
+                     const std::optional<vk::AllocationCallbacks>& allocator)
+  : owner_(std::ref(logicalDevice)), allocator_(allocator) {
+  vk::Device vkDevice = getLogicalDevice();
+  vkDevice.createImage(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
+
+ImageImpl::ImageImpl(SwapchainKHRImpl& swapchainKHR, const vk::Image& image)
+  : owner_(std::ref(swapchainKHR)), vkImage_(image), allocator_(std::nullopt) {}
 
 vk::MemoryRequirements ImageImpl::getMemoryRequirements() const {
   vk::Device vkDevice = getLogicalDevice();
-  return vkDevice.getImageMemoryRequirements(image_, getDispatcher());
+  return vkDevice.getImageMemoryRequirements(vkImage_, getDispatcher());
 }
 
 std::vector<vk::SparseImageMemoryRequirements> ImageImpl::getSparseMemoryRequirements() const {
   vk::Device vkDevice = getLogicalDevice();
-  return vkDevice.getImageSparseMemoryRequirements(image_, getDispatcher());
+  return vkDevice.getImageSparseMemoryRequirements(vkImage_, getDispatcher());
 }
 
 vk::SubresourceLayout ImageImpl::getImageSubresourceLayout(const vk::ImageSubresource& subresource) const {
   vk::Device vkDevice = getLogicalDevice();
-  return vkDevice.getImageSubresourceLayout(image_, subresource, getDispatcher());
+  return vkDevice.getImageSubresourceLayout(vkImage_, subresource, getDispatcher());
 }
 
 vk::ResultValueType<vk::ImageDrmFormatModifierPropertiesEXT>::type
   ImageImpl::getDrmFormatModifierPropertiesEXT() const {
   vk::Device vkDevice = getLogicalDevice();
-  return vkDevice.getImageDrmFormatModifierPropertiesEXT(image_, getDispatcher());
+  return vkDevice.getImageDrmFormatModifierPropertiesEXT(vkImage_, getDispatcher());
 }
 
 vk::MemoryRequirements2
@@ -89,9 +92,37 @@ std::vector<vk::SparseImageMemoryRequirements2KHR> ImageImpl::getImageSparseMemo
   return vkDevice.getImageSparseMemoryRequirements2KHR(requirementsInfo, getDispatcher());
 }
 
-ImageView ImageImpl::createImageView(const vk::ImageViewCreateInfo& createInfo,
-                                     const std::optional<vk::AllocationCallbacks>& allocator) {
-  return ImageView(VulkanObjectComposite<ImageViewImpl>::createObject(*this, createInfo, allocator));
+vk::ResultValueType<void>::type ImageImpl::bindMemory(const vk::DeviceMemory& memory,
+                                                      vk::DeviceSize memoryOffset) const {
+  vk::Device vkDevice = getLogicalDevice();
+  return vkDevice.bindImageMemory(vkImage_, memory, memoryOffset, getDispatcher());
+}
+
+vk::ResultValueType<void>::type ImageImpl::bindMemory2(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset,
+                                                       const ConstVkNextProxy<vk::BindImageMemoryInfo>& next) const {
+  vk::Device vkDevice = getLogicalDevice();
+
+  vk::BindImageMemoryInfo memoryInfo(vkImage_, memory, memoryOffset);
+  memoryInfo.pNext = next;
+
+  return vkDevice.bindImageMemory2(memoryInfo, getDispatcher());
+}
+
+vk::ResultValueType<void>::type
+  ImageImpl::bindMemory2KHR(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset,
+                            const ConstVkNextProxy<vk::BindImageMemoryInfoKHR>& next) const {
+  vk::Device vkDevice = getLogicalDevice();
+
+  vk::BindImageMemoryInfoKHR memoryInfo(vkImage_, memory, memoryOffset);
+  memoryInfo.pNext = next;
+
+  return vkDevice.bindImageMemory2KHR(memoryInfo, getDispatcher());
+}
+
+const std::shared_ptr<ImageViewImpl>&
+  ImageImpl::createImageView(const vk::ImageViewCreateInfo& createInfo,
+                             const std::optional<vk::AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<ImageViewImpl>::createObject(*this, createInfo, allocator);
 }
 
 void ImageImpl::destroyImageView(size_t id) {
@@ -99,40 +130,59 @@ void ImageImpl::destroyImageView(size_t id) {
 }
 
 VulkanInstanceImpl& ImageImpl::getInstance() const {
-  return memoryAllocator_->getInstance();
+  return getLogicalDevice().getInstance();
 }
 
 PhysicalDeviceImpl& ImageImpl::getPhysicalDevice() const {
-  return memoryAllocator_->getPhysicalDevice();
+  return getLogicalDevice().getPhysicalDevice();
 }
 
 LogicalDeviceImpl& ImageImpl::getLogicalDevice() const {
-  return memoryAllocator_->getLogicalDevice();
-}
-
-MemoryAllocatorImpl& ImageImpl::getMemoryAllocator() const {
-  return *memoryAllocator_;
+  return std::visit(
+    [](auto& arg) -> LogicalDeviceImpl& {
+      using T = std::decay_t<decltype(arg)>;
+      if constexpr (std::is_same_v<T, std::reference_wrapper<LogicalDeviceImpl>>) {
+        return arg;
+      } else if constexpr (std::is_same_v<T, std::reference_wrapper<SwapchainKHRImpl>>) {
+        return arg.get().getLogicalDevice();
+      }
+    },
+    owner_);
 }
 
 const vk::DispatchLoaderDynamic& ImageImpl::getDispatcher() const {
-  return memoryAllocator_->getDispatcher();
+  return getLogicalDevice().getDispatcher();
 }
 
 void ImageImpl::destroy() const {
-  memoryAllocator_->destroyImage(id());
+  std::visit(
+    [this](auto& arg) {
+      using T = std::decay_t<decltype(arg)>;
+      if constexpr (std::is_same_v<T, std::reference_wrapper<LogicalDeviceImpl>>) {
+        arg.get().destroyImage(id());
+      } else if constexpr (std::is_same_v<T, std::reference_wrapper<SwapchainKHRImpl>>) {
+        throw IllegalInvocation("Cannot destroy Swapchain image.");
+      }
+    },
+    owner_);
 }
 
 ImageImpl::operator vk::Image() const {
-  return image_;
+  return vkImage_;
 }
 
 void ImageImpl::free() {
   VulkanObjectComposite<ImageViewImpl>::destroyAllObjects();
 
-  if (memoryAllocator_ != nullptr) {
-    vmaDestroyImage(getMemoryAllocator().getVmaAllocator(), static_cast<VkImage>(image_), allocation_);
-    memoryAllocator_ = nullptr;
-  }
+  std::visit(
+    [this](auto& arg) {
+      using T = std::decay_t<decltype(arg)>;
+      if constexpr (std::is_same_v<T, std::reference_wrapper<LogicalDeviceImpl>>) {
+        auto vkDevice = static_cast<vk::Device>(arg.get());
+        vkDevice.destroy(vkImage_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+      }
+    },
+    owner_);
 
   VulkanObject::free();
 }

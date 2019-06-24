@@ -25,16 +25,71 @@
 
 namespace logi {
 
-BufferImpl::BufferImpl(MemoryAllocatorImpl& memoryAllocator, const vk::BufferCreateInfo& bufferCreateInfo,
-                       const VmaAllocationCreateInfo& allocationCreateInfo)
-  : memoryAllocator_(&memoryAllocator), allocation_(nullptr) {
-  vmaCreateBuffer(memoryAllocator_->getVmaAllocator(), reinterpret_cast<const VkBufferCreateInfo*>(&bufferCreateInfo),
-                  &allocationCreateInfo, reinterpret_cast<VkBuffer*>(&buffer_), &allocation_, nullptr);
+BufferImpl::BufferImpl(LogicalDeviceImpl& logicalDevice, const vk::BufferCreateInfo& createInfo,
+                       const std::optional<vk::AllocationCallbacks>& allocator)
+  : logicalDevice_(logicalDevice), allocator_(allocator) {
+  vk::Device vkDevice = logicalDevice_;
+  vkBuffer_ = vkDevice.createBuffer(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
 vk::MemoryRequirements BufferImpl::getMemoryRequirements() const {
   vk::Device vkDevice = getLogicalDevice();
-  return vkDevice.getBufferMemoryRequirements(buffer_);
+  return vkDevice.getBufferMemoryRequirements(vkBuffer_, getDispatcher());
+}
+
+vk::MemoryRequirements2
+  BufferImpl::getBufferMemoryRequirements2(const ConstVkNextProxy<vk::BufferMemoryRequirementsInfo2>& next) const {
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+
+  vk::BufferMemoryRequirementsInfo2 memoryRequirementsInfo(vkBuffer_);
+  memoryRequirementsInfo.pNext = next;
+
+  return vkDevice.getBufferMemoryRequirements2(memoryRequirementsInfo, getDispatcher());
+}
+
+vk::MemoryRequirements2KHR BufferImpl::getBufferMemoryRequirements2KHR(
+  const ConstVkNextProxy<vk::BufferMemoryRequirementsInfo2KHR>& next) const {
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+
+  vk::BufferMemoryRequirementsInfo2KHR memoryRequirementsInfo(vkBuffer_);
+  memoryRequirementsInfo.pNext = next;
+
+  return vkDevice.getBufferMemoryRequirements2KHR(memoryRequirementsInfo, getDispatcher());
+}
+
+vk::DeviceAddress BufferImpl::getDeviceAddressEXT(const ConstVkNextProxy<vk::BufferDeviceAddressInfoEXT>& next) const {
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+
+  vk::BufferDeviceAddressInfoEXT deviceAddressInfo(vkBuffer_);
+  deviceAddressInfo.pNext = next;
+
+  return vkDevice.getBufferAddressEXT(deviceAddressInfo, getDispatcher());
+}
+
+vk::ResultValueType<void>::type BufferImpl::bindMemory(const vk::DeviceMemory& memory,
+                                                       vk::DeviceSize memoryOffset) const {
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  return vkDevice.bindBufferMemory(vkBuffer_, memory, memoryOffset, getDispatcher());
+}
+
+vk::ResultValueType<void>::type
+  BufferImpl::bindMemory2(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset,
+                          const ConstVkNextProxy<vk::BindBufferMemoryInfoKHR>& next) const {
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  vk::BindBufferMemoryInfo bufferMemoryInfo(vkBuffer_, memory, memoryOffset);
+  bufferMemoryInfo.pNext = next;
+
+  return vkDevice.bindBufferMemory2(bufferMemoryInfo, getDispatcher());
+}
+
+vk::ResultValueType<void>::type
+  BufferImpl::bindMemory2KHR(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset,
+                             const ConstVkNextProxy<vk::BindBufferMemoryInfo>& next) const {
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  vk::BindBufferMemoryInfoKHR bufferMemoryInfo(vkBuffer_, memory, memoryOffset);
+  bufferMemoryInfo.pNext = next;
+
+  return vkDevice.bindBufferMemory2KHR(bufferMemoryInfo, getDispatcher());
 }
 
 BufferView BufferImpl::createBufferView(const vk::BufferViewCreateInfo& createInfo,
@@ -47,41 +102,31 @@ void BufferImpl::destroyBufferView(size_t id) {
 }
 
 VulkanInstanceImpl& BufferImpl::getInstance() const {
-  return memoryAllocator_->getInstance();
+  return logicalDevice_.getInstance();
 }
 
 PhysicalDeviceImpl& BufferImpl::getPhysicalDevice() const {
-  return memoryAllocator_->getPhysicalDevice();
+  return logicalDevice_.getPhysicalDevice();
 }
 
 LogicalDeviceImpl& BufferImpl::getLogicalDevice() const {
-  return memoryAllocator_->getLogicalDevice();
-}
-
-MemoryAllocatorImpl& BufferImpl::getMemoryAllocator() const {
-  return *memoryAllocator_;
+  return logicalDevice_;
 }
 
 const vk::DispatchLoaderDynamic& BufferImpl::getDispatcher() const {
-  return memoryAllocator_->getDispatcher();
+  return logicalDevice_.getDispatcher();
 }
 
 void BufferImpl::destroy() const {
-  memoryAllocator_->destroyBuffer(id());
+  logicalDevice_.destroyBuffer(id());
 }
 
 BufferImpl::operator vk::Buffer() const {
-  return buffer_;
+  return vkBuffer_;
 }
 
 void BufferImpl::free() {
   VulkanObjectComposite<BufferViewImpl>::destroyAllObjects();
-
-  if (memoryAllocator_ != nullptr) {
-    vmaDestroyBuffer(getMemoryAllocator().getVmaAllocator(), static_cast<VkBuffer>(buffer_), allocation_);
-    memoryAllocator_ = nullptr;
-  }
-
   VulkanObject::free();
 }
 

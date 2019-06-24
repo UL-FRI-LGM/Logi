@@ -37,10 +37,6 @@ LogicalDevice BufferView::getLogicalDevice() const {
   return LogicalDevice(object_->getLogicalDevice().shared_from_this());
 }
 
-MemoryAllocator BufferView::getMemoryAllocator() const {
-  return MemoryAllocator(object_->getMemoryAllocator().shared_from_this());
-}
-
 Buffer BufferView::getBuffer() const {
   return Buffer(object_->getBuffer().shared_from_this());
 }

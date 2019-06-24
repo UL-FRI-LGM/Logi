@@ -34,15 +34,15 @@ ObjectTableNVXImpl::ObjectTableNVXImpl(LogicalDeviceImpl& logicalDevice, const v
 vk::ResultValueType<void>::type
   ObjectTableNVXImpl::registerObjectsNVX(vk::ArrayProxy<const vk::ObjectTableEntryNVX* const> objectTableEntries,
                                          vk::ArrayProxy<const uint32_t> objectIndices) const {
-  vk::Device vkDevice;
-  vkDevice.registerObjectsNVX(vkObjectTableNVX_, objectTableEntries, objectIndices, getDispatcher());
+  vk::Device vkDevice = logicalDevice_;
+  return vkDevice.registerObjectsNVX(vkObjectTableNVX_, objectTableEntries, objectIndices, getDispatcher());
 }
 
 vk::ResultValueType<void>::type
   ObjectTableNVXImpl::unregisterObjectsNVX(vk::ArrayProxy<const vk::ObjectEntryTypeNVX> objectEntryTypes,
                                            vk::ArrayProxy<const uint32_t> objectIndices) const {
-  vk::Device vkDevice;
-  vkDevice.unregisterObjectsNVX(vkObjectTableNVX_, objectEntryTypes, objectIndices, getDispatcher());
+  vk::Device vkDevice = logicalDevice_;
+  return vkDevice.unregisterObjectsNVX(vkObjectTableNVX_, objectEntryTypes, objectIndices, getDispatcher());
 }
 
 // endregion

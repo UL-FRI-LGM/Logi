@@ -35,16 +35,6 @@ class MemoryAllocator : public Handle<MemoryAllocatorImpl> {
 
   // region Logi Declarations
 
-  Image createImage(const vk::ImageCreateInfo& imageCreateInfo,
-                    const VmaAllocationCreateInfo& allocationCreateInfo) const;
-
-  void destroyImage(const Image& image) const;
-
-  Buffer createBuffer(const vk::BufferCreateInfo& bufferCreateInfo,
-                      const VmaAllocationCreateInfo& allocationCreateInfo) const;
-
-  void destroyBuffer(const Buffer& buffer) const;
-
   VulkanInstance getInstance() const;
 
   PhysicalDevice getPhysicalDevice() const;

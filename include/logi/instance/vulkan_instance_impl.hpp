@@ -154,7 +154,7 @@ class VulkanInstanceImpl : public VulkanObject<VulkanInstanceImpl>,
                                   const vk::DebugUtilsMessageTypeFlagsEXT& messageTypes,
                                   const vk::DebugUtilsMessengerCallbackDataEXT& callbackData) const;
 
-  PFN_vkVoidFunction getInstanceProcAddr(const std::string& name) const;
+  PFN_vkVoidFunction getProcAddr(const std::string& name) const;
 
   // endregion
 

@@ -21,33 +21,50 @@
 
 #include <vulkan/vulkan.hpp>
 #include "logi/base/vulkan_object.hpp"
+#include "logi/structures/extension.hpp"
 
 namespace logi {
 
 class LogicalDeviceImpl;
 class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
+class ImageImpl;
 
-class SwapchainKHRImpl : public VulkanObject<SwapchainKHRImpl> {
+class SwapchainKHRImpl : public VulkanObject<SwapchainKHRImpl>, public VulkanObjectComposite<ImageImpl> {
  public:
   SwapchainKHRImpl(LogicalDeviceImpl& logicalDevice, const vk::SwapchainCreateInfoKHR& createInfo,
                    const std::optional<vk::AllocationCallbacks>& allocator = {});
 
+  SwapchainKHRImpl(LogicalDeviceImpl& logicalDevice, const vk::SwapchainKHR& swapchain,
+                   const std::optional<vk::AllocationCallbacks>& allocator = {});
+
   // region Vulkan Declarations
 
-#ifdef VK_USE_PLATFORM_WIN32_KHR
-  vk::ResultValueType<void>::type acquireFullScreenExclusiveModeEXT() const;
+  std::vector<std::shared_ptr<ImageImpl>> getSwapchainImagesKHR();
 
-  vk::ResultValueType<void>::type releaseFullScreenExclusiveModeEXT() const;
-#endif
+  vk::ResultValue<uint32_t> acquireNextImageKHR(uint64_t timeout, const vk::Semaphore& semaphore,
+                                                const vk::Fence& fence) const;
 
-  vk::ResultValue<uint32_t> acquireNextImageKHR(uint64_t timeout, vk::Semaphore semaphore, vk::Fence fence) const;
+  vk::ResultValue<uint32_t> acquireNextImage2KHR(uint64_t timeout, const vk::Semaphore& semaphore,
+                                                 const vk::Fence& fence, uint32_t deviceMask,
+                                                 const ConstVkNextProxy<vk::AcquireNextImageInfoKHR>& next) const;
 
   vk::ResultValueType<uint64_t>::type getCounterEXT(vk::SurfaceCounterFlagBitsEXT counter) const;
 
   vk::Result getStatusKHR() const;
 
   void setLocalDimmingAMD(vk::Bool32 localDimmingEnable) const;
+
+  typename vk::ResultValueType<std::vector<vk::PastPresentationTimingGOOGLE>>::type
+    getPastPresentationTimingGOOGLE() const;
+
+  typename vk::ResultValueType<vk::RefreshCycleDurationGOOGLE>::type getRefreshCycleDurationGOOGLE() const;
+
+#ifdef VK_USE_PLATFORM_WIN32_KHR
+  vk::ResultValueType<void>::type acquireFullScreenExclusiveModeEXT() const;
+
+  vk::ResultValueType<void>::type releaseFullScreenExclusiveModeEXT() const;
+#endif
 
   // endregion
 

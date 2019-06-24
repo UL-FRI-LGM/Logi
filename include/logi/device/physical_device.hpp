@@ -197,7 +197,7 @@ class PhysicalDevice : public Handle<PhysicalDeviceImpl> {
 
   vk::ResultValueType<std::vector<vk::PresentModeKHR>>::type getSurfacePresentModesKHR(vk::SurfaceKHR surface) const;
 
-  vk::ResultValueType<vk::Bool32>::type getSurfaceSupportKHR(uint32_t queueIndex, vk::SurfaceKHR surface) const;
+  vk::ResultValueType<vk::Bool32>::type getSurfaceSupportKHR(uint32_t queueFamilyIndex, vk::SurfaceKHR surface) const;
 
   vk::ExternalImageFormatPropertiesNV
     getExternalImageFormatPropertiesNV(vk::Format format, vk::ImageType type, vk::ImageTiling tiling,
@@ -210,6 +210,40 @@ class PhysicalDevice : public Handle<PhysicalDeviceImpl> {
   template <typename X, typename Y, typename... Z>
   vk::StructureChain<X, Y, Z...>
     getGeneratedCommandsPropertiesNVX(vk::DeviceGeneratedCommandsFeaturesNVX& features) const;
+
+  vk::ResultValueType<std::vector<vk::TimeDomainEXT>>::type getCalibrateableTimeDomainsEXT() const;
+
+  vk::ResultValueType<std::vector<vk::CooperativeMatrixPropertiesNV>>::type getCooperativeMatrixPropertiesNV() const;
+
+  vk::ResultValueType<std::vector<vk::DisplayPlanePropertiesKHR>>::type getDisplayPlanePropertiesKHR() const;
+
+  vk::ResultValueType<std::vector<vk::DisplayPlaneProperties2KHR>>::type getDisplayPlaneProperties2KHR() const;
+
+  vk::ResultValueType<std::vector<vk::DisplayPropertiesKHR>>::type getDisplayPropertiesKHR() const;
+
+  vk::ResultValueType<std::vector<vk::DisplayProperties2KHR>>::type getDisplayProperties2KHR() const;
+
+  vk::MultisamplePropertiesEXT getMultisamplePropertiesEXT(vk::SampleCountFlagBits samples) const;
+
+  vk::ResultValueType<std::vector<vk::Rect2D>>::type getPresentRectanglesKHR(const vk::SurfaceKHR& surface) const;
+
+#ifdef VK_USE_PLATFORM_WAYLAND_KHR
+  vk::Bool32 getWaylandPresentationSupportKHR(uint32_t queueFamilyIndex, struct wl_display& display) const;
+#endif
+
+#ifdef VK_USE_PLATFORM_WIN32_KHR
+  vk::Bool32 getWin32PresentationSupportKHR(uint32_t queueFamilyIndex) const;
+
+#endif
+
+#ifdef VK_USE_PLATFORM_XCB_KHR
+  vk::Bool32 getXcbPresentationSupportKHR(uint32_t queueFamilyIndex, xcb_connection_t& connection,
+                                          xcb_visualid_t visual_id) const;
+#endif
+
+#ifdef VK_USE_PLATFORM_XLIB_KHR
+  vk::Bool32 getXlibPresentationSupportKHR(uint32_t queueFamilyIndex, Display& dpy, VisualID visualID) const;
+#endif
 
   // endregion Vulkan Declarations
 

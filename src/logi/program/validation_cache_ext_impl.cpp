@@ -39,7 +39,7 @@ vk::ResultValueType<void>::type
 }
 
 typename vk::ResultValueType<std::vector<uint8_t>>::type ValidationCacheEXTImpl::getValidationCacheDataEXT() const {
-  vk::Device vkDevice;
+  vk::Device vkDevice = logicalDevice_;
   return vkDevice.getValidationCacheDataEXT(vkValidationCacheEXT_, getDispatcher());
 }
 

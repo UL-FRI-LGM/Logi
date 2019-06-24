@@ -71,7 +71,7 @@ class QueryPoolImpl : public VulkanObject<QueryPoolImpl> {
 template <typename T>
 vk::Result QueryPoolImpl::getResults(uint32_t firstQuery, uint32_t queryCount, vk::ArrayProxy<T> data,
                                      vk::DeviceSize stride, vk::QueryResultFlags flags) const {
-  vk::Device vkDevice;
+  vk::Device vkDevice = logicalDevice_;
   return vkDevice.getQueryPoolResults(vkQueryPool_, firstQuery, queryCount, data, stride, flags, getDispatcher());
 }
 

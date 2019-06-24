@@ -43,8 +43,6 @@ class BufferView : public Handle<BufferViewImpl> {
 
   LogicalDevice getLogicalDevice() const;
 
-  MemoryAllocator getMemoryAllocator() const;
-
   Buffer getBuffer() const;
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;

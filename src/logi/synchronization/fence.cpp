@@ -44,6 +44,28 @@ vk::ResultValueType<void>::type Fence::reset() const {
   return object_->reset();
 }
 
+vk::ResultValueType<void>::type Fence::importFdKHR(const vk::FenceImportFlags& flags,
+                                                   vk::ExternalFenceHandleTypeFlagBits handleType, int fd,
+                                                   const ConstVkNextProxy<vk::ImportFenceFdInfoKHR>& next) const {
+  return object_->importFdKHR(flags, handleType, fd, next);
+}
+
+#ifdef VK_USE_PLATFORM_WIN32_KHR
+
+vk::ResultValueType<void>::type
+  Fence::importWin32HandleKHR(const vk::FenceImportFlags& flags, vk::ExternalFenceHandleTypeFlagBits handleType,
+                              HANDLE handle, LPCWSTR name,
+                              const ConstVkNextProxy<vk::ImportFenceWin32HandleInfoKHR>& next = {}) const {
+  return object_->importFdKHR(flags, handleType, handle, name, next);
+}
+
+#endif
+
+vk::ResultValueType<int>::type Fence::getFdKHR(vk::ExternalFenceHandleTypeFlagBits handleType,
+                                               const ConstVkNextProxy<vk::FenceGetFdInfoKHR>& next) const {
+  return object_->getFdKHR(handleType, next);
+}
+
 vk::Result Fence::wait(const std::vector<Fence>& fences, vk::Bool32 waitAll, uint64_t timeout) {
   std::vector<vk::Fence> vkFences(fences.begin(), fences.end());
   return fences[0].wait(vkFences, waitAll, timeout);

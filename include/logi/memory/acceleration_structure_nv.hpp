@@ -21,7 +21,7 @@
 
 #include <vulkan/vulkan.hpp>
 #include "logi/base/handle.hpp"
-#include "logi/nvidia/acceleration_structure_nv_impl.hpp"
+#include "logi/memory/acceleration_structure_nv_impl.hpp"
 
 namespace logi {
 
@@ -42,6 +42,11 @@ class AccelerationStructureNV : public Handle<AccelerationStructureNVImpl> {
   vk::MemoryRequirements2KHR
     getMemoryRequirementsNV(vk::AccelerationStructureMemoryRequirementsTypeNV type,
                             const ConstVkNextProxy<vk::AccelerationStructureMemoryRequirementsInfoNV>& next) const;
+
+  vk::ResultValueType<void>::type
+    bindMemory(vk::DeviceMemory memory, vk::DeviceSize memoryOffset,
+               const vk::ArrayProxy<uint32_t>& deviceIndices = nullptr,
+               const ConstVkNextProxy<vk::BindAccelerationStructureMemoryInfoNV>& next = {}) const;
 
   // endregion
 

@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "logi/nvidia/acceleration_structure_nv.hpp"
+#include "logi/memory/acceleration_structure_nv.hpp"
 #include "logi/device/logical_device_impl.hpp"
 #include "logi/device/physical_device_impl.hpp"
 #include "logi/instance/vulkan_instance.hpp"
 #include "logi/instance/vulkan_instance_impl.hpp"
-#include "logi/nvidia/acceleration_structure_nv_impl.hpp"
+#include "logi/memory/acceleration_structure_nv_impl.hpp"
 
 namespace logi {
 
@@ -29,6 +29,13 @@ vk::MemoryRequirements2KHR AccelerationStructureNV::getMemoryRequirementsNV(
   vk::AccelerationStructureMemoryRequirementsTypeNV type,
   const ConstVkNextProxy<vk::AccelerationStructureMemoryRequirementsInfoNV>& next) const {
   return object_->getMemoryRequirementsNV(type, next);
+}
+
+vk::ResultValueType<void>::type
+  AccelerationStructureNV::bindMemory(vk::DeviceMemory memory, vk::DeviceSize memoryOffset,
+                                      const vk::ArrayProxy<uint32_t>& deviceIndices,
+                                      const ConstVkNextProxy<vk::BindAccelerationStructureMemoryInfoNV>& next) const {
+  object_->bindMemory(memory, memoryOffset, deviceIndices, next);
 }
 
 // region Logi Definitions

@@ -207,7 +207,7 @@ void VulkanInstanceImpl::submitDebugUtilsMessageEXT(vk::DebugUtilsMessageSeverit
   vkInstance_.submitDebugUtilsMessageEXT(messageSeverity, messageTypes, callbackData, getDispatcher());
 }
 
-PFN_vkVoidFunction VulkanInstanceImpl::getInstanceProcAddr(const std::string& name) const {
+PFN_vkVoidFunction VulkanInstanceImpl::getProcAddr(const std::string& name) const {
   return vkInstance_.getProcAddr(name, getDispatcher());
 }
 

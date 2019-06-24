@@ -35,14 +35,10 @@ class DeviceMemoryImpl : public VulkanObject<DeviceMemoryImpl> {
 
   // region Vulkan Declarations
 
-  vk::ResultValueType<void>::type bindBufferMemory(vk::Buffer buffer, vk::DeviceSize memoryOffset) const;
-
-  vk::ResultValueType<void>::type bindImageMemory(vk::Image image, vk::DeviceSize memoryOffset) const;
-
   vk::DeviceSize getCommitment() const;
 
   vk::ResultValueType<void*>::type mapMemory(vk::DeviceSize offset, vk::DeviceSize size,
-                                             vk::MemoryMapFlags flags) const;
+                                             const vk::MemoryMapFlags& flags) const;
 
   void unmapMemory() const;
 

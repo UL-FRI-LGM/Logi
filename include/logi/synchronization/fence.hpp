@@ -21,6 +21,7 @@
 
 #include <vulkan/vulkan.hpp>
 #include "logi/base/handle.hpp"
+#include "logi/structures/extension.hpp"
 
 namespace logi {
 
@@ -44,6 +45,22 @@ class Fence : public Handle<FenceImpl> {
   vk::ResultValueType<void>::type reset(const std::vector<vk::Fence>& fences) const;
 
   vk::ResultValueType<void>::type reset() const;
+
+  vk::ResultValueType<void>::type importFdKHR(const vk::FenceImportFlags& flags,
+                                              vk::ExternalFenceHandleTypeFlagBits handleType, int fd,
+                                              const ConstVkNextProxy<vk::ImportFenceFdInfoKHR>& next = {}) const;
+
+#ifdef VK_USE_PLATFORM_WIN32_KHR
+
+  vk::ResultValueType<void>::type
+    importWin32HandleKHR(const vk::FenceImportFlags& flags, vk::ExternalFenceHandleTypeFlagBits handleType,
+                         HANDLE handle LPCWSTR name,
+                         const ConstVkNextProxy<vk::ImportFenceWin32HandleInfoKHR>& next = {}) const;
+
+#endif
+
+  vk::ResultValueType<int>::type getFdKHR(vk::ExternalFenceHandleTypeFlagBits handleType,
+                                          const ConstVkNextProxy<vk::FenceGetFdInfoKHR>& next = {}) const;
 
   // endregion
 

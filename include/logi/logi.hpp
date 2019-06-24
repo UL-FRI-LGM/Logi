@@ -41,7 +41,7 @@
 #include "logi/memory/image_view.hpp"
 #include "logi/memory/memory_allocator.hpp"
 #include "logi/memory/sampler.hpp"
-#include "logi/nvidia/acceleration_structure_nv.hpp"
+#include "logi/memory/acceleration_structure_nv.hpp"
 #include "logi/nvidia/indirect_commands_layout_nvx.hpp"
 #include "logi/nvidia/object_table_nvx.hpp"
 #include "logi/program/descriptor_set_layout.hpp"

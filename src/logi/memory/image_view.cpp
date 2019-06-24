@@ -42,10 +42,6 @@ LogicalDevice ImageView::getLogicalDevice() const {
   return LogicalDevice(object_->getLogicalDevice().shared_from_this());
 }
 
-MemoryAllocator ImageView::getMemoryAllocator() const {
-  return MemoryAllocator(object_->getMemoryAllocator().shared_from_this());
-}
-
 Image ImageView::getImage() const {
   return Image(object_->getImage().shared_from_this());
 }

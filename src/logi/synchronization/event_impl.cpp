@@ -29,17 +29,17 @@ EventImpl::EventImpl(LogicalDeviceImpl& logicalDevice, const vk::EventCreateInfo
 }
 
 bool EventImpl::getStatus() const {
-  vk::Device vkDevice;
+  vk::Device vkDevice = logicalDevice_;
   return vkDevice.getEventStatus(vkEvent_, getDispatcher()) == vk::Result::eSuccess;
 }
 
 vk::ResultValueType<void>::type EventImpl::reset() const {
-  vk::Device vkDevice;
+  vk::Device vkDevice = logicalDevice_;
   return vkDevice.resetEvent(vkEvent_, getDispatcher());
 }
 
 vk::ResultValueType<void>::type EventImpl::set() const {
-  vk::Device vkDevice;
+  vk::Device vkDevice = logicalDevice_;
   return vkDevice.setEvent(vkEvent_, getDispatcher());
 }
 

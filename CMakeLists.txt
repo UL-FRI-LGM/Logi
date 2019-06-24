@@ -13,7 +13,9 @@ option(BUILD_EXAMPLES "Build examples" ON)
 
 ##############################################
 # BUILD LOGI LIBRARY
-############################################## 
+##############################################
+
+#add_definitions(-DVK_USE_PLATFORM_WIN32_KHR -DVK_USE_PLATFORM_XCB_KHR -DVK_USE_PLATFORM_XLIB_KHR -DVK_USE_PLATFORM_WAYLAND_KHR)
 
 # Libraries path
 include(ExternalDependencies.cmake)

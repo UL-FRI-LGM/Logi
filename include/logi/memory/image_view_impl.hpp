@@ -52,8 +52,6 @@ class ImageViewImpl : public VulkanObject<ImageViewImpl> {
 
   LogicalDeviceImpl& getLogicalDevice() const;
 
-  MemoryAllocatorImpl& getMemoryAllocator() const;
-
   ImageImpl& getImage() const;
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;

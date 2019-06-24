@@ -51,8 +51,6 @@ class ImageView : public Handle<ImageViewImpl> {
 
   LogicalDevice getLogicalDevice() const;
 
-  MemoryAllocator getMemoryAllocator() const;
-
   Image getImage() const;
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;

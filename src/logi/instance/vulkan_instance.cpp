@@ -158,8 +158,8 @@ void VulkanInstance::submitDebugUtilsMessageEXT(vk::DebugUtilsMessageSeverityFla
   object_->submitDebugUtilsMessageEXT(messageSeverity, messageTypes, callbackData);
 }
 
-PFN_vkVoidFunction VulkanInstance::getInstanceProcAddr(const std::string& name) const {
-  return object_->getInstanceProcAddr(name);
+PFN_vkVoidFunction VulkanInstance::getProcAddr(const std::string& name) const {
+  return object_->getProcAddr(name);
 }
 
 const vk::DispatchLoaderDynamic& VulkanInstance::getDispatcher() const {

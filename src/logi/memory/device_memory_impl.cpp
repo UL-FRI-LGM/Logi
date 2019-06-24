@@ -30,24 +30,13 @@ DeviceMemoryImpl::DeviceMemoryImpl(LogicalDeviceImpl& logicalDevice, const vk::M
 
 // region Vulkan Definitions
 
-vk::ResultValueType<void>::type DeviceMemoryImpl::bindBufferMemory(vk::Buffer buffer,
-                                                                   vk::DeviceSize memoryOffset) const {
-  vk::Device vkDevice = logicalDevice_;
-  return vkDevice.bindBufferMemory(buffer, vkDeviceMemory_, memoryOffset, getDispatcher());
-}
-
-vk::ResultValueType<void>::type DeviceMemoryImpl::bindImageMemory(vk::Image image, vk::DeviceSize memoryOffset) const {
-  vk::Device vkDevice = logicalDevice_;
-  return vkDevice.bindImageMemory(image, vkDeviceMemory_, memoryOffset, getDispatcher());
-}
-
 vk::DeviceSize DeviceMemoryImpl::getCommitment() const {
   vk::Device vkDevice = logicalDevice_;
   return vkDevice.getMemoryCommitment(vkDeviceMemory_, getDispatcher());
 }
 
 vk::ResultValueType<void*>::type DeviceMemoryImpl::mapMemory(vk::DeviceSize offset, vk::DeviceSize size,
-                                                             vk::MemoryMapFlags flags) const {
+                                                             const vk::MemoryMapFlags& flags) const {
   vk::Device vkDevice = logicalDevice_;
   return vkDevice.mapMemory(vkDeviceMemory_, offset, size, flags, getDispatcher());
 }

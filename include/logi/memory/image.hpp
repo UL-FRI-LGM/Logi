@@ -56,6 +56,14 @@ class Image : public Handle<ImageImpl> {
   std::vector<vk::SparseImageMemoryRequirements2KHR>
     getImageSparseMemoryRequirements2KHR(const ConstVkNextProxy<vk::ImageSparseMemoryRequirementsInfo2KHR>& next) const;
 
+  vk::ResultValueType<void>::type bindMemory(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset) const;
+
+  vk::ResultValueType<void>::type bindMemory2(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset,
+                                              const ConstVkNextProxy<vk::BindImageMemoryInfo>& next) const;
+
+  vk::ResultValueType<void>::type bindMemory2KHR(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset,
+                                                 const ConstVkNextProxy<vk::BindImageMemoryInfoKHR>& next) const;
+
   // endregion
 
   // region Logi Declarations
@@ -70,8 +78,6 @@ class Image : public Handle<ImageImpl> {
   PhysicalDevice getPhysicalDevice() const;
 
   LogicalDevice getLogicalDevice() const;
-
-  MemoryAllocator getMemoryAllocator() const;
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 

@@ -159,11 +159,6 @@ std::vector<vk::SparseImageFormatProperties2KHR> PhysicalDeviceImpl::getSparseIm
   return vkPhysicalDevice_.getSparseImageFormatProperties2KHR(pSparseImageFormatProperties, getDispatcher());
 }
 
-vk::ResultValueType<std::vector<vk::Rect2D>>::type
-  PhysicalDeviceImpl::getPresentRectanglesKHR(vk::SurfaceKHR surface) const {
-  return vkPhysicalDevice_.getPresentRectanglesKHR(surface, getDispatcher());
-}
-
 vk::ResultValueType<vk::SurfaceCapabilitiesKHR>::type
   PhysicalDeviceImpl::getSurfaceCapabilitiesKHR(vk::SurfaceKHR surface) const {
   return vkPhysicalDevice_.getSurfaceCapabilitiesKHR(surface, getDispatcher());
@@ -189,9 +184,9 @@ vk::ResultValueType<std::vector<vk::PresentModeKHR>>::type
   return vkPhysicalDevice_.getSurfacePresentModesKHR(surface, getDispatcher());
 }
 
-vk::ResultValueType<vk::Bool32>::type PhysicalDeviceImpl::getSurfaceSupportKHR(uint32_t queueIndex,
+vk::ResultValueType<vk::Bool32>::type PhysicalDeviceImpl::getSurfaceSupportKHR(uint32_t queueFamilyIndex,
                                                                                vk::SurfaceKHR surface) const {
-  return vkPhysicalDevice_.getSurfaceSupportKHR(queueIndex, surface, getDispatcher());
+  return vkPhysicalDevice_.getSurfaceSupportKHR(queueFamilyIndex, surface, getDispatcher());
 }
 
 vk::ExternalImageFormatPropertiesNV PhysicalDeviceImpl::getExternalImageFormatPropertiesNV(
@@ -205,6 +200,69 @@ vk::DeviceGeneratedCommandsLimitsNVX
   PhysicalDeviceImpl::getGeneratedCommandsPropertiesNVX(vk::DeviceGeneratedCommandsFeaturesNVX& features) const {
   return vkPhysicalDevice_.getGeneratedCommandsPropertiesNVX(features, getDispatcher());
 }
+
+vk::ResultValueType<std::vector<vk::TimeDomainEXT>>::type PhysicalDeviceImpl::getCalibrateableTimeDomainsEXT() const {
+  return vkPhysicalDevice_.getCalibrateableTimeDomainsEXT(getDispatcher());
+}
+
+vk::ResultValueType<std::vector<vk::CooperativeMatrixPropertiesNV>>::type
+  PhysicalDeviceImpl::getCooperativeMatrixPropertiesNV() const {
+  return vkPhysicalDevice_.getCooperativeMatrixPropertiesNV(getDispatcher());
+}
+
+vk::ResultValueType<std::vector<vk::DisplayPlanePropertiesKHR>>::type
+  PhysicalDeviceImpl::getDisplayPlanePropertiesKHR() const {
+  return vkPhysicalDevice_.getDisplayPlanePropertiesKHR(getDispatcher());
+}
+
+vk::ResultValueType<std::vector<vk::DisplayPlaneProperties2KHR>>::type
+  PhysicalDeviceImpl::getDisplayPlaneProperties2KHR() const {
+  return vkPhysicalDevice_.getDisplayPlaneProperties2KHR(getDispatcher());
+}
+
+vk::ResultValueType<std::vector<vk::DisplayPropertiesKHR>>::type PhysicalDeviceImpl::getDisplayPropertiesKHR() const {
+  return vkPhysicalDevice_.getDisplayPropertiesKHR(getDispatcher());
+}
+
+vk::ResultValueType<std::vector<vk::DisplayProperties2KHR>>::type PhysicalDeviceImpl::getDisplayProperties2KHR() const {
+  return vkPhysicalDevice_.getDisplayProperties2KHR(getDispatcher());
+}
+
+vk::MultisamplePropertiesEXT PhysicalDeviceImpl::getMultisamplePropertiesEXT(vk::SampleCountFlagBits samples) const {
+  return vkPhysicalDevice_.getMultisamplePropertiesEXT(samples, getDispatcher());
+}
+
+vk::ResultValueType<std::vector<vk::Rect2D>>::type
+  PhysicalDeviceImpl::getPresentRectanglesKHR(const vk::SurfaceKHR& surface) const {
+  return vkPhysicalDevice_.getPresentRectanglesKHR(surface, getDispatcher());
+}
+
+#ifdef VK_USE_PLATFORM_WAYLAND_KHR
+vk::Bool32 PhysicalDeviceImpl::getWaylandPresentationSupportKHR(uint32_t queueFamilyIndex,
+                                                                struct wl_display& display) const {
+  return vkPhysicalDevice_.getWaylandPresentationSupportKHR(queueFamilyIndex, &display, getDispatcher());
+}
+#endif
+
+#ifdef VK_USE_PLATFORM_WIN32_KHR
+vk::Bool32 PhysicalDeviceImpl::getWin32PresentationSupportKHR(uint32_t queueFamilyIndex) const {
+  return vkPhysicalDevice_.getWin32PresentationSupportKHR(queueFamilyIndex, getDispatcher());
+}
+#endif
+
+#ifdef VK_USE_PLATFORM_XCB_KHR
+vk::Bool32 PhysicalDeviceImpl::getXcbPresentationSupportKHR(uint32_t queueFamilyIndex, xcb_connection_t& connection,
+                                                            xcb_visualid_t visual_id) const {
+  return vkPhysicalDevice_.getXcbPresentationSupportKHR(queueFamilyIndex, &connection, visual_id, getDispatcher());
+}
+#endif
+
+#ifdef VK_USE_PLATFORM_XLIB_KHR
+vk::Bool32 PhysicalDeviceImpl::getXlibPresentationSupportKHR(uint32_t queueFamilyIndex, Display& dpy,
+                                                             VisualID visualID) const {
+  return vkPhysicalDevice_.getXlibPresentationSupportKHR(queueFamilyIndex, &dpy, visualID, getDispatcher());
+}
+#endif
 
 const std::shared_ptr<LogicalDeviceImpl>&
   PhysicalDeviceImpl::createLogicalDevice(const vk::DeviceCreateInfo& createInfo,

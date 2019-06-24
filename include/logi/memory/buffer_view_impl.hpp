@@ -44,8 +44,6 @@ class BufferViewImpl : public VulkanObject<BufferViewImpl> {
 
   LogicalDeviceImpl& getLogicalDevice() const;
 
-  MemoryAllocatorImpl& getMemoryAllocator() const;
-
   BufferImpl& getBuffer() const;
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;

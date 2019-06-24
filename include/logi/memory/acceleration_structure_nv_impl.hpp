@@ -43,6 +43,11 @@ class AccelerationStructureNVImpl : public VulkanObject<AccelerationStructureNVI
     getMemoryRequirementsNV(vk::AccelerationStructureMemoryRequirementsTypeNV type,
                             const ConstVkNextProxy<vk::AccelerationStructureMemoryRequirementsInfoNV>& next) const;
 
+  vk::ResultValueType<void>::type
+    bindMemory(vk::DeviceMemory memory, vk::DeviceSize memoryOffset,
+               const vk::ArrayProxy<uint32_t>& deviceIndices = nullptr,
+               const ConstVkNextProxy<vk::BindAccelerationStructureMemoryInfoNV>& next = {}) const;
+
   // endregion
 
   // region Logi Declarations
@@ -72,7 +77,7 @@ class AccelerationStructureNVImpl : public VulkanObject<AccelerationStructureNVI
 
 template <typename T>
 vk::ResultValueType<void>::type AccelerationStructureNVImpl::getHandleNV(vk::ArrayProxy<T> data) const {
-  vk::Device vkDevice;
+  vk::Device vkDevice = logicalDevice_;
   return vkDevice.getAccelerationStructureHandleNV(vkAccelerationStructureNV_, data, getDispatcher());
 }
 

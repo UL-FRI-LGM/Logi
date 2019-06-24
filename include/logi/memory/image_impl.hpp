@@ -19,7 +19,7 @@
 #ifndef LOGI_MEMORY_IMAGE_IMPL_HPP
 #define LOGI_MEMORY_IMAGE_IMPL_HPP
 
-#include <vk_mem_alloc.h>
+#include <variant>
 #include "logi/base/vulkan_object.hpp"
 #include "logi/structures/extension.hpp"
 
@@ -31,11 +31,14 @@ class LogicalDeviceImpl;
 class MemoryAllocatorImpl;
 class ImageViewImpl;
 class ImageView;
+class SwapchainKHRImpl;
 
 class ImageImpl : public VulkanObject<ImageImpl>, public VulkanObjectComposite<ImageViewImpl> {
  public:
-  ImageImpl(MemoryAllocatorImpl& memoryAllocator, const vk::ImageCreateInfo& imageCreateInfo,
-            const VmaAllocationCreateInfo& allocationCreateInfo);
+  ImageImpl(LogicalDeviceImpl& logicalDevice, const vk::ImageCreateInfo& createInfo,
+            const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  ImageImpl(SwapchainKHRImpl& swapchainKHR, const vk::Image& image);
 
   // region Vulkan Declarations
 
@@ -59,12 +62,20 @@ class ImageImpl : public VulkanObject<ImageImpl>, public VulkanObjectComposite<I
   std::vector<vk::SparseImageMemoryRequirements2KHR>
     getImageSparseMemoryRequirements2KHR(const ConstVkNextProxy<vk::ImageSparseMemoryRequirementsInfo2KHR>& next) const;
 
+  vk::ResultValueType<void>::type bindMemory(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset) const;
+
+  vk::ResultValueType<void>::type bindMemory2(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset,
+                                              const ConstVkNextProxy<vk::BindImageMemoryInfo>& next) const;
+
+  vk::ResultValueType<void>::type bindMemory2KHR(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset,
+                                                 const ConstVkNextProxy<vk::BindImageMemoryInfoKHR>& next) const;
+
   // endregion
 
   // region Logi Declarations
 
-  ImageView createImageView(const vk::ImageViewCreateInfo& createInfo,
-                            const std::optional<vk::AllocationCallbacks>& allocator = {});
+  const std::shared_ptr<ImageViewImpl>& createImageView(const vk::ImageViewCreateInfo& createInfo,
+                                                        const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyImageView(size_t id);
 
@@ -73,8 +84,6 @@ class ImageImpl : public VulkanObject<ImageImpl>, public VulkanObjectComposite<I
   PhysicalDeviceImpl& getPhysicalDevice() const;
 
   LogicalDeviceImpl& getLogicalDevice() const;
-
-  MemoryAllocatorImpl& getMemoryAllocator() const;
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
@@ -88,9 +97,9 @@ class ImageImpl : public VulkanObject<ImageImpl>, public VulkanObjectComposite<I
   // endregion
 
  private:
-  MemoryAllocatorImpl* memoryAllocator_;
-  vk::Image image_;
-  VmaAllocation allocation_;
+  std::variant<std::reference_wrapper<LogicalDeviceImpl>, std::reference_wrapper<SwapchainKHRImpl>> owner_;
+  vk::Image vkImage_;
+  std::optional<vk::AllocationCallbacks> allocator_;
 };
 
 } // namespace logi

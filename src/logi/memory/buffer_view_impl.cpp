@@ -45,10 +45,6 @@ LogicalDeviceImpl& BufferViewImpl::getLogicalDevice() const {
   return buffer_.getLogicalDevice();
 }
 
-MemoryAllocatorImpl& BufferViewImpl::getMemoryAllocator() const {
-  return buffer_.getMemoryAllocator();
-}
-
 BufferImpl& BufferViewImpl::getBuffer() const {
   return buffer_;
 }

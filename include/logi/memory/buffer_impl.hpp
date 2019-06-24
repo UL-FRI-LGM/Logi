@@ -21,24 +21,40 @@
 
 #include <vk_mem_alloc.h>
 #include "logi/base/vulkan_object.hpp"
+#include "logi/structures/extension.hpp"
 
 namespace logi {
 
 class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
-class MemoryAllocatorImpl;
 class BufferView;
 class BufferViewImpl;
 
 class BufferImpl : public VulkanObject<BufferImpl>, public VulkanObjectComposite<BufferViewImpl> {
  public:
-  BufferImpl(MemoryAllocatorImpl& memoryAllocator, const vk::BufferCreateInfo& bufferCreateInfo,
-             const VmaAllocationCreateInfo& allocationCreateInfo);
+  BufferImpl(LogicalDeviceImpl& logicalDevice, const vk::BufferCreateInfo& bufferCreateInfo,
+             const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   // region Vulkan Declarations
 
   vk::MemoryRequirements getMemoryRequirements() const;
+
+  vk::MemoryRequirements2
+    getBufferMemoryRequirements2(const ConstVkNextProxy<vk::BufferMemoryRequirementsInfo2>& next = {}) const;
+
+  vk::MemoryRequirements2KHR
+    getBufferMemoryRequirements2KHR(const ConstVkNextProxy<vk::BufferMemoryRequirementsInfo2KHR>& next = {}) const;
+
+  vk::DeviceAddress getDeviceAddressEXT(const ConstVkNextProxy<vk::BufferDeviceAddressInfoEXT>& next = {}) const;
+
+  vk::ResultValueType<void>::type bindMemory(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset) const;
+
+  vk::ResultValueType<void>::type bindMemory2(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset,
+                                              const ConstVkNextProxy<vk::BindBufferMemoryInfo>& next) const;
+
+  vk::ResultValueType<void>::type bindMemory2KHR(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset,
+                                                 const ConstVkNextProxy<vk::BindBufferMemoryInfoKHR>& next) const;
 
   // endregion
 
@@ -55,8 +71,6 @@ class BufferImpl : public VulkanObject<BufferImpl>, public VulkanObjectComposite
 
   LogicalDeviceImpl& getLogicalDevice() const;
 
-  MemoryAllocatorImpl& getMemoryAllocator() const;
-
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
   void destroy() const;
@@ -69,9 +83,9 @@ class BufferImpl : public VulkanObject<BufferImpl>, public VulkanObjectComposite
   // endregion
 
  private:
-  MemoryAllocatorImpl* memoryAllocator_;
-  vk::Buffer buffer_;
-  VmaAllocation allocation_;
+  LogicalDeviceImpl& logicalDevice_;
+  vk::Buffer vkBuffer_;
+  std::optional<vk::AllocationCallbacks> allocator_;
 };
 
 }; // namespace logi

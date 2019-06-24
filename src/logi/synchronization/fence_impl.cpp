@@ -28,28 +28,77 @@ FenceImpl::FenceImpl(LogicalDeviceImpl& logicalDevice, const vk::FenceCreateInfo
   vkFence_ = vkDevice.createFence(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
+FenceImpl::FenceImpl(LogicalDeviceImpl& logicalDevice, const vk::DeviceEventInfoEXT& eventInfo,
+                     const std::optional<vk::AllocationCallbacks>& allocator)
+  : logicalDevice_(logicalDevice), allocator_(allocator) {
+  vk::Device vkDevice = logicalDevice_;
+  vkFence_ = vkDevice.registerEventEXT(eventInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+}
+
+FenceImpl::FenceImpl(LogicalDeviceImpl& logicalDevice, const vk::DisplayKHR& display,
+                     const vk::DisplayEventInfoEXT& eventInfo, const std::optional<vk::AllocationCallbacks>& allocator)
+  : logicalDevice_(logicalDevice), allocator_(allocator) {
+  vk::Device vkDevice = logicalDevice_;
+  vkFence_ =
+    vkDevice.registerDisplayEventEXT(display, eventInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+}
+
 vk::Result FenceImpl::getStatus() const {
-  vk::Device vkDevice;
+  vk::Device vkDevice = logicalDevice_;
   return vkDevice.getFenceStatus(vkFence_, getDispatcher());
 }
 
 vk::Result FenceImpl::wait(const std::vector<vk::Fence>& fences, vk::Bool32 waitAll, uint64_t timeout) const {
-  vk::Device vkDevice;
+  vk::Device vkDevice = logicalDevice_;
   return vkDevice.waitForFences(fences, waitAll, timeout, getDispatcher());
 }
 vk::Result FenceImpl::wait(uint64_t timeout) const {
-  vk::Device vkDevice;
+  vk::Device vkDevice = logicalDevice_;
   return vkDevice.waitForFences({vkFence_}, true, timeout, getDispatcher());
 }
 
 vk::ResultValueType<void>::type FenceImpl::reset(const std::vector<vk::Fence>& fences) const {
-  vk::Device vkDevice;
+  vk::Device vkDevice = logicalDevice_;
   return vkDevice.resetFences(fences, getDispatcher());
 }
 
 vk::ResultValueType<void>::type FenceImpl::reset() const {
-  vk::Device vkDevice;
+  vk::Device vkDevice = logicalDevice_;
   return vkDevice.resetFences({vkFence_}, getDispatcher());
+}
+
+vk::ResultValueType<void>::type FenceImpl::importFdKHR(const vk::FenceImportFlags& flags,
+                                                       vk::ExternalFenceHandleTypeFlagBits handleType, int fd,
+                                                       const ConstVkNextProxy<vk::ImportFenceFdInfoKHR>& next) const {
+  vk::Device vkDevice = logicalDevice_;
+  vk::ImportFenceFdInfoKHR importInfo(vkFence_, flags, handleType, fd);
+  importInfo.pNext = next;
+
+  return vkDevice.importFenceFdKHR(importInfo, getDispatcher());
+}
+
+#ifdef VK_USE_PLATFORM_WIN32_KHR
+
+vk::ResultValueType<void>::type
+  FenceImpl::importWin32HandleKHR(const vk::FenceImportFlags& flags, vk::ExternalFenceHandleTypeFlagBits handleType,
+                                  HANDLE handle, LPCWSTR name,
+                                  const ConstVkNextProxy<vk::ImportFenceWin32HandleInfoKHR>& next) const {
+  vk::Device vkDevice = logicalDevice_;
+  vk::ImportFenceFdInfoKHR importInfo(vkFence_, flags, handleType, handle, name);
+  importInfo.pNext = next;
+
+  return vkDevice.importFenceWin32HandleKHR(importInfo, getDispatcher());
+}
+
+#endif
+
+vk::ResultValueType<int>::type FenceImpl::getFdKHR(vk::ExternalFenceHandleTypeFlagBits handleType,
+                                                   const ConstVkNextProxy<vk::FenceGetFdInfoKHR>& next) const {
+  vk::Device vkDevice = logicalDevice_;
+  vk::FenceGetFdInfoKHR getFdInfo(vkFence_, handleType);
+  getFdInfo.pNext = next;
+
+  return vkDevice.getFenceFdKHR(getFdInfo, getDispatcher());
 }
 
 VulkanInstanceImpl& FenceImpl::getInstance() const {

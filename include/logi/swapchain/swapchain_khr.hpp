@@ -21,6 +21,7 @@
 
 #include <vulkan/vulkan.hpp>
 #include "logi/base/handle.hpp"
+#include "logi/structures/extension.hpp"
 #include "logi/swapchain/swapchain_khr_impl.hpp"
 
 namespace logi {
@@ -29,6 +30,7 @@ class VulkanInstance;
 class PhysicalDevice;
 class LogicalDevice;
 class SwapchainKHRImpl;
+class Image;
 
 class SwapchainKHR : public Handle<SwapchainKHRImpl> {
  public:
@@ -40,13 +42,25 @@ class SwapchainKHR : public Handle<SwapchainKHRImpl> {
   vk::ResultValueType<void>::type acquireFullScreenExclusiveModeEXT() const;
 #endif
 
-  vk::ResultValue<uint32_t> acquireNextImageKHR(uint64_t timeout, vk::Semaphore semaphore, vk::Fence fence) const;
+  vk::ResultValue<uint32_t> acquireNextImageKHR(uint64_t timeout, const vk::Semaphore& semaphore,
+                                                const vk::Fence& fence) const;
+
+  vk::ResultValue<uint32_t> acquireNextImage2KHR(uint64_t timeout, const vk::Semaphore& semaphore,
+                                                 const vk::Fence& fence, uint32_t deviceMask,
+                                                 const ConstVkNextProxy<vk::AcquireNextImageInfoKHR>& next = {}) const;
+
+  std::vector<Image> getSwapchainImagesKHR() const;
 
   vk::ResultValueType<uint64_t>::type getCounterEXT(vk::SurfaceCounterFlagBitsEXT counter) const;
 
   vk::Result getStatusKHR() const;
 
   void setLocalDimmingAMD(vk::Bool32 localDimmingEnable) const;
+
+  typename vk::ResultValueType<std::vector<vk::PastPresentationTimingGOOGLE>>::type
+    getPastPresentationTimingGOOGLE() const;
+
+  typename vk::ResultValueType<vk::RefreshCycleDurationGOOGLE>::type getRefreshCycleDurationGOOGLE() const;
 
   // endregion
 

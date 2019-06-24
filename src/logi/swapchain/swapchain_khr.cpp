@@ -20,10 +20,16 @@
 #include "logi/device/logical_device.hpp"
 #include "logi/device/physical_device.hpp"
 #include "logi/instance/vulkan_instance.hpp"
+#include "logi/memory/image.hpp"
 
 namespace logi {
 
 // region Vulkan Definitions
+
+std::vector<Image> SwapchainKHR::getSwapchainImagesKHR() const {
+  std::vector<std::shared_ptr<ImageImpl>> imageImpls = object_->getSwapchainImagesKHR();
+  return std::vector<Image>(imageImpls.begin(), imageImpls.end());
+}
 
 #ifdef VK_USE_PLATFORM_WIN32_KHR
 vk::ResultValueType<void>::type SwapchainKHR::acquireFullScreenExclusiveModeEXT() const {
@@ -31,9 +37,16 @@ vk::ResultValueType<void>::type SwapchainKHR::acquireFullScreenExclusiveModeEXT(
 }
 #endif
 
-vk::ResultValue<uint32_t> SwapchainKHR::acquireNextImageKHR(uint64_t timeout, vk::Semaphore semaphore,
-                                                            vk::Fence fence) const {
+vk::ResultValue<uint32_t> SwapchainKHR::acquireNextImageKHR(uint64_t timeout, const vk::Semaphore& semaphore,
+                                                            const vk::Fence& fence) const {
   return object_->acquireNextImageKHR(timeout, semaphore, fence);
+}
+
+vk::ResultValue<uint32_t>
+  SwapchainKHR::acquireNextImage2KHR(uint64_t timeout, const vk::Semaphore& semaphore, const vk::Fence& fence,
+                                     uint32_t deviceMask,
+                                     const ConstVkNextProxy<vk::AcquireNextImageInfoKHR>& next) const {
+  return object_->acquireNextImage2KHR(timeout, semaphore, fence, deviceMask, next);
 }
 
 vk::ResultValueType<uint64_t>::type SwapchainKHR::getCounterEXT(vk::SurfaceCounterFlagBitsEXT counter) const {
@@ -46,6 +59,15 @@ vk::Result SwapchainKHR::getStatusKHR() const {
 
 void SwapchainKHR::setLocalDimmingAMD(vk::Bool32 localDimmingEnable) const {
   object_->setLocalDimmingAMD(localDimmingEnable);
+}
+
+typename vk::ResultValueType<std::vector<vk::PastPresentationTimingGOOGLE>>::type
+  SwapchainKHR::getPastPresentationTimingGOOGLE() const {
+  return object_->getPastPresentationTimingGOOGLE();
+}
+
+typename vk::ResultValueType<vk::RefreshCycleDurationGOOGLE>::type SwapchainKHR::getRefreshCycleDurationGOOGLE() const {
+  return object_->getRefreshCycleDurationGOOGLE();
 }
 
 // endregion

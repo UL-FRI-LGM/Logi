@@ -156,11 +156,6 @@ std::vector<vk::SparseImageFormatProperties2KHR> PhysicalDevice::getSparseImageF
   return object_->getSparseImageFormatProperties2KHR(sparseImageFormatProperties);
 }
 
-vk::ResultValueType<std::vector<vk::Rect2D>>::type
-  PhysicalDevice::getPresentRectanglesKHR(vk::SurfaceKHR surface) const {
-  return object_->getPresentRectanglesKHR(surface);
-}
-
 vk::ResultValueType<vk::SurfaceCapabilitiesKHR>::type
   PhysicalDevice::getSurfaceCapabilitiesKHR(vk::SurfaceKHR surface) const {
   return object_->getSurfaceCapabilitiesKHR(surface);
@@ -186,9 +181,9 @@ vk::ResultValueType<std::vector<vk::PresentModeKHR>>::type
   return object_->getSurfacePresentModesKHR(surface);
 }
 
-vk::ResultValueType<vk::Bool32>::type PhysicalDevice::getSurfaceSupportKHR(uint32_t queueIndex,
+vk::ResultValueType<vk::Bool32>::type PhysicalDevice::getSurfaceSupportKHR(uint32_t queueFamilyIndex,
                                                                            vk::SurfaceKHR surface) const {
-  return object_->getSurfaceSupportKHR(queueIndex, surface);
+  return object_->getSurfaceSupportKHR(queueFamilyIndex, surface);
 }
 
 vk::ExternalImageFormatPropertiesNV PhysicalDevice::getExternalImageFormatPropertiesNV(
@@ -201,6 +196,70 @@ vk::DeviceGeneratedCommandsLimitsNVX
   PhysicalDevice::getGeneratedCommandsPropertiesNVX(vk::DeviceGeneratedCommandsFeaturesNVX& features) const {
   return object_->getGeneratedCommandsPropertiesNVX(features);
 }
+
+vk::ResultValueType<std::vector<vk::TimeDomainEXT>>::type PhysicalDevice::getCalibrateableTimeDomainsEXT() const {
+  return object_->getCalibrateableTimeDomainsEXT();
+}
+
+vk::ResultValueType<std::vector<vk::CooperativeMatrixPropertiesNV>>::type
+  PhysicalDevice::getCooperativeMatrixPropertiesNV() const {
+  return object_->getCooperativeMatrixPropertiesNV();
+}
+
+vk::ResultValueType<std::vector<vk::DisplayPlanePropertiesKHR>>::type
+  PhysicalDevice::getDisplayPlanePropertiesKHR() const {
+  return object_->getDisplayPlanePropertiesKHR();
+}
+
+vk::ResultValueType<std::vector<vk::DisplayPlaneProperties2KHR>>::type
+  PhysicalDevice::getDisplayPlaneProperties2KHR() const {
+  return object_->getDisplayPlaneProperties2KHR();
+}
+
+vk::ResultValueType<std::vector<vk::DisplayPropertiesKHR>>::type PhysicalDevice::getDisplayPropertiesKHR() const {
+  return object_->getDisplayPropertiesKHR();
+}
+
+vk::ResultValueType<std::vector<vk::DisplayProperties2KHR>>::type PhysicalDevice::getDisplayProperties2KHR() const {
+  return object_->getDisplayProperties2KHR();
+}
+
+vk::MultisamplePropertiesEXT PhysicalDevice::getMultisamplePropertiesEXT(vk::SampleCountFlagBits samples) const {
+  return object_->getMultisamplePropertiesEXT(samples);
+}
+
+vk::ResultValueType<std::vector<vk::Rect2D>>::type
+  PhysicalDevice::getPresentRectanglesKHR(const vk::SurfaceKHR& surface) const {
+  return object_->getPresentRectanglesKHR(surface);
+}
+
+#ifdef VK_USE_PLATFORM_WAYLAND_KHR
+vk::Bool32 PhysicalDevice::getWaylandPresentationSupportKHR(uint32_t queueFamilyIndex,
+                                                            struct wl_display& display) const {
+  return object_->getWaylandPresentationSupportKHR(queueFamilyIndex, display);
+}
+#endif
+
+#ifdef VK_USE_PLATFORM_WIN32_KHR
+vk::Bool32 PhysicalDevice::getWin32PresentationSupportKHR(uint32_t queueFamilyIndex) const {
+  return object_->getWin32PresentationSupportKHR(queueFamilyIndex);
+}
+
+#endif
+
+#ifdef VK_USE_PLATFORM_XCB_KHR
+vk::Bool32 PhysicalDevice::getXcbPresentationSupportKHR(uint32_t queueFamilyIndex, xcb_connection_t& connection,
+                                                        xcb_visualid_t visual_id) const {
+  return object_->getXcbPresentationSupportKHR(queueFamilyIndex, connection, visual_id);
+}
+#endif
+
+#ifdef VK_USE_PLATFORM_XLIB_KHR
+vk::Bool32 PhysicalDevice::getXlibPresentationSupportKHR(uint32_t queueFamilyIndex, Display& dpy,
+                                                         VisualID visualID) const {
+  return object_->getXlibPresentationSupportKHR(queueFamilyIndex, dpy, visualID);
+}
+#endif
 
 LogicalDevice PhysicalDevice::createLogicalDevice(const vk::DeviceCreateInfo& createInfo,
                                                   const std::optional<vk::AllocationCallbacks>& allocator) {

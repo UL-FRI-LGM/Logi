@@ -61,7 +61,7 @@ std::vector<vk::SparseImageMemoryRequirements2KHR> Image::getImageSparseMemoryRe
 
 ImageView Image::createImageView(const vk::ImageViewCreateInfo& createInfo,
                                  const std::optional<vk::AllocationCallbacks>& allocator) {
-  return object_->createImageView(createInfo, allocator);
+  return ImageView(object_->createImageView(createInfo, allocator));
 }
 
 void Image::destroyImageView(const ImageView& image) {
@@ -80,10 +80,6 @@ LogicalDevice Image::getLogicalDevice() const {
   return LogicalDevice(object_->getLogicalDevice().shared_from_this());
 }
 
-MemoryAllocator Image::getMemoryAllocator() const {
-  return MemoryAllocator(object_->getMemoryAllocator().shared_from_this());
-}
-
 const vk::DispatchLoaderDynamic& Image::getDispatcher() const {
   return object_->getDispatcher();
 }
@@ -94,6 +90,20 @@ void Image::destroy() const {
 
 Image::operator vk::Image() const {
   return object_->operator vk::Image();
+}
+
+vk::ResultValueType<void>::type Image::bindMemory(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset) const {
+  return object_->bindMemory(memory, memoryOffset);
+}
+
+vk::ResultValueType<void>::type Image::bindMemory2(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset,
+                                                   const ConstVkNextProxy<vk::BindImageMemoryInfo>& next) const {
+  return object_->bindMemory2(memory, memoryOffset, next);
+}
+
+vk::ResultValueType<void>::type Image::bindMemory2KHR(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset,
+                                                      const ConstVkNextProxy<vk::BindImageMemoryInfoKHR>& next) const {
+  return object_->bindMemory2KHR(memory, memoryOffset, next);
 }
 
 }

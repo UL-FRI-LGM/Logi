@@ -26,14 +26,6 @@ namespace logi {
 
 // region Vulkan Definitions
 
-vk::ResultValueType<void>::type DeviceMemory::bindBufferMemory(vk::Buffer buffer, vk::DeviceSize memoryOffset) const {
-  return object_->bindBufferMemory(buffer, memoryOffset);
-}
-
-vk::ResultValueType<void>::type DeviceMemory::bindImageMemory(vk::Image image, vk::DeviceSize memoryOffset) const {
-  return object_->bindImageMemory(image, memoryOffset);
-}
-
 vk::DeviceSize DeviceMemory::getCommitment() const {
   return object_->getCommitment();
 }

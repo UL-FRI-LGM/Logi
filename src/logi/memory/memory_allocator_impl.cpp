@@ -72,24 +72,6 @@ MemoryAllocatorImpl::MemoryAllocatorImpl(LogicalDeviceImpl& logicalDevice, vk::D
   vmaCreateAllocator(&createInfo, &vma_);
 }
 
-Image MemoryAllocatorImpl::createImage(const vk::ImageCreateInfo& imageCreateInfo,
-                                       const VmaAllocationCreateInfo& allocationCreateInfo) {
-  return Image(VulkanObjectComposite<ImageImpl>::createObject(*this, imageCreateInfo, allocationCreateInfo));
-}
-
-void MemoryAllocatorImpl::destroyImage(size_t id) {
-  VulkanObjectComposite<ImageImpl>::destroyObject(id);
-}
-
-Buffer MemoryAllocatorImpl::createBuffer(const vk::BufferCreateInfo& bufferCreateInfo,
-                                         const VmaAllocationCreateInfo& allocationCreateInfo) {
-  return Buffer(VulkanObjectComposite<BufferImpl>::createObject(*this, bufferCreateInfo, allocationCreateInfo));
-}
-
-void MemoryAllocatorImpl::destroyBuffer(size_t id) {
-  VulkanObjectComposite<BufferImpl>::destroyObject(id);
-}
-
 VulkanInstanceImpl& MemoryAllocatorImpl::getInstance() const {
   return logicalDevice_.getInstance();
 }
@@ -115,8 +97,6 @@ void MemoryAllocatorImpl::destroy() const {
 }
 
 void MemoryAllocatorImpl::free() {
-  VulkanObjectComposite<ImageImpl>::destroyAllObjects();
-  VulkanObjectComposite<BufferImpl>::destroyAllObjects();
   vmaDestroyAllocator(vma_);
   VulkanObject::free();
 }

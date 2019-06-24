@@ -22,13 +22,13 @@
 #include <vulkan/vulkan.hpp>
 #include "logi/base/handle.hpp"
 #include "logi/memory/buffer_impl.hpp"
+#include "logi/structures/extension.hpp"
 
 namespace logi {
 
 class VulkanInstance;
 class PhysicalDevice;
 class LogicalDevice;
-class MemoryAllocator;
 
 class Buffer : public Handle<BufferImpl> {
  public:
@@ -37,6 +37,22 @@ class Buffer : public Handle<BufferImpl> {
   // region Vulkan Declarations
 
   vk::MemoryRequirements getMemoryRequirements() const;
+
+  vk::MemoryRequirements2
+    getBufferMemoryRequirements2(const ConstVkNextProxy<vk::BufferMemoryRequirementsInfo2>& next = {}) const;
+
+  vk::MemoryRequirements2KHR
+    getBufferMemoryRequirements2KHR(const ConstVkNextProxy<vk::BufferMemoryRequirementsInfo2KHR>& next = {}) const;
+
+  vk::DeviceAddress getDeviceAddressEXT(const ConstVkNextProxy<vk::BufferDeviceAddressInfoEXT>& next = {}) const;
+
+  vk::ResultValueType<void>::type bindMemory(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset) const;
+
+  vk::ResultValueType<void>::type bindMemory2(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset,
+                                              const ConstVkNextProxy<vk::BindBufferMemoryInfo>& next) const;
+
+  vk::ResultValueType<void>::type bindMemory2KHR(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset,
+                                                 const ConstVkNextProxy<vk::BindBufferMemoryInfoKHR>& next) const;
 
   // endregion
 
@@ -52,8 +68,6 @@ class Buffer : public Handle<BufferImpl> {
   PhysicalDevice getPhysicalDevice() const;
 
   LogicalDevice getLogicalDevice() const;
-
-  MemoryAllocator getMemoryAllocator() const;
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 

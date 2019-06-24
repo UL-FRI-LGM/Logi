@@ -48,10 +48,14 @@ class AccelerationStructureNVImpl;
 class IndirectCommandsLayoutNVXImpl;
 class ObjectTableNVXImpl;
 class DescriptorUpdateTemplateImpl;
+class BufferImpl;
+class ImageImpl;
 
 class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
                           public VulkanObjectComposite<QueueFamilyImpl>,
                           public VulkanObjectComposite<MemoryAllocatorImpl>,
+                          public VulkanObjectComposite<BufferImpl>,
+                          public VulkanObjectComposite<ImageImpl>,
                           public VulkanObjectComposite<SwapchainKHRImpl>,
                           public VulkanObjectComposite<SamplerImpl>,
                           public VulkanObjectComposite<CommandPoolImpl>,
@@ -84,6 +88,16 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
                           const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyMemoryAllocator(size_t id);
+
+  const std::shared_ptr<BufferImpl>& createBuffer(const vk::BufferCreateInfo& createInfo,
+                                                  const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyBuffer(size_t id);
+
+  const std::shared_ptr<ImageImpl>& createImage(const vk::ImageCreateInfo& createInfo,
+                                                const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyImage(size_t id);
 
   const std::shared_ptr<SamplerImpl>& createSampler(const vk::SamplerCreateInfo& createInfo,
                                                     const std::optional<vk::AllocationCallbacks>& allocator = {});
@@ -175,6 +189,13 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
   const std::shared_ptr<FenceImpl>& createFence(const vk::FenceCreateInfo& createInfo,
                                                 const std::optional<vk::AllocationCallbacks>& allocator = {});
 
+  const std::shared_ptr<FenceImpl>& registerEventEXT(const vk::DeviceEventInfoEXT& eventInfo,
+                                                     const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  const std::shared_ptr<FenceImpl>&
+    registerDisplayEventEXT(const vk::DisplayKHR& display, const vk::DisplayEventInfoEXT& eventInfo,
+                            const std::optional<vk::AllocationCallbacks>& allocator = {});
+
   void destroyFence(size_t id);
 
   const std::shared_ptr<SemaphoreImpl>& createSemaphore(const vk::SemaphoreCreateInfo& createInfo,
@@ -199,6 +220,10 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
   const std::shared_ptr<SwapchainKHRImpl>&
     createSwapchainKHR(const vk::SwapchainCreateInfoKHR& createInfo,
                        const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  std::vector<std::shared_ptr<SwapchainKHRImpl>>
+    createSharedSwapchainsKHR(const vk::ArrayProxy<const vk::SwapchainCreateInfoKHR>& createInfos,
+                              const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroySwapchainKHR(size_t id);
 
@@ -255,6 +280,34 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
 
   vk::ResultValueType<void>::type
     invalidateMappedMemoryRanges(const vk::ArrayProxy<const vk::MappedMemoryRange>& memoryRanges = {}) const;
+
+  vk::ResultValueType<uint64_t>::type
+    getCalibratedTimestampsEXT(const vk::ArrayProxy<const vk::CalibratedTimestampInfoEXT>& timestampInfos,
+                               const vk::ArrayProxy<uint64_t>& timestamps) const;
+
+  vk::DescriptorSetLayoutSupport
+    getDescriptorSetLayoutSupport(const vk::DescriptorSetLayoutCreateInfo& createInfo) const;
+
+  vk::DescriptorSetLayoutSupportKHR
+    getDescriptorSetLayoutSupportKHR(const vk::DescriptorSetLayoutCreateInfo& createInfo) const;
+
+  vk::PeerMemoryFeatureFlags getGroupPeerMemoryFeatures(uint32_t heapIndex, uint32_t localDeviceIndex,
+                                                        uint32_t remoteDeviceIndex) const;
+
+  vk::PeerMemoryFeatureFlagsKHR getGroupPeerMemoryFeaturesKHR(uint32_t heapIndex, uint32_t localDeviceIndex,
+                                                              uint32_t remoteDeviceIndex) const;
+
+  vk::ResultValueType<vk::DeviceGroupPresentCapabilitiesKHR>::type getGroupPresentCapabilitiesKHR() const;
+
+#ifdef VK_USE_PLATFORM_WIN32_KHR
+  vk::ResultValueType<vk::DeviceGroupPresentModeFlagsKHR>::type
+    getGroupSurfacePresentModes2EXT(const vk::PhysicalDeviceSurfaceInfo2KHR& surfaceInfo) const;
+
+  vk::ResultValueType<vk::DeviceGroupPresentModeFlagsKHR>::type
+    getGroupSurfacePresentModes2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surfaceInfo) const;
+#endif
+
+  PFN_vkVoidFunction getProcAddr(const std::string& name) const;
 
   // endregion
 

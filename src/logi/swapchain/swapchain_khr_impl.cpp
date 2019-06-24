@@ -18,6 +18,7 @@
 
 #include "logi/swapchain/swapchain_khr_impl.hpp"
 #include "logi/device/logical_device_impl.hpp"
+#include "logi/memory/image_impl.hpp"
 
 namespace logi {
 
@@ -29,24 +30,42 @@ SwapchainKHRImpl::SwapchainKHRImpl(LogicalDeviceImpl& logicalDevice, const vk::S
     vkDevice.createSwapchainKHR(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
+SwapchainKHRImpl::SwapchainKHRImpl(LogicalDeviceImpl& logicalDevice, const vk::SwapchainKHR& swapchain,
+                                   const std::optional<vk::AllocationCallbacks>& allocator)
+  : logicalDevice_(logicalDevice), allocator_(allocator), vkSwapchainKHR_(swapchain) {}
+
 // region Vulkan Definitions
 
-#ifdef VK_USE_PLATFORM_WIN32_KHR
-vk::ResultValueType<void>::type SwapchainKHRImpl::acquireFullScreenExclusiveModeEXT() const {
-  vk::Device vkDevice = logicalDevice_;
-  return vkDevice.acquireFullScreenExclusiveModeEXT(vkSwapchainKHR_, getDispatcher());
+std::vector<std::shared_ptr<ImageImpl>> SwapchainKHRImpl::getSwapchainImagesKHR() {
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  std::vector<vk::Image> vkImages = vkDevice.getSwapchainImagesKHR(vkSwapchainKHR_, getDispatcher());
+
+  std::vector<std::shared_ptr<ImageImpl>> logiImages;
+  logiImages.reserve(vkImages.size());
+
+  for (const auto& vkImage : vkImages) {
+    logiImages.emplace_back(VulkanObjectComposite<ImageImpl>::createObject(*this, vkImage));
+  }
+
+  return logiImages;
 }
 
-vk::ResultValueType<void>::type SwapchainKHRImpl::releaseFullScreenExclusiveModeEXT() const {
-  vk::Device vkDevice = logicalDevice_;
-  return vkDevice.releaseFullScreenExclusiveModeEXT(vkSwapchainKHR_, getDispatcher());
-}
-#endif
-
-vk::ResultValue<uint32_t> SwapchainKHRImpl::acquireNextImageKHR(uint64_t timeout, vk::Semaphore semaphore,
-                                                                vk::Fence fence) const {
+vk::ResultValue<uint32_t> SwapchainKHRImpl::acquireNextImageKHR(uint64_t timeout, const vk::Semaphore& semaphore,
+                                                                const vk::Fence& fence) const {
   vk::Device vkDevice = logicalDevice_;
   return vkDevice.acquireNextImageKHR(vkSwapchainKHR_, timeout, semaphore, fence, getDispatcher());
+}
+
+vk::ResultValue<uint32_t>
+  SwapchainKHRImpl::acquireNextImage2KHR(uint64_t timeout, const vk::Semaphore& semaphore, const vk::Fence& fence,
+                                         uint32_t deviceMask,
+                                         const ConstVkNextProxy<vk::AcquireNextImageInfoKHR>& next = {}) const {
+  vk::Device vkDevice = logicalDevice_;
+
+  vk::AcquireNextImageInfoKHR acquireImageInfo(vkSwapchainKHR_, timeout, semaphore, fence, deviceMask);
+  acquireImageInfo.pNext = next;
+
+  return vkDevice.acquireNextImage2KHR(acquireImageInfo, getDispatcher());
 }
 
 vk::ResultValueType<uint64_t>::type SwapchainKHRImpl::getCounterEXT(vk::SurfaceCounterFlagBitsEXT counter) const {
@@ -63,6 +82,30 @@ void SwapchainKHRImpl::setLocalDimmingAMD(vk::Bool32 localDimmingEnable) const {
   vk::Device vkDevice = logicalDevice_;
   vkDevice.setLocalDimmingAMD(vkSwapchainKHR_, localDimmingEnable, getDispatcher());
 }
+
+typename vk::ResultValueType<std::vector<vk::PastPresentationTimingGOOGLE>>::type
+  SwapchainKHRImpl::getPastPresentationTimingGOOGLE() const {
+  vk::Device vkDevice = logicalDevice_;
+  return vkDevice.getPastPresentationTimingGOOGLE(vkSwapchainKHR_, getDispatcher());
+}
+
+typename vk::ResultValueType<vk::RefreshCycleDurationGOOGLE>::type
+  SwapchainKHRImpl::getRefreshCycleDurationGOOGLE() const {
+  vk::Device vkDevice = logicalDevice_;
+  return vkDevice.getRefreshCycleDurationGOOGLE(vkSwapchainKHR_, getDispatcher());
+}
+
+#ifdef VK_USE_PLATFORM_WIN32_KHR
+vk::ResultValueType<void>::type SwapchainKHRImpl::acquireFullScreenExclusiveModeEXT() const {
+  vk::Device vkDevice = logicalDevice_;
+  return vkDevice.acquireFullScreenExclusiveModeEXT(vkSwapchainKHR_, getDispatcher());
+}
+
+vk::ResultValueType<void>::type SwapchainKHRImpl::releaseFullScreenExclusiveModeEXT() const {
+  vk::Device vkDevice = logicalDevice_;
+  return vkDevice.releaseFullScreenExclusiveModeEXT(vkSwapchainKHR_, getDispatcher());
+}
+#endif
 
 // endregion
 
