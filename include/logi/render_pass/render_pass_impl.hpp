@@ -36,6 +36,12 @@ class RenderPassImpl : public VulkanObject<RenderPassImpl> {
   RenderPassImpl(LogicalDeviceImpl& logicalDevice, const vk::RenderPassCreateInfo2KHR& createInfo,
                  const std::optional<vk::AllocationCallbacks>& allocator = {});
 
+  // region Vulkan declarations
+
+  vk::Extent2D getRenderAreaGranularity() const;
+
+  // endregion
+
   // region Logi Declarations
 
   VulkanInstanceImpl& getInstance() const;

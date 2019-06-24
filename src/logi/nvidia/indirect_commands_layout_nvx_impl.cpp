@@ -49,7 +49,7 @@ const vk::DispatchLoaderDynamic& IndirectCommandsLayoutNVXImpl::getDispatcher() 
 }
 
 void IndirectCommandsLayoutNVXImpl::destroy() const {
-  // TODO
+  logicalDevice_.destroyIndirectCommandsLayoutNVX(id());
 }
 
 IndirectCommandsLayoutNVXImpl::operator vk::IndirectCommandsLayoutNVX() const {

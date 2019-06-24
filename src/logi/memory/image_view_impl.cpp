@@ -33,6 +33,15 @@ ImageViewImpl::ImageViewImpl(logi::ImageImpl& image, vk::ImageViewCreateInfo cre
   vkImageView_ = vkDevice.createImageView(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
+uint32_t ImageViewImpl::getHandleNVX(vk::DescriptorType descriptorType, vk::Sampler sampler,
+                                     const ConstVkNextProxy<vk::ImageViewHandleInfoNVX>& next) const {
+  vk::ImageViewHandleInfoNVX handleInfo(vkImageView_, descriptorType, sampler);
+  handleInfo.pNext = next;
+
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
+  return vkDevice.getImageViewHandleNVX(handleInfo, getDispatcher());
+}
+
 VulkanInstanceImpl& logi::ImageViewImpl::getInstance() const {
   return image_.getInstance();
 }

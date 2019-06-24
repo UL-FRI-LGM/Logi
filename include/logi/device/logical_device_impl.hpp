@@ -44,6 +44,10 @@ class PipelineImpl;
 class RenderPassImpl;
 class FramebufferImpl;
 class ValidationCacheEXTImpl;
+class AccelerationStructureNVImpl;
+class IndirectCommandsLayoutNVXImpl;
+class ObjectTableNVXImpl;
+class DescriptorUpdateTemplateImpl;
 
 class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
                           public VulkanObjectComposite<QueueFamilyImpl>,
@@ -59,11 +63,15 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
                           public VulkanObjectComposite<PipelineCacheImpl>,
                           public VulkanObjectComposite<DescriptorSetLayoutImpl>,
                           public VulkanObjectComposite<DescriptorPoolImpl>,
+                          public VulkanObjectComposite<DescriptorUpdateTemplateImpl>,
                           public VulkanObjectComposite<PipelineLayoutImpl>,
                           public VulkanObjectComposite<PipelineImpl>,
                           public VulkanObjectComposite<RenderPassImpl>,
                           public VulkanObjectComposite<FramebufferImpl>,
-                          public VulkanObjectComposite<ValidationCacheEXTImpl> {
+                          public VulkanObjectComposite<ValidationCacheEXTImpl>,
+                          public VulkanObjectComposite<AccelerationStructureNVImpl>,
+                          public VulkanObjectComposite<IndirectCommandsLayoutNVXImpl>,
+                          public VulkanObjectComposite<ObjectTableNVXImpl> {
  public:
   LogicalDeviceImpl(PhysicalDeviceImpl& physicalDevice, const vk::DeviceCreateInfo& createInfo,
                     const std::optional<vk::AllocationCallbacks>& allocator = {});
@@ -111,6 +119,12 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
                          const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyPipelineLayout(size_t id);
+
+  const std::shared_ptr<DescriptorUpdateTemplateImpl>&
+    createDescriptorUpdateTemplate(const vk::DescriptorUpdateTemplateCreateInfo& createInfo,
+                                   const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyDescriptorUpdateTemplate(size_t id);
 
   std::vector<std::shared_ptr<PipelineImpl>>
     createComputePipelines(const vk::ArrayProxy<const vk::ComputePipelineCreateInfo>& create_infos,
@@ -194,6 +208,24 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
 
   void destroyValidationCacheEXT(size_t id);
 
+  const std::shared_ptr<AccelerationStructureNVImpl>&
+    createAccelerationStructureNV(const vk::AccelerationStructureCreateInfoNV& create_info,
+                                  const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyAccelerationStructureNV(size_t id);
+
+  const std::shared_ptr<IndirectCommandsLayoutNVXImpl>& createIndirectCommandsLayoutNVXIndirectCommandsLayoutNVX(
+    const vk::IndirectCommandsLayoutCreateInfoNVX& create_info,
+    const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyIndirectCommandsLayoutNVX(size_t id);
+
+  const std::shared_ptr<ObjectTableNVXImpl>&
+    createObjectTableNVX(const vk::ObjectTableCreateInfoNVX& create_info,
+                         const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyObjectTableNVX(size_t id);
+
   std::vector<std::shared_ptr<QueueFamilyImpl>> enumerateQueueFamilies() const;
 
   // endregion
@@ -215,6 +247,14 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
 
   vk::ResultValueType<void>::type displayPowerControlEXT(const vk::DisplayKHR& display,
                                                          const vk::DisplayPowerInfoEXT& powerInfo) const;
+
+  uint32_t getImageViewHandleNVX(const vk::ImageViewHandleInfoNVX& handleInfo) const;
+
+  vk::ResultValueType<void>::type
+    flushMappedMemoryRanges(const vk::ArrayProxy<const vk::MappedMemoryRange>& memoryRanges = {}) const;
+
+  vk::ResultValueType<void>::type
+    invalidateMappedMemoryRanges(const vk::ArrayProxy<const vk::MappedMemoryRange>& memoryRanges = {}) const;
 
   // endregion
 

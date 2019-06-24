@@ -30,6 +30,17 @@ AccelerationStructureNVImpl::AccelerationStructureNVImpl(LogicalDeviceImpl& logi
     vkDevice.createAccelerationStructureNV(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
+vk::MemoryRequirements2KHR AccelerationStructureNVImpl::getMemoryRequirementsNV(
+  vk::AccelerationStructureMemoryRequirementsTypeNV type,
+  const ConstVkNextProxy<vk::AccelerationStructureMemoryRequirementsInfoNV>& next) const {
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+
+  vk::AccelerationStructureMemoryRequirementsInfoNV requirementsInfo(type, vkAccelerationStructureNV_);
+  requirementsInfo.pNext = next;
+
+  return vkDevice.getAccelerationStructureMemoryRequirementsNV(requirementsInfo, getDispatcher());
+}
+
 // region Logi Definitions
 
 VulkanInstanceImpl& AccelerationStructureNVImpl::getInstance() const {
@@ -49,7 +60,7 @@ const vk::DispatchLoaderDynamic& AccelerationStructureNVImpl::getDispatcher() co
 }
 
 void AccelerationStructureNVImpl::destroy() const {
-  // TODO
+  logicalDevice_.destroyAccelerationStructureNV(id());
 }
 
 AccelerationStructureNVImpl::operator vk::AccelerationStructureNV() const {

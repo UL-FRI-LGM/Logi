@@ -21,6 +21,7 @@
 
 #include <vulkan/vulkan.hpp>
 #include "logi/base/handle.hpp"
+#include "logi/program/pipeline_impl.hpp"
 
 namespace logi {
 
@@ -34,6 +35,17 @@ class Pipeline : public Handle<PipelineImpl> {
   using Handle::Handle;
 
   // region Vulkan Declarations
+
+  vk::ResultValueType<void>::type compileDeferredNV(uint32_t shader) const;
+
+  typename vk::ResultValueType<std::vector<uint8_t>>::type getShaderInfoAMD(vk::ShaderStageFlagBits shaderStage,
+                                                                            vk::ShaderInfoTypeAMD infoType) const;
+
+  template <typename T>
+  vk::ResultValueType<void>::type getRayTracingShaderGroupHandlesNV(uint32_t firstGroup, uint32_t groupCount,
+                                                                    vk::ArrayProxy<T> data) const {
+    return object_->getRayTracingShaderGroupHandlesNV<T>(firstGroup, groupCount, data);
+  }
 
   // endregion
 

@@ -19,10 +19,14 @@
 #include "logi/device/logical_device_impl.hpp"
 #include "logi/command/command_pool_impl.hpp"
 #include "logi/descriptor/descriptor_pool_impl.hpp"
+#include "logi/descriptor/descriptor_update_template_impl.hpp"
 #include "logi/device/physical_device_impl.hpp"
 #include "logi/instance/vulkan_instance_impl.hpp"
 #include "logi/memory/memory_allocator_impl.hpp"
 #include "logi/memory/sampler_impl.hpp"
+#include "logi/nvidia/acceleration_structure_nv_impl.hpp"
+#include "logi/nvidia/indirect_commands_layout_nvx_impl.hpp"
+#include "logi/nvidia/object_table_nvx_impl.hpp"
 #include "logi/program/descriptor_set_layout_impl.hpp"
 #include "logi/program/pipeline_cache_impl.hpp"
 #include "logi/program/pipeline_impl.hpp"
@@ -116,8 +120,19 @@ const std::shared_ptr<DescriptorPoolImpl>&
                                           const std::optional<vk::AllocationCallbacks>& allocator) {
   return VulkanObjectComposite<DescriptorPoolImpl>::createObject(*this, createInfo, allocator);
 }
+
 void LogicalDeviceImpl::destroyDescriptorPool(size_t id) {
   VulkanObjectComposite<DescriptorPoolImpl>::destroyObject(id);
+}
+
+const std::shared_ptr<DescriptorUpdateTemplateImpl>&
+  LogicalDeviceImpl::createDescriptorUpdateTemplate(const vk::DescriptorUpdateTemplateCreateInfo& createInfo,
+                                                    const std::optional<vk::AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<DescriptorUpdateTemplateImpl>::createObject(*this, createInfo, allocator);
+}
+
+void LogicalDeviceImpl::destroyDescriptorUpdateTemplate(size_t id) {
+  VulkanObjectComposite<DescriptorUpdateTemplateImpl>::destroyObject(id);
 }
 
 const std::shared_ptr<PipelineLayoutImpl>&
@@ -304,8 +319,40 @@ const std::shared_ptr<ValidationCacheEXTImpl>&
                                               const std::optional<vk::AllocationCallbacks>& allocator) {
   return VulkanObjectComposite<ValidationCacheEXTImpl>::createObject(*this, createInfo, allocator);
 }
+
 void LogicalDeviceImpl::destroyValidationCacheEXT(size_t id) {
   return VulkanObjectComposite<ValidationCacheEXTImpl>::destroyObject(id);
+}
+
+const std::shared_ptr<AccelerationStructureNVImpl>&
+  LogicalDeviceImpl::createAccelerationStructureNV(const vk::AccelerationStructureCreateInfoNV& create_info,
+                                                   const std::optional<vk::AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<AccelerationStructureNVImpl>::createObject(*this, create_info, allocator);
+}
+
+void LogicalDeviceImpl::destroyAccelerationStructureNV(size_t id) {
+  VulkanObjectComposite<AccelerationStructureNVImpl>::destroyObject(id);
+}
+
+const std::shared_ptr<IndirectCommandsLayoutNVXImpl>&
+  LogicalDeviceImpl::createIndirectCommandsLayoutNVXIndirectCommandsLayoutNVX(
+    const vk::IndirectCommandsLayoutCreateInfoNVX& create_info,
+    const std::optional<vk::AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<IndirectCommandsLayoutNVXImpl>::createObject(*this, create_info, allocator);
+}
+
+void LogicalDeviceImpl::destroyIndirectCommandsLayoutNVX(size_t id) {
+  VulkanObjectComposite<IndirectCommandsLayoutNVXImpl>::destroyObject(id);
+}
+
+const std::shared_ptr<ObjectTableNVXImpl>&
+  LogicalDeviceImpl::createObjectTableNVX(const vk::ObjectTableCreateInfoNVX& create_info,
+                                          const std::optional<vk::AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<ObjectTableNVXImpl>::createObject(*this, create_info, allocator);
+}
+
+void LogicalDeviceImpl::destroyObjectTableNVX(size_t id) {
+  VulkanObjectComposite<ObjectTableNVXImpl>::destroyObject(id);
 }
 
 std::vector<std::shared_ptr<QueueFamilyImpl>> LogicalDeviceImpl::enumerateQueueFamilies() const {
@@ -358,6 +405,20 @@ vk::ResultValueType<void>::type
   return vkDevice_.displayPowerControlEXT(display, powerInfo, getDispatcher());
 }
 
+uint32_t LogicalDeviceImpl::getImageViewHandleNVX(const vk::ImageViewHandleInfoNVX& handleInfo) const {
+  return vkDevice_.getImageViewHandleNVX(handleInfo, getDispatcher());
+}
+
+vk::ResultValueType<void>::type
+  LogicalDeviceImpl::flushMappedMemoryRanges(const vk::ArrayProxy<const vk::MappedMemoryRange>& memoryRanges) const {
+  return vkDevice_.flushMappedMemoryRanges(memoryRanges, getDispatcher());
+}
+
+vk::ResultValueType<void>::type LogicalDeviceImpl::invalidateMappedMemoryRanges(
+  const vk::ArrayProxy<const vk::MappedMemoryRange>& memoryRanges) const {
+  return vkDevice_.invalidateMappedMemoryRanges(memoryRanges, getDispatcher());
+}
+
 VulkanInstanceImpl& LogicalDeviceImpl::getInstance() const {
   return physicalDevice_.getInstance();
 }
@@ -379,7 +440,9 @@ LogicalDeviceImpl::operator const vk::Device() const {
 }
 
 void LogicalDeviceImpl::free() {
+  VulkanObjectComposite<QueueFamilyImpl>::destroyAllObjects();
   VulkanObjectComposite<MemoryAllocatorImpl>::destroyAllObjects();
+  VulkanObjectComposite<SwapchainKHRImpl>::destroyAllObjects();
   VulkanObjectComposite<SamplerImpl>::destroyAllObjects();
   VulkanObjectComposite<CommandPoolImpl>::destroyAllObjects();
   VulkanObjectComposite<QueryPoolImpl>::destroyAllObjects();
@@ -388,14 +451,17 @@ void LogicalDeviceImpl::free() {
   VulkanObjectComposite<SemaphoreImpl>::destroyAllObjects();
   VulkanObjectComposite<ShaderModuleImpl>::destroyAllObjects();
   VulkanObjectComposite<PipelineCacheImpl>::destroyAllObjects();
-  VulkanObjectComposite<DescriptorPoolImpl>::destroyAllObjects();
   VulkanObjectComposite<DescriptorSetLayoutImpl>::destroyAllObjects();
+  VulkanObjectComposite<DescriptorPoolImpl>::destroyAllObjects();
+  VulkanObjectComposite<DescriptorUpdateTemplateImpl>::destroyAllObjects();
   VulkanObjectComposite<PipelineLayoutImpl>::destroyAllObjects();
   VulkanObjectComposite<PipelineImpl>::destroyAllObjects();
   VulkanObjectComposite<RenderPassImpl>::destroyAllObjects();
   VulkanObjectComposite<FramebufferImpl>::destroyAllObjects();
-  VulkanObjectComposite<SwapchainKHRImpl>::destroyAllObjects();
-  VulkanObjectComposite<QueueFamilyImpl>::destroyAllObjects();
+  VulkanObjectComposite<ValidationCacheEXTImpl>::destroyAllObjects();
+  VulkanObjectComposite<AccelerationStructureNVImpl>::destroyAllObjects();
+  VulkanObjectComposite<IndirectCommandsLayoutNVXImpl>::destroyAllObjects();
+  VulkanObjectComposite<ObjectTableNVXImpl>::destroyAllObjects();
   vkDevice_.destroy(allocator_ ? &allocator_.value() : nullptr, dispatcher_);
   vkDevice_ = nullptr;
   VulkanObject::free();

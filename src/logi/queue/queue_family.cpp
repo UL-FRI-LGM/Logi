@@ -28,8 +28,9 @@ namespace logi {
 Queue QueueFamily::getQueue(uint32_t queueIndex) {
   return object_->getQueue(queueIndex);
 }
-Queue QueueFamily::getQueue2(uint32_t queueIndex, const vk::DeviceQueueCreateFlags& flags) {
-  return object_->getQueue2(queueIndex, flags);
+Queue QueueFamily::getQueue2(uint32_t queueIndex, const vk::DeviceQueueCreateFlags& flags,
+                             const ConstVkNextProxy<vk::DeviceQueueInfo2>& next) {
+  return object_->getQueue2(queueIndex, flags, next);
 }
 
 VulkanInstance QueueFamily::getInstance() const {

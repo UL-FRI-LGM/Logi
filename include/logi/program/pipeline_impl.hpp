@@ -21,6 +21,7 @@
 
 #include <vulkan/vulkan.hpp>
 #include "logi/base/vulkan_object.hpp"
+#include "logi/device/logical_device_impl.hpp"
 
 namespace logi {
 
@@ -36,6 +37,13 @@ class PipelineImpl : public VulkanObject<PipelineImpl> {
   // region Vulkan Declarations
 
   vk::ResultValueType<void>::type compileDeferredNV(uint32_t shader) const;
+
+  typename vk::ResultValueType<std::vector<uint8_t>>::type getShaderInfoAMD(vk::ShaderStageFlagBits shaderStage,
+                                                                            vk::ShaderInfoTypeAMD infoType) const;
+
+  template <typename T>
+  vk::ResultValueType<void>::type getRayTracingShaderGroupHandlesNV(uint32_t firstGroup, uint32_t groupCount,
+                                                                    vk::ArrayProxy<T> data) const;
 
   // endregion
 
@@ -63,6 +71,14 @@ class PipelineImpl : public VulkanObject<PipelineImpl> {
   std::optional<vk::AllocationCallbacks> allocator_;
   vk::Pipeline vkPipeline_;
 };
+
+template <typename T>
+vk::ResultValueType<void>::type PipelineImpl::getRayTracingShaderGroupHandlesNV(uint32_t firstGroup,
+                                                                                uint32_t groupCount,
+                                                                                vk::ArrayProxy<T> data) const {
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  return vkDevice.getRayTracingShaderGroupHandlesNV(vkPipeline_, firstGroup, groupCount, data, getDispatcher());
+}
 
 } // namespace logi
 

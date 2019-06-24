@@ -36,6 +36,11 @@ RenderPassImpl::RenderPassImpl(LogicalDeviceImpl& logicalDevice, const vk::Rende
     vkDevice.createRenderPass2KHR(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
+vk::Extent2D RenderPassImpl::getRenderAreaGranularity() const {
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  return vkDevice.getRenderAreaGranularity(vkRenderPass_, getDispatcher());
+}
+
 VulkanInstanceImpl& RenderPassImpl::getInstance() const {
   return logicalDevice_.getInstance();
 }

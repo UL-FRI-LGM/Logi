@@ -25,6 +25,11 @@
 
 namespace logi {
 
+uint32_t ImageView::getHandleNVX(vk::DescriptorType descriptorType, vk::Sampler sampler,
+                                 const ConstVkNextProxy<vk::ImageViewHandleInfoNVX>& next) const {
+  return object_->getHandleNVX(descriptorType, sampler, next);
+}
+
 VulkanInstance ImageView::getInstance() const {
   return VulkanInstance(object_->getInstance().shared_from_this());
 }
@@ -56,4 +61,5 @@ void ImageView::destroy() const {
 ImageView::operator vk::ImageView() const {
   return object_->operator vk::ImageView();
 }
+
 }

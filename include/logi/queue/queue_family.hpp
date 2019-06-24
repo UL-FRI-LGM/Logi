@@ -21,6 +21,7 @@
 
 #include "logi/base/handle.hpp"
 #include "logi/queue/queue_family_impl.hpp"
+#include "logi/structures/extension.hpp"
 
 namespace logi {
 
@@ -36,7 +37,8 @@ class QueueFamily : public Handle<QueueFamilyImpl> {
 
   Queue getQueue(uint32_t queueIndex);
 
-  Queue getQueue2(uint32_t queueIndex, const vk::DeviceQueueCreateFlags& flags = {});
+  Queue getQueue2(uint32_t queueIndex, const vk::DeviceQueueCreateFlags& flags = {},
+                  const ConstVkNextProxy<vk::DeviceQueueInfo2>& next = {});
 
   VulkanInstance getInstance() const;
 

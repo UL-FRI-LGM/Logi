@@ -28,8 +28,14 @@ PipelineImpl::PipelineImpl(LogicalDeviceImpl& logicalDevice, const vk::Pipeline&
 // region Vulkan Definitions
 
 vk::ResultValueType<void>::type PipelineImpl::compileDeferredNV(uint32_t shader) const {
-  vk::Device vkDevice = static_cast<vk::Device>(logicalDevice_);
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   return vkDevice.compileDeferredNV(vkPipeline_, shader, getDispatcher());
+}
+
+typename vk::ResultValueType<std::vector<uint8_t>>::type
+  PipelineImpl::getShaderInfoAMD(vk::ShaderStageFlagBits shaderStage, vk::ShaderInfoTypeAMD infoType) const {
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  return vkDevice.getShaderInfoAMD(vkPipeline_, shaderStage, infoType, getDispatcher());
 }
 
 // endregion
@@ -61,7 +67,7 @@ PipelineImpl::operator vk::Pipeline() const {
 }
 
 void PipelineImpl::free() {
-  vk::Device vkDevice = static_cast<vk::Device>(logicalDevice_);
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.destroy(vkPipeline_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }

@@ -21,6 +21,7 @@
 
 #include <vulkan/vulkan.hpp>
 #include "logi/base/vulkan_object.hpp"
+#include "logi/structures/extension.hpp"
 
 namespace logi {
 
@@ -37,6 +38,10 @@ class AccelerationStructureNVImpl : public VulkanObject<AccelerationStructureNVI
 
   template <typename T>
   vk::ResultValueType<void>::type getHandleNV(vk::ArrayProxy<T> data) const;
+
+  vk::MemoryRequirements2KHR
+    getMemoryRequirementsNV(vk::AccelerationStructureMemoryRequirementsTypeNV type,
+                            const ConstVkNextProxy<vk::AccelerationStructureMemoryRequirementsInfoNV>& next) const;
 
   // endregion
 

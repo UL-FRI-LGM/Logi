@@ -39,6 +39,10 @@ class AccelerationStructureNV : public Handle<AccelerationStructureNVImpl> {
   template <typename T>
   vk::ResultValueType<void>::type getHandleNV(vk::ArrayProxy<T> data) const;
 
+  vk::MemoryRequirements2KHR
+    getMemoryRequirementsNV(vk::AccelerationStructureMemoryRequirementsTypeNV type,
+                            const ConstVkNextProxy<vk::AccelerationStructureMemoryRequirementsInfoNV>& next) const;
+
   // endregion
 
   // region Logi Declarations

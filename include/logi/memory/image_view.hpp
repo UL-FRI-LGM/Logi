@@ -22,6 +22,7 @@
 #include <vulkan/vulkan.hpp>
 #include "logi/base/handle.hpp"
 #include "logi/memory/image_view_impl.hpp"
+#include "logi/structures/extension.hpp"
 
 namespace logi {
 
@@ -34,6 +35,13 @@ class Image;
 class ImageView : public Handle<ImageViewImpl> {
  public:
   using Handle::Handle;
+
+  // region Vulkan Declarations
+
+  uint32_t getHandleNVX(vk::DescriptorType descriptorType, vk::Sampler sampler,
+                        const ConstVkNextProxy<vk::ImageViewHandleInfoNVX>& next) const;
+
+  // endregion
 
   // region Logi Declarations
 

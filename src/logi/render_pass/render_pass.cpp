@@ -23,6 +23,10 @@
 
 namespace logi {
 
+vk::Extent2D RenderPass::getRenderAreaGranularity() const {
+  return object_->getRenderAreaGranularity();
+}
+
 VulkanInstance RenderPass::getInstance() const {
   return VulkanInstance(object_->getInstance().shared_from_this());
 }

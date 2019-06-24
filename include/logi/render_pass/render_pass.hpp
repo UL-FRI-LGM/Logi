@@ -33,6 +33,12 @@ class RenderPass : public Handle<RenderPassImpl> {
  public:
   using Handle::Handle;
 
+  // region Vulkan Declarations
+
+  vk::Extent2D getRenderAreaGranularity() const;
+
+  // endregion
+
   // region Logi Declarations
 
   VulkanInstance getInstance() const;

@@ -34,10 +34,13 @@ Queue QueueFamilyImpl::getQueue(uint32_t queueIndex) {
     *this, vk_device.getQueue(queueFamilyIndex_, queueIndex, getDispatcher())));
 }
 
-Queue QueueFamilyImpl::getQueue2(uint32_t queueIndex, const vk::DeviceQueueCreateFlags& flags) {
+Queue QueueFamilyImpl::getQueue2(uint32_t queueIndex, const vk::DeviceQueueCreateFlags& flags,
+                                 const ConstVkNextProxy<vk::DeviceQueueInfo2>& next) {
   vk::Device vk_device = logicalDevice_;
-  return Queue(VulkanObjectComposite<QueueImpl>::createObject(
-    *this, vk_device.getQueue2(vk::DeviceQueueInfo2(flags, queueFamilyIndex_, queueIndex), getDispatcher())));
+  vk::DeviceQueueInfo2 queueInfo(flags, queueFamilyIndex_, queueIndex);
+  queueInfo.pNext = next;
+
+  return Queue(VulkanObjectComposite<QueueImpl>::createObject(*this, vk_device.getQueue2(queueInfo, getDispatcher())));
 }
 
 void QueueFamilyImpl::destroyQueue(size_t id) {

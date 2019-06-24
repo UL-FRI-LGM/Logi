@@ -25,6 +25,12 @@
 
 namespace logi {
 
+vk::MemoryRequirements2KHR AccelerationStructureNV::getMemoryRequirementsNV(
+  vk::AccelerationStructureMemoryRequirementsTypeNV type,
+  const ConstVkNextProxy<vk::AccelerationStructureMemoryRequirementsInfoNV>& next) const {
+  return object_->getMemoryRequirementsNV(type, next);
+}
+
 // region Logi Definitions
 
 VulkanInstance AccelerationStructureNV::getInstance() const {

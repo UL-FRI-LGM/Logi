@@ -21,6 +21,7 @@
 
 #include <vk_mem_alloc.h>
 #include "logi/base/vulkan_object.hpp"
+#include "logi/structures/extension.hpp"
 
 namespace logi {
 
@@ -45,6 +46,18 @@ class ImageImpl : public VulkanObject<ImageImpl>, public VulkanObjectComposite<I
   vk::SubresourceLayout getImageSubresourceLayout(const vk::ImageSubresource& subresource) const;
 
   vk::ResultValueType<vk::ImageDrmFormatModifierPropertiesEXT>::type getDrmFormatModifierPropertiesEXT() const;
+
+  vk::MemoryRequirements2
+    getImageMemoryRequirements2(const ConstVkNextProxy<vk::ImageMemoryRequirementsInfo2>& next) const;
+
+  vk::MemoryRequirements2KHR
+    getImageMemoryRequirements2KHR(const ConstVkNextProxy<vk::ImageMemoryRequirementsInfo2KHR>& next) const;
+
+  std::vector<vk::SparseImageMemoryRequirements2>
+    getImageSparseMemoryRequirements2(const ConstVkNextProxy<vk::ImageSparseMemoryRequirementsInfo2>& next) const;
+
+  std::vector<vk::SparseImageMemoryRequirements2KHR>
+    getImageSparseMemoryRequirements2KHR(const ConstVkNextProxy<vk::ImageSparseMemoryRequirementsInfo2KHR>& next) const;
 
   // endregion
 

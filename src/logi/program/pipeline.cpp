@@ -26,6 +26,15 @@ namespace logi {
 
 // region Vulkan Definitions
 
+vk::ResultValueType<void>::type Pipeline::compileDeferredNV(uint32_t shader) const {
+  return object_->compileDeferredNV(shader);
+}
+
+typename vk::ResultValueType<std::vector<uint8_t>>::type
+  Pipeline::getShaderInfoAMD(vk::ShaderStageFlagBits shaderStage, vk::ShaderInfoTypeAMD infoType) const {
+  return object_->getShaderInfoAMD(shaderStage, infoType);
+}
+
 // endregion
 
 // region Logi Definitions

@@ -20,6 +20,7 @@
 #define LOGI_QUEUE_QUEUE_FAMILY_IMPL_HPP
 
 #include "logi/base/vulkan_object.hpp"
+#include "logi/structures/extension.hpp"
 
 namespace logi {
 
@@ -37,7 +38,8 @@ class QueueFamilyImpl : public VulkanObject<QueueFamilyImpl>, public VulkanObjec
 
   Queue getQueue(uint32_t queueIndex);
 
-  Queue getQueue2(uint32_t queueIndex, const vk::DeviceQueueCreateFlags& flags = {});
+  Queue getQueue2(uint32_t queueIndex, const vk::DeviceQueueCreateFlags& flags = {},
+                  const ConstVkNextProxy<vk::DeviceQueueInfo2>& next = {});
 
   void destroyQueue(size_t id);
 

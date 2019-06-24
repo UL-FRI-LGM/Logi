@@ -22,6 +22,7 @@
 #include <optional>
 #include <vulkan/vulkan.hpp>
 #include "logi/base/vulkan_object.hpp"
+#include "logi/structures/extension.hpp"
 
 namespace logi {
 
@@ -35,6 +36,13 @@ class ImageViewImpl : public VulkanObject<ImageViewImpl> {
  public:
   ImageViewImpl(ImageImpl& image, vk::ImageViewCreateInfo createInfo,
                 const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  // region Vulkan Declarations
+
+  uint32_t getHandleNVX(vk::DescriptorType descriptorType, vk::Sampler sampler,
+                        const ConstVkNextProxy<vk::ImageViewHandleInfoNVX>& next) const;
+
+  // endregion
 
   // region Logi Declarations
 

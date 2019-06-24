@@ -66,7 +66,7 @@ const vk::DispatchLoaderDynamic& ObjectTableNVXImpl::getDispatcher() const {
 }
 
 void ObjectTableNVXImpl::destroy() const {
-  // TODO
+  return logicalDevice_.destroyObjectTableNVX(id());
 }
 
 ObjectTableNVXImpl::operator vk::ObjectTableNVX() const {

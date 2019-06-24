@@ -33,24 +33,60 @@ ImageImpl::ImageImpl(MemoryAllocatorImpl& memoryAllocator, const vk::ImageCreate
 }
 
 vk::MemoryRequirements ImageImpl::getMemoryRequirements() const {
-  vk::Device device = getLogicalDevice();
-  return device.getImageMemoryRequirements(image_, getDispatcher());
+  vk::Device vkDevice = getLogicalDevice();
+  return vkDevice.getImageMemoryRequirements(image_, getDispatcher());
 }
 
 std::vector<vk::SparseImageMemoryRequirements> ImageImpl::getSparseMemoryRequirements() const {
-  vk::Device device = getLogicalDevice();
-  return device.getImageSparseMemoryRequirements(image_, getDispatcher());
+  vk::Device vkDevice = getLogicalDevice();
+  return vkDevice.getImageSparseMemoryRequirements(image_, getDispatcher());
 }
 
 vk::SubresourceLayout ImageImpl::getImageSubresourceLayout(const vk::ImageSubresource& subresource) const {
-  vk::Device device = getLogicalDevice();
-  return device.getImageSubresourceLayout(image_, subresource, getDispatcher());
+  vk::Device vkDevice = getLogicalDevice();
+  return vkDevice.getImageSubresourceLayout(image_, subresource, getDispatcher());
 }
 
 vk::ResultValueType<vk::ImageDrmFormatModifierPropertiesEXT>::type
   ImageImpl::getDrmFormatModifierPropertiesEXT() const {
-  vk::Device device = getLogicalDevice();
-  return device.getImageDrmFormatModifierPropertiesEXT(image_, getDispatcher());
+  vk::Device vkDevice = getLogicalDevice();
+  return vkDevice.getImageDrmFormatModifierPropertiesEXT(image_, getDispatcher());
+}
+
+vk::MemoryRequirements2
+  ImageImpl::getImageMemoryRequirements2(const ConstVkNextProxy<vk::ImageMemoryRequirementsInfo2>& next) const {
+  vk::ImageMemoryRequirementsInfo2 requirementsInfo;
+  requirementsInfo.pNext = next;
+
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
+  return vkDevice.getImageMemoryRequirements2(requirementsInfo, getDispatcher());
+}
+
+vk::MemoryRequirements2KHR
+  ImageImpl::getImageMemoryRequirements2KHR(const ConstVkNextProxy<vk::ImageMemoryRequirementsInfo2KHR>& next) const {
+  vk::ImageMemoryRequirementsInfo2KHR requirementsInfo;
+  requirementsInfo.pNext = next;
+
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
+  return vkDevice.getImageMemoryRequirements2KHR(requirementsInfo, getDispatcher());
+}
+
+std::vector<vk::SparseImageMemoryRequirements2> ImageImpl::getImageSparseMemoryRequirements2(
+  const ConstVkNextProxy<vk::ImageSparseMemoryRequirementsInfo2>& next) const {
+  vk::ImageSparseMemoryRequirementsInfo2 requirementsInfo;
+  requirementsInfo.pNext = next;
+
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
+  return vkDevice.getImageSparseMemoryRequirements2(requirementsInfo, getDispatcher());
+}
+
+std::vector<vk::SparseImageMemoryRequirements2KHR> ImageImpl::getImageSparseMemoryRequirements2KHR(
+  const ConstVkNextProxy<vk::ImageSparseMemoryRequirementsInfo2KHR>& next) const {
+  vk::ImageSparseMemoryRequirementsInfo2KHR requirementsInfo;
+  requirementsInfo.pNext = next;
+
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
+  return vkDevice.getImageSparseMemoryRequirements2KHR(requirementsInfo, getDispatcher());
 }
 
 ImageView ImageImpl::createImageView(const vk::ImageViewCreateInfo& createInfo,

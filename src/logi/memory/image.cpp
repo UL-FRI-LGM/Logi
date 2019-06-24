@@ -40,6 +40,25 @@ vk::ResultValueType<vk::ImageDrmFormatModifierPropertiesEXT>::type Image::getDrm
   return object_->getDrmFormatModifierPropertiesEXT();
 }
 
+vk::MemoryRequirements2
+  Image::getImageMemoryRequirements2(const ConstVkNextProxy<vk::ImageMemoryRequirementsInfo2>& next) const {
+  return object_->getImageMemoryRequirements2(next);
+}
+vk::MemoryRequirements2KHR
+  Image::getImageMemoryRequirements2KHR(const ConstVkNextProxy<vk::ImageMemoryRequirementsInfo2KHR>& next) const {
+  return object_->getImageMemoryRequirements2KHR(next);
+}
+
+std::vector<vk::SparseImageMemoryRequirements2>
+  Image::getImageSparseMemoryRequirements2(const ConstVkNextProxy<vk::ImageSparseMemoryRequirementsInfo2>& next) const {
+  return object_->getImageSparseMemoryRequirements2(next);
+}
+
+std::vector<vk::SparseImageMemoryRequirements2KHR> Image::getImageSparseMemoryRequirements2KHR(
+  const ConstVkNextProxy<vk::ImageSparseMemoryRequirementsInfo2KHR>& next) const {
+  return object_->getImageSparseMemoryRequirements2KHR(next);
+}
+
 ImageView Image::createImageView(const vk::ImageViewCreateInfo& createInfo,
                                  const std::optional<vk::AllocationCallbacks>& allocator) {
   return object_->createImageView(createInfo, allocator);
