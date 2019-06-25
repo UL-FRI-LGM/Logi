@@ -147,11 +147,6 @@ class LogicalDevice : public Handle<LogicalDeviceImpl> {
 
   void destroyPipeline(const Pipeline& pipeline) const;
 
-  CommandPool createCommandPool(const vk::CommandPoolCreateInfo& createInfo,
-                                const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
-
-  void destroyCommandPool(const CommandPool& commandPool) const;
-
   QueryPool createQueryPool(const vk::QueryPoolCreateInfo& createInfo,
                             const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 

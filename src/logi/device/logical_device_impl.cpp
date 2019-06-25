@@ -273,16 +273,6 @@ void LogicalDeviceImpl::destroyPipeline(size_t id) {
   VulkanObjectComposite<PipelineImpl>::destroyObject(id);
 }
 
-const std::shared_ptr<CommandPoolImpl>&
-  LogicalDeviceImpl::createCommandPool(const vk::CommandPoolCreateInfo& createInfo,
-                                       const std::optional<vk::AllocationCallbacks>& allocator) {
-  return VulkanObjectComposite<CommandPoolImpl>::createObject(*this, createInfo, allocator);
-}
-
-void LogicalDeviceImpl::destroyCommandPool(size_t id) {
-  VulkanObjectComposite<CommandPoolImpl>::destroyObject(id);
-}
-
 const std::shared_ptr<QueryPoolImpl>&
   LogicalDeviceImpl::createQueryPool(const vk::QueryPoolCreateInfo& createInfo,
                                      const std::optional<vk::AllocationCallbacks>& allocator) {
@@ -568,7 +558,6 @@ void LogicalDeviceImpl::free() {
   VulkanObjectComposite<DeviceMemoryImpl>::destroyAllObjects();
   VulkanObjectComposite<SwapchainKHRImpl>::destroyAllObjects();
   VulkanObjectComposite<SamplerImpl>::destroyAllObjects();
-  VulkanObjectComposite<CommandPoolImpl>::destroyAllObjects();
   VulkanObjectComposite<QueryPoolImpl>::destroyAllObjects();
   VulkanObjectComposite<EventImpl>::destroyAllObjects();
   VulkanObjectComposite<FenceImpl>::destroyAllObjects();

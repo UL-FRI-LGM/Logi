@@ -21,7 +21,7 @@
 
 #include <vulkan/vulkan.hpp>
 #include "logi/base/vulkan_object.hpp"
-#include "logi/device/logical_device_impl.hpp"
+#include "logi/queue/queue_family_impl.hpp"
 #include "logi/structures/extension.hpp"
 
 namespace logi {
@@ -32,7 +32,8 @@ class CommandBufferImpl;
 
 class CommandPoolImpl : public VulkanObject<CommandPoolImpl>, public VulkanObjectComposite<CommandBufferImpl> {
  public:
-  CommandPoolImpl(LogicalDeviceImpl& logicalDevice, const vk::CommandPoolCreateInfo& createInfo,
+  CommandPoolImpl(QueueFamilyImpl& queueFamily, const vk::CommandPoolCreateFlags& flags = {},
+                  const ConstVkNextProxy<vk::CommandPoolCreateInfo>& next = {},
                   const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   // region Sub-Handles
@@ -62,6 +63,8 @@ class CommandPoolImpl : public VulkanObject<CommandPoolImpl>, public VulkanObjec
 
   LogicalDeviceImpl& getLogicalDevice() const;
 
+  QueueFamilyImpl& getQueueFamily() const;
+
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
   void destroy() const;
@@ -74,7 +77,7 @@ class CommandPoolImpl : public VulkanObject<CommandPoolImpl>, public VulkanObjec
   // endregion
 
  private:
-  LogicalDeviceImpl& logicalDevice_;
+  QueueFamilyImpl& queueFamily_;
   std::optional<vk::AllocationCallbacks> allocator_;
   vk::CommandPool vkCommandPool_;
 };

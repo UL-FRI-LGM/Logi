@@ -34,7 +34,6 @@ class EventImpl;
 class FenceImpl;
 class SemaphoreImpl;
 class QueryPoolImpl;
-class CommandPoolImpl;
 class DescriptorSetLayoutImpl;
 class DescriptorPoolImpl;
 class PipelineLayoutImpl;
@@ -62,7 +61,6 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
                           public VulkanObjectComposite<SwapchainKHRImpl>,
                           public VulkanObjectComposite<SamplerImpl>,
                           public VulkanObjectComposite<SamplerYcbcrConversionImpl>,
-                          public VulkanObjectComposite<CommandPoolImpl>,
                           public VulkanObjectComposite<QueryPoolImpl>,
                           public VulkanObjectComposite<EventImpl>,
                           public VulkanObjectComposite<FenceImpl>,
@@ -184,12 +182,6 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
                                const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyPipeline(size_t id);
-
-  const std::shared_ptr<CommandPoolImpl>&
-    createCommandPool(const vk::CommandPoolCreateInfo& createInfo,
-                      const std::optional<vk::AllocationCallbacks>& allocator = {});
-
-  void destroyCommandPool(size_t id);
 
   const std::shared_ptr<QueryPoolImpl>& createQueryPool(const vk::QueryPoolCreateInfo& createInfo,
                                                         const std::optional<vk::AllocationCallbacks>& allocator = {});

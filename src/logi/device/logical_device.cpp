@@ -213,15 +213,6 @@ void LogicalDevice::destroyPipeline(const Pipeline& pipeline) const {
   object_->destroyPipeline(pipeline.id());
 }
 
-CommandPool LogicalDevice::createCommandPool(const vk::CommandPoolCreateInfo& createInfo,
-                                             const std::optional<vk::AllocationCallbacks>& allocator) const {
-  return CommandPool(object_->createCommandPool(createInfo, allocator));
-}
-
-void LogicalDevice::destroyCommandPool(const CommandPool& commandPool) const {
-  object_->destroyCommandPool(commandPool.id());
-}
-
 QueryPool LogicalDevice::createQueryPool(const vk::QueryPoolCreateInfo& createInfo,
                                          const std::optional<vk::AllocationCallbacks>& allocator) const {
   return QueryPool(object_->createQueryPool(createInfo, allocator));

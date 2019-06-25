@@ -22,10 +22,15 @@
 
 namespace logi {
 
-CommandPoolImpl::CommandPoolImpl(LogicalDeviceImpl& logicalDevice, const vk::CommandPoolCreateInfo& createInfo,
+CommandPoolImpl::CommandPoolImpl(QueueFamilyImpl& queueFamily, const vk::CommandPoolCreateFlags& flags,
+                                 const ConstVkNextProxy<vk::CommandPoolCreateInfo>& next,
                                  const std::optional<vk::AllocationCallbacks>& allocator)
-  : logicalDevice_(logicalDevice), allocator_(allocator) {
-  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  : queueFamily_(queueFamily), allocator_(allocator) {
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
+
+  vk::CommandPoolCreateInfo createInfo(flags, static_cast<uint32_t>(queueFamily_));
+  createInfo.pNext = next;
+
   vkCommandPool_ = vkDevice.createCommandPool(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
@@ -34,7 +39,7 @@ CommandPoolImpl::CommandPoolImpl(LogicalDeviceImpl& logicalDevice, const vk::Com
 std::vector<std::shared_ptr<CommandBufferImpl>>
   CommandPoolImpl::allocateCommandBuffers(vk::CommandBufferLevel level, uint32_t commandBufferCount,
                                           const ConstVkNextProxy<vk::CommandBufferAllocateInfo>& next) {
-  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
   vk::CommandBufferAllocateInfo allocateInfo(vkCommandPool_, level, commandBufferCount);
   allocateInfo.pNext = next;
 
@@ -59,22 +64,22 @@ void CommandPoolImpl::freeCommandBuffers(const std::vector<size_t>& cmdBufferIds
     VulkanObjectComposite<CommandBufferImpl>::destroyObject(id);
   }
 
-  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
   vkDevice.freeCommandBuffers(vkCommandPool_, vkCmdBuffers, getDispatcher());
 }
 
 vk::ResultValueType<void>::type CommandPoolImpl::reset(const vk::CommandPoolResetFlags& flags) const {
-  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
   vkDevice.resetCommandPool(vkCommandPool_, flags, getDispatcher());
 }
 
 void CommandPoolImpl::trim(const vk::CommandPoolTrimFlags& flags) const {
-  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
   vkDevice.trimCommandPool(vkCommandPool_, flags, getDispatcher());
 }
 
 void CommandPoolImpl::trimKHR(const vk::CommandPoolTrimFlags& flags) const {
-  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
   vkDevice.trimCommandPoolKHR(vkCommandPool_, flags, getDispatcher());
 }
 
@@ -83,23 +88,27 @@ void CommandPoolImpl::trimKHR(const vk::CommandPoolTrimFlags& flags) const {
 // region Logi Definitions
 
 VulkanInstanceImpl& CommandPoolImpl::getInstance() const {
-  return logicalDevice_.getInstance();
+  return queueFamily_.getInstance();
 }
 
 PhysicalDeviceImpl& CommandPoolImpl::getPhysicalDevice() const {
-  return logicalDevice_.getPhysicalDevice();
+  return queueFamily_.getPhysicalDevice();
 }
 
 LogicalDeviceImpl& CommandPoolImpl::getLogicalDevice() const {
-  return logicalDevice_;
+  return queueFamily_.getLogicalDevice();
+}
+
+QueueFamilyImpl& CommandPoolImpl::getQueueFamily() const {
+  return queueFamily_;
 }
 
 const vk::DispatchLoaderDynamic& CommandPoolImpl::getDispatcher() const {
-  return logicalDevice_.getDispatcher();
+  return queueFamily_.getDispatcher();
 }
 
 void CommandPoolImpl::destroy() const {
-  logicalDevice_.destroyCommandPool(id());
+  queueFamily_.destroyCommandPool(id());
 }
 
 CommandPoolImpl::operator vk::CommandPool() const {
@@ -108,7 +117,7 @@ CommandPoolImpl::operator vk::CommandPool() const {
 
 void CommandPoolImpl::free() {
   VulkanObjectComposite<CommandBufferImpl>::destroyAllObjects();
-  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
   vkDevice.destroy(vkCommandPool_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }

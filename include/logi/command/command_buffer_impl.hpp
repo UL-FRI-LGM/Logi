@@ -27,6 +27,7 @@ namespace logi {
 class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
+class QueueFamilyImpl;
 class CommandPoolImpl;
 
 class CommandBufferImpl : public VulkanObject<CommandBufferImpl> {
@@ -289,6 +290,8 @@ class CommandBufferImpl : public VulkanObject<CommandBufferImpl> {
   PhysicalDeviceImpl& getPhysicalDevice() const;
 
   LogicalDeviceImpl& getLogicalDevice() const;
+
+  QueueFamilyImpl& getQueueFamily() const;
 
   CommandPoolImpl& getCommandPool() const;
 

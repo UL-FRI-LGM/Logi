@@ -45,17 +45,17 @@ class ExampleBase {
 
   void initializeSwapChain();
 
-  /**
   void initializeCommandBuffers();
 
   void buildSyncObjects();
 
   void drawFrame();
 
+  /*
   virtual void initialize() = 0;
 
-  virtual void draw() = 0;
-  */
+  virtual void draw() = 0;*/
+
   void mainLoop();
 
   virtual ~ExampleBase();
@@ -66,14 +66,22 @@ class ExampleBase {
   logi::SurfaceKHR surface;
   logi::PhysicalDevice physicalDevice_;
   logi::LogicalDevice logicalDevice_;
-  logi::QueueFamily graphicalFamily_;
+  logi::QueueFamily graphicsFamily_;
   logi::QueueFamily presentFamily_;
-  logi::Queue graphicalQueue_;
+  logi::Queue graphicsQueue_;
   logi::Queue presentQueue_;
   logi::SwapchainKHR swapchain_;
   std::vector<logi::Image> swapchainImages_;
   vk::Extent2D swapchainImageExtent_;
   vk::Format swapchainImageFormat_;
+
+  logi::CommandPool graphicsFamilyCmdPool_;
+  std::vector<logi::CommandBuffer> primaryGraphicsCmdBuffers_;
+
+  size_t currentFrame_ = 0u;
+  std::vector<logi::Semaphore> imageAvailableSemaphores_;
+  std::vector<logi::Semaphore> renderFinishedSemaphores_;
+  std::vector<logi::Fence> inFlightFences_;
 
   ExampleConfiguration config_;
 };

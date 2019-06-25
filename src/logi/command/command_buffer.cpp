@@ -23,6 +23,8 @@
 #include "logi/device/physical_device_impl.hpp"
 #include "logi/instance/vulkan_instance.hpp"
 #include "logi/instance/vulkan_instance_impl.hpp"
+#include "logi/queue/queue_family.hpp"
+#include "logi/queue/queue_family_impl.hpp"
 
 namespace logi {
 
@@ -485,6 +487,10 @@ PhysicalDevice CommandBuffer::getPhysicalDevice() const {
 
 LogicalDevice CommandBuffer::getLogicalDevice() const {
   return LogicalDevice(object_->getLogicalDevice().shared_from_this());
+}
+
+QueueFamily CommandBuffer::getQueueFamily() const {
+  return QueueFamily(object_->getQueueFamily().shared_from_this());
 }
 
 CommandPool CommandBuffer::getCommandPool() const {

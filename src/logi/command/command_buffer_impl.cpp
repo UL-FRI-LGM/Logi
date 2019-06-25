@@ -18,6 +18,7 @@
 
 #include "logi/command/command_buffer_impl.hpp"
 #include "logi/command/command_pool_impl.hpp"
+#include "logi/queue/queue_family_impl.hpp"
 
 namespace logi {
 
@@ -501,6 +502,10 @@ PhysicalDeviceImpl& CommandBufferImpl::getPhysicalDevice() const {
 
 LogicalDeviceImpl& CommandBufferImpl::getLogicalDevice() const {
   return commandPool_.getLogicalDevice();
+}
+
+QueueFamilyImpl& CommandBufferImpl::getQueueFamily() const {
+  return commandPool_.getQueueFamily();
 }
 
 CommandPoolImpl& CommandBufferImpl::getCommandPool() const {

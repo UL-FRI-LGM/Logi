@@ -9,6 +9,9 @@ void ExampleBase::run() {
   selectDevice();
   initializeDevice();
   initializeSwapChain();
+  buildSyncObjects();
+  initializeCommandBuffers();
+  mainLoop();
 }
 
 VkBool32 ExampleBase::debugCallback(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT obj_type, uint64_t obj,
@@ -81,27 +84,27 @@ void ExampleBase::initializeDevice() {
   std::vector<vk::QueueFamilyProperties> familyProperties = physicalDevice_.getQueueFamilyProperties();
 
   // Search for graphical queue family.
-  uint32_t graphicalFamilyIdx = std::numeric_limits<uint32_t>::max();
+  uint32_t graphicsFamilyIdx = std::numeric_limits<uint32_t>::max();
   uint32_t presentFamilyIdx = std::numeric_limits<uint32_t>::max();
 
   for (uint32_t i = 0; i < familyProperties.size(); i++) {
     if (familyProperties[i].queueFlags | vk::QueueFlagBits::eGraphics) {
-      graphicalFamilyIdx = i;
+      graphicsFamilyIdx = i;
     }
 
     // Check if queue family supports present.
-    if (physicalDevice_.getSurfaceSupportKHR(graphicalFamilyIdx, surface)) {
-      presentFamilyIdx = graphicalFamilyIdx;
+    if (physicalDevice_.getSurfaceSupportKHR(graphicsFamilyIdx, surface)) {
+      presentFamilyIdx = graphicsFamilyIdx;
     }
 
     // Stop once both graphical and present queue families are found.
-    if (graphicalFamilyIdx != std::numeric_limits<uint32_t>::max() &&
+    if (graphicsFamilyIdx != std::numeric_limits<uint32_t>::max() &&
         presentFamilyIdx != std::numeric_limits<uint32_t>::max()) {
       break;
     }
   }
 
-  if (graphicalFamilyIdx == std::numeric_limits<uint32_t>::max()) {
+  if (graphicsFamilyIdx == std::numeric_limits<uint32_t>::max()) {
     throw std::runtime_error("Failed to find graphical queue.");
   }
   if (presentFamilyIdx == std::numeric_limits<uint32_t>::max()) {
@@ -114,8 +117,8 @@ void ExampleBase::initializeDevice() {
   static const std::array<float, 1> kPriorities = {1.0f};
 
   std::vector<vk::DeviceQueueCreateInfo> queueCIs;
-  queueCIs.emplace_back(vk::DeviceQueueCreateFlags(), graphicalFamilyIdx, 1u, kPriorities.data());
-  if (graphicalFamilyIdx != presentFamilyIdx) {
+  queueCIs.emplace_back(vk::DeviceQueueCreateFlags(), graphicsFamilyIdx, 1u, kPriorities.data());
+  if (graphicsFamilyIdx != presentFamilyIdx) {
     queueCIs.emplace_back(vk::DeviceQueueCreateFlags(), presentFamilyIdx, 1u, kPriorities.data());
   }
 
@@ -128,18 +131,18 @@ void ExampleBase::initializeDevice() {
   logicalDevice_ = physicalDevice_.createLogicalDevice(deviceCI);
   std::vector<logi::QueueFamily> queueFamilies = logicalDevice_.enumerateQueueFamilies();
   for (const auto& family : queueFamilies) {
-    if (static_cast<uint32_t>(family) == graphicalFamilyIdx) {
-      graphicalFamily_ = family;
+    if (static_cast<uint32_t>(family) == graphicsFamilyIdx) {
+      graphicsFamily_ = family;
     }
     if (static_cast<uint32_t>(family) == presentFamilyIdx) {
       presentFamily_ = family;
     }
   }
 
-  assert(graphicalFamily_);
+  assert(graphicsFamily_);
   assert(presentFamily_);
 
-  graphicalQueue_ = graphicalFamily_.getQueue(0);
+  graphicsQueue_ = graphicsFamily_.getQueue(0);
   presentQueue_ = presentFamily_.getQueue(0);
 }
 
@@ -213,10 +216,10 @@ void ExampleBase::initializeSwapChain() {
   createInfo.imageExtent = extent;
   createInfo.imageArrayLayers = 1;
   createInfo.imageUsage = vk::ImageUsageFlagBits::eColorAttachment;
-  if (graphicalFamily_ != presentFamily_) {
+  if (graphicsFamily_ != presentFamily_) {
     createInfo.imageSharingMode = vk::SharingMode::eConcurrent;
     createInfo.queueFamilyIndexCount = 2;
-    uint32_t indices[2]{graphicalFamily_, presentFamily_};
+    uint32_t indices[2]{graphicsFamily_, presentFamily_};
     createInfo.pQueueFamilyIndices = indices;
   } else {
     createInfo.imageSharingMode = vk::SharingMode::eExclusive;
@@ -232,4 +235,64 @@ void ExampleBase::initializeSwapChain() {
   swapchainImages_ = swapchain_.getImagesKHR();
   swapchainImageFormat_ = surfaceFormat.format;
   swapchainImageExtent_ = extent;
+}
+
+void ExampleBase::initializeCommandBuffers() {
+  graphicsFamilyCmdPool_ = graphicsFamily_.createCommandPool();
+  primaryGraphicsCmdBuffers_ =
+    graphicsFamilyCmdPool_.allocateCommandBuffers(vk::CommandBufferLevel::ePrimary, swapchainImages_.size());
+}
+
+void ExampleBase::buildSyncObjects() {
+  for (size_t i = 0; i < config_.maxFramesInFlight; i++) {
+    imageAvailableSemaphores_.emplace_back(logicalDevice_.createSemaphore(vk::SemaphoreCreateInfo()));
+    renderFinishedSemaphores_.emplace_back(logicalDevice_.createSemaphore(vk::SemaphoreCreateInfo()));
+    inFlightFences_.emplace_back(logicalDevice_.createFence(vk::FenceCreateInfo(vk::FenceCreateFlagBits::eSignaled)));
+  }
+}
+
+void ExampleBase::drawFrame() {
+  /*
+  // Wait if drawing is still in progress.
+  inFlightFences_[currentFrame_].wait(std::numeric_limits<uint64_t>::max());
+  inFlightFences_[currentFrame_].reset();
+
+  // Acquire next image.
+  const uint32_t imageIndex =
+    swapchain_
+      .acquireNextImageKHR(std::numeric_limits<uint64_t>::max(), imageAvailableSemaphores_[currentFrame_], nullptr)
+      .value;
+
+  static const vk::PipelineStageFlags wait_stages{vk::PipelineStageFlagBits::eColorAttachmentOutput};
+
+  // Example draw.
+  draw();
+
+  vk::SubmitInfo submit_info;
+  submit_info.pWaitDstStageMask = &wait_stages;
+  submit_info.pWaitSemaphores = &static_cast<vk::Semaphore>(imageAvailableSemaphores_[currentFrame_]);
+  submit_info.waitSemaphoreCount = 1u;
+
+  submit_info.commandBufferCount = 1;
+  submit_info.pCommandBuffers = &static_cast<vk::CommandBuffer>(primaryGraphicsCmdBuffers_[imageIndex]);
+
+  submit_info.signalSemaphoreCount = 1;
+  submit_info.pSignalSemaphores = &static_cast<vk::Semaphore>(renderFinishedSemaphores_[currentFrame_]);
+  graphicsQueue_.submit({submit_info}, inFlightFences_[currentFrame_]);
+
+  vk::PresentInfoKHR(1, renderFinishedSemaphores_[currentFrame_], 1, static_cast<vk::SwapchainKHR>(vk::SwapchainKHR>),
+  &imageIndex);
+
+  // Present image.
+  presentQueue_.presentKHR(vk::PresentInfoKHR((present_queue, renderFinishedSemaphores_[currentFrame_]);
+  currentFrame_ = (currentFrame_ + 1) % config_.maxFramesInFlight;*/
+}
+
+void ExampleBase::mainLoop() {
+  while (!window.shouldClose()) {
+    glfwPollEvents();
+    drawFrame();
+  }
+
+  logicalDevice_.waitIdle();
 }

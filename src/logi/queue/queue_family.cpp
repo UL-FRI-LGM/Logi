@@ -17,6 +17,8 @@
  */
 
 #include "logi/queue/queue_family.hpp"
+#include "logi/command/command_pool.hpp"
+#include "logi/command/command_pool_impl.hpp"
 #include "logi/device/logical_device.hpp"
 #include "logi/device/physical_device.hpp"
 #include "logi/instance/vulkan_instance.hpp"
@@ -25,12 +27,22 @@
 
 namespace logi {
 
+CommandPool QueueFamily::createCommandPool(const vk::CommandPoolCreateFlags& flags,
+                                           const ConstVkNextProxy<vk::CommandPoolCreateInfo>& next,
+                                           const std::optional<vk::AllocationCallbacks>& allocator) const {
+  return CommandPool(object_->createCommandPool(flags, next, allocator));
+}
+
+void QueueFamily::destroyCommandPool(const CommandPool& commandPool) const {
+  object_->destroyCommandPool(commandPool.id());
+}
+
 Queue QueueFamily::getQueue(uint32_t queueIndex) const {
-  return object_->getQueue(queueIndex);
+  return Queue(object_->getQueue(queueIndex));
 }
 Queue QueueFamily::getQueue2(uint32_t queueIndex, const vk::DeviceQueueCreateFlags& flags,
                              const ConstVkNextProxy<vk::DeviceQueueInfo2>& next) const {
-  return object_->getQueue2(queueIndex, flags, next);
+  return Queue(object_->getQueue2(queueIndex, flags, next));
 }
 
 VulkanInstance QueueFamily::getInstance() const {

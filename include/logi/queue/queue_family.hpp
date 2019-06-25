@@ -28,17 +28,25 @@ namespace logi {
 class VulkanInstance;
 class PhysicalDevice;
 class LogicalDevice;
+class Queue;
+class CommandPool;
 
 class QueueFamily : public Handle<QueueFamilyImpl> {
  public:
   using Handle::Handle;
 
-  // region Logi Declarations
+  CommandPool createCommandPool(const vk::CommandPoolCreateFlags& flags = {},
+                                const ConstVkNextProxy<vk::CommandPoolCreateInfo>& next = {},
+                                const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
+
+  void destroyCommandPool(const CommandPool& commandPool) const;
 
   Queue getQueue(uint32_t queueIndex) const;
 
   Queue getQueue2(uint32_t queueIndex, const vk::DeviceQueueCreateFlags& flags = {},
                   const ConstVkNextProxy<vk::DeviceQueueInfo2>& next = {}) const;
+
+  // region Logi Declarations
 
   VulkanInstance getInstance() const;
 

@@ -31,6 +31,7 @@ class CommandPoolImpl;
 class VulkanInstance;
 class PhysicalDevice;
 class LogicalDevice;
+class QueueFamily;
 class CommandBuffer;
 
 class CommandPool : public Handle<CommandPoolImpl> {
@@ -64,6 +65,8 @@ class CommandPool : public Handle<CommandPoolImpl> {
   PhysicalDevice getPhysicalDevice() const;
 
   LogicalDevice getLogicalDevice() const;
+
+  QueueFamily getQueueFamily() const;
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 

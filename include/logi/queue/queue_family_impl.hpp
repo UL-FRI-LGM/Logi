@@ -28,18 +28,27 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 class QueueImpl;
-class Queue;
+class CommandPoolImpl;
 
-class QueueFamilyImpl : public VulkanObject<QueueFamilyImpl>, public VulkanObjectComposite<QueueImpl> {
+class QueueFamilyImpl : public VulkanObject<QueueFamilyImpl>,
+                        public VulkanObjectComposite<QueueImpl>,
+                        public VulkanObjectComposite<CommandPoolImpl> {
  public:
   QueueFamilyImpl(LogicalDeviceImpl& logicalDevice, const vk::DeviceQueueCreateInfo& createInfo);
 
+  const std::shared_ptr<CommandPoolImpl>&
+    createCommandPool(const vk::CommandPoolCreateFlags& flags = {},
+                      const ConstVkNextProxy<vk::CommandPoolCreateInfo>& next = {},
+                      const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyCommandPool(size_t id);
+
   // region Logi Declarations
 
-  Queue getQueue(uint32_t queueIndex);
+  const std::shared_ptr<QueueImpl>& getQueue(uint32_t queueIndex);
 
-  Queue getQueue2(uint32_t queueIndex, const vk::DeviceQueueCreateFlags& flags = {},
-                  const ConstVkNextProxy<vk::DeviceQueueInfo2>& next = {});
+  const std::shared_ptr<QueueImpl>& getQueue2(uint32_t queueIndex, const vk::DeviceQueueCreateFlags& flags = {},
+                                              const ConstVkNextProxy<vk::DeviceQueueInfo2>& next = {});
 
   void destroyQueue(size_t id);
 

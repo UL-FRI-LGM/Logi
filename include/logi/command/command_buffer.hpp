@@ -30,6 +30,7 @@ class VulkanInstance;
 class PhysicalDevice;
 class LogicalDevice;
 class CommandPool;
+class QueueFamily;
 
 class CommandBuffer : public Handle<CommandBufferImpl> {
  public:
@@ -291,6 +292,8 @@ class CommandBuffer : public Handle<CommandBufferImpl> {
   PhysicalDevice getPhysicalDevice() const;
 
   LogicalDevice getLogicalDevice() const;
+
+  QueueFamily getQueueFamily() const;
 
   CommandPool getCommandPool() const;
 

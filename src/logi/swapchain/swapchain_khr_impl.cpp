@@ -28,26 +28,19 @@ SwapchainKHRImpl::SwapchainKHRImpl(LogicalDeviceImpl& logicalDevice, const vk::S
   auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkSwapchainKHR_ =
     vkDevice.createSwapchainKHR(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+  acquireImageInternal();
 }
 
 SwapchainKHRImpl::SwapchainKHRImpl(LogicalDeviceImpl& logicalDevice, const vk::SwapchainKHR& swapchain,
                                    const std::optional<vk::AllocationCallbacks>& allocator)
-  : logicalDevice_(logicalDevice), allocator_(allocator), vkSwapchainKHR_(swapchain) {}
+  : logicalDevice_(logicalDevice), allocator_(allocator), vkSwapchainKHR_(swapchain) {
+  acquireImageInternal();
+}
 
 // region Vulkan Definitions
 
-std::vector<std::shared_ptr<ImageImpl>> SwapchainKHRImpl::getImagesKHR() {
-  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
-  std::vector<vk::Image> vkImages = vkDevice.getSwapchainImagesKHR(vkSwapchainKHR_, getDispatcher());
-
-  std::vector<std::shared_ptr<ImageImpl>> logiImages;
-  logiImages.reserve(vkImages.size());
-
-  for (const auto& vkImage : vkImages) {
-    logiImages.emplace_back(VulkanObjectComposite<ImageImpl>::createObject(*this, vkImage));
-  }
-
-  return logiImages;
+const std::vector<std::shared_ptr<ImageImpl>>& SwapchainKHRImpl::getImagesKHR() {
+  return images_;
 }
 
 vk::ResultValue<uint32_t> SwapchainKHRImpl::acquireNextImageKHR(uint64_t timeout, const vk::Semaphore& semaphore,
@@ -139,6 +132,17 @@ void SwapchainKHRImpl::free() {
   auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.destroy(vkSwapchainKHR_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
+}
+
+void SwapchainKHRImpl::acquireImageInternal() {
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  std::vector<vk::Image> vkImages = vkDevice.getSwapchainImagesKHR(vkSwapchainKHR_, getDispatcher());
+
+  images_.reserve(vkImages.size());
+
+  for (const auto& vkImage : vkImages) {
+    images_.emplace_back(VulkanObjectComposite<ImageImpl>::createObject(*this, vkImage));
+  }
 }
 
 // endregion
