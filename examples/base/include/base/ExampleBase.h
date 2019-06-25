@@ -37,19 +37,25 @@ class ExampleBase {
 
   void initializeDevice();
 
-  /*
-void initializeSwapChain();
+  vk::SurfaceFormatKHR chooseSwapSurfaceFormat();
 
-void initializeCommandBuffers();
+  vk::PresentModeKHR chooseSwapPresentMode();
 
-void buildSyncObjects();
+  vk::Extent2D chooseSwapExtent(const vk::SurfaceCapabilitiesKHR& capabilities);
 
-void drawFrame();
+  void initializeSwapChain();
 
-virtual void initialize() = 0;
+  /**
+  void initializeCommandBuffers();
 
-virtual void draw() = 0;
-*/
+  void buildSyncObjects();
+
+  void drawFrame();
+
+  virtual void initialize() = 0;
+
+  virtual void draw() = 0;
+  */
   void mainLoop();
 
   virtual ~ExampleBase();
@@ -60,6 +66,14 @@ virtual void draw() = 0;
   logi::SurfaceKHR surface;
   logi::PhysicalDevice physicalDevice_;
   logi::LogicalDevice logicalDevice_;
+  logi::QueueFamily graphicalFamily_;
+  logi::QueueFamily presentFamily_;
+  logi::Queue graphicalQueue_;
+  logi::Queue presentQueue_;
+  logi::SwapchainKHR swapchain_;
+  std::vector<logi::Image> swapchainImages_;
+  vk::Extent2D swapchainImageExtent_;
+  vk::Format swapchainImageFormat_;
 
   ExampleConfiguration config_;
 };

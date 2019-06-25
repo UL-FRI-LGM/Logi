@@ -28,6 +28,7 @@
 #include "logi/memory/image_impl.hpp"
 #include "logi/memory/memory_allocator_impl.hpp"
 #include "logi/memory/sampler_impl.hpp"
+#include "logi/memory/sampler_ycbcr_conversion_impl.hpp"
 #include "logi/nvidia/indirect_commands_layout_nvx_impl.hpp"
 #include "logi/nvidia/object_table_nvx_impl.hpp"
 #include "logi/program/descriptor_set_layout_impl.hpp"
@@ -116,6 +117,16 @@ const std::shared_ptr<SamplerImpl>&
 
 void LogicalDeviceImpl::destroySampler(size_t id) {
   VulkanObjectComposite<SamplerImpl>::destroyObject(id);
+}
+
+const std::shared_ptr<SamplerYcbcrConversionImpl>&
+  LogicalDeviceImpl::createSamplerYcbcrConversion(const vk::SamplerYcbcrConversionCreateInfo& createInfo,
+                                                  const std::optional<vk::AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<SamplerYcbcrConversionImpl>::createObject(*this, createInfo, allocator);
+}
+
+void LogicalDeviceImpl::destroySamplerYcbcrConversion(size_t id) {
+  VulkanObjectComposite<SamplerYcbcrConversionImpl>::destroyObject(id);
 }
 
 const std::shared_ptr<ShaderModuleImpl>&

@@ -49,7 +49,7 @@ class SwapchainKHR : public Handle<SwapchainKHRImpl> {
                                                  const vk::Fence& fence, uint32_t deviceMask,
                                                  const ConstVkNextProxy<vk::AcquireNextImageInfoKHR>& next = {}) const;
 
-  std::vector<Image> getSwapchainImagesKHR() const;
+  std::vector<Image> getImagesKHR() const;
 
   vk::ResultValueType<uint64_t>::type getCounterEXT(vk::SurfaceCounterFlagBitsEXT counter) const;
 

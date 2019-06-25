@@ -56,6 +56,11 @@ class Handle {
   bool operator==(const Handle<T>& other) const;
 
   /**
+   * @brief Check if the given handles do not refer to the same object.
+   */
+  bool operator!=(const Handle<T>& other) const;
+
+  /**
    * @brief Return true if the referred VulkanObject is not valid.
    */
   bool operator!() const;
@@ -80,6 +85,11 @@ Handle<T>::operator bool() const {
 template <typename T>
 bool Handle<T>::operator==(const Handle<T>& other) const {
   return object_ == other.object_;
+}
+
+template <typename T>
+bool Handle<T>::operator!=(const Handle<T>& other) const {
+  return object_ != other.object_;
 }
 
 template <typename T>

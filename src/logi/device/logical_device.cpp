@@ -100,6 +100,15 @@ void LogicalDevice::destroySampler(const Sampler& sampler) const {
   object_->destroySampler(sampler.id());
 }
 
+SamplerYcbcrConversion
+  LogicalDevice::createSamplerYcbcrConversion(const vk::SamplerYcbcrConversionCreateInfo& createInfo,
+                                              const std::optional<vk::AllocationCallbacks>& allocator) const {
+  return SamplerYcbcrConversion(object_->createSamplerYcbcrConversion(createInfo, allocator));
+}
+void LogicalDevice::destroySamplerYcbcrConversion(const SamplerYcbcrConversion& samplerYcbcrConversion) const {
+  object_->destroySamplerYcbcrConversion(samplerYcbcrConversion.id());
+}
+
 ShaderModule LogicalDevice::createShaderModule(const vk::ShaderModuleCreateInfo& createInfo,
                                                const std::optional<vk::AllocationCallbacks>& allocator) const {
   return ShaderModule(object_->createShaderModule(createInfo, allocator));

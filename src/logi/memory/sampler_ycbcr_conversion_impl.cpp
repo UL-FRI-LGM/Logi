@@ -47,7 +47,7 @@ const vk::DispatchLoaderDynamic& SamplerYcbcrConversionImpl::getDispatcher() con
 }
 
 void SamplerYcbcrConversionImpl::destroy() const {
-  // TODO
+  logicalDevice_.destroySamplerYcbcrConversion(id());
 }
 
 SamplerYcbcrConversionImpl::operator vk::SamplerYcbcrConversion() const {

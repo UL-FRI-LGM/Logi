@@ -41,6 +41,7 @@ class PipelineLayoutImpl;
 class MemoryAllocatorImpl;
 class DeviceMemoryImpl;
 class SamplerImpl;
+class SamplerYcbcrConversionImpl;
 class PipelineImpl;
 class RenderPassImpl;
 class FramebufferImpl;
@@ -60,6 +61,7 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
                           public VulkanObjectComposite<DeviceMemoryImpl>,
                           public VulkanObjectComposite<SwapchainKHRImpl>,
                           public VulkanObjectComposite<SamplerImpl>,
+                          public VulkanObjectComposite<SamplerYcbcrConversionImpl>,
                           public VulkanObjectComposite<CommandPoolImpl>,
                           public VulkanObjectComposite<QueryPoolImpl>,
                           public VulkanObjectComposite<EventImpl>,
@@ -110,6 +112,12 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
                                                     const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroySampler(size_t id);
+
+  const std::shared_ptr<SamplerYcbcrConversionImpl>&
+    createSamplerYcbcrConversion(const vk::SamplerYcbcrConversionCreateInfo& createInfo,
+                                 const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroySamplerYcbcrConversion(size_t id);
 
   const std::shared_ptr<ShaderModuleImpl>&
     createShaderModule(const vk::ShaderModuleCreateInfo& createInfo,

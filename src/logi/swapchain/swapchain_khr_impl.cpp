@@ -36,7 +36,7 @@ SwapchainKHRImpl::SwapchainKHRImpl(LogicalDeviceImpl& logicalDevice, const vk::S
 
 // region Vulkan Definitions
 
-std::vector<std::shared_ptr<ImageImpl>> SwapchainKHRImpl::getSwapchainImagesKHR() {
+std::vector<std::shared_ptr<ImageImpl>> SwapchainKHRImpl::getImagesKHR() {
   auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   std::vector<vk::Image> vkImages = vkDevice.getSwapchainImagesKHR(vkSwapchainKHR_, getDispatcher());
 

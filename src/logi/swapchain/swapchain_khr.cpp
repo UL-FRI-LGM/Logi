@@ -26,8 +26,8 @@ namespace logi {
 
 // region Vulkan Definitions
 
-std::vector<Image> SwapchainKHR::getSwapchainImagesKHR() const {
-  std::vector<std::shared_ptr<ImageImpl>> imageImpls = object_->getSwapchainImagesKHR();
+std::vector<Image> SwapchainKHR::getImagesKHR() const {
+  std::vector<std::shared_ptr<ImageImpl>> imageImpls = object_->getImagesKHR();
   return std::vector<Image>(imageImpls.begin(), imageImpls.end());
 }
 

@@ -31,6 +31,7 @@
 #include "logi/memory/image.hpp"
 #include "logi/memory/memory_allocator.hpp"
 #include "logi/memory/sampler.hpp"
+#include "logi/memory/sampler_ycbcr_conversion.hpp"
 #include "logi/nvidia/indirect_commands_layout_nvx.hpp"
 #include "logi/nvidia/object_table_nvx.hpp"
 #include "logi/program/descriptor_set_layout.hpp"
@@ -81,6 +82,12 @@ class LogicalDevice : public Handle<LogicalDeviceImpl> {
                         const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
   void destroySampler(const Sampler& sampler) const;
+
+  SamplerYcbcrConversion
+    createSamplerYcbcrConversion(const vk::SamplerYcbcrConversionCreateInfo& createInfo,
+                                 const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
+
+  void destroySamplerYcbcrConversion(const SamplerYcbcrConversion& samplerYcbcrConversion) const;
 
   ShaderModule createShaderModule(const vk::ShaderModuleCreateInfo& createInfo,
                                   const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
