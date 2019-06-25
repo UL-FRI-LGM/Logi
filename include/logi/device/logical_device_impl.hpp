@@ -39,6 +39,7 @@ class DescriptorSetLayoutImpl;
 class DescriptorPoolImpl;
 class PipelineLayoutImpl;
 class MemoryAllocatorImpl;
+class DeviceMemoryImpl;
 class SamplerImpl;
 class PipelineImpl;
 class RenderPassImpl;
@@ -53,9 +54,10 @@ class ImageImpl;
 
 class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
                           public VulkanObjectComposite<QueueFamilyImpl>,
-                          public VulkanObjectComposite<MemoryAllocatorImpl>,
                           public VulkanObjectComposite<BufferImpl>,
                           public VulkanObjectComposite<ImageImpl>,
+                          public VulkanObjectComposite<MemoryAllocatorImpl>,
+                          public VulkanObjectComposite<DeviceMemoryImpl>,
                           public VulkanObjectComposite<SwapchainKHRImpl>,
                           public VulkanObjectComposite<SamplerImpl>,
                           public VulkanObjectComposite<CommandPoolImpl>,
@@ -88,6 +90,11 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
                           const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyMemoryAllocator(size_t id);
+
+  const std::shared_ptr<DeviceMemoryImpl>& allocateMemory(const vk::MemoryAllocateInfo& createInfo,
+                                                          const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void freeMemory(size_t id);
 
   const std::shared_ptr<BufferImpl>& createBuffer(const vk::BufferCreateInfo& createInfo,
                                                   const std::optional<vk::AllocationCallbacks>& allocator = {});
@@ -141,32 +148,32 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
   void destroyDescriptorUpdateTemplate(size_t id);
 
   std::vector<std::shared_ptr<PipelineImpl>>
-    createComputePipelines(const vk::ArrayProxy<const vk::ComputePipelineCreateInfo>& create_infos,
+    createComputePipelines(const vk::ArrayProxy<const vk::ComputePipelineCreateInfo>& createInfos,
                            const vk::PipelineCache& cache = nullptr,
                            const std::optional<vk::AllocationCallbacks>& allocator = {});
 
-  std::shared_ptr<PipelineImpl> createComputePipeline(const vk::ComputePipelineCreateInfo& create_infos,
+  std::shared_ptr<PipelineImpl> createComputePipeline(const vk::ComputePipelineCreateInfo& createInfos,
                                                       const vk::PipelineCache& cache = nullptr,
                                                       const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   std::vector<std::shared_ptr<PipelineImpl>>
-    createGraphicsPipelines(const vk::ArrayProxy<const vk::GraphicsPipelineCreateInfo>& create_infos,
+    createGraphicsPipelines(const vk::ArrayProxy<const vk::GraphicsPipelineCreateInfo>& createInfos,
                             const vk::PipelineCache& cache = nullptr,
                             const std::optional<vk::AllocationCallbacks>& allocator = {});
 
-  std::shared_ptr<PipelineImpl> createGraphicsPipeline(const vk::GraphicsPipelineCreateInfo& create_info,
+  std::shared_ptr<PipelineImpl> createGraphicsPipeline(const vk::GraphicsPipelineCreateInfo& createInfo,
                                                        const vk::PipelineCache& cache = nullptr,
                                                        const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   std::vector<std::shared_ptr<PipelineImpl>>
-    createRayTracingPipelinesNV(const vk::ArrayProxy<const vk::RayTracingPipelineCreateInfoNV>& create_infos,
+    createRayTracingPipelinesNV(const vk::ArrayProxy<const vk::RayTracingPipelineCreateInfoNV>& createInfos,
                                 const vk::PipelineCache& cache = nullptr,
                                 const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   std::shared_ptr<PipelineImpl>
-    createRayTracingPipelinesNV(const vk::RayTracingPipelineCreateInfoNV& create_info,
-                                const vk::PipelineCache& cache = nullptr,
-                                const std::optional<vk::AllocationCallbacks>& allocator = {});
+    createRayTracingPipelineNV(const vk::RayTracingPipelineCreateInfoNV& createInfo,
+                               const vk::PipelineCache& cache = nullptr,
+                               const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyPipeline(size_t id);
 
@@ -234,19 +241,19 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
   void destroyValidationCacheEXT(size_t id);
 
   const std::shared_ptr<AccelerationStructureNVImpl>&
-    createAccelerationStructureNV(const vk::AccelerationStructureCreateInfoNV& create_info,
+    createAccelerationStructureNV(const vk::AccelerationStructureCreateInfoNV& createInfo,
                                   const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyAccelerationStructureNV(size_t id);
 
   const std::shared_ptr<IndirectCommandsLayoutNVXImpl>& createIndirectCommandsLayoutNVXIndirectCommandsLayoutNVX(
-    const vk::IndirectCommandsLayoutCreateInfoNVX& create_info,
+    const vk::IndirectCommandsLayoutCreateInfoNVX& createInfo,
     const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyIndirectCommandsLayoutNVX(size_t id);
 
   const std::shared_ptr<ObjectTableNVXImpl>&
-    createObjectTableNVX(const vk::ObjectTableCreateInfoNVX& create_info,
+    createObjectTableNVX(const vk::ObjectTableCreateInfoNVX& createInfo,
                          const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyObjectTableNVX(size_t id);

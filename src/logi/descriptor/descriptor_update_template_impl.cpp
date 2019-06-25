@@ -49,7 +49,7 @@ const vk::DispatchLoaderDynamic& DescriptorUpdateTemplateImpl::getDispatcher() c
 }
 
 void DescriptorUpdateTemplateImpl::destroy() const {
-  // TODO
+  logicalDevice_.destroyDescriptorUpdateTemplate(id());
 }
 
 DescriptorUpdateTemplateImpl::operator vk::DescriptorUpdateTemplate() const {

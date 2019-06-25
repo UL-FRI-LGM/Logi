@@ -67,7 +67,7 @@ const vk::DispatchLoaderDynamic& DeviceMemoryImpl::getDispatcher() const {
 }
 
 void DeviceMemoryImpl::destroy() const {
-  // TODO
+  logicalDevice_.freeMemory(id());
 }
 
 DeviceMemoryImpl::operator vk::DeviceMemory() const {
@@ -75,7 +75,9 @@ DeviceMemoryImpl::operator vk::DeviceMemory() const {
 }
 
 void DeviceMemoryImpl::free() {
-  // TODO
+  vk::Device vkDevice = logicalDevice_;
+  vkDevice.freeMemory(vkDeviceMemory_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+  VulkanObject<DeviceMemoryImpl>::free();
 }
 
 // endregion

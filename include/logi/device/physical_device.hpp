@@ -175,8 +175,6 @@ class PhysicalDevice : public Handle<PhysicalDeviceImpl> {
   std::vector<vk::StructureChain<X, Y, Z...>> getSparseImageFormatProperties2KHR(
     const vk::PhysicalDeviceSparseImageFormatInfo2KHR& sparseImageFormatProperties) const;
 
-  vk::ResultValueType<std::vector<vk::Rect2D>>::type getPresentRectanglesKHR(vk::SurfaceKHR surface) const;
-
   vk::ResultValueType<vk::SurfaceCapabilitiesKHR>::type getSurfaceCapabilitiesKHR(vk::SurfaceKHR surface) const;
 
   template <typename X, typename Y, typename... Z>
@@ -233,7 +231,6 @@ class PhysicalDevice : public Handle<PhysicalDeviceImpl> {
 
 #ifdef VK_USE_PLATFORM_WIN32_KHR
   vk::Bool32 getWin32PresentationSupportKHR(uint32_t queueFamilyIndex) const;
-
 #endif
 
 #ifdef VK_USE_PLATFORM_XCB_KHR
