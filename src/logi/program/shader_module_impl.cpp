@@ -42,10 +42,10 @@ PushConstantInfo::PushConstantInfo(std::string name, uint32_t offset, uint32_t s
 ShaderModuleImpl::ShaderModuleImpl(LogicalDeviceImpl& logicalDevice, const vk::ShaderModuleCreateInfo& create_info,
                                    const std::optional<vk::AllocationCallbacks>& allocator)
   : logicalDevice_(logicalDevice), allocator_(allocator), vkShaderModule_(nullptr),
-    compiler_(create_info.pCode, create_info.codeSize) {
+    compiler_(create_info.pCode, create_info.codeSize / 4u) {
   vk::Device vk_device = logicalDevice;
   vkShaderModule_ =
-    vk_device.createShaderModule(create_info, allocator.has_value() ? nullptr : &allocator.value(), getDispatcher());
+    vk_device.createShaderModule(create_info, allocator_ ? &allocator.value() : nullptr, getDispatcher());
 }
 
 std::vector<EntryPointInfo> ShaderModuleImpl::reflectEntryPoints() const {
@@ -210,7 +210,7 @@ void ShaderModuleImpl::destroy() const {
   logicalDevice_.destroyShaderModule(id());
 }
 
-ShaderModuleImpl::operator vk::ShaderModule() const {
+ShaderModuleImpl::operator const vk::ShaderModule&() const {
   return vkShaderModule_;
 }
 

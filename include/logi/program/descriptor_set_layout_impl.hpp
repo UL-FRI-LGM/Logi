@@ -45,7 +45,7 @@ class DescriptorSetLayoutImpl : public VulkanObject<DescriptorSetLayoutImpl> {
 
   void destroy() const;
 
-  operator vk::DescriptorSetLayout() const;
+  operator const vk::DescriptorSetLayout&() const;
 
  protected:
   void free() override;

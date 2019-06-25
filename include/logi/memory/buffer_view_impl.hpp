@@ -50,7 +50,7 @@ class BufferViewImpl : public VulkanObject<BufferViewImpl> {
 
   void destroy() const;
 
-  operator vk::BufferView() const;
+  operator const vk::BufferView&() const;
 
  protected:
   void free() override;

@@ -45,7 +45,7 @@ class SamplerImpl : public VulkanObject<SamplerImpl> {
 
   void destroy() const;
 
-  operator vk::Sampler() const;
+  operator const vk::Sampler&() const;
 
  protected:
   void free() override;

@@ -277,8 +277,8 @@ VulkanInstance PhysicalDevice::getInstance() const {
 const vk::DispatchLoaderDynamic& PhysicalDevice::getDispatcher() const {
   return object_->getDispatcher();
 }
-PhysicalDevice::operator vk::PhysicalDevice() const {
-  return object_->operator vk::PhysicalDevice();
+PhysicalDevice::operator const vk::PhysicalDevice&() const {
+  return object_->operator const vk::PhysicalDevice&();
 }
 
 }

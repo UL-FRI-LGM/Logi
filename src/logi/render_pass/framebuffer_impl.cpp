@@ -48,7 +48,7 @@ void FramebufferImpl::destroy() const {
   logicalDevice_.destroyFramebuffer(id());
 }
 
-FramebufferImpl::operator vk::Framebuffer() const {
+FramebufferImpl::operator const vk::Framebuffer&() const {
   return vkFramebuffer_;
 }
 

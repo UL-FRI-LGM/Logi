@@ -38,7 +38,7 @@ class DebugReportCallbackEXTImpl : public VulkanObject<DebugReportCallbackEXTImp
 
   void destroy() const;
 
-  operator vk::DebugReportCallbackEXT() const;
+  operator const vk::DebugReportCallbackEXT&() const;
 
  protected:
   void free() override;

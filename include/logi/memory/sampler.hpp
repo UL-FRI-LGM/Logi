@@ -45,7 +45,7 @@ class Sampler : public Handle<SamplerImpl> {
 
   void destroy() const;
 
-  operator vk::Sampler() const;
+  operator const vk::Sampler&() const;
 
   // endregion
 };

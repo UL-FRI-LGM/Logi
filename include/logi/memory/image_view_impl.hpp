@@ -34,7 +34,9 @@ class ImageImpl;
 
 class ImageViewImpl : public VulkanObject<ImageViewImpl> {
  public:
-  ImageViewImpl(ImageImpl& image, vk::ImageViewCreateInfo createInfo,
+  ImageViewImpl(ImageImpl& image, const vk::ImageViewCreateFlags& flags, vk::ImageViewType viewType, vk::Format format,
+                const vk::ComponentMapping& components, const vk::ImageSubresourceRange& subresourceRange,
+                const ConstVkNextProxy<vk::ImageViewCreateInfo>& next = {},
                 const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   // region Vulkan Declarations
@@ -58,7 +60,7 @@ class ImageViewImpl : public VulkanObject<ImageViewImpl> {
 
   void destroy() const;
 
-  operator vk::ImageView() const;
+  operator const vk::ImageView&() const;
 
  protected:
   void free() override;

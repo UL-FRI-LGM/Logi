@@ -47,8 +47,8 @@ void RenderPass::destroy() const {
   object_->destroy();
 }
 
-RenderPass::operator vk::RenderPass() const {
-  return object_->operator vk::RenderPass();
+RenderPass::operator const vk::RenderPass&() const {
+  return object_->operator const vk::RenderPass&();
 }
 
 } // namespace logi

@@ -45,8 +45,8 @@ void Semaphore::destroy() const {
   object_->destroy();
 }
 
-Semaphore::operator vk::Semaphore() const {
-  return object_->operator vk::Semaphore();
+Semaphore::operator const vk::Semaphore&() const {
+  return object_->operator const vk::Semaphore&();
 }
 
 } // namespace logi

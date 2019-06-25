@@ -56,7 +56,7 @@ class QueryPoolImpl : public VulkanObject<QueryPoolImpl> {
 
   void destroy() const;
 
-  operator vk::QueryPool() const;
+  operator const vk::QueryPool&() const;
 
  protected:
   void free() override;

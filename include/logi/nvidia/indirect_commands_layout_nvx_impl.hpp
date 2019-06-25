@@ -46,7 +46,7 @@ class IndirectCommandsLayoutNVXImpl : public VulkanObject<IndirectCommandsLayout
 
   void destroy() const;
 
-  operator vk::IndirectCommandsLayoutNVX() const;
+  operator const vk::IndirectCommandsLayoutNVX&() const;
 
  protected:
   void free() override;

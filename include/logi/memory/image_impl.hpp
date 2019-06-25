@@ -30,7 +30,6 @@ class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 class MemoryAllocatorImpl;
 class ImageViewImpl;
-class ImageView;
 class SwapchainKHRImpl;
 
 class ImageImpl : public VulkanObject<ImageImpl>, public VulkanObjectComposite<ImageViewImpl> {
@@ -74,7 +73,11 @@ class ImageImpl : public VulkanObject<ImageImpl>, public VulkanObjectComposite<I
 
   // region Logi Declarations
 
-  const std::shared_ptr<ImageViewImpl>& createImageView(const vk::ImageViewCreateInfo& createInfo,
+  const std::shared_ptr<ImageViewImpl>& createImageView(const vk::ImageViewCreateFlags& flags,
+                                                        vk::ImageViewType viewType, vk::Format format,
+                                                        const vk::ComponentMapping& components,
+                                                        const vk::ImageSubresourceRange& subresourceRange,
+                                                        const ConstVkNextProxy<vk::ImageViewCreateInfo>& next = {},
                                                         const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyImageView(size_t id);
@@ -89,7 +92,7 @@ class ImageImpl : public VulkanObject<ImageImpl>, public VulkanObjectComposite<I
 
   void destroy() const;
 
-  operator vk::Image() const;
+  operator const vk::Image&() const;
 
  protected:
   void free() override;

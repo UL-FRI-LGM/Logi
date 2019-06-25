@@ -45,7 +45,7 @@ class DescriptorSetLayout : public Handle<DescriptorSetLayoutImpl> {
 
   void destroy() const;
 
-  operator vk::DescriptorSetLayout() const;
+  operator const vk::DescriptorSetLayout&() const;
 
   // endregion
 };

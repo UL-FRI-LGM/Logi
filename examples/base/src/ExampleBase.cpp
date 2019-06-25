@@ -11,6 +11,7 @@ void ExampleBase::run() {
   initializeSwapChain();
   buildSyncObjects();
   initializeCommandBuffers();
+  initialize();
   mainLoop();
 }
 
@@ -235,6 +236,15 @@ void ExampleBase::initializeSwapChain() {
   swapchainImages_ = swapchain_.getImagesKHR();
   swapchainImageFormat_ = surfaceFormat.format;
   swapchainImageExtent_ = extent;
+
+  // Create image views
+  swapchainImageViews_.reserve(swapchainImages_.size());
+
+  for (auto& image : swapchainImages_) {
+    swapchainImageViews_.emplace_back(image.createImageView(
+      vk::ImageViewCreateFlags(), vk::ImageViewType::e2D, swapchainImageFormat_, vk::ComponentMapping(),
+      vk::ImageSubresourceRange(vk::ImageAspectFlagBits::eColor, 0, 1, 0, 1)));
+  }
 }
 
 void ExampleBase::initializeCommandBuffers() {
@@ -252,7 +262,6 @@ void ExampleBase::buildSyncObjects() {
 }
 
 void ExampleBase::drawFrame() {
-  /*
   // Wait if drawing is still in progress.
   inFlightFences_[currentFrame_].wait(std::numeric_limits<uint64_t>::max());
   inFlightFences_[currentFrame_].reset();
@@ -270,22 +279,21 @@ void ExampleBase::drawFrame() {
 
   vk::SubmitInfo submit_info;
   submit_info.pWaitDstStageMask = &wait_stages;
-  submit_info.pWaitSemaphores = &static_cast<vk::Semaphore>(imageAvailableSemaphores_[currentFrame_]);
+  submit_info.pWaitSemaphores = &static_cast<const vk::Semaphore&>(imageAvailableSemaphores_[currentFrame_]);
   submit_info.waitSemaphoreCount = 1u;
 
   submit_info.commandBufferCount = 1;
-  submit_info.pCommandBuffers = &static_cast<vk::CommandBuffer>(primaryGraphicsCmdBuffers_[imageIndex]);
+  submit_info.pCommandBuffers = &static_cast<const vk::CommandBuffer&>(primaryGraphicsCmdBuffers_[imageIndex]);
 
   submit_info.signalSemaphoreCount = 1;
-  submit_info.pSignalSemaphores = &static_cast<vk::Semaphore>(renderFinishedSemaphores_[currentFrame_]);
+  submit_info.pSignalSemaphores = &static_cast<const vk::Semaphore&>(renderFinishedSemaphores_[currentFrame_]);
   graphicsQueue_.submit({submit_info}, inFlightFences_[currentFrame_]);
 
-  vk::PresentInfoKHR(1, renderFinishedSemaphores_[currentFrame_], 1, static_cast<vk::SwapchainKHR>(vk::SwapchainKHR>),
-  &imageIndex);
-
   // Present image.
-  presentQueue_.presentKHR(vk::PresentInfoKHR((present_queue, renderFinishedSemaphores_[currentFrame_]);
-  currentFrame_ = (currentFrame_ + 1) % config_.maxFramesInFlight;*/
+  presentQueue_.presentKHR(
+    vk::PresentInfoKHR(1, &static_cast<const vk::Semaphore&>(renderFinishedSemaphores_[currentFrame_]), 1,
+                       &static_cast<const vk::SwapchainKHR&>(swapchain_), &imageIndex));
+  currentFrame_ = (currentFrame_ + 1) % config_.maxFramesInFlight;
 }
 
 void ExampleBase::mainLoop() {
@@ -295,4 +303,26 @@ void ExampleBase::mainLoop() {
   }
 
   logicalDevice_.waitIdle();
+}
+
+logi::ShaderModule ExampleBase::createShaderModule(const std::string& shaderPath) {
+  std::ifstream file(shaderPath, std::ios::ate | std::ios::binary);
+
+  if (!file.is_open()) {
+    throw std::runtime_error("failed to open file!");
+  }
+
+  size_t fileSize = (size_t) file.tellg();
+  std::vector<char> code(fileSize);
+
+  file.seekg(0);
+  file.read(code.data(), fileSize);
+
+  file.close();
+
+  vk::ShaderModuleCreateInfo createInfo;
+  createInfo.codeSize = code.size();
+  createInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
+
+  return logicalDevice_.createShaderModule(createInfo);
 }

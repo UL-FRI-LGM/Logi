@@ -48,7 +48,7 @@ void SamplerImpl::destroy() const {
   logicalDevice_.destroySampler(id());
 }
 
-SamplerImpl::operator vk::Sampler() const {
+SamplerImpl::operator const vk::Sampler&() const {
   return vkSampler_;
 }
 

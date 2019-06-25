@@ -53,7 +53,7 @@ class PipelineCacheImpl : public VulkanObject<PipelineCacheImpl> {
 
   void destroy() const;
 
-  operator vk::PipelineCache() const;
+  operator const vk::PipelineCache&() const;
 
  protected:
   void free() override;

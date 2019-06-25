@@ -63,7 +63,7 @@ class AccelerationStructureNVImpl : public VulkanObject<AccelerationStructureNVI
 
   void destroy() const;
 
-  operator vk::AccelerationStructureNV() const;
+  operator const vk::AccelerationStructureNV&() const;
 
  protected:
   void free() override;

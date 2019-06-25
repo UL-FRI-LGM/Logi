@@ -43,8 +43,8 @@ void DescriptorSetLayout::destroy() const {
   object_->destroy();
 }
 
-DescriptorSetLayout::operator vk::DescriptorSetLayout() const {
-  return object_->operator vk::DescriptorSetLayout();
+DescriptorSetLayout::operator const vk::DescriptorSetLayout&() const {
+  return object_->operator const vk::DescriptorSetLayout&();
 }
 
 } // namespace logi

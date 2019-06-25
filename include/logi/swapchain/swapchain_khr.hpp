@@ -76,7 +76,7 @@ class SwapchainKHR : public Handle<SwapchainKHRImpl> {
 
   void destroy() const;
 
-  operator vk::SwapchainKHR() const;
+  operator const vk::SwapchainKHR&() const;
 
   // endregion
 };

@@ -57,8 +57,8 @@ void Event::destroy() const {
   object_->destroy();
 }
 
-Event::operator vk::Event() const {
-  return object_->operator vk::Event();
+Event::operator const vk::Event&() const {
+  return object_->operator const vk::Event&();
 }
 
 } // namespace logi

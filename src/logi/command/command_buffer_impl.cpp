@@ -520,7 +520,7 @@ void CommandBufferImpl::destroy() const {
   commandPool_.freeCommandBuffers({id()});
 }
 
-CommandBufferImpl::operator vk::CommandBuffer() const {
+CommandBufferImpl::operator const vk::CommandBuffer&() const {
   return vkCommandBuffer_;
 }
 

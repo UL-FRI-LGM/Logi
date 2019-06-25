@@ -25,11 +25,17 @@
 
 namespace logi {
 
-ImageViewImpl::ImageViewImpl(logi::ImageImpl& image, vk::ImageViewCreateInfo createInfo,
+ImageViewImpl::ImageViewImpl(logi::ImageImpl& image, const vk::ImageViewCreateFlags& flags, vk::ImageViewType viewType,
+                             vk::Format format, const vk::ComponentMapping& components,
+                             const vk::ImageSubresourceRange& subresourceRange,
+                             const ConstVkNextProxy<vk::ImageViewCreateInfo>& next,
                              const std::optional<vk::AllocationCallbacks>& allocator)
   : image_(image), allocator_(allocator) {
   auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
-  createInfo.image = image_;
+  vk::ImageViewCreateInfo createInfo(flags, static_cast<vk::Image>(image_), viewType, format, components,
+                                     subresourceRange);
+  createInfo.pNext = next;
+
   vkImageView_ = vkDevice.createImageView(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
@@ -66,7 +72,7 @@ void ImageViewImpl::destroy() const {
   image_.destroyImageView(id());
 }
 
-ImageViewImpl::operator vk::ImageView() const {
+ImageViewImpl::operator const vk::ImageView&() const {
   return vkImageView_;
 }
 

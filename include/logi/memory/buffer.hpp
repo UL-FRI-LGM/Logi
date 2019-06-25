@@ -73,7 +73,7 @@ class Buffer : public Handle<BufferImpl> {
 
   void destroy() const;
 
-  operator vk::Buffer() const;
+  operator const vk::Buffer&() const;
 
   // endregion
 };

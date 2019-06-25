@@ -52,7 +52,7 @@ void DescriptorUpdateTemplateImpl::destroy() const {
   logicalDevice_.destroyDescriptorUpdateTemplate(id());
 }
 
-DescriptorUpdateTemplateImpl::operator vk::DescriptorUpdateTemplate() const {
+DescriptorUpdateTemplateImpl::operator const vk::DescriptorUpdateTemplate&() const {
   return vkDescriptorUpdateTemplate_;
 }
 

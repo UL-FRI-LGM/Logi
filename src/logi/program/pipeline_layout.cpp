@@ -43,8 +43,8 @@ void PipelineLayout::destroy() const {
   object_->destroy();
 }
 
-PipelineLayout::operator vk::PipelineLayout() const {
-  return object_->operator vk::PipelineLayout();
+PipelineLayout::operator const vk::PipelineLayout&() const {
+  return object_->operator const vk::PipelineLayout&();
 }
 
 } // namespace logi

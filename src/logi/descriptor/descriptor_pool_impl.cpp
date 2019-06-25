@@ -95,7 +95,7 @@ void DescriptorPoolImpl::destroy() const {
   logicalDevice_.destroyDescriptorPool(id());
 }
 
-DescriptorPoolImpl::operator vk::DescriptorPool() const {
+DescriptorPoolImpl::operator const vk::DescriptorPool&() const {
   return vkDescriptorPool_;
 }
 

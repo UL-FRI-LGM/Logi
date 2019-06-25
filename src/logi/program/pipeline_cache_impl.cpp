@@ -60,7 +60,7 @@ void PipelineCacheImpl::destroy() const {
   logicalDevice_.destroyPipelineCache(id());
 }
 
-PipelineCacheImpl::operator vk::PipelineCache() const {
+PipelineCacheImpl::operator const vk::PipelineCache&() const {
   return vkPipelineCache_;
 }
 

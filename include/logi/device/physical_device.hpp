@@ -255,7 +255,7 @@ class PhysicalDevice : public Handle<PhysicalDeviceImpl> {
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
-  operator vk::PhysicalDevice() const;
+  operator const vk::PhysicalDevice&() const;
 
   // endregion
 };

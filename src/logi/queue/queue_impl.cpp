@@ -79,7 +79,7 @@ const vk::DispatchLoaderDynamic& QueueImpl::getDispatcher() const {
   return queueFamily_.getDispatcher();
 }
 
-QueueImpl::operator vk::Queue() const {
+QueueImpl::operator const vk::Queue&() const {
   return vkQueue_;
 }
 

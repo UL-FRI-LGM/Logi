@@ -74,7 +74,7 @@ void AccelerationStructureNVImpl::destroy() const {
   logicalDevice_.destroyAccelerationStructureNV(id());
 }
 
-AccelerationStructureNVImpl::operator vk::AccelerationStructureNV() const {
+AccelerationStructureNVImpl::operator const vk::AccelerationStructureNV&() const {
   return vkAccelerationStructureNV_;
 }
 

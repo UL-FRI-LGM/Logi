@@ -50,7 +50,7 @@ void DescriptorSetLayoutImpl::destroy() const {
   logicalDevice_.destroyDescriptorSetLayout(id());
 }
 
-DescriptorSetLayoutImpl::operator vk::DescriptorSetLayout() const {
+DescriptorSetLayoutImpl::operator const vk::DescriptorSetLayout&() const {
   return vkDescriptorSetLayout_;
 }
 

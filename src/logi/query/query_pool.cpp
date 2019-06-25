@@ -49,8 +49,8 @@ void QueryPool::destroy() const {
   object_->destroy();
 }
 
-QueryPool::operator vk::QueryPool() const {
-  return object_->operator vk::QueryPool();
+QueryPool::operator const vk::QueryPool&() const {
+  return object_->operator const vk::QueryPool&();
 }
 
 } // namespace logi

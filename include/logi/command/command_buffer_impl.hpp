@@ -299,7 +299,7 @@ class CommandBufferImpl : public VulkanObject<CommandBufferImpl> {
 
   void destroy() const;
 
-  operator vk::CommandBuffer() const;
+  operator const vk::CommandBuffer&() const;
 
  protected:
   void free() override;

@@ -120,9 +120,12 @@ vk::ResultValueType<void>::type
 }
 
 const std::shared_ptr<ImageViewImpl>&
-  ImageImpl::createImageView(const vk::ImageViewCreateInfo& createInfo,
+  ImageImpl::createImageView(const vk::ImageViewCreateFlags& flags, vk::ImageViewType viewType, vk::Format format,
+                             const vk::ComponentMapping& components, const vk::ImageSubresourceRange& subresourceRange,
+                             const ConstVkNextProxy<vk::ImageViewCreateInfo>& next,
                              const std::optional<vk::AllocationCallbacks>& allocator) {
-  return VulkanObjectComposite<ImageViewImpl>::createObject(*this, createInfo, allocator);
+  return VulkanObjectComposite<ImageViewImpl>::createObject(*this, flags, viewType, format, components,
+                                                            subresourceRange, next, allocator);
 }
 
 void ImageImpl::destroyImageView(size_t id) {
@@ -167,7 +170,7 @@ void ImageImpl::destroy() const {
     owner_);
 }
 
-ImageImpl::operator vk::Image() const {
+ImageImpl::operator const vk::Image&() const {
   return vkImage_;
 }
 

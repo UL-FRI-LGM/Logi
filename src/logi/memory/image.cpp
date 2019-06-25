@@ -59,9 +59,12 @@ std::vector<vk::SparseImageMemoryRequirements2KHR> Image::getImageSparseMemoryRe
   return object_->getImageSparseMemoryRequirements2KHR(next);
 }
 
-ImageView Image::createImageView(const vk::ImageViewCreateInfo& createInfo,
+ImageView Image::createImageView(const vk::ImageViewCreateFlags& flags, vk::ImageViewType viewType, vk::Format format,
+                                 const vk::ComponentMapping& components,
+                                 const vk::ImageSubresourceRange& subresourceRange,
+                                 const ConstVkNextProxy<vk::ImageViewCreateInfo>& next,
                                  const std::optional<vk::AllocationCallbacks>& allocator) const {
-  return ImageView(object_->createImageView(createInfo, allocator));
+  return ImageView(object_->createImageView(flags, viewType, format, components, subresourceRange, next, allocator));
 }
 
 void Image::destroyImageView(const ImageView& image) const {
@@ -88,8 +91,8 @@ void Image::destroy() const {
   object_->destroy();
 }
 
-Image::operator vk::Image() const {
-  return object_->operator vk::Image();
+Image::operator const vk::Image&() const {
+  return object_->operator const vk::Image&();
 }
 
 vk::ResultValueType<void>::type Image::bindMemory(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset) const {

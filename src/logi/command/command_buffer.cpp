@@ -505,8 +505,8 @@ void CommandBuffer::destroy() const {
   object_->destroy();
 }
 
-CommandBuffer::operator vk::CommandBuffer() const {
-  return object_->operator vk::CommandBuffer();
+CommandBuffer::operator const vk::CommandBuffer&() const {
+  return object_->operator const vk::CommandBuffer&();
 }
 
 // endregion

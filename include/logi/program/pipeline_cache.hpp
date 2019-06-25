@@ -53,7 +53,7 @@ class PipelineCache : public Handle<PipelineCacheImpl> {
 
   void destroy() const;
 
-  operator vk::PipelineCache() const;
+  operator const vk::PipelineCache&() const;
 
   // endregion
 };

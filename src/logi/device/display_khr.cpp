@@ -34,8 +34,8 @@ const vk::DispatchLoaderDynamic& DisplayKHR::getDispatcher() const {
   return object_->getDispatcher();
 }
 
-DisplayKHR::operator vk::DisplayKHR() const {
-  return object_->operator vk::DisplayKHR();
+DisplayKHR::operator const vk::DisplayKHR&() const {
+  return object_->operator const vk::DisplayKHR&();
 }
 
 } // namespace logi

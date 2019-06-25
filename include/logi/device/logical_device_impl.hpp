@@ -328,7 +328,7 @@ class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
 
   void destroy() const;
 
-  operator const vk::Device() const;
+  operator const vk::Device&() const;
 
  protected:
   void free() override;

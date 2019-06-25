@@ -102,7 +102,7 @@ class ShaderModuleImpl : public VulkanObject<ShaderModuleImpl> {
 
   void destroy() const;
 
-  operator vk::ShaderModule() const;
+  operator const vk::ShaderModule&() const;
 
  protected:
   void free() override;

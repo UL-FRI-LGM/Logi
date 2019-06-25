@@ -45,7 +45,7 @@ class PipelineLayout : public Handle<PipelineLayoutImpl> {
 
   void destroy() const;
 
-  operator vk::PipelineLayout() const;
+  operator const vk::PipelineLayout&() const;
 
   // endregion
 };

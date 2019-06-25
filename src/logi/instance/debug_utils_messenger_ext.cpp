@@ -35,7 +35,7 @@ void DebugUtilsMessengerEXT::destroy() const {
   object_->destroy();
 }
 
-DebugUtilsMessengerEXT::operator vk::DebugUtilsMessengerEXT() const {
+DebugUtilsMessengerEXT::operator const vk::DebugUtilsMessengerEXT&() const {
   return *object_;
 }
 

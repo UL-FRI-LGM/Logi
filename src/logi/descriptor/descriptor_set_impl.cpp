@@ -61,7 +61,7 @@ void DescriptorSetImpl::destroy() const {
   descriptorPool_.freeDescriptorSets({id()});
 }
 
-DescriptorSetImpl::operator vk::DescriptorSet() const {
+DescriptorSetImpl::operator const vk::DescriptorSet&() const {
   return vkDescriptorSet_;
 }
 

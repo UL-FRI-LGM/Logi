@@ -151,7 +151,7 @@ void SurfaceKHRImpl::destroy() const {
   instance_.destroySurfaceKHR(id());
 }
 
-SurfaceKHRImpl::operator vk::SurfaceKHR() const {
+SurfaceKHRImpl::operator const vk::SurfaceKHR&() const {
   return vkSurface_;
 }
 

@@ -59,7 +59,7 @@ class PipelineImpl : public VulkanObject<PipelineImpl> {
 
   void destroy() const;
 
-  operator vk::Pipeline() const;
+  operator const vk::Pipeline&() const;
 
  protected:
   void free() override;

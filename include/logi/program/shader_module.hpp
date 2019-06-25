@@ -45,7 +45,7 @@ class ShaderModule : public Handle<ShaderModuleImpl> {
 
   void destroy() const;
 
-  operator vk::ShaderModule() const;
+  operator const vk::ShaderModule&() const;
 
   // endregion
 };

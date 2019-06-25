@@ -69,7 +69,7 @@ void ObjectTableNVXImpl::destroy() const {
   return logicalDevice_.destroyObjectTableNVX(id());
 }
 
-ObjectTableNVXImpl::operator vk::ObjectTableNVX() const {
+ObjectTableNVXImpl::operator const vk::ObjectTableNVX&() const {
   return vkObjectTableNVX_;
 }
 

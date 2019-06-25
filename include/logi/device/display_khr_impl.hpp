@@ -44,7 +44,7 @@ class DisplayKHRImpl : public VulkanObject<DisplayKHRImpl> {
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
-  operator vk::DisplayKHR() const;
+  operator const vk::DisplayKHR&() const;
 
   // endregion
 

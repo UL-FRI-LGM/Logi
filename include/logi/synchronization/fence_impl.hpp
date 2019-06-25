@@ -82,7 +82,7 @@ class FenceImpl : public VulkanObject<FenceImpl> {
 
   void destroy() const;
 
-  operator vk::Fence() const;
+  operator const vk::Fence&() const;
 
  protected:
   void free() override;

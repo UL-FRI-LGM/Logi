@@ -57,7 +57,7 @@ void BufferViewImpl::destroy() const {
   buffer_.destroyBufferView(id());
 }
 
-BufferViewImpl::operator vk::BufferView() const {
+BufferViewImpl::operator const vk::BufferView&() const {
   return vkBufferView_;
 }
 

@@ -69,7 +69,7 @@ class CommandPoolImpl : public VulkanObject<CommandPoolImpl>, public VulkanObjec
 
   void destroy() const;
 
-  operator vk::CommandPool() const;
+  operator const vk::CommandPool&() const;
 
  protected:
   void free() override;

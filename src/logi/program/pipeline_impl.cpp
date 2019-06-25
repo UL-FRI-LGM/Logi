@@ -62,7 +62,7 @@ void PipelineImpl::destroy() const {
   logicalDevice_.destroyPipeline(id());
 }
 
-PipelineImpl::operator vk::Pipeline() const {
+PipelineImpl::operator const vk::Pipeline&() const {
   return vkPipeline_;
 }
 

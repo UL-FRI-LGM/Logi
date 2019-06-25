@@ -49,7 +49,7 @@ class DisplayModeKHR : public Handle<DisplayModeKHRImpl> {
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
-  operator vk::DisplayModeKHR() const;
+  operator const vk::DisplayModeKHR&() const;
 
   // endregion
 };

@@ -52,7 +52,7 @@ void IndirectCommandsLayoutNVXImpl::destroy() const {
   logicalDevice_.destroyIndirectCommandsLayoutNVX(id());
 }
 
-IndirectCommandsLayoutNVXImpl::operator vk::IndirectCommandsLayoutNVX() const {
+IndirectCommandsLayoutNVXImpl::operator const vk::IndirectCommandsLayoutNVX&() const {
   return vkIndirectCommandsLayoutNVX_;
 }
 

@@ -67,7 +67,7 @@ void ValidationCacheEXTImpl::destroy() const {
   logicalDevice_.destroyValidationCacheEXT(id());
 }
 
-ValidationCacheEXTImpl::operator vk::ValidationCacheEXT() const {
+ValidationCacheEXTImpl::operator const vk::ValidationCacheEXT&() const {
   return vkValidationCacheEXT_;
 }
 

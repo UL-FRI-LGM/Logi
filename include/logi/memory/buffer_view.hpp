@@ -49,7 +49,7 @@ class BufferView : public Handle<BufferViewImpl> {
 
   void destroy() const;
 
-  operator vk::BufferView() const;
+  operator const vk::BufferView&() const;
 
   // endregion
 };

@@ -287,7 +287,7 @@ class LogicalDevice : public Handle<LogicalDeviceImpl> {
 
   void destroy() const;
 
-  operator const vk::Device() const;
+  operator const vk::Device&() const;
 };
 
 } // namespace logi

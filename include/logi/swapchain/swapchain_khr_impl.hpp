@@ -80,7 +80,7 @@ class SwapchainKHRImpl : public VulkanObject<SwapchainKHRImpl>, public VulkanObj
 
   void destroy() const;
 
-  operator vk::SwapchainKHR() const;
+  operator const vk::SwapchainKHR&() const;
 
  protected:
   void free() override;

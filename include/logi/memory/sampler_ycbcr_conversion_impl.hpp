@@ -45,7 +45,7 @@ class SamplerYcbcrConversionImpl : public VulkanObject<SamplerYcbcrConversionImp
 
   void destroy() const;
 
-  operator vk::SamplerYcbcrConversion() const;
+  operator const vk::SamplerYcbcrConversion&() const;
 
  protected:
   void free() override;

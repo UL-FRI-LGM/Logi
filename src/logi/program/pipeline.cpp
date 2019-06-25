@@ -59,8 +59,8 @@ void Pipeline::destroy() const {
   object_->destroy();
 }
 
-Pipeline::operator vk::Pipeline() const {
-  return object_->operator vk::Pipeline();
+Pipeline::operator const vk::Pipeline&() const {
+  return object_->operator const vk::Pipeline&();
 }
 
 // endregion

@@ -56,7 +56,7 @@ class DeviceMemory : public Handle<DeviceMemoryImpl> {
 
   void destroy() const;
 
-  operator vk::DeviceMemory() const;
+  operator const vk::DeviceMemory&() const;
 
   // endregion
 };

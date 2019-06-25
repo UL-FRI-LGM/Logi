@@ -63,8 +63,8 @@ void DeviceMemory::destroy() const {
   object_->destroy();
 }
 
-DeviceMemory::operator vk::DeviceMemory() const {
-  return object_->operator vk::DeviceMemory();
+DeviceMemory::operator const vk::DeviceMemory&() const {
+  return object_->operator const vk::DeviceMemory&();
 }
 
 // endregion

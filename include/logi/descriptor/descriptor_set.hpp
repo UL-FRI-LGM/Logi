@@ -55,7 +55,7 @@ class DescriptorSet : public Handle<DescriptorSetImpl> {
 
   void destroy() const;
 
-  operator vk::DescriptorSet() const;
+  operator const vk::DescriptorSet&() const;
 
   // endregion
 };

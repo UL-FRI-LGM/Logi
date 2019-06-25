@@ -53,7 +53,7 @@ void QueryPoolImpl::destroy() const {
   logicalDevice_.destroyQueryPool(id());
 }
 
-QueryPoolImpl::operator vk::QueryPool() const {
+QueryPoolImpl::operator const vk::QueryPool&() const {
   return vkQueryPool_;
 }
 

@@ -217,7 +217,7 @@ const vk::DispatchLoaderDynamic& VulkanInstanceImpl::getDispatcher() const {
   return dispatcher_;
 }
 
-VulkanInstanceImpl::operator vk::Instance() const {
+VulkanInstanceImpl::operator const vk::Instance&() const {
   return vkInstance_;
 }
 

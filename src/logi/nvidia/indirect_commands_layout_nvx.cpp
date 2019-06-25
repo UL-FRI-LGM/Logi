@@ -47,8 +47,8 @@ void IndirectCommandsLayoutNVX::destroy() const {
   object_->destroy();
 }
 
-IndirectCommandsLayoutNVX::operator vk::IndirectCommandsLayoutNVX() const {
-  return object_->operator vk::IndirectCommandsLayoutNVX();
+IndirectCommandsLayoutNVX::operator const vk::IndirectCommandsLayoutNVX&() const {
+  return object_->operator const vk::IndirectCommandsLayoutNVX&();
 }
 
 // endregion

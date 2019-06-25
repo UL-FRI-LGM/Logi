@@ -49,7 +49,7 @@ void PipelineLayoutImpl::destroy() const {
   logicalDevice_.destroyPipelineLayout(id());
 }
 
-PipelineLayoutImpl::operator vk::PipelineLayout() const {
+PipelineLayoutImpl::operator const vk::PipelineLayout&() const {
   return vkPipelineLayout_;
 }
 

@@ -54,7 +54,7 @@ class ValidationCacheEXTImpl : public VulkanObject<ValidationCacheEXTImpl> {
 
   void destroy() const;
 
-  operator vk::ValidationCacheEXT() const;
+  operator const vk::ValidationCacheEXT&() const;
 
  protected:
   void free() override;

@@ -46,7 +46,7 @@ class IndirectCommandsLayoutNVX : public Handle<IndirectCommandsLayoutNVXImpl> {
 
   void destroy() const;
 
-  operator vk::IndirectCommandsLayoutNVX() const;
+  operator const vk::IndirectCommandsLayoutNVX&() const;
 
   // endregion
 };

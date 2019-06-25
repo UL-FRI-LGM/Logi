@@ -45,8 +45,8 @@ void ShaderModule::destroy() const {
   object_->destroy();
 }
 
-ShaderModule::operator vk::ShaderModule() const {
-  return object_->operator vk::ShaderModule();
+ShaderModule::operator const vk::ShaderModule&() const {
+  return object_->operator const vk::ShaderModule&();
 }
 
 }

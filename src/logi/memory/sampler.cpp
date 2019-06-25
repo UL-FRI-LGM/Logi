@@ -43,8 +43,8 @@ void Sampler::destroy() const {
   object_->destroy();
 }
 
-Sampler::operator vk::Sampler() const {
-  return object_->operator vk::Sampler();
+Sampler::operator const vk::Sampler&() const {
+  return object_->operator const vk::Sampler&();
 }
 
 } // namespace logi

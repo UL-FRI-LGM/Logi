@@ -49,8 +49,8 @@ void BufferView::destroy() const {
   object_->destroy();
 }
 
-BufferView::operator vk::BufferView() const {
-  return object_->operator vk::BufferView();
+BufferView::operator const vk::BufferView&() const {
+  return object_->operator const vk::BufferView&();
 }
 
 } // namespace logi

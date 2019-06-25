@@ -35,7 +35,7 @@ void DebugReportCallbackEXT::destroy() const {
   object_->destroy();
 }
 
-DebugReportCallbackEXT::operator vk::DebugReportCallbackEXT() const {
+DebugReportCallbackEXT::operator const vk::DebugReportCallbackEXT&() const {
   return *object_;
 }
 

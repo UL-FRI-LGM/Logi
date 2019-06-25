@@ -124,11 +124,12 @@ void SwapchainKHRImpl::destroy() const {
   logicalDevice_.destroySwapchainKHR(id());
 }
 
-SwapchainKHRImpl::operator vk::SwapchainKHR() const {
+SwapchainKHRImpl::operator const vk::SwapchainKHR&() const {
   return vkSwapchainKHR_;
 }
 
 void SwapchainKHRImpl::free() {
+  VulkanObjectComposite<ImageImpl>::destroyAllObjects();
   auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.destroy(vkSwapchainKHR_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();

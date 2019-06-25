@@ -45,7 +45,7 @@ class SamplerYcbcrConversion : public Handle<SamplerYcbcrConversionImpl> {
 
   void destroy() const;
 
-  operator vk::SamplerYcbcrConversion() const;
+  operator const vk::SamplerYcbcrConversion&() const;
 
   // endregion
 };

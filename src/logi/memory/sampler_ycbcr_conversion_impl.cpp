@@ -50,7 +50,7 @@ void SamplerYcbcrConversionImpl::destroy() const {
   logicalDevice_.destroySamplerYcbcrConversion(id());
 }
 
-SamplerYcbcrConversionImpl::operator vk::SamplerYcbcrConversion() const {
+SamplerYcbcrConversionImpl::operator const vk::SamplerYcbcrConversion&() const {
   return vkSamplerYcbcrConversion_;
 }
 

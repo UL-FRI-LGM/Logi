@@ -56,7 +56,7 @@ class DeviceMemoryImpl : public VulkanObject<DeviceMemoryImpl> {
 
   void destroy() const;
 
-  operator vk::DeviceMemory() const;
+  operator const vk::DeviceMemory&() const;
 
  protected:
   void free() override;

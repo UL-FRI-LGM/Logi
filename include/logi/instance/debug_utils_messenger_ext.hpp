@@ -37,7 +37,7 @@ class DebugUtilsMessengerEXT : public Handle<DebugUtilsMessengerEXTImpl> {
 
   void destroy() const;
 
-  operator vk::DebugUtilsMessengerEXT() const;
+  operator const vk::DebugUtilsMessengerEXT&() const;
 };
 
 } // namespace logi

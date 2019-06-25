@@ -48,7 +48,7 @@ void SemaphoreImpl::destroy() const {
   logicalDevice_.destroySemaphore(id());
 }
 
-SemaphoreImpl::operator vk::Semaphore() const {
+SemaphoreImpl::operator const vk::Semaphore&() const {
   return vkSemaphore_;
 }
 

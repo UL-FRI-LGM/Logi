@@ -3,6 +3,7 @@
 
 #define GLFW_INCLUDE_VULKAN
 #include <base/GLFWManager.h>
+#include <fstream>
 #include <iostream>
 #include "logi/logi.hpp"
 
@@ -51,12 +52,13 @@ class ExampleBase {
 
   void drawFrame();
 
-  /*
   virtual void initialize() = 0;
 
-  virtual void draw() = 0;*/
+  virtual void draw() = 0;
 
   void mainLoop();
+
+  logi::ShaderModule createShaderModule(const std::string& shaderPath);
 
   virtual ~ExampleBase();
 
@@ -70,8 +72,11 @@ class ExampleBase {
   logi::QueueFamily presentFamily_;
   logi::Queue graphicsQueue_;
   logi::Queue presentQueue_;
+
+  // Swapchain data.
   logi::SwapchainKHR swapchain_;
   std::vector<logi::Image> swapchainImages_;
+  std::vector<logi::ImageView> swapchainImageViews_;
   vk::Extent2D swapchainImageExtent_;
   vk::Format swapchainImageFormat_;
 

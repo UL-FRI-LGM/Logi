@@ -56,7 +56,7 @@ class ObjectTableNVXImpl : public VulkanObject<ObjectTableNVXImpl> {
 
   void destroy() const;
 
-  operator vk::ObjectTableNVX() const;
+  operator const vk::ObjectTableNVX&() const;
 
  protected:
   void free() override;

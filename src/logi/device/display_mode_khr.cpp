@@ -50,8 +50,8 @@ const vk::DispatchLoaderDynamic& DisplayModeKHR::getDispatcher() const {
   return object_->getDispatcher();
 }
 
-DisplayModeKHR::operator vk::DisplayModeKHR() const {
-  return object_->operator vk::DisplayModeKHR();
+DisplayModeKHR::operator const vk::DisplayModeKHR&() const {
+  return object_->operator const vk::DisplayModeKHR&();
 }
 
 // endregion

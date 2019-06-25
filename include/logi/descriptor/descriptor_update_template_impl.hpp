@@ -46,7 +46,7 @@ class DescriptorUpdateTemplateImpl : public VulkanObject<DescriptorUpdateTemplat
 
   void destroy() const;
 
-  operator vk::DescriptorUpdateTemplate() const;
+  operator const vk::DescriptorUpdateTemplate&() const;
 
  protected:
   void free() override;

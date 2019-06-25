@@ -57,7 +57,7 @@ class ObjectTableNVX : public Handle<ObjectTableNVXImpl> {
 
   void destroy() const;
 
-  operator vk::ObjectTableNVX() const;
+  operator const vk::ObjectTableNVX&() const;
 
   // endregion
 };

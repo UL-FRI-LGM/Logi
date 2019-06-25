@@ -54,7 +54,7 @@ const vk::DispatchLoaderDynamic& DisplayModeKHRImpl::getDispatcher() const {
   return display_.getDispatcher();
 }
 
-DisplayModeKHRImpl::operator vk::DisplayModeKHR() const {
+DisplayModeKHRImpl::operator const vk::DisplayModeKHR&() const {
   return vkDisplayModeKHR_;
 }
 

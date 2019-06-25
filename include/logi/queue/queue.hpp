@@ -66,7 +66,7 @@ class Queue : public Handle<QueueImpl> {
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
-  operator vk::Queue() const;
+  operator const vk::Queue&() const;
 
   void destroy() const;
 

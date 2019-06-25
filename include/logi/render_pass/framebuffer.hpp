@@ -45,7 +45,7 @@ class Framebuffer : public Handle<FramebufferImpl> {
 
   void destroy() const;
 
-  operator vk::Framebuffer() const;
+  operator const vk::Framebuffer&() const;
 
   // endregion
 };

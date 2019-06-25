@@ -121,7 +121,7 @@ void FenceImpl::destroy() const {
   logicalDevice_.destroyFence(id());
 }
 
-FenceImpl::operator vk::Fence() const {
+FenceImpl::operator const vk::Fence&() const {
   return vkFence_;
 }
 

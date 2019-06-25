@@ -80,7 +80,7 @@ class Fence : public Handle<FenceImpl> {
 
   void destroy() const;
 
-  operator vk::Fence() const;
+  operator const vk::Fence&() const;
 
   // endregion
 };

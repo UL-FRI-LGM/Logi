@@ -268,7 +268,7 @@ class PhysicalDeviceImpl : public VulkanObject<PhysicalDeviceImpl>, public Vulka
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
-  operator vk::PhysicalDevice() const;
+  operator const vk::PhysicalDevice&() const;
 
  protected:
   /**

@@ -54,7 +54,7 @@ class RenderPassImpl : public VulkanObject<RenderPassImpl> {
 
   void destroy() const;
 
-  operator vk::RenderPass() const;
+  operator const vk::RenderPass&() const;
 
  protected:
   void free() override;

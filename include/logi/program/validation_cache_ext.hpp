@@ -54,7 +54,7 @@ class ValidationCacheEXT : public Handle<ValidationCacheEXTImpl> {
 
   void destroy() const;
 
-  operator vk::ValidationCacheEXT() const;
+  operator const vk::ValidationCacheEXT&() const;
 
   // endregion
 };

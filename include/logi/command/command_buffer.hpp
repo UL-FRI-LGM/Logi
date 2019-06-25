@@ -301,7 +301,7 @@ class CommandBuffer : public Handle<CommandBufferImpl> {
 
   void destroy() const;
 
-  operator vk::CommandBuffer() const;
+  operator const vk::CommandBuffer&() const;
 
   // endregion
 };

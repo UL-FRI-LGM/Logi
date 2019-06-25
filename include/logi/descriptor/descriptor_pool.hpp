@@ -59,7 +59,7 @@ class DescriptorPool : public Handle<DescriptorPoolImpl> {
 
   void destroy() const;
 
-  operator vk::DescriptorPool() const;
+  operator const vk::DescriptorPool&() const;
 
   // endregion
 };

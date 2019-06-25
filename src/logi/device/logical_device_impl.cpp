@@ -545,7 +545,7 @@ void LogicalDeviceImpl::destroy() const {
   physicalDevice_.destroyLogicalDevice(id());
 }
 
-LogicalDeviceImpl::operator const vk::Device() const {
+LogicalDeviceImpl::operator const vk::Device&() const {
   return vkDevice_;
 }
 

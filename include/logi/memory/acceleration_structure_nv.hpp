@@ -62,7 +62,7 @@ class AccelerationStructureNV : public Handle<AccelerationStructureNVImpl> {
 
   void destroy() const;
 
-  operator vk::AccelerationStructureNV() const;
+  operator const vk::AccelerationStructureNV&() const;
 
   // endregion
 };

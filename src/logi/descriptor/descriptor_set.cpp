@@ -58,8 +58,8 @@ void DescriptorSet::destroy() const {
   object_->destroy();
 }
 
-DescriptorSet::operator vk::DescriptorSet() const {
-  return object_->operator vk::DescriptorSet();
+DescriptorSet::operator const vk::DescriptorSet&() const {
+  return object_->operator const vk::DescriptorSet&();
 }
 
 // endregion

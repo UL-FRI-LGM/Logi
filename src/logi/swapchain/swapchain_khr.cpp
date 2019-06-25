@@ -94,8 +94,8 @@ void SwapchainKHR::destroy() const {
   object_->destroy();
 }
 
-SwapchainKHR::operator vk::SwapchainKHR() const {
-  return object_->operator vk::SwapchainKHR();
+SwapchainKHR::operator const vk::SwapchainKHR&() const {
+  return object_->operator const vk::SwapchainKHR&();
 }
 
 // endregion

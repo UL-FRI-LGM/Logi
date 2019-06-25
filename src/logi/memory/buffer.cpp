@@ -86,8 +86,8 @@ void Buffer::destroy() const {
   object_->destroy();
 }
 
-Buffer::operator vk::Buffer() const {
-  return object_->operator vk::Buffer();
+Buffer::operator const vk::Buffer&() const {
+  return object_->operator const vk::Buffer&();
 }
 
 }

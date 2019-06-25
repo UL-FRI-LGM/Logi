@@ -84,8 +84,8 @@ const vk::DispatchLoaderDynamic& Queue::getDispatcher() const {
   return object_->getDispatcher();
 }
 
-Queue::operator vk::Queue() const {
-  return object_->operator vk::Queue();
+Queue::operator const vk::Queue&() const {
+  return object_->operator const vk::Queue&();
 }
 
 void Queue::destroy() const {

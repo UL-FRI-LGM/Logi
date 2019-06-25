@@ -53,7 +53,7 @@ class DescriptorSetImpl : public VulkanObject<DescriptorSetImpl> {
 
   void destroy() const;
 
-  operator vk::DescriptorSet() const;
+  operator const vk::DescriptorSet&() const;
 
  protected:
   void free() override;

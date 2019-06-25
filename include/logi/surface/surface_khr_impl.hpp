@@ -96,7 +96,7 @@ class SurfaceKHRImpl : public VulkanObject<SurfaceKHRImpl> {
 
   void destroy() const;
 
-  operator vk::SurfaceKHR() const;
+  operator const vk::SurfaceKHR&() const;
 
  protected:
   void free() override;

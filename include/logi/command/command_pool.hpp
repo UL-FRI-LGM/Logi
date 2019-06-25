@@ -72,7 +72,7 @@ class CommandPool : public Handle<CommandPoolImpl> {
 
   void destroy() const;
 
-  operator vk::CommandPool() const;
+  operator const vk::CommandPool&() const;
 
   // endregion
 };

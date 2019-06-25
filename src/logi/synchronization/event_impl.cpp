@@ -63,7 +63,7 @@ void EventImpl::destroy() const {
   logicalDevice_.destroyEvent(id());
 }
 
-EventImpl::operator vk::Event() const {
+EventImpl::operator const vk::Event&() const {
   return vkEvent_;
 }
 

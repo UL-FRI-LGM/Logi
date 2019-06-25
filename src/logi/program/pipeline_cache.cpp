@@ -52,8 +52,8 @@ void PipelineCache::destroy() const {
   object_->destroy();
 }
 
-PipelineCache::operator vk::PipelineCache() const {
-  return object_->operator vk::PipelineCache();
+PipelineCache::operator const vk::PipelineCache&() const {
+  return object_->operator const vk::PipelineCache&();
 }
 
 } // namespace logi

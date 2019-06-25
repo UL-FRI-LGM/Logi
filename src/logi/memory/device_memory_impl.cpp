@@ -70,7 +70,7 @@ void DeviceMemoryImpl::destroy() const {
   logicalDevice_.freeMemory(id());
 }
 
-DeviceMemoryImpl::operator vk::DeviceMemory() const {
+DeviceMemoryImpl::operator const vk::DeviceMemory&() const {
   return vkDeviceMemory_;
 }
 

@@ -58,8 +58,8 @@ void ValidationCacheEXT::destroy() const {
   object_->destroy();
 }
 
-ValidationCacheEXT::operator vk::ValidationCacheEXT() const {
-  return object_->operator vk::ValidationCacheEXT();
+ValidationCacheEXT::operator const vk::ValidationCacheEXT&() const {
+  return object_->operator const vk::ValidationCacheEXT&();
 }
 
 // endregion

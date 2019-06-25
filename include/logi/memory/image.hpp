@@ -28,6 +28,7 @@ namespace logi {
 class VulkanInstance;
 class PhysicalDevice;
 class LogicalDevice;
+class ImageView;
 class MemoryAllocator;
 
 class Image : public Handle<ImageImpl> {
@@ -68,7 +69,9 @@ class Image : public Handle<ImageImpl> {
 
   // region Logi Declarations
 
-  ImageView createImageView(const vk::ImageViewCreateInfo& createInfo,
+  ImageView createImageView(const vk::ImageViewCreateFlags& flags, vk::ImageViewType viewType, vk::Format format,
+                            const vk::ComponentMapping& components, const vk::ImageSubresourceRange& subresourceRange,
+                            const ConstVkNextProxy<vk::ImageViewCreateInfo>& next = {},
                             const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
   void destroyImageView(const ImageView& image) const;
@@ -83,7 +86,7 @@ class Image : public Handle<ImageImpl> {
 
   void destroy() const;
 
-  operator vk::Image() const;
+  operator const vk::Image&() const;
 
   // endregion
 };

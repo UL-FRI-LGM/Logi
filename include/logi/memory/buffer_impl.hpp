@@ -75,7 +75,7 @@ class BufferImpl : public VulkanObject<BufferImpl>, public VulkanObjectComposite
 
   void destroy() const;
 
-  operator vk::Buffer() const;
+  operator const vk::Buffer&() const;
 
  protected:
   void free() override;

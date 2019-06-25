@@ -282,7 +282,7 @@ const vk::DispatchLoaderDynamic& PhysicalDeviceImpl::getDispatcher() const {
   return instance_.getDispatcher();
 }
 
-PhysicalDeviceImpl::operator vk::PhysicalDevice() const {
+PhysicalDeviceImpl::operator const vk::PhysicalDevice&() const {
   return vkPhysicalDevice_;
 }
 

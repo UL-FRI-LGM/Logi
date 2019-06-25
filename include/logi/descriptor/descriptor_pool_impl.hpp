@@ -60,7 +60,7 @@ class DescriptorPoolImpl : public VulkanObject<DescriptorPoolImpl>, public Vulka
 
   void destroy() const;
 
-  operator vk::DescriptorPool() const;
+  operator const vk::DescriptorPool&() const;
 
  protected:
   void free() override;

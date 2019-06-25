@@ -61,7 +61,7 @@ void RenderPassImpl::destroy() const {
   logicalDevice_.destroyRenderPass(id());
 }
 
-RenderPassImpl::operator vk::RenderPass() const {
+RenderPassImpl::operator const vk::RenderPass&() const {
   return vkRenderPass_;
 }
 

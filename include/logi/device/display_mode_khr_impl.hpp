@@ -49,7 +49,7 @@ class DisplayModeKHRImpl : public VulkanObject<DisplayModeKHRImpl> {
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
-  operator vk::DisplayModeKHR() const;
+  operator const vk::DisplayModeKHR&() const;
 
  protected:
   void free() override;

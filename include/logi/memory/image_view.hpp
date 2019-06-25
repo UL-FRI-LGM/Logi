@@ -57,7 +57,7 @@ class ImageView : public Handle<ImageViewImpl> {
 
   void destroy() const;
 
-  operator vk::ImageView() const;
+  operator const vk::ImageView&() const;
 
   // endregion
 };

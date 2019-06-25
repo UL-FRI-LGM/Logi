@@ -45,7 +45,7 @@ class FramebufferImpl : public VulkanObject<FramebufferImpl> {
 
   void destroy() const;
 
-  operator vk::Framebuffer() const;
+  operator const vk::Framebuffer&() const;
 
  protected:
   void free() override;

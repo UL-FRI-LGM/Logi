@@ -38,7 +38,7 @@ class DebugUtilsMessengerEXTImpl : public VulkanObject<DebugUtilsMessengerEXTImp
 
   void destroy() const;
 
-  operator vk::DebugUtilsMessengerEXT() const;
+  operator const vk::DebugUtilsMessengerEXT&() const;
 
  protected:
   void free() override;

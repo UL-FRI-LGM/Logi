@@ -45,7 +45,7 @@ class SemaphoreImpl : public VulkanObject<SemaphoreImpl> {
 
   void destroy() const;
 
-  operator vk::Semaphore() const;
+  operator const vk::Semaphore&() const;
 
  protected:
   void free() override;

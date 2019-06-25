@@ -121,12 +121,15 @@ void BufferImpl::destroy() const {
   logicalDevice_.destroyBuffer(id());
 }
 
-BufferImpl::operator vk::Buffer() const {
+BufferImpl::operator const vk::Buffer&() const {
   return vkBuffer_;
 }
 
 void BufferImpl::free() {
   VulkanObjectComposite<BufferViewImpl>::destroyAllObjects();
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  vkDevice.destroy(vkBuffer_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+
   VulkanObject::free();
 }
 

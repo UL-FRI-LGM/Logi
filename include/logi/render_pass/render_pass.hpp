@@ -51,7 +51,7 @@ class RenderPass : public Handle<RenderPassImpl> {
 
   void destroy() const;
 
-  operator vk::RenderPass() const;
+  operator const vk::RenderPass&() const;
 
   // endregion
 };

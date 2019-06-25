@@ -55,7 +55,7 @@ class QueryPool : public Handle<QueryPoolImpl> {
 
   void destroy() const;
 
-  operator vk::QueryPool() const;
+  operator const vk::QueryPool&() const;
 
   // endregion
 };

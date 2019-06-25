@@ -45,7 +45,7 @@ const vk::DispatchLoaderDynamic& DisplayKHRImpl::getDispatcher() const {
   return physicalDevice_.getDispatcher();
 }
 
-DisplayKHRImpl::operator vk::DisplayKHR() const {
+DisplayKHRImpl::operator const vk::DisplayKHR&() const {
   return vkDisplayKHR_;
 }
 

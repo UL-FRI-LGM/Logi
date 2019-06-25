@@ -111,7 +111,7 @@ void CommandPoolImpl::destroy() const {
   queueFamily_.destroyCommandPool(id());
 }
 
-CommandPoolImpl::operator vk::CommandPool() const {
+CommandPoolImpl::operator const vk::CommandPool&() const {
   return vkCommandPool_;
 }
 

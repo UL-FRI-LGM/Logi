@@ -89,8 +89,8 @@ void CommandPool::destroy() const {
   object_->destroy();
 }
 
-CommandPool::operator vk::CommandPool() const {
-  return object_->operator vk::CommandPool();
+CommandPool::operator const vk::CommandPool&() const {
+  return object_->operator const vk::CommandPool&();
 }
 
 // endregion

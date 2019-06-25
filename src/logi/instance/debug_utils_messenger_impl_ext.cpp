@@ -42,7 +42,7 @@ void DebugUtilsMessengerEXTImpl::destroy() const {
   instance_.destroyDebugUtilsMessengerEXT(*this);
 }
 
-DebugUtilsMessengerEXTImpl::operator vk::DebugUtilsMessengerEXT() const {
+DebugUtilsMessengerEXTImpl::operator const vk::DebugUtilsMessengerEXT&() const {
   return vkMessenger_;
 }
 

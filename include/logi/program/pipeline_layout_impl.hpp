@@ -45,7 +45,7 @@ class PipelineLayoutImpl : public VulkanObject<PipelineLayoutImpl> {
 
   void destroy() const;
 
-  operator vk::PipelineLayout() const;
+  operator const vk::PipelineLayout&() const;
 
  protected:
   void free() override;

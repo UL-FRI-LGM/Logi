@@ -39,7 +39,7 @@ class SurfaceKHR : public Handle<SurfaceKHRImpl> {
 
   void destroy() const;
 
-  operator vk::SurfaceKHR() const;
+  operator const vk::SurfaceKHR&() const;
 
   // endregion
 };

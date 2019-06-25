@@ -54,8 +54,8 @@ void ImageView::destroy() const {
   object_->destroy();
 }
 
-ImageView::operator vk::ImageView() const {
-  return object_->operator vk::ImageView();
+ImageView::operator const vk::ImageView&() const {
+  return object_->operator const vk::ImageView&();
 }
 
 }

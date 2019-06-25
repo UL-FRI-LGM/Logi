@@ -42,7 +42,7 @@ void DebugReportCallbackEXTImpl::destroy() const {
   instance_.destroyDebugReportCallbackEXT(*this);
 }
 
-DebugReportCallbackEXTImpl::operator vk::DebugReportCallbackEXT() const {
+DebugReportCallbackEXTImpl::operator const vk::DebugReportCallbackEXT&() const {
   return vkCallback_;
 }
 

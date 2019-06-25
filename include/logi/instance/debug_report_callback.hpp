@@ -37,7 +37,7 @@ class DebugReportCallbackEXT : public Handle<DebugReportCallbackEXTImpl> {
 
   void destroy() const;
 
-  operator vk::DebugReportCallbackEXT() const;
+  operator const vk::DebugReportCallbackEXT&() const;
 };
 
 } // namespace logi

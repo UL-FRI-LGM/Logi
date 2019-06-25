@@ -45,7 +45,7 @@ class DescriptorUpdateTemplate : public Handle<DescriptorUpdateTemplateImpl> {
 
   void destroy() const;
 
-  operator vk::DescriptorUpdateTemplate() const;
+  operator const vk::DescriptorUpdateTemplate&() const;
 
   // endregion
 };
