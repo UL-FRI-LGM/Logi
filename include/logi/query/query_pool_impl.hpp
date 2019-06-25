@@ -21,6 +21,7 @@
 
 #include <vulkan/vulkan.hpp>
 #include "logi/base/vulkan_object.hpp"
+#include "logi/device/logical_device_impl.hpp"
 
 namespace logi {
 

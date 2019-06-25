@@ -25,11 +25,11 @@
 
 namespace logi {
 
-Queue QueueFamily::getQueue(uint32_t queueIndex) {
+Queue QueueFamily::getQueue(uint32_t queueIndex) const {
   return object_->getQueue(queueIndex);
 }
 Queue QueueFamily::getQueue2(uint32_t queueIndex, const vk::DeviceQueueCreateFlags& flags,
-                             const ConstVkNextProxy<vk::DeviceQueueInfo2>& next) {
+                             const ConstVkNextProxy<vk::DeviceQueueInfo2>& next) const {
   return object_->getQueue2(queueIndex, flags, next);
 }
 

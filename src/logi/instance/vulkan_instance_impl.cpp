@@ -24,8 +24,8 @@
 #include "logi/instance/debug_report_callback_impl.hpp"
 #include "logi/instance/debug_utils_messenger_ext.hpp"
 #include "logi/instance/debug_utils_messenger_ext_impl.hpp"
-#include "logi/surface/surface.hpp"
-#include "logi/surface/surface_impl.hpp"
+#include "logi/surface/surface_khr.hpp"
+#include "logi/surface/surface_khr_impl.hpp"
 
 namespace logi {
 

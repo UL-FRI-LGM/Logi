@@ -262,11 +262,11 @@ vk::Bool32 PhysicalDevice::getXlibPresentationSupportKHR(uint32_t queueFamilyInd
 #endif
 
 LogicalDevice PhysicalDevice::createLogicalDevice(const vk::DeviceCreateInfo& createInfo,
-                                                  const std::optional<vk::AllocationCallbacks>& allocator) {
+                                                  const std::optional<vk::AllocationCallbacks>& allocator) const {
   return LogicalDevice(object_->createLogicalDevice(createInfo, allocator));
 }
 
-void PhysicalDevice::destroyLogicalDevice(const LogicalDevice& device) {
+void PhysicalDevice::destroyLogicalDevice(const LogicalDevice& device) const {
   object_->destroyLogicalDevice(device.id());
 }
 

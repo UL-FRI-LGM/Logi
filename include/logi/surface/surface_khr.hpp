@@ -16,27 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "logi/surface/surface.hpp"
-#include "logi/instance/vulkan_instance.hpp"
-#include "logi/instance/vulkan_instance_impl.hpp"
-#include "logi/surface/surface_impl.hpp"
+#ifndef LOGI_SURFACE_SURFACE_KHR_HPP
+#define LOGI_SURFACE_SURFACE_KHR_HPP
+
+#include <vulkan/vulkan.hpp>
+#include "logi/base/handle.hpp"
 
 namespace logi {
 
-VulkanInstance SurfaceKHR::getInstance() const {
-  return VulkanInstance(object_->getInstance().shared_from_this());
-}
+class VulkanInstance;
+class SurfaceKHRImpl;
 
-const vk::DispatchLoaderDynamic& SurfaceKHR::getDispatcher() const {
-  return object_->getDispatcher();
-}
+class SurfaceKHR : public Handle<SurfaceKHRImpl> {
+ public:
+  using Handle::Handle;
 
-void SurfaceKHR::destroy() const {
-  object_->destroy();
-}
+  // region Logi Declarations
 
-SurfaceKHR::operator vk::SurfaceKHR() const {
-  return object_->operator vk::SurfaceKHR();
-}
+  VulkanInstance getInstance() const;
+
+  const vk::DispatchLoaderDynamic& getDispatcher() const;
+
+  void destroy() const;
+
+  operator vk::SurfaceKHR() const;
+
+  // endregion
+};
 
 } // namespace logi
+
+#endif // LOGI_SURFACE_SURFACE_KHR_HPP

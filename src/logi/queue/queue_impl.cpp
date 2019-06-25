@@ -87,7 +87,7 @@ void QueueImpl::free() {
   vkQueue_ = nullptr;
   VulkanObject::free();
 }
-void QueueImpl::destroy() {
+void QueueImpl::destroy() const {
   queueFamily_.destroyQueue(id());
 }
 

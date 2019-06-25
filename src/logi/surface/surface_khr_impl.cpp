@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "logi/surface/surface_impl.hpp"
+#include "logi/surface/surface_khr_impl.hpp"
 #include "logi/instance/vulkan_instance_impl.hpp"
 
 namespace logi {

@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGI_SURFACE_SURFACE_IMPL_HPP
-#define LOGI_SURFACE_SURFACE_IMPL_HPP
+#ifndef LOGI_SURFACE_SURFACE_KHR_IMPL_HPP
+#define LOGI_SURFACE_SURFACE_KHR_IMPL_HPP
 
 #include "logi/base/vulkan_object.hpp"
 
@@ -111,4 +111,4 @@ class SurfaceKHRImpl : public VulkanObject<SurfaceKHRImpl> {
 
 } // namespace logi
 
-#endif // LOGI_SURFACE_SURFACE_IMPL_HPP
+#endif // LOGI_SURFACE_SURFACE_KHR_IMPL_HPP

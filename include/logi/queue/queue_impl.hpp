@@ -67,7 +67,7 @@ class QueueImpl : public VulkanObject<QueueImpl> {
 
   operator vk::Queue() const;
 
-  void destroy();
+  void destroy() const;
 
  protected:
   void free() override;
