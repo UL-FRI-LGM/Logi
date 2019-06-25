@@ -24,7 +24,7 @@ namespace logi {
 ObjectTableNVXImpl::ObjectTableNVXImpl(LogicalDeviceImpl& logicalDevice, const vk::ObjectTableCreateInfoNVX& createInfo,
                                        const std::optional<vk::AllocationCallbacks>& allocator)
   : logicalDevice_(logicalDevice), allocator_(allocator) {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkObjectTableNVX_ =
     vkDevice.createObjectTableNVX(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
@@ -34,14 +34,14 @@ ObjectTableNVXImpl::ObjectTableNVXImpl(LogicalDeviceImpl& logicalDevice, const v
 vk::ResultValueType<void>::type
   ObjectTableNVXImpl::registerObjectsNVX(vk::ArrayProxy<const vk::ObjectTableEntryNVX* const> objectTableEntries,
                                          vk::ArrayProxy<const uint32_t> objectIndices) const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   return vkDevice.registerObjectsNVX(vkObjectTableNVX_, objectTableEntries, objectIndices, getDispatcher());
 }
 
 vk::ResultValueType<void>::type
   ObjectTableNVXImpl::unregisterObjectsNVX(vk::ArrayProxy<const vk::ObjectEntryTypeNVX> objectEntryTypes,
                                            vk::ArrayProxy<const uint32_t> objectIndices) const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   return vkDevice.unregisterObjectsNVX(vkObjectTableNVX_, objectEntryTypes, objectIndices, getDispatcher());
 }
 
@@ -74,7 +74,7 @@ ObjectTableNVXImpl::operator vk::ObjectTableNVX() const {
 }
 
 void ObjectTableNVXImpl::free() {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.destroy(vkObjectTableNVX_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }

@@ -24,7 +24,7 @@ namespace logi {
 SamplerImpl::SamplerImpl(LogicalDeviceImpl& logicalDevice, const vk::SamplerCreateInfo& createInfo,
                          const std::optional<vk::AllocationCallbacks>& allocator)
   : logicalDevice_(logicalDevice), allocator_(allocator) {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkSampler_ = vkDevice.createSampler(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
@@ -53,7 +53,7 @@ SamplerImpl::operator vk::Sampler() const {
 }
 
 void SamplerImpl::free() {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.destroy(vkSampler_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }

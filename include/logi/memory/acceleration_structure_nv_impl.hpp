@@ -78,7 +78,7 @@ class AccelerationStructureNVImpl : public VulkanObject<AccelerationStructureNVI
 
 template <typename T>
 vk::ResultValueType<void>::type AccelerationStructureNVImpl::getHandleNV(vk::ArrayProxy<T> data) const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   return vkDevice.getAccelerationStructureHandleNV(vkAccelerationStructureNV_, data, getDispatcher());
 }
 

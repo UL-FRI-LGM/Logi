@@ -24,22 +24,22 @@ namespace logi {
 EventImpl::EventImpl(LogicalDeviceImpl& logicalDevice, const vk::EventCreateInfo& createInfo,
                      const std::optional<vk::AllocationCallbacks>& allocator)
   : logicalDevice_(logicalDevice), allocator_(allocator) {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkEvent_ = vkDevice.createEvent(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
 bool EventImpl::getStatus() const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   return vkDevice.getEventStatus(vkEvent_, getDispatcher()) == vk::Result::eSuccess;
 }
 
 vk::ResultValueType<void>::type EventImpl::reset() const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   return vkDevice.resetEvent(vkEvent_, getDispatcher());
 }
 
 vk::ResultValueType<void>::type EventImpl::set() const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   return vkDevice.setEvent(vkEvent_, getDispatcher());
 }
 
@@ -68,7 +68,7 @@ EventImpl::operator vk::Event() const {
 }
 
 void EventImpl::free() {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.destroy(vkEvent_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }

@@ -29,7 +29,7 @@ DescriptorSetImpl::DescriptorSetImpl(DescriptorPoolImpl& descriptorPool, const v
 
 void DescriptorSetImpl::updateWithTemplate(vk::DescriptorUpdateTemplate descriptorUpdateTemplate,
                                            const void* pData) const {
-  vk::Device vkDevice = getLogicalDevice();
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
   vkDevice.updateDescriptorSetWithTemplate(vkDescriptorSet_, descriptorUpdateTemplate, pData, getDispatcher());
 }
 

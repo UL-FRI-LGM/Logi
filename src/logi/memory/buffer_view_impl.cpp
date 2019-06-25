@@ -28,7 +28,7 @@ namespace logi {
 BufferViewImpl::BufferViewImpl(BufferImpl& buffer, vk::BufferViewCreateInfo createInfo,
                                const std::optional<vk::AllocationCallbacks>& allocator)
   : buffer_(buffer), allocator_(allocator) {
-  vk::Device vkDevice = getLogicalDevice();
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
   createInfo.buffer = buffer_;
   vkBufferView_ = vkDevice.createBufferView(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }

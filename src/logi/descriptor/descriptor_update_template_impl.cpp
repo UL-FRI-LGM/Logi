@@ -25,7 +25,7 @@ DescriptorUpdateTemplateImpl::DescriptorUpdateTemplateImpl(LogicalDeviceImpl& lo
                                                            const vk::DescriptorUpdateTemplateCreateInfo& createInfo,
                                                            const std::optional<vk::AllocationCallbacks>& allocator)
   : logicalDevice_(logicalDevice), allocator_(allocator) {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDescriptorUpdateTemplate_ =
     vkDevice.createDescriptorUpdateTemplate(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
@@ -57,7 +57,7 @@ DescriptorUpdateTemplateImpl::operator vk::DescriptorUpdateTemplate() const {
 }
 
 void DescriptorUpdateTemplateImpl::free() {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.destroy(vkDescriptorUpdateTemplate_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }

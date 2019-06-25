@@ -25,7 +25,7 @@ SamplerYcbcrConversionImpl::SamplerYcbcrConversionImpl(LogicalDeviceImpl& logica
                                                        const vk::SamplerYcbcrConversionCreateInfo& createInfo,
                                                        const std::optional<vk::AllocationCallbacks>& allocator)
   : logicalDevice_(logicalDevice), allocator_(allocator) {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkSamplerYcbcrConversion_ =
     vkDevice.createSamplerYcbcrConversionKHR(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
@@ -55,7 +55,7 @@ SamplerYcbcrConversionImpl::operator vk::SamplerYcbcrConversion() const {
 }
 
 void SamplerYcbcrConversionImpl::free() {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.destroy(vkSamplerYcbcrConversion_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }

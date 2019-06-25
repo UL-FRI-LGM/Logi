@@ -24,7 +24,7 @@ namespace logi {
 FramebufferImpl::FramebufferImpl(LogicalDeviceImpl& logicalDevice, const vk::FramebufferCreateInfo& createInfo,
                                  const std::optional<vk::AllocationCallbacks>& allocator)
   : logicalDevice_(logicalDevice), allocator_(allocator) {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkFramebuffer_ = vkDevice.createFramebuffer(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
@@ -53,7 +53,7 @@ FramebufferImpl::operator vk::Framebuffer() const {
 }
 
 void FramebufferImpl::free() {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.destroy(vkFramebuffer_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }

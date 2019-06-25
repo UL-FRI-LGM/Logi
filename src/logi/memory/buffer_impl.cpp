@@ -28,12 +28,12 @@ namespace logi {
 BufferImpl::BufferImpl(LogicalDeviceImpl& logicalDevice, const vk::BufferCreateInfo& createInfo,
                        const std::optional<vk::AllocationCallbacks>& allocator)
   : logicalDevice_(logicalDevice), allocator_(allocator) {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkBuffer_ = vkDevice.createBuffer(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
 vk::MemoryRequirements BufferImpl::getMemoryRequirements() const {
-  vk::Device vkDevice = getLogicalDevice();
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
   return vkDevice.getBufferMemoryRequirements(vkBuffer_, getDispatcher());
 }
 
