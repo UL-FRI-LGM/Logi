@@ -28,7 +28,7 @@ namespace logi {
 ImageImpl::ImageImpl(LogicalDeviceImpl& logicalDevice, const vk::ImageCreateInfo& createInfo,
                      const std::optional<vk::AllocationCallbacks>& allocator)
   : owner_(std::ref(logicalDevice)), allocator_(allocator) {
-  vk::Device vkDevice = getLogicalDevice();
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
   vkDevice.createImage(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
@@ -36,23 +36,23 @@ ImageImpl::ImageImpl(SwapchainKHRImpl& swapchainKHR, const vk::Image& image)
   : owner_(std::ref(swapchainKHR)), vkImage_(image), allocator_(std::nullopt) {}
 
 vk::MemoryRequirements ImageImpl::getMemoryRequirements() const {
-  vk::Device vkDevice = getLogicalDevice();
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
   return vkDevice.getImageMemoryRequirements(vkImage_, getDispatcher());
 }
 
 std::vector<vk::SparseImageMemoryRequirements> ImageImpl::getSparseMemoryRequirements() const {
-  vk::Device vkDevice = getLogicalDevice();
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
   return vkDevice.getImageSparseMemoryRequirements(vkImage_, getDispatcher());
 }
 
 vk::SubresourceLayout ImageImpl::getImageSubresourceLayout(const vk::ImageSubresource& subresource) const {
-  vk::Device vkDevice = getLogicalDevice();
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
   return vkDevice.getImageSubresourceLayout(vkImage_, subresource, getDispatcher());
 }
 
 vk::ResultValueType<vk::ImageDrmFormatModifierPropertiesEXT>::type
   ImageImpl::getDrmFormatModifierPropertiesEXT() const {
-  vk::Device vkDevice = getLogicalDevice();
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
   return vkDevice.getImageDrmFormatModifierPropertiesEXT(vkImage_, getDispatcher());
 }
 
@@ -94,13 +94,13 @@ std::vector<vk::SparseImageMemoryRequirements2KHR> ImageImpl::getImageSparseMemo
 
 vk::ResultValueType<void>::type ImageImpl::bindMemory(const vk::DeviceMemory& memory,
                                                       vk::DeviceSize memoryOffset) const {
-  vk::Device vkDevice = getLogicalDevice();
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
   return vkDevice.bindImageMemory(vkImage_, memory, memoryOffset, getDispatcher());
 }
 
 vk::ResultValueType<void>::type ImageImpl::bindMemory2(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset,
                                                        const ConstVkNextProxy<vk::BindImageMemoryInfo>& next) const {
-  vk::Device vkDevice = getLogicalDevice();
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
 
   vk::BindImageMemoryInfo memoryInfo(vkImage_, memory, memoryOffset);
   memoryInfo.pNext = next;
@@ -111,7 +111,7 @@ vk::ResultValueType<void>::type ImageImpl::bindMemory2(const vk::DeviceMemory& m
 vk::ResultValueType<void>::type
   ImageImpl::bindMemory2KHR(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset,
                             const ConstVkNextProxy<vk::BindImageMemoryInfoKHR>& next) const {
-  vk::Device vkDevice = getLogicalDevice();
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
 
   vk::BindImageMemoryInfoKHR memoryInfo(vkImage_, memory, memoryOffset);
   memoryInfo.pNext = next;

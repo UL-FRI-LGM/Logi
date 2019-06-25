@@ -247,9 +247,9 @@ class PhysicalDevice : public Handle<PhysicalDeviceImpl> {
   // region Logi Declarations
 
   LogicalDevice createLogicalDevice(const vk::DeviceCreateInfo& createInfo,
-                                    const std::optional<vk::AllocationCallbacks>& allocator = {});
+                                    const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
-  void destroyLogicalDevice(const LogicalDevice& device);
+  void destroyLogicalDevice(const LogicalDevice& device) const;
 
   VulkanInstance getInstance() const;
 

@@ -25,7 +25,7 @@ IndirectCommandsLayoutNVXImpl::IndirectCommandsLayoutNVXImpl(LogicalDeviceImpl& 
                                                              const vk::IndirectCommandsLayoutCreateInfoNVX& createInfo,
                                                              const std::optional<vk::AllocationCallbacks>& allocator)
   : logicalDevice_(logicalDevice), allocator_(allocator) {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkIndirectCommandsLayoutNVX_ =
     vkDevice.createIndirectCommandsLayoutNVX(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
@@ -57,7 +57,7 @@ IndirectCommandsLayoutNVXImpl::operator vk::IndirectCommandsLayoutNVX() const {
 }
 
 void IndirectCommandsLayoutNVXImpl::free() {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.destroy(vkIndirectCommandsLayoutNVX_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }

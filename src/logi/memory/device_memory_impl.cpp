@@ -24,25 +24,25 @@ namespace logi {
 DeviceMemoryImpl::DeviceMemoryImpl(LogicalDeviceImpl& logicalDevice, const vk::MemoryAllocateInfo& allocateInfo,
                                    const std::optional<vk::AllocationCallbacks>& allocator)
   : logicalDevice_(logicalDevice), allocator_(allocator) {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDeviceMemory_ = vkDevice.allocateMemory(allocateInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
 // region Vulkan Definitions
 
 vk::DeviceSize DeviceMemoryImpl::getCommitment() const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   return vkDevice.getMemoryCommitment(vkDeviceMemory_, getDispatcher());
 }
 
 vk::ResultValueType<void*>::type DeviceMemoryImpl::mapMemory(vk::DeviceSize offset, vk::DeviceSize size,
                                                              const vk::MemoryMapFlags& flags) const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   return vkDevice.mapMemory(vkDeviceMemory_, offset, size, flags, getDispatcher());
 }
 
 void DeviceMemoryImpl::unmapMemory() const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.unmapMemory(vkDeviceMemory_, getDispatcher());
 }
 
@@ -75,7 +75,7 @@ DeviceMemoryImpl::operator vk::DeviceMemory() const {
 }
 
 void DeviceMemoryImpl::free() {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.freeMemory(vkDeviceMemory_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject<DeviceMemoryImpl>::free();
 }

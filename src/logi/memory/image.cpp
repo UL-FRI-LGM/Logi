@@ -60,11 +60,11 @@ std::vector<vk::SparseImageMemoryRequirements2KHR> Image::getImageSparseMemoryRe
 }
 
 ImageView Image::createImageView(const vk::ImageViewCreateInfo& createInfo,
-                                 const std::optional<vk::AllocationCallbacks>& allocator) {
+                                 const std::optional<vk::AllocationCallbacks>& allocator) const {
   return ImageView(object_->createImageView(createInfo, allocator));
 }
 
-void Image::destroyImageView(const ImageView& image) {
+void Image::destroyImageView(const ImageView& image) const {
   object_->destroyImageView(image.id());
 }
 

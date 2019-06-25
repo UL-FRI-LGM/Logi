@@ -69,9 +69,9 @@ class Image : public Handle<ImageImpl> {
   // region Logi Declarations
 
   ImageView createImageView(const vk::ImageViewCreateInfo& createInfo,
-                            const std::optional<vk::AllocationCallbacks>& allocator = {});
+                            const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
-  void destroyImageView(const ImageView& image);
+  void destroyImageView(const ImageView& image) const;
 
   VulkanInstance getInstance() const;
 

@@ -25,7 +25,7 @@ namespace logi {
 SwapchainKHRImpl::SwapchainKHRImpl(LogicalDeviceImpl& logicalDevice, const vk::SwapchainCreateInfoKHR& createInfo,
                                    const std::optional<vk::AllocationCallbacks>& allocator)
   : logicalDevice_(logicalDevice), allocator_(allocator) {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkSwapchainKHR_ =
     vkDevice.createSwapchainKHR(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
@@ -52,7 +52,7 @@ std::vector<std::shared_ptr<ImageImpl>> SwapchainKHRImpl::getImagesKHR() {
 
 vk::ResultValue<uint32_t> SwapchainKHRImpl::acquireNextImageKHR(uint64_t timeout, const vk::Semaphore& semaphore,
                                                                 const vk::Fence& fence) const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   return vkDevice.acquireNextImageKHR(vkSwapchainKHR_, timeout, semaphore, fence, getDispatcher());
 }
 
@@ -60,7 +60,7 @@ vk::ResultValue<uint32_t>
   SwapchainKHRImpl::acquireNextImage2KHR(uint64_t timeout, const vk::Semaphore& semaphore, const vk::Fence& fence,
                                          uint32_t deviceMask,
                                          const ConstVkNextProxy<vk::AcquireNextImageInfoKHR>& next = {}) const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
 
   vk::AcquireNextImageInfoKHR acquireImageInfo(vkSwapchainKHR_, timeout, semaphore, fence, deviceMask);
   acquireImageInfo.pNext = next;
@@ -69,40 +69,40 @@ vk::ResultValue<uint32_t>
 }
 
 vk::ResultValueType<uint64_t>::type SwapchainKHRImpl::getCounterEXT(vk::SurfaceCounterFlagBitsEXT counter) const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   return vkDevice.getSwapchainCounterEXT(vkSwapchainKHR_, counter, getDispatcher());
 }
 
 vk::Result SwapchainKHRImpl::getStatusKHR() const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   return vkDevice.getSwapchainStatusKHR(vkSwapchainKHR_, getDispatcher());
 }
 
 void SwapchainKHRImpl::setLocalDimmingAMD(vk::Bool32 localDimmingEnable) const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.setLocalDimmingAMD(vkSwapchainKHR_, localDimmingEnable, getDispatcher());
 }
 
 typename vk::ResultValueType<std::vector<vk::PastPresentationTimingGOOGLE>>::type
   SwapchainKHRImpl::getPastPresentationTimingGOOGLE() const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   return vkDevice.getPastPresentationTimingGOOGLE(vkSwapchainKHR_, getDispatcher());
 }
 
 typename vk::ResultValueType<vk::RefreshCycleDurationGOOGLE>::type
   SwapchainKHRImpl::getRefreshCycleDurationGOOGLE() const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   return vkDevice.getRefreshCycleDurationGOOGLE(vkSwapchainKHR_, getDispatcher());
 }
 
 #ifdef VK_USE_PLATFORM_WIN32_KHR
 vk::ResultValueType<void>::type SwapchainKHRImpl::acquireFullScreenExclusiveModeEXT() const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   return vkDevice.acquireFullScreenExclusiveModeEXT(vkSwapchainKHR_, getDispatcher());
 }
 
 vk::ResultValueType<void>::type SwapchainKHRImpl::releaseFullScreenExclusiveModeEXT() const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   return vkDevice.releaseFullScreenExclusiveModeEXT(vkSwapchainKHR_, getDispatcher());
 }
 #endif
@@ -136,7 +136,7 @@ SwapchainKHRImpl::operator vk::SwapchainKHR() const {
 }
 
 void SwapchainKHRImpl::free() {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.destroy(vkSwapchainKHR_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }

@@ -25,7 +25,7 @@ namespace logi {
 CommandPoolImpl::CommandPoolImpl(LogicalDeviceImpl& logicalDevice, const vk::CommandPoolCreateInfo& createInfo,
                                  const std::optional<vk::AllocationCallbacks>& allocator)
   : logicalDevice_(logicalDevice), allocator_(allocator) {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkCommandPool_ = vkDevice.createCommandPool(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
@@ -64,17 +64,17 @@ void CommandPoolImpl::freeCommandBuffers(const std::vector<size_t>& cmdBufferIds
 }
 
 vk::ResultValueType<void>::type CommandPoolImpl::reset(const vk::CommandPoolResetFlags& flags) const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.resetCommandPool(vkCommandPool_, flags, getDispatcher());
 }
 
 void CommandPoolImpl::trim(const vk::CommandPoolTrimFlags& flags) const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.trimCommandPool(vkCommandPool_, flags, getDispatcher());
 }
 
 void CommandPoolImpl::trimKHR(const vk::CommandPoolTrimFlags& flags) const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.trimCommandPoolKHR(vkCommandPool_, flags, getDispatcher());
 }
 

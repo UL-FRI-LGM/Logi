@@ -34,12 +34,12 @@ ValidationCacheEXTImpl::ValidationCacheEXTImpl(LogicalDeviceImpl& logicalDevice,
 
 vk::ResultValueType<void>::type
   ValidationCacheEXTImpl::mergeValidationCachesEXT(vk::ArrayProxy<const vk::ValidationCacheEXT> srcCaches) const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   return vkDevice.mergeValidationCachesEXT(vkValidationCacheEXT_, srcCaches, getDispatcher());
 }
 
 typename vk::ResultValueType<std::vector<uint8_t>>::type ValidationCacheEXTImpl::getValidationCacheDataEXT() const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   return vkDevice.getValidationCacheDataEXT(vkValidationCacheEXT_, getDispatcher());
 }
 
@@ -72,7 +72,7 @@ ValidationCacheEXTImpl::operator vk::ValidationCacheEXT() const {
 }
 
 void ValidationCacheEXTImpl::free() {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.destroy(vkValidationCacheEXT_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }

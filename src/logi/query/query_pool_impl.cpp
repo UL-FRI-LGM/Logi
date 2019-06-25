@@ -24,12 +24,12 @@ namespace logi {
 QueryPoolImpl::QueryPoolImpl(LogicalDeviceImpl& logicalDevice, const vk::QueryPoolCreateInfo& createInfo,
                              const std::optional<vk::AllocationCallbacks>& allocator)
   : logicalDevice_(logicalDevice), allocator_(allocator) {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkQueryPool_ = vkDevice.createQueryPool(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
 void QueryPoolImpl::resetQueryPoolEXT(uint32_t firstQuery, uint32_t queryCount) const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.resetQueryPoolEXT(vkQueryPool_, firstQuery, queryCount, getDispatcher());
 }
 
@@ -58,7 +58,7 @@ QueryPoolImpl::operator vk::QueryPool() const {
 }
 
 void QueryPoolImpl::free() {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.destroy(vkQueryPool_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }

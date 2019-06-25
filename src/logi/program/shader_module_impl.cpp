@@ -215,7 +215,7 @@ ShaderModuleImpl::operator vk::ShaderModule() const {
 }
 
 void ShaderModuleImpl::free() {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.destroy(vkShaderModule_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }

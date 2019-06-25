@@ -25,7 +25,7 @@ DescriptorSetLayoutImpl::DescriptorSetLayoutImpl(LogicalDeviceImpl& logicalDevic
                                                  const vk::DescriptorSetLayoutCreateInfo& createInfo,
                                                  const std::optional<vk::AllocationCallbacks>& allocator)
   : logicalDevice_(logicalDevice), allocator_(allocator) {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDescriptorSetLayout_ =
     vkDevice.createDescriptorSetLayout(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
@@ -55,7 +55,7 @@ DescriptorSetLayoutImpl::operator vk::DescriptorSetLayout() const {
 }
 
 void DescriptorSetLayoutImpl::free() {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.destroy(vkDescriptorSetLayout_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }

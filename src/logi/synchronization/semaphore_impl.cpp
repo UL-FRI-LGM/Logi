@@ -24,7 +24,7 @@ namespace logi {
 SemaphoreImpl::SemaphoreImpl(LogicalDeviceImpl& logicalDevice, const vk::SemaphoreCreateInfo& createInfo,
                              const std::optional<vk::AllocationCallbacks>& allocator)
   : logicalDevice_(logicalDevice), allocator_(allocator) {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkSemaphore_ = vkDevice.createSemaphore(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
@@ -53,7 +53,7 @@ SemaphoreImpl::operator vk::Semaphore() const {
 }
 
 void SemaphoreImpl::free() {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.destroy(vkSemaphore_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }

@@ -22,8 +22,8 @@
 #include "logi/instance/debug_utils_messenger_ext.hpp"
 #include "logi/instance/debug_utils_messenger_ext_impl.hpp"
 #include "logi/instance/vulkan_instance_impl.hpp"
-#include "logi/surface/surface.hpp"
-#include "logi/surface/surface_impl.hpp"
+#include "logi/surface/surface_khr.hpp"
+#include "logi/surface/surface_khr_impl.hpp"
 
 namespace logi {
 
@@ -170,7 +170,7 @@ VulkanInstance::operator vk::Instance() const {
   return object_->operator vk::Instance();
 }
 
-void VulkanInstance::destroy() {
+void VulkanInstance::destroy() const {
   object_->destroy();
 }
 

@@ -35,10 +35,10 @@ class QueueFamily : public Handle<QueueFamilyImpl> {
 
   // region Logi Declarations
 
-  Queue getQueue(uint32_t queueIndex);
+  Queue getQueue(uint32_t queueIndex) const;
 
   Queue getQueue2(uint32_t queueIndex, const vk::DeviceQueueCreateFlags& flags = {},
-                  const ConstVkNextProxy<vk::DeviceQueueInfo2>& next = {});
+                  const ConstVkNextProxy<vk::DeviceQueueInfo2>& next = {}) const;
 
   VulkanInstance getInstance() const;
 

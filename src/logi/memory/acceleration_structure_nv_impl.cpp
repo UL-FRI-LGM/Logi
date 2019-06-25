@@ -25,7 +25,7 @@ AccelerationStructureNVImpl::AccelerationStructureNVImpl(LogicalDeviceImpl& logi
                                                          const vk::AccelerationStructureCreateInfoNV& createInfo,
                                                          const std::optional<vk::AllocationCallbacks>& allocator)
   : logicalDevice_(logicalDevice), allocator_(allocator) {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkAccelerationStructureNV_ =
     vkDevice.createAccelerationStructureNV(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
@@ -44,7 +44,7 @@ vk::MemoryRequirements2KHR AccelerationStructureNVImpl::getMemoryRequirementsNV(
 vk::ResultValueType<void>::type AccelerationStructureNVImpl::bindMemory(
   vk::DeviceMemory memory, vk::DeviceSize memoryOffset, const vk::ArrayProxy<uint32_t>& deviceIndices,
   const ConstVkNextProxy<vk::BindAccelerationStructureMemoryInfoNV>& next) const {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vk::BindAccelerationStructureMemoryInfoNV memoryInfo(vkAccelerationStructureNV_, memory, memoryOffset,
                                                        deviceIndices.size(), deviceIndices.data());
   memoryInfo.pNext = next;
@@ -79,7 +79,7 @@ AccelerationStructureNVImpl::operator vk::AccelerationStructureNV() const {
 }
 
 void AccelerationStructureNVImpl::free() {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.destroy(vkAccelerationStructureNV_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }

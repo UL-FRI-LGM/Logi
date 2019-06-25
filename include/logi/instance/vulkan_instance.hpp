@@ -132,7 +132,7 @@ class VulkanInstance : public Handle<VulkanInstanceImpl> {
 
   operator vk::Instance() const;
 
-  void destroy();
+  void destroy() const;
 
   // endregion
 };

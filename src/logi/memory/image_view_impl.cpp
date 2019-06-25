@@ -28,7 +28,7 @@ namespace logi {
 ImageViewImpl::ImageViewImpl(logi::ImageImpl& image, vk::ImageViewCreateInfo createInfo,
                              const std::optional<vk::AllocationCallbacks>& allocator)
   : image_(image), allocator_(allocator) {
-  vk::Device vkDevice = getLogicalDevice();
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
   createInfo.image = image_;
   vkImageView_ = vkDevice.createImageView(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }

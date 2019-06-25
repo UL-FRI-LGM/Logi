@@ -65,7 +65,7 @@ PipelineCacheImpl::operator vk::PipelineCache() const {
 }
 
 void PipelineCacheImpl::free() {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.destroy(vkPipelineCache_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }

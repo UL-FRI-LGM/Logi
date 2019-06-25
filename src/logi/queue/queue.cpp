@@ -88,7 +88,7 @@ Queue::operator vk::Queue() const {
   return object_->operator vk::Queue();
 }
 
-void Queue::destroy() {
+void Queue::destroy() const {
   object_->getQueueFamily().destroyQueue(id());
 }
 

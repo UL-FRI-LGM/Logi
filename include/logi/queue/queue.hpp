@@ -68,7 +68,7 @@ class Queue : public Handle<QueueImpl> {
 
   operator vk::Queue() const;
 
-  void destroy();
+  void destroy() const;
 
   // endregion
 };

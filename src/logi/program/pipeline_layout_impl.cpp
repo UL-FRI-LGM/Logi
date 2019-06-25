@@ -24,7 +24,7 @@ namespace logi {
 PipelineLayoutImpl::PipelineLayoutImpl(LogicalDeviceImpl& logicalDevice, const vk::PipelineLayoutCreateInfo& createInfo,
                                        const std::optional<vk::AllocationCallbacks>& allocator)
   : logicalDevice_(logicalDevice), allocator_(allocator) {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkPipelineLayout_ =
     vkDevice.createPipelineLayout(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
@@ -54,7 +54,7 @@ PipelineLayoutImpl::operator vk::PipelineLayout() const {
 }
 
 void PipelineLayoutImpl::free() {
-  vk::Device vkDevice = logicalDevice_;
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.destroy(vkPipelineLayout_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
 }
