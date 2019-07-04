@@ -3,78 +3,92 @@
 
 #define GLFW_INCLUDE_VULKAN
 #include <base/GLFWManager.h>
-#include "logi/base/VulkanInstance.h"
+#include <fstream>
 #include <iostream>
+#include "logi/logi.hpp"
 
 struct ExampleConfiguration {
-	std::string window_title = "Example";
-	int32_t window_width = 800;
-	int32_t window_height = 600;
-	size_t max_frames_in_flight = 2u;
-	std::vector<const char*> instance_extensions;
-	std::vector<const char*> device_extensions;
-	std::vector<const char*> validation_layers = { "VK_LAYER_LUNARG_standard_validation", "VK_LAYER_RENDERDOC_Capture" };
+  std::string windowTitle = "Example";
+  int32_t windowWidth = 800;
+  int32_t windowHeight = 600;
+  size_t maxFramesInFlight = 2u;
+  std::vector<const char*> instanceExtensions;
+  std::vector<const char*> deviceExtensions;
+  std::vector<const char*> validationLayers = {"VK_LAYER_LUNARG_standard_validation"};
 };
 
-
 class ExampleBase {
-public:
-
-	explicit ExampleBase(const ExampleConfiguration& config = {});
+ public:
+  explicit ExampleBase(const ExampleConfiguration& config = {});
 
   void run();
 
-protected:
+ protected:
   static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT obj_type,
                                                       uint64_t obj, size_t location, int32_t code,
-                                                      const char* layer_prefix, const char* msg, void* user_data);;
+                                                      const char* layer_prefix, const char* msg, void* user_data);
 
   void initWindow();
 
-	void createInstance();
+  void createInstance();
 
-	void initSurface();
+  void initSurface();
 
-	void selectDevice();
+  void selectDevice();
 
-	void initializeDevice();
+  void initializeDevice();
 
-	void initializeSwapChain();
+  vk::SurfaceFormatKHR chooseSwapSurfaceFormat();
 
-	void initializeCommandBuffers();
+  vk::PresentModeKHR chooseSwapPresentMode();
 
-	void buildSyncObjects();
+  vk::Extent2D chooseSwapExtent(const vk::SurfaceCapabilitiesKHR& capabilities);
 
-	void drawFrame();
+  void initializeSwapChain();
 
-	virtual void initialize() = 0;
+  void initializeCommandBuffers();
 
-	virtual void draw() = 0;
+  void buildSyncObjects();
+
+  void drawFrame();
+
+  virtual void initialize() = 0;
+
+  virtual void draw() = 0;
 
   void mainLoop();
 
-protected:
-	Window window;
-	vk::SurfaceKHR surface;
-	logi::QueueFamily present_family;
-	logi::QueueFamily render_family;
-  logi::Queue present_queue;
-	logi::Queue render_queue;
-	logi::CommandPool cmd_pool;
-	std::vector<logi::PrimaryCommandBuffer> cmd_buffers;
+  logi::ShaderModule createShaderModule(const std::string& shaderPath);
 
-	logi::VulkanInstance vk_instance;
-	logi::PhysicalDevice physical_device;
-	logi::LogicalDevice gpu;
-	logi::SwapChain swap_chain;
+  virtual ~ExampleBase();
 
-private:
-	ExampleConfiguration config_;
-	std::vector<logi::Fence> in_flight_f_;
-	std::vector<logi::Semaphore> image_available_s_;
-	std::vector<logi::Semaphore> render_finished_s_;
-	size_t current_frame_ = 0u;
+ protected:
+  Window window;
+  logi::VulkanInstance instance_;
+  logi::SurfaceKHR surface;
+  logi::PhysicalDevice physicalDevice_;
+  logi::LogicalDevice logicalDevice_;
+  logi::QueueFamily graphicsFamily_;
+  logi::QueueFamily presentFamily_;
+  logi::Queue graphicsQueue_;
+  logi::Queue presentQueue_;
+
+  // Swapchain data.
+  logi::SwapchainKHR swapchain_;
+  std::vector<logi::Image> swapchainImages_;
+  std::vector<logi::ImageView> swapchainImageViews_;
+  vk::Extent2D swapchainImageExtent_;
+  vk::Format swapchainImageFormat_;
+
+  logi::CommandPool graphicsFamilyCmdPool_;
+  std::vector<logi::CommandBuffer> primaryGraphicsCmdBuffers_;
+
+  size_t currentFrame_ = 0u;
+  std::vector<logi::Semaphore> imageAvailableSemaphores_;
+  std::vector<logi::Semaphore> renderFinishedSemaphores_;
+  std::vector<logi::Fence> inFlightFences_;
+
+  ExampleConfiguration config_;
 };
-
 
 #endif

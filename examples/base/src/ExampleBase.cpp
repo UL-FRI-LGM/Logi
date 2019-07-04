@@ -1,186 +1,328 @@
 #include "base/ExampleBase.h"
 
-
 ExampleBase::ExampleBase(const ExampleConfiguration& config) : config_(config) {}
 
 void ExampleBase::run() {
-	initWindow();
-	createInstance();
-	initSurface();
-	selectDevice();
-	initializeDevice();
-	initializeSwapChain();
-	buildSyncObjects();
-	initializeCommandBuffers();
-	initialize();
-	mainLoop();
+  initWindow();
+  createInstance();
+  initSurface();
+  selectDevice();
+  initializeDevice();
+  initializeSwapChain();
+  buildSyncObjects();
+  initializeCommandBuffers();
+  initialize();
+  mainLoop();
 }
 
 VkBool32 ExampleBase::debugCallback(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT obj_type, uint64_t obj,
-                                    size_t location, int32_t code, const char* layer_prefix, const char* msg, void* user_data) {
-  std::cout << "validation layer: " << msg << std::endl;
+                                    size_t location, int32_t code, const char* layer_prefix, const char* msg,
+                                    void* user_data) {
+  std::cout << "Validation layer: " << msg << std::endl;
   return VK_FALSE;
 }
 
 void ExampleBase::initWindow() {
-	window = GLFWManager::instance().createWindow(config_.window_title, config_.window_width, config_.window_height);
+  window = GLFWManager::instance().createWindow(config_.windowTitle, config_.windowWidth, config_.windowHeight);
 }
 
 void ExampleBase::createInstance() {
-	logi::InstanceConfig instance_config;
+  // Add required extensions.
+  std::vector<const char*> extensions;
+  extensions = GLFWManager::instance().getRequiredInstanceExtensions();
+  extensions.insert(extensions.end(), config_.instanceExtensions.begin(), config_.instanceExtensions.end());
+  extensions.emplace_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
 
-  // Set extensions.
-	instance_config.extensions = GLFWManager::instance().getRequiredInstanceExtensions();
-	instance_config.extensions.insert(instance_config.extensions.end(), config_.instance_extensions.begin(), config_.instance_extensions.end());
-	instance_config.extensions.emplace_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
+  // Remove duplicate extension.
+  std::sort(extensions.begin(), extensions.end());
+  extensions.erase(std::unique(extensions.begin(), extensions.end()), extensions.end());
 
-	instance_config.validation_layers = config_.validation_layers;
-  
-	vk_instance = logi::VulkanInstance(instance_config);
-	vk_instance.setupDebugCallback(vk::DebugReportFlagBitsEXT::eError | vk::DebugReportFlagBitsEXT::eDebug | vk::DebugReportFlagBitsEXT::eWarning, debugCallback);
+  // Create instance.
+  vk::InstanceCreateInfo instanceCI;
+  instanceCI.ppEnabledLayerNames = config_.validationLayers.data();
+  instanceCI.enabledLayerCount = config_.validationLayers.size();
+  instanceCI.ppEnabledExtensionNames = extensions.data();
+  instanceCI.enabledExtensionCount = extensions.size();
+
+  instance_ = logi::createInstance(
+    instanceCI, reinterpret_cast<PFN_vkCreateInstance>(glfwGetInstanceProcAddress(nullptr, "vkCreateInstance")),
+    reinterpret_cast<PFN_vkGetInstanceProcAddr>(glfwGetInstanceProcAddress(nullptr, "vkGetInstanceProcAddr")));
+
+  // Setup debug report callback.
+  vk::DebugReportCallbackCreateInfoEXT debugReportCI;
+  debugReportCI.flags =
+    vk::DebugReportFlagBitsEXT::eError | vk::DebugReportFlagBitsEXT::eDebug | vk::DebugReportFlagBitsEXT::eWarning;
+  debugReportCI.pfnCallback = debugCallback;
+
+  instance_.createDebugReportCallbackEXT(debugReportCI);
 }
 
 void ExampleBase::initSurface() {
-	surface = window.createWindowSurface(vk_instance.getVkHandle()).value;
+  surface = instance_.registerSurfaceKHR(window.createWindowSurface(instance_).value);
 }
 
 void ExampleBase::selectDevice() {
-	// Select GPU
-	const std::vector<logi::PhysicalDevice>& devices = vk_instance.devices();
+  // Select GPU
+  const std::vector<logi::PhysicalDevice>& devices = instance_.enumeratePhysicalDevices();
 
-	for (const auto device : devices) {
-		vk::PhysicalDeviceType type = device.properties().deviceType;
+  for (const auto& device : devices) {
+    vk::PhysicalDeviceType type = device.getProperties().deviceType;
 
-		if (type == vk::PhysicalDeviceType::eDiscreteGpu) {
+    if (type == vk::PhysicalDeviceType::eDiscreteGpu) {
       // If discrete gpu is found select it immediately.
-			physical_device = device;
-			return;
-		} else if (type == vk::PhysicalDeviceType::eIntegratedGpu || type == vk::PhysicalDeviceType::eVirtualGpu) {
-			physical_device = device;
-		}
-	}
+      physicalDevice_ = device;
+      return;
+    } else if (type == vk::PhysicalDeviceType::eIntegratedGpu || type == vk::PhysicalDeviceType::eVirtualGpu) {
+      physicalDevice_ = device;
+    }
+  }
 
-	assert(false);
+  // Assert if no device is found.
+  assert(physicalDevice_);
 }
 
 void ExampleBase::initializeDevice() {
-	std::vector<logi::QueueFamilyProperties> family_properties = physical_device.queueFamilyProperties();
-	std::vector<logi::QueueFamilyConfig> configurations;
+  std::vector<vk::QueueFamilyProperties> familyProperties = physicalDevice_.getQueueFamilyProperties();
 
-	// Search for graphical queue family.
-	uint32_t graphical_index = std::numeric_limits<uint32_t>::max();
+  // Search for graphical queue family.
+  uint32_t graphicsFamilyIdx = std::numeric_limits<uint32_t>::max();
+  uint32_t presentFamilyIdx = std::numeric_limits<uint32_t>::max();
 
-	for (const logi::QueueFamilyProperties& properties : family_properties) {
-		if (properties.queue_flags | vk::QueueFlagBits::eGraphics) {
-			graphical_index = properties.family_index;
-			configurations.emplace_back(logi::QueueFamilyConfig(properties, 1u));
-			break;
-		}
-	}
-
-	if (graphical_index == std::numeric_limits<uint32_t>::max()) {
-		throw std::runtime_error("Failed to find graphical queue.");
-	}
-
-	uint32_t present_index = std::numeric_limits<uint32_t>::max();
-
-  // Add presentation family if the example is not headless.
-	if (!physical_device.supportsSurfacePresent(surface, configurations[0].properties)) {
-
-		for (const logi::QueueFamilyProperties& properties : family_properties) {
-			if (physical_device.supportsSurfacePresent(surface, properties)) {
-				configurations.emplace_back(logi::QueueFamilyConfig(properties, 1u));
-				present_index = properties.family_index;
-				break;
-			}
-		}
-
-		if (present_index == std::numeric_limits<uint32_t>::max()) {
-			throw std::runtime_error("Failed to find queue family that supports presentation.");
-		}
-	} else {
-		present_index = graphical_index;
-	}
-
-  std::vector<const char*> extensions{ VK_KHR_SWAPCHAIN_EXTENSION_NAME };
-  extensions.insert(extensions.end(), config_.device_extensions.begin(), config_.device_extensions.end());
-  gpu = physical_device.createLogicalDevice(logi::LogicalDeviceConfig(configurations, extensions));
-
-	present_family = gpu.getQueueFamily(present_index);
-	present_queue = present_family.getQueue(0u);
-	render_family = gpu.getQueueFamily(graphical_index);
-	render_queue = render_family.getQueue(0u);
-}
-
-void ExampleBase::initializeSwapChain() {
-	const std::vector<logi::QueueFamily>& queue_families = gpu.getQueueFamilies();
-
-  if (queue_families.size() == 1u) {
-		swap_chain = gpu.createSwapchain(surface, present_family.configuration().properties.family_index);
-	} else {
-	  std::vector<uint32_t> concurrent_indices;
-    for (auto family : queue_families) {
-		  concurrent_indices.push_back(family.configuration().properties.family_index);
+  for (uint32_t i = 0; i < familyProperties.size(); i++) {
+    if (familyProperties[i].queueFlags | vk::QueueFlagBits::eGraphics) {
+      graphicsFamilyIdx = i;
     }
 
-		swap_chain = gpu.createSwapchain(surface, present_family.configuration().properties.family_index, concurrent_indices);
-	}
+    // Check if queue family supports present.
+    if (physicalDevice_.getSurfaceSupportKHR(graphicsFamilyIdx, surface)) {
+      presentFamilyIdx = graphicsFamilyIdx;
+    }
 
-  swap_chain.create({ static_cast<uint32_t>(window.getFramebufferSize().first), 
-					           static_cast<uint32_t>(window.getFramebufferSize().second) }, false);
+    // Stop once both graphical and present queue families are found.
+    if (graphicsFamilyIdx != std::numeric_limits<uint32_t>::max() &&
+        presentFamilyIdx != std::numeric_limits<uint32_t>::max()) {
+      break;
+    }
+  }
+
+  if (graphicsFamilyIdx == std::numeric_limits<uint32_t>::max()) {
+    throw std::runtime_error("Failed to find graphical queue.");
+  }
+  if (presentFamilyIdx == std::numeric_limits<uint32_t>::max()) {
+    throw std::runtime_error("Failed to find queue family that supports presentation.");
+  }
+
+  std::vector<const char*> extensions{VK_KHR_SWAPCHAIN_EXTENSION_NAME};
+  extensions.insert(extensions.end(), config_.deviceExtensions.begin(), config_.deviceExtensions.end());
+
+  static const std::array<float, 1> kPriorities = {1.0f};
+
+  std::vector<vk::DeviceQueueCreateInfo> queueCIs;
+  queueCIs.emplace_back(vk::DeviceQueueCreateFlags(), graphicsFamilyIdx, 1u, kPriorities.data());
+  if (graphicsFamilyIdx != presentFamilyIdx) {
+    queueCIs.emplace_back(vk::DeviceQueueCreateFlags(), presentFamilyIdx, 1u, kPriorities.data());
+  }
+
+  vk::DeviceCreateInfo deviceCI;
+  deviceCI.enabledExtensionCount = extensions.size();
+  deviceCI.ppEnabledExtensionNames = extensions.data();
+  deviceCI.queueCreateInfoCount = queueCIs.size();
+  deviceCI.pQueueCreateInfos = queueCIs.data();
+
+  logicalDevice_ = physicalDevice_.createLogicalDevice(deviceCI);
+  std::vector<logi::QueueFamily> queueFamilies = logicalDevice_.enumerateQueueFamilies();
+  for (const auto& family : queueFamilies) {
+    if (static_cast<uint32_t>(family) == graphicsFamilyIdx) {
+      graphicsFamily_ = family;
+    }
+    if (static_cast<uint32_t>(family) == presentFamilyIdx) {
+      presentFamily_ = family;
+    }
+  }
+
+  assert(graphicsFamily_);
+  assert(presentFamily_);
+
+  graphicsQueue_ = graphicsFamily_.getQueue(0);
+  presentQueue_ = presentFamily_.getQueue(0);
 }
 
-void ExampleBase::initializeCommandBuffers() {
-	cmd_pool = render_family.createCommandPool();
-  
-  for (size_t i = 0; i < swap_chain.getImageViews().size(); i++) {
-	  cmd_buffers.emplace_back(cmd_pool.createPrimaryCommandBuffer());
+ExampleBase::~ExampleBase() {
+  if (instance_) {
+    instance_.destroy();
   }
 }
 
+vk::SurfaceFormatKHR ExampleBase::chooseSwapSurfaceFormat() {
+  const std::vector<vk::SurfaceFormatKHR>& availableFormats = physicalDevice_.getSurfaceFormatsKHR(surface);
+
+  for (const auto& availableFormat : availableFormats) {
+    if (availableFormat.format == vk::Format::eB8G8R8A8Unorm &&
+        availableFormat.colorSpace == vk::ColorSpaceKHR::eSrgbNonlinear) {
+      return availableFormat;
+    }
+  }
+
+  return availableFormats[0];
+}
+
+vk::PresentModeKHR ExampleBase::chooseSwapPresentMode() {
+  const std::vector<vk::PresentModeKHR>& availablePresentModes = physicalDevice_.getSurfacePresentModesKHR(surface);
+
+  vk::PresentModeKHR bestMode = vk::PresentModeKHR::eFifo;
+
+  for (const auto& availablePresentMode : availablePresentModes) {
+    if (availablePresentMode == vk::PresentModeKHR::eMailbox) {
+      return availablePresentMode;
+    } else if (availablePresentMode == vk::PresentModeKHR::eImmediate) {
+      bestMode = availablePresentMode;
+    }
+  }
+
+  return bestMode;
+}
+
+vk::Extent2D ExampleBase::chooseSwapExtent(const vk::SurfaceCapabilitiesKHR& capabilities) {
+  if (capabilities.currentExtent.width != std::numeric_limits<uint32_t>::max()) {
+    return capabilities.currentExtent;
+  } else {
+    vk::Extent2D actualExtent(window.getSize().first, window.getSize().second);
+
+    actualExtent.width =
+      std::max(capabilities.minImageExtent.width, std::min(capabilities.maxImageExtent.width, actualExtent.width));
+    actualExtent.height =
+      std::max(capabilities.minImageExtent.height, std::min(capabilities.maxImageExtent.height, actualExtent.height));
+
+    return actualExtent;
+  }
+}
+
+void ExampleBase::initializeSwapChain() {
+  vk::SurfaceCapabilitiesKHR capabilities = physicalDevice_.getSurfaceCapabilitiesKHR(surface);
+
+  vk::SurfaceFormatKHR surfaceFormat = chooseSwapSurfaceFormat();
+  vk::PresentModeKHR presentMode = chooseSwapPresentMode();
+  vk::Extent2D extent = chooseSwapExtent(capabilities);
+
+  uint32_t imageCount = capabilities.minImageCount + 1;
+  if (capabilities.maxImageCount > 0 && imageCount > capabilities.maxImageCount) {
+    imageCount = capabilities.maxImageCount;
+  }
+
+  vk::SwapchainCreateInfoKHR createInfo = {};
+  createInfo.surface = surface;
+  createInfo.minImageCount = imageCount;
+  createInfo.imageFormat = surfaceFormat.format;
+  createInfo.imageColorSpace = surfaceFormat.colorSpace;
+  createInfo.imageExtent = extent;
+  createInfo.imageArrayLayers = 1;
+  createInfo.imageUsage = vk::ImageUsageFlagBits::eColorAttachment;
+  if (graphicsFamily_ != presentFamily_) {
+    createInfo.imageSharingMode = vk::SharingMode::eConcurrent;
+    createInfo.queueFamilyIndexCount = 2;
+    uint32_t indices[2]{graphicsFamily_, presentFamily_};
+    createInfo.pQueueFamilyIndices = indices;
+  } else {
+    createInfo.imageSharingMode = vk::SharingMode::eExclusive;
+  }
+
+  createInfo.preTransform = capabilities.currentTransform;
+  createInfo.compositeAlpha = vk::CompositeAlphaFlagBitsKHR::eOpaque;
+  createInfo.presentMode = presentMode;
+  createInfo.clipped = VK_TRUE;
+  createInfo.oldSwapchain = nullptr;
+
+  swapchain_ = logicalDevice_.createSwapchainKHR(createInfo);
+  swapchainImages_ = swapchain_.getImagesKHR();
+  swapchainImageFormat_ = surfaceFormat.format;
+  swapchainImageExtent_ = extent;
+
+  // Create image views
+  swapchainImageViews_.reserve(swapchainImages_.size());
+
+  for (auto& image : swapchainImages_) {
+    swapchainImageViews_.emplace_back(image.createImageView(
+      vk::ImageViewCreateFlags(), vk::ImageViewType::e2D, swapchainImageFormat_, vk::ComponentMapping(),
+      vk::ImageSubresourceRange(vk::ImageAspectFlagBits::eColor, 0, 1, 0, 1)));
+  }
+}
+
+void ExampleBase::initializeCommandBuffers() {
+  graphicsFamilyCmdPool_ = graphicsFamily_.createCommandPool();
+  primaryGraphicsCmdBuffers_ =
+    graphicsFamilyCmdPool_.allocateCommandBuffers(vk::CommandBufferLevel::ePrimary, swapchainImages_.size());
+}
+
 void ExampleBase::buildSyncObjects() {
-	for (size_t i = 0; i < config_.max_frames_in_flight; i++) {
-		image_available_s_.emplace_back(gpu.createSemaphore());
-		render_finished_s_.emplace_back(gpu.createSemaphore());
-		in_flight_f_.emplace_back(gpu.createFence(vk::FenceCreateFlagBits::eSignaled));
-	}
+  for (size_t i = 0; i < config_.maxFramesInFlight; i++) {
+    imageAvailableSemaphores_.emplace_back(logicalDevice_.createSemaphore(vk::SemaphoreCreateInfo()));
+    renderFinishedSemaphores_.emplace_back(logicalDevice_.createSemaphore(vk::SemaphoreCreateInfo()));
+    inFlightFences_.emplace_back(logicalDevice_.createFence(vk::FenceCreateInfo(vk::FenceCreateFlagBits::eSignaled)));
+  }
 }
 
 void ExampleBase::drawFrame() {
   // Wait if drawing is still in progress.
-	in_flight_f_[current_frame_].wait(std::numeric_limits<uint64_t>::max());
-	in_flight_f_[current_frame_].reset();
+  inFlightFences_[currentFrame_].wait(std::numeric_limits<uint64_t>::max());
+  inFlightFences_[currentFrame_].reset();
 
   // Acquire next image.
-	const uint32_t image_index = swap_chain.acquireNextImage(image_available_s_[current_frame_]).value;
+  const uint32_t imageIndex =
+    swapchain_
+      .acquireNextImageKHR(std::numeric_limits<uint64_t>::max(), imageAvailableSemaphores_[currentFrame_], nullptr)
+      .value;
 
-	static const vk::PipelineStageFlags wait_stages{ vk::PipelineStageFlagBits::eColorAttachmentOutput };
+  static const vk::PipelineStageFlags wait_stages{vk::PipelineStageFlagBits::eColorAttachmentOutput};
 
   // Example draw.
-	draw();
+  draw();
 
-	vk::SubmitInfo submit_info;
-	submit_info.pWaitDstStageMask = &wait_stages;
-	submit_info.pWaitSemaphores = &image_available_s_[current_frame_].getVkHandle();
-	submit_info.waitSemaphoreCount = 1u;
+  vk::SubmitInfo submit_info;
+  submit_info.pWaitDstStageMask = &wait_stages;
+  submit_info.pWaitSemaphores = &static_cast<const vk::Semaphore&>(imageAvailableSemaphores_[currentFrame_]);
+  submit_info.waitSemaphoreCount = 1u;
 
-	submit_info.commandBufferCount = 1;
-	submit_info.pCommandBuffers = &cmd_buffers[image_index].getVkHandle();
+  submit_info.commandBufferCount = 1;
+  submit_info.pCommandBuffers = &static_cast<const vk::CommandBuffer&>(primaryGraphicsCmdBuffers_[imageIndex]);
 
-	submit_info.signalSemaphoreCount = 1;
-	submit_info.pSignalSemaphores = &render_finished_s_[current_frame_].getVkHandle();
-	render_queue.submit({ submit_info }, in_flight_f_[current_frame_]);
+  submit_info.signalSemaphoreCount = 1;
+  submit_info.pSignalSemaphores = &static_cast<const vk::Semaphore&>(renderFinishedSemaphores_[currentFrame_]);
+  graphicsQueue_.submit({submit_info}, inFlightFences_[currentFrame_]);
 
   // Present image.
-	swap_chain.queuePresent(present_queue, render_finished_s_[current_frame_]);
-	current_frame_ = (current_frame_ + 1) % config_.max_frames_in_flight;
+  presentQueue_.presentKHR(
+    vk::PresentInfoKHR(1, &static_cast<const vk::Semaphore&>(renderFinishedSemaphores_[currentFrame_]), 1,
+                       &static_cast<const vk::SwapchainKHR&>(swapchain_), &imageIndex));
+  currentFrame_ = (currentFrame_ + 1) % config_.maxFramesInFlight;
 }
 
 void ExampleBase::mainLoop() {
-	while (!window.shouldClose()) {
-		glfwPollEvents();
-		drawFrame();
-	}
+  while (!window.shouldClose()) {
+    glfwPollEvents();
+    drawFrame();
+  }
 
-	gpu.waitIdle();
+  logicalDevice_.waitIdle();
+}
+
+logi::ShaderModule ExampleBase::createShaderModule(const std::string& shaderPath) {
+  std::ifstream file(shaderPath, std::ios::ate | std::ios::binary);
+
+  if (!file.is_open()) {
+    throw std::runtime_error("failed to open file!");
+  }
+
+  size_t fileSize = (size_t) file.tellg();
+  std::vector<char> code(fileSize);
+
+  file.seekg(0);
+  file.read(code.data(), fileSize);
+
+  file.close();
+
+  vk::ShaderModuleCreateInfo createInfo;
+  createInfo.codeSize = code.size();
+  createInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
+
+  return logicalDevice_.createShaderModule(createInfo);
 }

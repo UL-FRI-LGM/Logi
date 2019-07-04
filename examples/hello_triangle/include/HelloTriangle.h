@@ -3,24 +3,24 @@
 #include "base/ExampleBase.h"
 
 class HelloTriangle : public ExampleBase {
-public:
+ protected:
+  void createRenderPass();
 
-	void createRenderPass();
+  void createGraphicalPipeline();
 
-	void createGraphicalPipeline();
+  void createFrameBuffers();
 
-	void createFrameBuffers();
-
-	void recordCommandBuffers();
+  void recordCommandBuffers();
 
   void initialize() override;
 
   void draw() override;
 
-private:
-	logi::RenderPass render_pass;
-	logi::GraphicalPipeline graphical_pipeline;
-	std::vector<logi::Framebuffer> framebuffers;
+ private:
+  logi::RenderPass renderPass_;
+  logi::PipelineLayout pipelineLayout_;
+  logi::Pipeline pipeline_;
+  std::vector<logi::Framebuffer> framebuffers_;
 };
 
 #endif

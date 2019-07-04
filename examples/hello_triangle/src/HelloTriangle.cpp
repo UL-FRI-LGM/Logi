@@ -1,115 +1,185 @@
 #include "HelloTriangle.h"
 
 void HelloTriangle::createRenderPass() {
-	logi::RenderPassLayout rp_layout(1u, 1u);
-	vk::AttachmentDescription* attachment_desc = rp_layout.getAttachmentDescription(0u);
+  vk::AttachmentDescription colorAttachment;
+  colorAttachment.format = swapchainImageFormat_;
+  colorAttachment.samples = vk::SampleCountFlagBits::e1;
+  colorAttachment.loadOp = vk::AttachmentLoadOp::eClear;
+  colorAttachment.storeOp = vk::AttachmentStoreOp::eStore;
+  colorAttachment.stencilLoadOp = vk::AttachmentLoadOp::eDontCare;
+  colorAttachment.stencilStoreOp = vk::AttachmentStoreOp::eStore;
+  colorAttachment.initialLayout = vk::ImageLayout::eUndefined;
+  colorAttachment.finalLayout = vk::ImageLayout::ePresentSrcKHR;
 
-	attachment_desc->format = swap_chain.getColorFormat();
-	attachment_desc->samples = vk::SampleCountFlagBits::e1;
-	attachment_desc->loadOp = vk::AttachmentLoadOp::eClear;
-	attachment_desc->storeOp = vk::AttachmentStoreOp::eStore;
-	attachment_desc->stencilLoadOp = vk::AttachmentLoadOp::eDontCare;
-	attachment_desc->stencilStoreOp = vk::AttachmentStoreOp::eDontCare;
-	attachment_desc->initialLayout = vk::ImageLayout::eUndefined;
-	attachment_desc->finalLayout = vk::ImageLayout::ePresentSrcKHR;
+  vk::AttachmentReference colorAttachmentRef;
+  colorAttachmentRef.attachment = 0;
+  colorAttachmentRef.layout = vk::ImageLayout::eColorAttachmentOptimal;
 
-	logi::SubpassLayout* subpass = rp_layout.getSubpassLayout(0u);
-	subpass->addColorAttachment(0u, vk::ImageLayout::eColorAttachmentOptimal);
+  vk::SubpassDescription subpass;
+  subpass.pipelineBindPoint = vk::PipelineBindPoint::eGraphics;
+  subpass.colorAttachmentCount = 1;
+  subpass.pColorAttachments = &colorAttachmentRef;
 
-	rp_layout.addDependency(VK_SUBPASS_EXTERNAL, 0, vk::PipelineStageFlagBits::eColorAttachmentOutput, vk::PipelineStageFlagBits::eColorAttachmentOutput,
-		{}, vk::AccessFlagBits::eColorAttachmentRead | vk::AccessFlagBits::eColorAttachmentWrite, {});
+  vk::SubpassDependency dependency;
+  dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
+  dependency.dstSubpass = 0;
+  dependency.srcStageMask = vk::PipelineStageFlagBits::eColorAttachmentOutput;
+  dependency.srcAccessMask = {};
+  dependency.dstStageMask = vk::PipelineStageFlagBits::eColorAttachmentOutput;
+  dependency.dstAccessMask = vk::AccessFlagBits::eColorAttachmentRead | vk::AccessFlagBits::eColorAttachmentWrite;
 
-	render_pass = gpu.getProgramManager().createRenderPass(rp_layout);
+  vk::RenderPassCreateInfo renderPassCreateInfo;
+  renderPassCreateInfo.attachmentCount = 1;
+  renderPassCreateInfo.pAttachments = &colorAttachment;
+  renderPassCreateInfo.subpassCount = 1;
+  renderPassCreateInfo.pSubpasses = &subpass;
+  renderPassCreateInfo.dependencyCount = 1;
+  renderPassCreateInfo.pDependencies = &dependency;
+
+  renderPass_ = logicalDevice_.createRenderPass(renderPassCreateInfo);
 }
 
 void HelloTriangle::createGraphicalPipeline() {
-	const logi::ProgramManager program_manager = gpu.getProgramManager();
-	logi::ShaderModule vertex_shader = program_manager.loadShaderModule("./shaders/triangle.vert.spv");
-	logi::ShaderModule fragment_shader = program_manager.loadShaderModule("./shaders/triangle.frag.spv");
-	logi::PipelineLayout pipeline_layout = program_manager.createPipelineLayout({ logi::PipelineShaderStage(vk::ShaderStageFlagBits::eVertex, vertex_shader), logi::PipelineShaderStage(vk::ShaderStageFlagBits::eFragment, fragment_shader) });
+  logi::ShaderModule vertexShader = createShaderModule("./shaders/triangle.vert.spv");
+  logi::ShaderModule fragmentShader = createShaderModule("./shaders/triangle.frag.spv");
 
-	logi::PipelineState state;
+  // Pipeline layout
+  vk::PipelineLayoutCreateInfo pipelineLayoutInfo;
+  pipelineLayoutInfo.setLayoutCount = 0;
+  pipelineLayoutInfo.pushConstantRangeCount = 0;
 
-	// INPUT ASSEMBLY STATE
-	state.input_assembly.primitive_restart_enable = false;
-	state.input_assembly.topology = vk::PrimitiveTopology::eTriangleList;
+  pipelineLayout_ = logicalDevice_.createPipelineLayout(pipelineLayoutInfo);
 
-	// VIEWPORT STATE
-	vk::Viewport viewport{};
-	viewport.x = 0.0f;
-	viewport.y = 0.0f;
-	viewport.width = static_cast<float>(swap_chain.getExtent().width);
-	viewport.height = static_cast<float>(swap_chain.getExtent().height);
-	viewport.minDepth = 0.0f;
-	viewport.maxDepth = 1.0f;
+  // Pipeline
+  vk::PipelineShaderStageCreateInfo vertShaderStageInfo;
+  vertShaderStageInfo.stage = vk::ShaderStageFlagBits::eVertex;
+  vertShaderStageInfo.module = vertexShader;
+  vertShaderStageInfo.pName = "main";
 
-	vk::Rect2D scissor{};
-	scissor.offset = vk::Offset2D(0, 0);
-	scissor.extent = swap_chain.getExtent();
+  vk::PipelineShaderStageCreateInfo fragShaderStageInfo;
+  fragShaderStageInfo.stage = vk::ShaderStageFlagBits::eFragment;
+  fragShaderStageInfo.module = fragmentShader;
+  fragShaderStageInfo.pName = "main";
 
-	state.viewport.viewports.push_back(viewport);
-	state.viewport.scissors.push_back(scissor);
+  vk::PipelineShaderStageCreateInfo shaderStages[] = {vertShaderStageInfo, fragShaderStageInfo};
 
-	// RASTERIZER STATE
-	state.rasterization.depth_clamp_enable = false;
-	state.rasterization.rasterizer_discard_enable = false;
-	state.rasterization.polygon_mode = vk::PolygonMode::eFill;
-	state.rasterization.line_width = 1.0f;
-	state.rasterization.cull_mode = vk::CullModeFlagBits::eBack;
-	state.rasterization.front_face = vk::FrontFace::eClockwise;
-	state.rasterization.depth_bias_enable = false;
+  vk::PipelineVertexInputStateCreateInfo vertexInputInfo;
+  vertexInputInfo.vertexBindingDescriptionCount = 0;
+  vertexInputInfo.vertexAttributeDescriptionCount = 0;
 
-	// MULTISAMPLING
-	state.multisample.enable_sample_shading = false;
-	state.multisample.rasterization_samples = vk::SampleCountFlagBits::e1;
-	state.multisample.sample_mask = vk::SampleMask(0xFFFFFF);
+  vk::PipelineInputAssemblyStateCreateInfo inputAssembly;
+  inputAssembly.topology = vk::PrimitiveTopology::eTriangleList;
+  inputAssembly.primitiveRestartEnable = VK_FALSE;
 
-	// COLOR BLEND STATE
-	state.color_blend.enable_logic_op = false;
-	state.color_blend.logic_op = vk::LogicOp::eCopy;
+  vk::Viewport viewport = {};
+  viewport.x = 0.0f;
+  viewport.y = 0.0f;
+  viewport.width = (float) swapchainImageExtent_.width;
+  viewport.height = (float) swapchainImageExtent_.height;
+  viewport.minDepth = 0.0f;
+  viewport.maxDepth = 1.0f;
 
-	vk::PipelineColorBlendAttachmentState color_blend_att{};
-	color_blend_att.colorWriteMask = vk::ColorComponentFlagBits::eR | vk::ColorComponentFlagBits::eG |
-		vk::ColorComponentFlagBits::eB | vk::ColorComponentFlagBits::eA;
-	color_blend_att.blendEnable = false;
-	state.color_blend.attachment_states.emplace_back(color_blend_att);
-	state.color_blend.blend_constants = { 0, 0, 0, 0 };
+  vk::Rect2D scissor;
+  scissor.extent = swapchainImageExtent_;
 
-	std::vector<logi::GraphicalPipelineCreateInfo> create_info = { logi::GraphicalPipelineCreateInfo(render_pass, 0, pipeline_layout, state) };
-	graphical_pipeline = program_manager.createGraphicalPipelines(create_info)[0];
+  vk::PipelineViewportStateCreateInfo viewportState;
+  viewportState.viewportCount = 1;
+  viewportState.pViewports = &viewport;
+  viewportState.scissorCount = 1;
+  viewportState.pScissors = &scissor;
+
+  vk::PipelineRasterizationStateCreateInfo rasterizer;
+  rasterizer.depthClampEnable = VK_FALSE;
+  rasterizer.rasterizerDiscardEnable = VK_FALSE;
+  rasterizer.polygonMode = vk::PolygonMode::eFill;
+  rasterizer.lineWidth = 1.0f;
+  rasterizer.cullMode = vk::CullModeFlagBits::eBack;
+  rasterizer.frontFace = vk::FrontFace::eClockwise;
+  rasterizer.depthBiasEnable = VK_FALSE;
+
+  vk::PipelineMultisampleStateCreateInfo multisampling;
+  multisampling.sampleShadingEnable = VK_FALSE;
+  multisampling.rasterizationSamples = vk::SampleCountFlagBits::e1;
+  vk::SampleMask sampleMask(0xFFFFFF);
+  multisampling.pSampleMask = &sampleMask;
+
+  vk::PipelineColorBlendAttachmentState colorBlendAttachment;
+  colorBlendAttachment.colorWriteMask = vk::ColorComponentFlagBits::eR | vk::ColorComponentFlagBits::eG |
+                                        vk::ColorComponentFlagBits::eB | vk::ColorComponentFlagBits::eA;
+  colorBlendAttachment.blendEnable = VK_FALSE;
+
+  vk::PipelineColorBlendStateCreateInfo colorBlending;
+  colorBlending.logicOpEnable = VK_FALSE;
+  colorBlending.logicOp = vk::LogicOp::eCopy;
+  colorBlending.attachmentCount = 1;
+  colorBlending.pAttachments = &colorBlendAttachment;
+  colorBlending.blendConstants[0] = 0.0f;
+  colorBlending.blendConstants[1] = 0.0f;
+  colorBlending.blendConstants[2] = 0.0f;
+  colorBlending.blendConstants[3] = 0.0f;
+
+  vk::GraphicsPipelineCreateInfo pipelineInfo;
+  pipelineInfo.stageCount = 2;
+  pipelineInfo.pStages = shaderStages;
+  pipelineInfo.pVertexInputState = &vertexInputInfo;
+  pipelineInfo.pInputAssemblyState = &inputAssembly;
+  pipelineInfo.pViewportState = &viewportState;
+  pipelineInfo.pRasterizationState = &rasterizer;
+  pipelineInfo.pMultisampleState = &multisampling;
+  pipelineInfo.pColorBlendState = &colorBlending;
+  pipelineInfo.layout = pipelineLayout_;
+  pipelineInfo.renderPass = renderPass_;
+  pipelineInfo.subpass = 0;
+
+  pipeline_ = logicalDevice_.createGraphicsPipeline(pipelineInfo);
+  vertexShader.destroy();
+  fragmentShader.destroy();
 }
 
 void HelloTriangle::createFrameBuffers() {
-	for (const logi::ImageView& image_view : swap_chain.getImageViews()) {
-		framebuffers.emplace_back(render_pass.createFramebuffer({ image_view }, swap_chain.getExtent().width, swap_chain.getExtent().height, 1));
-	}
+  for (const auto& imageView : swapchainImageViews_) {
+    vk::FramebufferCreateInfo createInfo;
+    createInfo.renderPass = renderPass_;
+    createInfo.attachmentCount = 1;
+    createInfo.pAttachments = &static_cast<const vk::ImageView&>(imageView);
+    createInfo.width = swapchainImageExtent_.width;
+    createInfo.height = swapchainImageExtent_.height;
+    createInfo.layers = 1;
+
+    framebuffers_.emplace_back(logicalDevice_.createFramebuffer(createInfo));
+  }
 }
 
 void HelloTriangle::recordCommandBuffers() {
-	// Create graphical command buffers.
-	for (size_t i = 0; i < cmd_buffers.size(); i++) {
-		const logi::PrimaryCommandBuffer& cmd_buffer = cmd_buffers[i];
-		cmd_buffer.begin(logi::CommandBufferBeginInfo(vk::CommandBufferUsageFlagBits::eSimultaneousUse));
+  for (size_t i = 0; i < primaryGraphicsCmdBuffers_.size(); i++) {
+    vk::CommandBufferBeginInfo beginInfo = {};
+    beginInfo.flags = vk::CommandBufferUsageFlagBits::eSimultaneousUse;
 
-		const std::vector<vk::ClearValue> clear_values = { vk::ClearValue(vk::ClearColorValue(std::array<float, 4>{ 0.0f, 0.0f, 0.0f, 1.0f })) };
-		const logi::RenderPassBeginInfo rp_begin_info(render_pass, framebuffers[i], vk::Rect2D(vk::Offset2D(), swap_chain.getExtent()), clear_values);
+    primaryGraphicsCmdBuffers_[i].begin(beginInfo);
 
-		cmd_buffer.beginRenderPass(rp_begin_info);
-		cmd_buffer.bindPipeline(graphical_pipeline);
-		cmd_buffer.draw(3);
-		cmd_buffer.endRenderPass();
-		cmd_buffer.end();
-	}
+    vk::RenderPassBeginInfo renderPassInfo = {};
+    renderPassInfo.renderPass = renderPass_;
+    renderPassInfo.framebuffer = framebuffers_[i];
+    renderPassInfo.renderArea.extent = swapchainImageExtent_;
+
+    vk::ClearValue clearValue;
+    clearValue.color.setFloat32({0.0, 0.0, 0.0, 1.0});
+    renderPassInfo.clearValueCount = 1;
+    renderPassInfo.pClearValues = &clearValue;
+
+    primaryGraphicsCmdBuffers_[i].beginRenderPass(renderPassInfo, vk::SubpassContents::eInline);
+    primaryGraphicsCmdBuffers_[i].bindPipeline(vk::PipelineBindPoint::eGraphics, pipeline_);
+    primaryGraphicsCmdBuffers_[i].draw(3, 1, 0, 0);
+    primaryGraphicsCmdBuffers_[i].endRenderPass();
+    primaryGraphicsCmdBuffers_[i].end();
+  }
 }
 
 void HelloTriangle::initialize() {
-	createRenderPass();
-	createGraphicalPipeline();
-	createFrameBuffers();
-	recordCommandBuffers();
+  createRenderPass();
+  createFrameBuffers();
+  createGraphicalPipeline();
+  recordCommandBuffers();
 }
 
-
-void HelloTriangle::draw() {
-	
-}
+void HelloTriangle::draw() {}

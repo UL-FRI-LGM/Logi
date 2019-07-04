@@ -17,7 +17,7 @@ AlwaysBreakTemplateDeclarations: true
 BasedOnStyle: LLVM
 BinPackArguments: true
 BinPackParameters: true
-BraceWrapping: 
+BraceWrapping:
   AfterClass: false
   AfterControlStatement: false
   AfterEnum: false
@@ -51,6 +51,12 @@ DerivePointerAlignment: false
 DisableFormat: false
 ExperimentalAutoDetectBinPacking: false
 FixNamespaceComments: true
+IncludeBlocks: Merge
+IncludeCategories:
+  - Regex:           '<.*>'
+    Priority:        1
+  - Regex:           '\".*\"'
+    Priority:        2
 IndentCaseLabels: true
 IndentPPDirectives: None
 IndentWidth: 2
