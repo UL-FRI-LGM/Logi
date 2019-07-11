@@ -28,7 +28,7 @@ class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 class QueueFamilyImpl;
 
-class QueueImpl : public VulkanObject<QueueImpl> {
+class QueueImpl : public VulkanObject, public std::enable_shared_from_this<QueueImpl> {
  public:
   QueueImpl(QueueFamilyImpl& queueFamily, vk::Queue vkQueue);
 

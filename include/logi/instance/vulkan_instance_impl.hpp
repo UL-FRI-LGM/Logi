@@ -28,19 +28,16 @@
 
 namespace logi {
 
-class DebugReportCallbackEXT;
 class DebugReportCallbackEXTImpl;
-class DebugUtilsMessengerEXT;
 class DebugUtilsMessengerEXTImpl;
-class PhysicalDevice;
 class PhysicalDeviceImpl;
-class SurfaceKHR;
 class SurfaceKHRImpl;
 
 /**
  * @brief	Vulkan instance handle.
  */
-class VulkanInstanceImpl : public VulkanObject<VulkanInstanceImpl>,
+class VulkanInstanceImpl : public VulkanObject,
+                           public std::enable_shared_from_this<VulkanInstanceImpl>,
                            public VulkanObjectComposite<DebugReportCallbackEXTImpl>,
                            public VulkanObjectComposite<DebugUtilsMessengerEXTImpl>,
                            public VulkanObjectComposite<PhysicalDeviceImpl>,

@@ -25,7 +25,7 @@ namespace logi {
 
 class VulkanInstanceImpl;
 
-class SurfaceKHRImpl : public VulkanObject<SurfaceKHRImpl> {
+class SurfaceKHRImpl : public VulkanObject, public std::enable_shared_from_this<SurfaceKHRImpl> {
  public:
   SurfaceKHRImpl(VulkanInstanceImpl& instance, const vk::SurfaceKHR& vkSurface,
                  const std::optional<vk::AllocationCallbacks>& allocator = {});

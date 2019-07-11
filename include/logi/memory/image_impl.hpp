@@ -32,7 +32,9 @@ class MemoryAllocatorImpl;
 class ImageViewImpl;
 class SwapchainKHRImpl;
 
-class ImageImpl : public VulkanObject<ImageImpl>, public VulkanObjectComposite<ImageViewImpl> {
+class ImageImpl : public VulkanObject,
+                  public std::enable_shared_from_this<ImageImpl>,
+                  public VulkanObjectComposite<ImageViewImpl> {
  public:
   ImageImpl(LogicalDeviceImpl& logicalDevice, const vk::ImageCreateInfo& createInfo,
             const std::optional<vk::AllocationCallbacks>& allocator = {});

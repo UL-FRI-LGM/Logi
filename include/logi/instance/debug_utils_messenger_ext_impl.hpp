@@ -27,7 +27,8 @@ namespace logi {
 
 class VulkanInstanceImpl;
 
-class DebugUtilsMessengerEXTImpl : public VulkanObject<DebugUtilsMessengerEXTImpl> {
+class DebugUtilsMessengerEXTImpl : public VulkanObject,
+                                   public std::enable_shared_from_this<DebugUtilsMessengerEXTImpl> {
  public:
   DebugUtilsMessengerEXTImpl(VulkanInstanceImpl& instance, const vk::DebugUtilsMessengerCreateInfoEXT& createInfo,
                              const std::optional<vk::AllocationCallbacks>& allocator);

@@ -30,7 +30,9 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class CommandBufferImpl;
 
-class CommandPoolImpl : public VulkanObject<CommandPoolImpl>, public VulkanObjectComposite<CommandBufferImpl> {
+class CommandPoolImpl : public VulkanObject,
+                        public std::enable_shared_from_this<CommandPoolImpl>,
+                        public VulkanObjectComposite<CommandBufferImpl> {
  public:
   CommandPoolImpl(QueueFamilyImpl& queueFamily, const vk::CommandPoolCreateFlags& flags = {},
                   const ConstVkNextProxy<vk::CommandPoolCreateInfo>& next = {},

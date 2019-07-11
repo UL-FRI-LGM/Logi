@@ -28,7 +28,7 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 
-class PipelineLayoutImpl : public VulkanObject<PipelineLayoutImpl> {
+class PipelineLayoutImpl : public VulkanObject, public std::enable_shared_from_this<PipelineLayoutImpl> {
  public:
   PipelineLayoutImpl(LogicalDeviceImpl& logicalDevice, const vk::PipelineLayoutCreateInfo& createInfo,
                      const std::optional<vk::AllocationCallbacks>& allocator = {});

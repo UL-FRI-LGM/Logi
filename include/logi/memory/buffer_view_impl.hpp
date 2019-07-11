@@ -31,7 +31,7 @@ class LogicalDeviceImpl;
 class MemoryAllocatorImpl;
 class BufferImpl;
 
-class BufferViewImpl : public VulkanObject<BufferViewImpl> {
+class BufferViewImpl : public VulkanObject, public std::enable_shared_from_this<BufferViewImpl> {
  public:
   BufferViewImpl(BufferImpl& buffer, vk::BufferViewCreateInfo createInfo,
                  const std::optional<vk::AllocationCallbacks>& allocator = {});

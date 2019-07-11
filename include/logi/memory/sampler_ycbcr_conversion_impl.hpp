@@ -28,7 +28,8 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 
-class SamplerYcbcrConversionImpl : public VulkanObject<SamplerYcbcrConversionImpl> {
+class SamplerYcbcrConversionImpl : public VulkanObject,
+                                   public std::enable_shared_from_this<SamplerYcbcrConversionImpl> {
  public:
   SamplerYcbcrConversionImpl(LogicalDeviceImpl& logical_device, const vk::SamplerYcbcrConversionCreateInfo& create_info,
                              const std::optional<vk::AllocationCallbacks>& allocator = {});

@@ -33,7 +33,9 @@ class VulkanInstanceImpl;
 class LogicalDeviceImpl;
 class LogicalDevice;
 
-class PhysicalDeviceImpl : public VulkanObject<PhysicalDeviceImpl>, public VulkanObjectComposite<LogicalDeviceImpl> {
+class PhysicalDeviceImpl : public VulkanObject,
+                           public std::enable_shared_from_this<PhysicalDeviceImpl>,
+                           public VulkanObjectComposite<LogicalDeviceImpl> {
  public:
   /**
    * @brief Vulkan physical device.

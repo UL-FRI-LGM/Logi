@@ -28,7 +28,8 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 
-class IndirectCommandsLayoutNVXImpl : public VulkanObject<IndirectCommandsLayoutNVXImpl> {
+class IndirectCommandsLayoutNVXImpl : public VulkanObject,
+                                      public std::enable_shared_from_this<IndirectCommandsLayoutNVXImpl> {
  public:
   IndirectCommandsLayoutNVXImpl(LogicalDeviceImpl& logicalDevice,
                                 const vk::IndirectCommandsLayoutCreateInfoNVX& createInfo,

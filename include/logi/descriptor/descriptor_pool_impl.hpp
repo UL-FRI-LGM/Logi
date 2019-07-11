@@ -30,7 +30,9 @@ class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 class DescriptorSetImpl;
 
-class DescriptorPoolImpl : public VulkanObject<DescriptorPoolImpl>, public VulkanObjectComposite<DescriptorSetImpl> {
+class DescriptorPoolImpl : public VulkanObject,
+                           public std::enable_shared_from_this<DescriptorPoolImpl>,
+                           public VulkanObjectComposite<DescriptorSetImpl> {
  public:
   DescriptorPoolImpl(LogicalDeviceImpl& logicalDevice, const vk::DescriptorPoolCreateInfo& createInfo,
                      const std::optional<vk::AllocationCallbacks>& allocator = {});

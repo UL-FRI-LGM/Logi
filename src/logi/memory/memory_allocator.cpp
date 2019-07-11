@@ -20,10 +20,19 @@
 #include "logi/device/logical_device.hpp"
 #include "logi/device/physical_device.hpp"
 #include "logi/instance/vulkan_instance.hpp"
-#include "logi/memory/buffer.hpp"
-#include "logi/memory/image.hpp"
+#include "logi/memory/vma_buffer.hpp"
 
 namespace logi {
+
+VMABuffer MemoryAllocator::createBuffer(const vk::BufferCreateInfo& bufferCreateInfo,
+                                        const VmaAllocationCreateInfo& allocationCreateInfo,
+                                        const std::optional<vk::AllocationCallbacks>& allocator) {
+  return VMABuffer(object_->createBuffer(bufferCreateInfo, allocationCreateInfo, allocator));
+}
+
+void MemoryAllocator::destroyBuffer(const VMABuffer& buffer) {
+  object_->destroyBuffer(buffer.id());
+}
 
 VulkanInstance MemoryAllocator::getInstance() const {
   return VulkanInstance(object_->getInstance().shared_from_this());
@@ -45,8 +54,8 @@ void MemoryAllocator::destroy() const {
   object_->destroy();
 }
 
-VmaAllocator MemoryAllocator::getVmaAllocator() const {
-  return object_->getVmaAllocator();
+MemoryAllocator::operator const VmaAllocator&() const {
+  return object_->operator const VmaAllocator&();
 }
 
 }

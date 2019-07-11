@@ -28,7 +28,7 @@ class LogicalDeviceImpl;
 class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 
-class DeviceMemoryImpl : public VulkanObject<DeviceMemoryImpl> {
+class DeviceMemoryImpl : public VulkanObject, public std::enable_shared_from_this<DeviceMemoryImpl> {
  public:
   DeviceMemoryImpl(LogicalDeviceImpl& logicalDevice, const vk::MemoryAllocateInfo& allocateInfo,
                    const std::optional<vk::AllocationCallbacks>& allocator = {});

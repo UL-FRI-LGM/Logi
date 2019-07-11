@@ -88,6 +88,14 @@ class IllegalInvocation : public LogiException {
 };
 
 /**
+ * @brief   BadAllocation error.
+ */
+class BadAllocation : public LogiException {
+ public:
+  using LogiException::LogiException;
+};
+
+/**
  * @brief   InitializationError error.
  */
 class InitializationError : public LogiException {

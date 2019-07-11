@@ -27,7 +27,8 @@ namespace logi {
 
 class VulkanInstanceImpl;
 
-class DebugReportCallbackEXTImpl : public VulkanObject<DebugReportCallbackEXTImpl> {
+class DebugReportCallbackEXTImpl : public VulkanObject,
+                                   public std::enable_shared_from_this<DebugReportCallbackEXTImpl> {
  public:
   DebugReportCallbackEXTImpl(VulkanInstanceImpl& instance, const vk::DebugReportCallbackCreateInfoEXT& createInfo,
                              const std::optional<vk::AllocationCallbacks>& allocator);

@@ -28,7 +28,7 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 
-class EventImpl : public VulkanObject<EventImpl> {
+class EventImpl : public VulkanObject, public std::enable_shared_from_this<EventImpl> {
  public:
   EventImpl(LogicalDeviceImpl& logicalDevice, const vk::EventCreateInfo& createInfo,
             const std::optional<vk::AllocationCallbacks>& allocator = {});

@@ -24,6 +24,7 @@
 #include "logi/instance/vulkan_instance_impl.hpp"
 #include "logi/memory/buffer.hpp"
 #include "logi/memory/image.hpp"
+#include "logi/memory/vma_buffer_impl.hpp"
 
 namespace logi {
 
@@ -72,6 +73,17 @@ MemoryAllocatorImpl::MemoryAllocatorImpl(LogicalDeviceImpl& logicalDevice, vk::D
   vmaCreateAllocator(&createInfo, &vma_);
 }
 
+const std::shared_ptr<VMABufferImpl>&
+  MemoryAllocatorImpl::createBuffer(const vk::BufferCreateInfo& bufferCreateInfo,
+                                    const VmaAllocationCreateInfo& allocationCreateInfo,
+                                    const std::optional<vk::AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<VMABufferImpl>::createObject(*this, bufferCreateInfo, allocationCreateInfo, allocator);
+}
+
+void MemoryAllocatorImpl::destroyBuffer(size_t id) {
+  VulkanObjectComposite<VMABufferImpl>::destroyObject(id);
+}
+
 VulkanInstanceImpl& MemoryAllocatorImpl::getInstance() const {
   return logicalDevice_.getInstance();
 }
@@ -88,7 +100,7 @@ const vk::DispatchLoaderDynamic& MemoryAllocatorImpl::getDispatcher() const {
   return logicalDevice_.getDispatcher();
 }
 
-VmaAllocator MemoryAllocatorImpl::getVmaAllocator() const {
+MemoryAllocatorImpl::operator const VmaAllocator&() const {
   return vma_;
 }
 
@@ -97,6 +109,7 @@ void MemoryAllocatorImpl::destroy() const {
 }
 
 void MemoryAllocatorImpl::free() {
+  VulkanObjectComposite<VMABufferImpl>::destroyAllObjects();
   vmaDestroyAllocator(vma_);
   VulkanObject::free();
 }

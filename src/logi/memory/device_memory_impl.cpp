@@ -77,7 +77,7 @@ DeviceMemoryImpl::operator const vk::DeviceMemory&() const {
 void DeviceMemoryImpl::free() {
   auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.freeMemory(vkDeviceMemory_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
-  VulkanObject<DeviceMemoryImpl>::free();
+  VulkanObject::free();
 }
 
 // endregion

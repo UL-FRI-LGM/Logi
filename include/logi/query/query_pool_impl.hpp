@@ -29,7 +29,7 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 
-class QueryPoolImpl : public VulkanObject<QueryPoolImpl> {
+class QueryPoolImpl : public VulkanObject, public std::enable_shared_from_this<QueryPoolImpl> {
  public:
   QueryPoolImpl(LogicalDeviceImpl& logicalDevice, const vk::QueryPoolCreateInfo& createInfo,
                 const std::optional<vk::AllocationCallbacks>& allocator = {});

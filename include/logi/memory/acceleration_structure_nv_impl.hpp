@@ -30,7 +30,8 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 
-class AccelerationStructureNVImpl : public VulkanObject<AccelerationStructureNVImpl> {
+class AccelerationStructureNVImpl : public VulkanObject,
+                                    public std::enable_shared_from_this<AccelerationStructureNVImpl> {
  public:
   AccelerationStructureNVImpl(LogicalDeviceImpl& logicalDevice, const vk::AccelerationStructureCreateInfoNV& createInfo,
                               const std::optional<vk::AllocationCallbacks>& allocator = {});

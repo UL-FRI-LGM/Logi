@@ -28,7 +28,7 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 
-class ObjectTableNVXImpl : public VulkanObject<ObjectTableNVXImpl> {
+class ObjectTableNVXImpl : public VulkanObject, public std::enable_shared_from_this<ObjectTableNVXImpl> {
  public:
   ObjectTableNVXImpl(LogicalDeviceImpl& logicalDevice, const vk::ObjectTableCreateInfoNVX& createInfo,
                      const std::optional<vk::AllocationCallbacks>& allocator = {});

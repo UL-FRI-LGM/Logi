@@ -30,7 +30,9 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class ImageImpl;
 
-class SwapchainKHRImpl : public VulkanObject<SwapchainKHRImpl>, public VulkanObjectComposite<ImageImpl> {
+class SwapchainKHRImpl : public VulkanObject,
+                         public std::enable_shared_from_this<SwapchainKHRImpl>,
+                         public VulkanObjectComposite<ImageImpl> {
  public:
   SwapchainKHRImpl(LogicalDeviceImpl& logicalDevice, const vk::SwapchainCreateInfoKHR& createInfo,
                    const std::optional<vk::AllocationCallbacks>& allocator = {});

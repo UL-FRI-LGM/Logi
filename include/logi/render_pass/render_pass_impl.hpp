@@ -28,7 +28,7 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 
-class RenderPassImpl : public VulkanObject<RenderPassImpl> {
+class RenderPassImpl : public VulkanObject, public std::enable_shared_from_this<RenderPassImpl> {
  public:
   RenderPassImpl(LogicalDeviceImpl& logicalDevice, const vk::RenderPassCreateInfo& createInfo,
                  const std::optional<vk::AllocationCallbacks>& allocator = {});

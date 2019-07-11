@@ -29,7 +29,7 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 
-class PipelineImpl : public VulkanObject<PipelineImpl> {
+class PipelineImpl : public VulkanObject, public std::enable_shared_from_this<PipelineImpl> {
  public:
   PipelineImpl(LogicalDeviceImpl& logicalDevice, const vk::Pipeline& vkPipeline,
                const std::optional<vk::AllocationCallbacks>& allocator = {});

@@ -28,7 +28,8 @@ class LogicalDeviceImpl;
 class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 
-class DescriptorUpdateTemplateImpl : public VulkanObject<DescriptorUpdateTemplateImpl> {
+class DescriptorUpdateTemplateImpl : public VulkanObject,
+                                     public std::enable_shared_from_this<DescriptorUpdateTemplateImpl> {
  public:
   DescriptorUpdateTemplateImpl(LogicalDeviceImpl& logicalDevice,
                                const vk::DescriptorUpdateTemplateCreateInfo& createInfo,

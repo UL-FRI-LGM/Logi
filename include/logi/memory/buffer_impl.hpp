@@ -31,7 +31,9 @@ class LogicalDeviceImpl;
 class BufferView;
 class BufferViewImpl;
 
-class BufferImpl : public VulkanObject<BufferImpl>, public VulkanObjectComposite<BufferViewImpl> {
+class BufferImpl : public VulkanObject,
+                   public std::enable_shared_from_this<BufferImpl>,
+                   public VulkanObjectComposite<BufferViewImpl> {
  public:
   BufferImpl(LogicalDeviceImpl& logicalDevice, const vk::BufferCreateInfo& bufferCreateInfo,
              const std::optional<vk::AllocationCallbacks>& allocator = {});
@@ -73,7 +75,7 @@ class BufferImpl : public VulkanObject<BufferImpl>, public VulkanObjectComposite
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
-  void destroy() const;
+  virtual void destroy() const;
 
   operator const vk::Buffer&() const;
 
@@ -82,7 +84,6 @@ class BufferImpl : public VulkanObject<BufferImpl>, public VulkanObjectComposite
 
   // endregion
 
- private:
   LogicalDeviceImpl& logicalDevice_;
   vk::Buffer vkBuffer_;
   std::optional<vk::AllocationCallbacks> allocator_;

@@ -180,6 +180,19 @@ void HelloTriangle::initialize() {
   createFrameBuffers();
   createGraphicalPipeline();
   recordCommandBuffers();
+
+  vk::BufferCreateInfo bufferInfo;
+  bufferInfo.size = 128;
+  bufferInfo.usage = vk::BufferUsageFlagBits::eUniformBuffer;
+
+  VmaAllocationCreateInfo allocInfo = {};
+  allocInfo.usage = VMA_MEMORY_USAGE_CPU_TO_GPU;
+
+  logi::MemoryAllocator allocator = logicalDevice_.createMemoryAllocator();
+  logi::Buffer buffer = allocator.createBuffer(bufferInfo, allocInfo);
+  logi::VMABuffer vmaBuffer = static_cast<logi::VMABuffer>(buffer);
+  std::vector<std::byte> data(64);
+  vmaBuffer.writeToBuffer(data.data(), 64, data.size());
 }
 
 void HelloTriangle::draw() {}

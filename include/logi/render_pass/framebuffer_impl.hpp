@@ -28,7 +28,7 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 
-class FramebufferImpl : public VulkanObject<FramebufferImpl> {
+class FramebufferImpl : public VulkanObject, public std::enable_shared_from_this<FramebufferImpl> {
  public:
   FramebufferImpl(LogicalDeviceImpl& logical_device, const vk::FramebufferCreateInfo& create_info,
                   const std::optional<vk::AllocationCallbacks>& allocator = {});

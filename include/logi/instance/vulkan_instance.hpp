@@ -29,6 +29,8 @@
 
 namespace logi {
 
+class SurfaceKHR;
+
 class VulkanInstance : public Handle<VulkanInstanceImpl> {
  public:
   using Handle::Handle;

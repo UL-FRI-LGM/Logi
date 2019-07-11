@@ -28,7 +28,7 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class DisplayKHRImpl;
 
-class DisplayModeKHRImpl : public VulkanObject<DisplayModeKHRImpl> {
+class DisplayModeKHRImpl : public VulkanObject, public std::enable_shared_from_this<DisplayModeKHRImpl> {
  public:
   DisplayModeKHRImpl(DisplayKHRImpl& display, const vk::DisplayModeCreateInfoKHR& createInfo,
                      const std::optional<vk::AllocationCallbacks>& allocator = {});

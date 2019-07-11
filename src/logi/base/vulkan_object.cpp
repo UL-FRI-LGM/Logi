@@ -26,4 +26,26 @@ size_t generateUniqueId() {
   return idGenerator++;
 }
 
+VulkanObject::VulkanObject(bool valid) : id_(generateUniqueId()), valid_(valid) {}
+
+void VulkanObject::free() {
+  valid_.store(false, std::memory_order::memory_order_relaxed);
+}
+
+size_t VulkanObject::id() const {
+  return id_;
+}
+
+VulkanObject::operator bool() const {
+  return valid_.load(std::memory_order::memory_order_relaxed);
+}
+
+bool VulkanObject::operator!() const {
+  return !valid_.load(std::memory_order::memory_order_relaxed);
+}
+
+bool VulkanObject::valid() const {
+  return valid_.load(std::memory_order::memory_order_relaxed);
+}
+
 } // namespace logi

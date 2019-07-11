@@ -32,7 +32,7 @@ class LogicalDeviceImpl;
 class MemoryAllocatorImpl;
 class ImageImpl;
 
-class ImageViewImpl : public VulkanObject<ImageViewImpl> {
+class ImageViewImpl : public VulkanObject, public std::enable_shared_from_this<ImageViewImpl> {
  public:
   ImageViewImpl(ImageImpl& image, const vk::ImageViewCreateFlags& flags, vk::ImageViewType viewType, vk::Format format,
                 const vk::ComponentMapping& components, const vk::ImageSubresourceRange& subresourceRange,

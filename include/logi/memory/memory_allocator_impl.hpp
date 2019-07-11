@@ -27,18 +27,24 @@ namespace logi {
 class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
-class BufferImpl;
-class Buffer;
-class ImageImpl;
-class Image;
+class VMABufferImpl;
+class VMAImageImpl;
 
-class MemoryAllocatorImpl : public VulkanObject<MemoryAllocatorImpl> {
+class MemoryAllocatorImpl : public VulkanObject,
+                            public std::enable_shared_from_this<MemoryAllocatorImpl>,
+                            public VulkanObjectComposite<VMABufferImpl> {
  public:
   explicit MemoryAllocatorImpl(LogicalDeviceImpl& logicalDevice, vk::DeviceSize preferredLargeHeapBlockSize = 0u,
                                uint32_t frameInUseCount = 0u, const std::vector<vk::DeviceSize>& heapSizeLimits = {},
                                const std::optional<vk::AllocationCallbacks>& allocator = {});
 
-  // region Vulkan Declarations
+  // region Sub handles
+
+  const std::shared_ptr<VMABufferImpl>& createBuffer(const vk::BufferCreateInfo& bufferCreateInfo,
+                                                     const VmaAllocationCreateInfo& allocationCreateInfo,
+                                                     const std::optional<vk::AllocationCallbacks>& allocator);
+
+  void destroyBuffer(size_t id);
 
   // endregion
 
@@ -52,7 +58,7 @@ class MemoryAllocatorImpl : public VulkanObject<MemoryAllocatorImpl> {
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
-  VmaAllocator getVmaAllocator() const;
+  operator const VmaAllocator&() const;
 
   void destroy() const;
 

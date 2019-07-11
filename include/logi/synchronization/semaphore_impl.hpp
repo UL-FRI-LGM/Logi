@@ -28,7 +28,7 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 
-class SemaphoreImpl : public VulkanObject<SemaphoreImpl> {
+class SemaphoreImpl : public VulkanObject, public std::enable_shared_from_this<SemaphoreImpl> {
  public:
   SemaphoreImpl(LogicalDeviceImpl& logicalDevice, const vk::SemaphoreCreateInfo& createInfo,
                 const std::optional<vk::AllocationCallbacks>& allocator = {});

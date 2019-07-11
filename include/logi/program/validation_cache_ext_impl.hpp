@@ -28,7 +28,7 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 
-class ValidationCacheEXTImpl : public VulkanObject<ValidationCacheEXTImpl> {
+class ValidationCacheEXTImpl : public VulkanObject, public std::enable_shared_from_this<ValidationCacheEXTImpl> {
  public:
   ValidationCacheEXTImpl(LogicalDeviceImpl& logicalDevice, const vk::ValidationCacheCreateInfoEXT& createInfo,
                          const std::optional<vk::AllocationCallbacks>& allocator = {});

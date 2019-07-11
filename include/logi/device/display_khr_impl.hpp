@@ -28,7 +28,7 @@ namespace logi {
 class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 
-class DisplayKHRImpl : public VulkanObject<DisplayKHRImpl> {
+class DisplayKHRImpl : public VulkanObject, public std::enable_shared_from_this<DisplayKHRImpl> {
  public:
   DisplayKHRImpl(PhysicalDeviceImpl& physicalDevice, const vk::DisplayPropertiesKHR& displayProperties);
 

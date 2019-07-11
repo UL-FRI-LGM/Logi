@@ -73,7 +73,7 @@ struct PushConstantInfo {
   uint32_t size;
 };
 
-class ShaderModuleImpl : public VulkanObject<ShaderModuleImpl> {
+class ShaderModuleImpl : public VulkanObject, public std::enable_shared_from_this<ShaderModuleImpl> {
  public:
   ShaderModuleImpl(LogicalDeviceImpl& logicalDevice, const vk::ShaderModuleCreateInfo& createInfo,
                    const std::optional<vk::AllocationCallbacks>& allocator = {});

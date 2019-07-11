@@ -36,6 +36,7 @@
 #include "logi/logi.hpp"
 #include "logi/memory/acceleration_structure_nv.hpp"
 #include "logi/memory/buffer.hpp"
+#include "logi/memory/vma_buffer.hpp"
 #include "logi/memory/buffer_view.hpp"
 #include "logi/memory/device_memory.hpp"
 #include "logi/memory/image.hpp"

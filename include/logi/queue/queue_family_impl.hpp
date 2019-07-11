@@ -30,7 +30,8 @@ class LogicalDeviceImpl;
 class QueueImpl;
 class CommandPoolImpl;
 
-class QueueFamilyImpl : public VulkanObject<QueueFamilyImpl>,
+class QueueFamilyImpl : public VulkanObject,
+                        public std::enable_shared_from_this<QueueFamilyImpl>,
                         public VulkanObjectComposite<QueueImpl>,
                         public VulkanObjectComposite<CommandPoolImpl> {
  public:

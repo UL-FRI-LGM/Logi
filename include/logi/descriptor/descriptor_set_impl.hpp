@@ -29,7 +29,7 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 
-class DescriptorSetImpl : public VulkanObject<DescriptorSetImpl> {
+class DescriptorSetImpl : public VulkanObject, public std::enable_shared_from_this<DescriptorSetImpl> {
  public:
   DescriptorSetImpl(DescriptorPoolImpl& descriptorPool, const vk::DescriptorSet& vkDescriptorSet);
 

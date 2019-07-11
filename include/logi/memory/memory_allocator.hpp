@@ -28,10 +28,17 @@ namespace logi {
 class VulkanInstance;
 class PhysicalDevice;
 class LogicalDevice;
+class VMABuffer;
 
 class MemoryAllocator : public Handle<MemoryAllocatorImpl> {
  public:
   using Handle::Handle;
+
+  VMABuffer createBuffer(const vk::BufferCreateInfo& bufferCreateInfo,
+                         const VmaAllocationCreateInfo& allocationCreateInfo,
+                         const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyBuffer(const VMABuffer& buffer);
 
   // region Logi Declarations
 
@@ -45,7 +52,7 @@ class MemoryAllocator : public Handle<MemoryAllocatorImpl> {
 
   void destroy() const;
 
-  VmaAllocator getVmaAllocator() const;
+  operator const VmaAllocator&() const;
 
   // endregion
 };

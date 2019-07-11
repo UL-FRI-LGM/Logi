@@ -30,7 +30,7 @@ class LogicalDeviceImpl;
 class QueueFamilyImpl;
 class CommandPoolImpl;
 
-class CommandBufferImpl : public VulkanObject<CommandBufferImpl> {
+class CommandBufferImpl : public VulkanObject, public std::enable_shared_from_this<CommandBufferImpl> {
  public:
   CommandBufferImpl(CommandPoolImpl& commandPool, const vk::CommandBuffer& vkCommandBuffer);
 

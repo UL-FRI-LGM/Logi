@@ -29,8 +29,7 @@ namespace logi {
 
 size_t generateUniqueId();
 
-template <typename SubType>
-class VulkanObject : public std::enable_shared_from_this<SubType> {
+class VulkanObject {
   template <typename T>
   friend class VulkanObjectComposite;
 
@@ -84,34 +83,6 @@ class VulkanObject : public std::enable_shared_from_this<SubType> {
    */
   std::atomic<bool> valid_;
 };
-
-template <typename SubType>
-VulkanObject<SubType>::VulkanObject(bool valid) : id_(generateUniqueId()), valid_(valid) {}
-
-template <typename SubType>
-void VulkanObject<SubType>::free() {
-  valid_.store(false, std::memory_order::memory_order_relaxed);
-}
-
-template <typename SubType>
-size_t VulkanObject<SubType>::id() const {
-  return id_;
-}
-
-template <typename SubType>
-VulkanObject<SubType>::operator bool() const {
-  return valid_.load(std::memory_order::memory_order_relaxed);
-}
-
-template <typename SubType>
-bool VulkanObject<SubType>::operator!() const {
-  return !valid_.load(std::memory_order::memory_order_relaxed);
-}
-
-template <typename SubType>
-bool VulkanObject<SubType>::valid() const {
-  return valid_.load(std::memory_order::memory_order_relaxed);
-}
 
 template <typename T>
 class VulkanObjectComposite {
@@ -199,7 +170,7 @@ template <typename T>
 void VulkanObjectComposite<T>::destroyObject(size_t id) {
   auto it = objects_.find(id);
   if (it != objects_.end()) {
-    static_cast<VulkanObject<T>*>(it->second.get())->free();
+    static_cast<VulkanObject*>(it->second.get())->free();
   }
 
   objects_.erase(it);
@@ -208,7 +179,7 @@ void VulkanObjectComposite<T>::destroyObject(size_t id) {
 template <typename T>
 void VulkanObjectComposite<T>::destroyAllObjects() {
   for (auto it = objects_.begin(); it != objects_.end(); it++) {
-    static_cast<VulkanObject<T>*>(it->second.get())->free();
+    static_cast<VulkanObject*>(it->second.get())->free();
   }
 
   objects_.clear();

@@ -28,7 +28,7 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 
-class PipelineCacheImpl : public VulkanObject<PipelineCacheImpl> {
+class PipelineCacheImpl : public VulkanObject, public std::enable_shared_from_this<PipelineCacheImpl> {
  public:
   PipelineCacheImpl(LogicalDeviceImpl& logicalDevice, const vk::PipelineCacheCreateInfo& createInfo,
                     const std::optional<vk::AllocationCallbacks>& allocator = {});

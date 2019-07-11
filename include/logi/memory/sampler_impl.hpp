@@ -28,7 +28,7 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 
-class SamplerImpl : public VulkanObject<SamplerImpl> {
+class SamplerImpl : public VulkanObject, public std::enable_shared_from_this<SamplerImpl> {
  public:
   SamplerImpl(LogicalDeviceImpl& logical_device, const vk::SamplerCreateInfo& create_info,
               const std::optional<vk::AllocationCallbacks>& allocator = {});

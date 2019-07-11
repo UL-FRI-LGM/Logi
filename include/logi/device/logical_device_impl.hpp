@@ -52,7 +52,8 @@ class DescriptorUpdateTemplateImpl;
 class BufferImpl;
 class ImageImpl;
 
-class LogicalDeviceImpl : public VulkanObject<LogicalDeviceImpl>,
+class LogicalDeviceImpl : public VulkanObject,
+                          public std::enable_shared_from_this<LogicalDeviceImpl>,
                           public VulkanObjectComposite<QueueFamilyImpl>,
                           public VulkanObjectComposite<BufferImpl>,
                           public VulkanObjectComposite<ImageImpl>,

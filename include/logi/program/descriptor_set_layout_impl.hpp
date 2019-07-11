@@ -28,7 +28,7 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 
-class DescriptorSetLayoutImpl : public VulkanObject<DescriptorSetLayoutImpl> {
+class DescriptorSetLayoutImpl : public VulkanObject, public std::enable_shared_from_this<DescriptorSetLayoutImpl> {
  public:
   DescriptorSetLayoutImpl(LogicalDeviceImpl& logicalDevice, const vk::DescriptorSetLayoutCreateInfo& createInfo,
                           const std::optional<vk::AllocationCallbacks>& allocator = {});

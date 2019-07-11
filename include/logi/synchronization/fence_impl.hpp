@@ -29,7 +29,7 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 
-class FenceImpl : public VulkanObject<FenceImpl> {
+class FenceImpl : public VulkanObject, public std::enable_shared_from_this<FenceImpl> {
  public:
   FenceImpl(LogicalDeviceImpl& logicalDevice, const vk::FenceCreateInfo& createInfo,
             const std::optional<vk::AllocationCallbacks>& allocator = {});
