@@ -261,16 +261,29 @@ void ExampleBase::buildSyncObjects() {
   }
 }
 
+void ExampleBase::recreateSwapChain() {
+  logicalDevice_.waitIdle();
+
+  initializeSwapChain();
+  onSwapChainRecreate();
+}
+
 void ExampleBase::drawFrame() {
   // Wait if drawing is still in progress.
   inFlightFences_[currentFrame_].wait(std::numeric_limits<uint64_t>::max());
-  inFlightFences_[currentFrame_].reset();
 
   // Acquire next image.
-  const uint32_t imageIndex =
-    swapchain_
-      .acquireNextImageKHR(std::numeric_limits<uint64_t>::max(), imageAvailableSemaphores_[currentFrame_], nullptr)
-      .value;
+  const vk::ResultValue<uint32_t> imageIndexResult = swapchain_.acquireNextImageKHR(
+    std::numeric_limits<uint64_t>::max(), imageAvailableSemaphores_[currentFrame_], nullptr);
+
+  if (imageIndexResult.result == vk::Result::eErrorOutOfDateKHR) {
+    recreateSwapChain();
+    return;
+  } else if (imageIndexResult.result != vk::Result::eSuccess && imageIndexResult.result != vk::Result::eSuboptimalKHR) {
+    throw std::runtime_error("Failed to acquire swap chain image!");
+  }
+
+  inFlightFences_[currentFrame_].reset();
 
   static const vk::PipelineStageFlags wait_stages{vk::PipelineStageFlagBits::eColorAttachmentOutput};
 
@@ -283,7 +296,8 @@ void ExampleBase::drawFrame() {
   submit_info.waitSemaphoreCount = 1u;
 
   submit_info.commandBufferCount = 1;
-  submit_info.pCommandBuffers = &static_cast<const vk::CommandBuffer&>(primaryGraphicsCmdBuffers_[imageIndex]);
+  submit_info.pCommandBuffers =
+    &static_cast<const vk::CommandBuffer&>(primaryGraphicsCmdBuffers_[imageIndexResult.value]);
 
   submit_info.signalSemaphoreCount = 1;
   submit_info.pSignalSemaphores = &static_cast<const vk::Semaphore&>(renderFinishedSemaphores_[currentFrame_]);
@@ -292,7 +306,7 @@ void ExampleBase::drawFrame() {
   // Present image.
   presentQueue_.presentKHR(
     vk::PresentInfoKHR(1, &static_cast<const vk::Semaphore&>(renderFinishedSemaphores_[currentFrame_]), 1,
-                       &static_cast<const vk::SwapchainKHR&>(swapchain_), &imageIndex));
+                       &static_cast<const vk::SwapchainKHR&>(swapchain_), &imageIndexResult.value));
   currentFrame_ = (currentFrame_ + 1) % config_.maxFramesInFlight;
 }
 

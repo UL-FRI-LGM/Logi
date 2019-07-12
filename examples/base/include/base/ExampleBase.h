@@ -52,7 +52,11 @@ class ExampleBase {
 
   void drawFrame();
 
+  void recreateSwapChain();
+
   virtual void initialize() = 0;
+
+  virtual void onSwapChainRecreate() = 0;
 
   virtual void draw() = 0;
 
