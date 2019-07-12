@@ -44,7 +44,8 @@ void Sampler::destroy() const {
 }
 
 Sampler::operator const vk::Sampler&() const {
-  return object_->operator const vk::Sampler&();
+  static vk::Sampler nullHandle(nullptr);
+return (object_) ? object_->operator const vk::Sampler&() : nullHandle;
 }
 
 } // namespace logi

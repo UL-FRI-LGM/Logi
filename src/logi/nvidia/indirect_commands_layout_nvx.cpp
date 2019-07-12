@@ -48,7 +48,8 @@ void IndirectCommandsLayoutNVX::destroy() const {
 }
 
 IndirectCommandsLayoutNVX::operator const vk::IndirectCommandsLayoutNVX&() const {
-  return object_->operator const vk::IndirectCommandsLayoutNVX&();
+  static vk::IndirectCommandsLayoutNVX nullHandle(nullptr);
+return (object_) ? object_->operator const vk::IndirectCommandsLayoutNVX&() : nullHandle;
 }
 
 // endregion

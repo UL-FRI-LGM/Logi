@@ -6,11 +6,15 @@ class HelloTriangle : public ExampleBase {
  protected:
   void createRenderPass();
 
+  void loadShaders();
+
   void createGraphicalPipeline();
 
   void createFrameBuffers();
 
   void recordCommandBuffers();
+
+  void onSwapChainRecreate() override;
 
   void initialize() override;
 
@@ -18,6 +22,8 @@ class HelloTriangle : public ExampleBase {
 
  private:
   logi::RenderPass renderPass_;
+  logi::ShaderModule vertexShader_;
+  logi::ShaderModule fragmentShader_;
   logi::PipelineLayout pipelineLayout_;
   logi::Pipeline pipeline_;
   std::vector<logi::Framebuffer> framebuffers_;

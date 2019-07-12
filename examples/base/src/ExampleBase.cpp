@@ -209,6 +209,8 @@ void ExampleBase::initializeSwapChain() {
     imageCount = capabilities.maxImageCount;
   }
 
+  logi::SwapchainKHR oldSwapchain = swapchain_;
+
   vk::SwapchainCreateInfoKHR createInfo = {};
   createInfo.surface = surface;
   createInfo.minImageCount = imageCount;
@@ -230,9 +232,16 @@ void ExampleBase::initializeSwapChain() {
   createInfo.compositeAlpha = vk::CompositeAlphaFlagBitsKHR::eOpaque;
   createInfo.presentMode = presentMode;
   createInfo.clipped = VK_TRUE;
-  createInfo.oldSwapchain = nullptr;
+  createInfo.oldSwapchain = static_cast<vk::SwapchainKHR>(oldSwapchain);
 
   swapchain_ = logicalDevice_.createSwapchainKHR(createInfo);
+  // Destroy old swapchain and clear the images.
+  if (oldSwapchain) {
+    oldSwapchain.destroy();
+  }
+  swapchainImages_.clear();
+  swapchainImageViews_.clear();
+
   swapchainImages_ = swapchain_.getImagesKHR();
   swapchainImageFormat_ = surfaceFormat.format;
   swapchainImageExtent_ = extent;
@@ -248,7 +257,7 @@ void ExampleBase::initializeSwapChain() {
 }
 
 void ExampleBase::initializeCommandBuffers() {
-  graphicsFamilyCmdPool_ = graphicsFamily_.createCommandPool();
+  graphicsFamilyCmdPool_ = graphicsFamily_.createCommandPool(vk::CommandPoolCreateFlagBits::eResetCommandBuffer);
   primaryGraphicsCmdBuffers_ =
     graphicsFamilyCmdPool_.allocateCommandBuffers(vk::CommandBufferLevel::ePrimary, swapchainImages_.size());
 }
@@ -269,45 +278,42 @@ void ExampleBase::recreateSwapChain() {
 }
 
 void ExampleBase::drawFrame() {
-  // Wait if drawing is still in progress.
-  inFlightFences_[currentFrame_].wait(std::numeric_limits<uint64_t>::max());
+  try {
+    // Wait if drawing is still in progress.
+    inFlightFences_[currentFrame_].wait(std::numeric_limits<uint64_t>::max());
 
-  // Acquire next image.
-  const vk::ResultValue<uint32_t> imageIndexResult = swapchain_.acquireNextImageKHR(
-    std::numeric_limits<uint64_t>::max(), imageAvailableSemaphores_[currentFrame_], nullptr);
+    // Acquire next image.
+    const uint32_t imageIndex =
+      swapchain_
+        .acquireNextImageKHR(std::numeric_limits<uint64_t>::max(), imageAvailableSemaphores_[currentFrame_], nullptr)
+        .value;
+    inFlightFences_[currentFrame_].reset();
 
-  if (imageIndexResult.result == vk::Result::eErrorOutOfDateKHR) {
+    static const vk::PipelineStageFlags wait_stages{vk::PipelineStageFlagBits::eColorAttachmentOutput};
+
+    // Example draw.
+    draw();
+
+    vk::SubmitInfo submit_info;
+    submit_info.pWaitDstStageMask = &wait_stages;
+    submit_info.pWaitSemaphores = &static_cast<const vk::Semaphore&>(imageAvailableSemaphores_[currentFrame_]);
+    submit_info.waitSemaphoreCount = 1u;
+
+    submit_info.commandBufferCount = 1;
+    submit_info.pCommandBuffers = &static_cast<const vk::CommandBuffer&>(primaryGraphicsCmdBuffers_[imageIndex]);
+
+    submit_info.signalSemaphoreCount = 1;
+    submit_info.pSignalSemaphores = &static_cast<const vk::Semaphore&>(renderFinishedSemaphores_[currentFrame_]);
+    graphicsQueue_.submit({submit_info}, inFlightFences_[currentFrame_]);
+
+    // Present image.
+    presentQueue_.presentKHR(
+      vk::PresentInfoKHR(1, &static_cast<const vk::Semaphore&>(renderFinishedSemaphores_[currentFrame_]), 1,
+                         &static_cast<const vk::SwapchainKHR&>(swapchain_), &imageIndex));
+    currentFrame_ = (currentFrame_ + 1) % config_.maxFramesInFlight;
+  } catch (const vk::OutOfDateKHRError&) {
     recreateSwapChain();
-    return;
-  } else if (imageIndexResult.result != vk::Result::eSuccess && imageIndexResult.result != vk::Result::eSuboptimalKHR) {
-    throw std::runtime_error("Failed to acquire swap chain image!");
   }
-
-  inFlightFences_[currentFrame_].reset();
-
-  static const vk::PipelineStageFlags wait_stages{vk::PipelineStageFlagBits::eColorAttachmentOutput};
-
-  // Example draw.
-  draw();
-
-  vk::SubmitInfo submit_info;
-  submit_info.pWaitDstStageMask = &wait_stages;
-  submit_info.pWaitSemaphores = &static_cast<const vk::Semaphore&>(imageAvailableSemaphores_[currentFrame_]);
-  submit_info.waitSemaphoreCount = 1u;
-
-  submit_info.commandBufferCount = 1;
-  submit_info.pCommandBuffers =
-    &static_cast<const vk::CommandBuffer&>(primaryGraphicsCmdBuffers_[imageIndexResult.value]);
-
-  submit_info.signalSemaphoreCount = 1;
-  submit_info.pSignalSemaphores = &static_cast<const vk::Semaphore&>(renderFinishedSemaphores_[currentFrame_]);
-  graphicsQueue_.submit({submit_info}, inFlightFences_[currentFrame_]);
-
-  // Present image.
-  presentQueue_.presentKHR(
-    vk::PresentInfoKHR(1, &static_cast<const vk::Semaphore&>(renderFinishedSemaphores_[currentFrame_]), 1,
-                       &static_cast<const vk::SwapchainKHR&>(swapchain_), &imageIndexResult.value));
-  currentFrame_ = (currentFrame_ + 1) % config_.maxFramesInFlight;
 }
 
 void ExampleBase::mainLoop() {

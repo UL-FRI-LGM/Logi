@@ -64,7 +64,8 @@ void ObjectTableNVX::destroy() const {
 }
 
 ObjectTableNVX::operator const vk::ObjectTableNVX&() const {
-  return object_->operator const vk::ObjectTableNVX&();
+  static vk::ObjectTableNVX nullHandle(nullptr);
+return (object_) ? object_->operator const vk::ObjectTableNVX&() : nullHandle;
 }
 
 // endregion

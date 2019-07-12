@@ -64,7 +64,8 @@ void DeviceMemory::destroy() const {
 }
 
 DeviceMemory::operator const vk::DeviceMemory&() const {
-  return object_->operator const vk::DeviceMemory&();
+  static vk::DeviceMemory nullHandle(nullptr);
+return (object_) ? object_->operator const vk::DeviceMemory&() : nullHandle;
 }
 
 // endregion

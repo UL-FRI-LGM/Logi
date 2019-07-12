@@ -278,7 +278,8 @@ const vk::DispatchLoaderDynamic& PhysicalDevice::getDispatcher() const {
   return object_->getDispatcher();
 }
 PhysicalDevice::operator const vk::PhysicalDevice&() const {
-  return object_->operator const vk::PhysicalDevice&();
+  static vk::PhysicalDevice nullHandle(nullptr);
+return (object_) ? object_->operator const vk::PhysicalDevice&() : nullHandle;
 }
 
 }

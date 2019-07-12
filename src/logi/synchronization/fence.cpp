@@ -96,7 +96,8 @@ void Fence::destroy() const {
 }
 
 Fence::operator const vk::Fence&() const {
-  return object_->operator const vk::Fence&();
+  static vk::Fence nullHandle(nullptr);
+  return (object_) ? object_->operator const vk::Fence&() : nullHandle;
 }
 
 } // namespace logi

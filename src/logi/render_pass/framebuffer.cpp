@@ -44,7 +44,8 @@ void Framebuffer::destroy() const {
 }
 
 Framebuffer::operator const vk::Framebuffer&() const {
-  return object_->operator const vk::Framebuffer&();
+  static vk::Framebuffer nullHandle(nullptr);
+  return (object_) ? object_->operator const vk::Framebuffer&() : nullHandle;
 }
 
 } // namespace logi

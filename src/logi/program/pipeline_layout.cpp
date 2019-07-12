@@ -44,7 +44,8 @@ void PipelineLayout::destroy() const {
 }
 
 PipelineLayout::operator const vk::PipelineLayout&() const {
-  return object_->operator const vk::PipelineLayout&();
+  static vk::PipelineLayout nullHandle(nullptr);
+  return (object_) ? object_->operator const vk::PipelineLayout&() : nullHandle;
 }
 
 } // namespace logi

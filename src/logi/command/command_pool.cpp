@@ -90,7 +90,8 @@ void CommandPool::destroy() const {
 }
 
 CommandPool::operator const vk::CommandPool&() const {
-  return object_->operator const vk::CommandPool&();
+  static vk::CommandPool nullHandle(nullptr);
+  return (object_) ? object_->operator const vk::CommandPool&() : nullHandle;
 }
 
 // endregion

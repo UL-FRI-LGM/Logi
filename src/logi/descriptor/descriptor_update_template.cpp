@@ -47,7 +47,8 @@ void DescriptorUpdateTemplate::destroy() const {
 }
 
 DescriptorUpdateTemplate::operator const vk::DescriptorUpdateTemplate&() const {
-  return object_->operator const vk::DescriptorUpdateTemplate&();
+  static vk::DescriptorUpdateTemplate nullHandle(nullptr);
+return (object_) ? object_->operator const vk::DescriptorUpdateTemplate&() : nullHandle;
 }
 
 // endregion

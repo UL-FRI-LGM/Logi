@@ -464,7 +464,8 @@ void LogicalDevice::destroy() const {
 }
 
 LogicalDevice::operator const vk::Device&() const {
-  return object_->operator const vk::Device&();
+  static vk::Device nullHandle(nullptr);
+return (object_) ? object_->operator const vk::Device&() : nullHandle;
 }
 
 // endregion

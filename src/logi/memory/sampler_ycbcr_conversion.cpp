@@ -44,7 +44,8 @@ void SamplerYcbcrConversion::destroy() const {
 }
 
 SamplerYcbcrConversion::operator const vk::SamplerYcbcrConversion&() const {
-  return object_->operator const vk::SamplerYcbcrConversion&();
+  static vk::SamplerYcbcrConversion nullHandle(nullptr);
+return (object_) ? object_->operator const vk::SamplerYcbcrConversion&() : nullHandle;
 }
 
 } // namespace logi

@@ -96,7 +96,7 @@ void SwapchainKHR::destroy() const {
 
 SwapchainKHR::operator const vk::SwapchainKHR&() const {
   static vk::SwapchainKHR nullHandle(nullptr);
-  return object_->operator const vk::SwapchainKHR&();
+  return (object_) ? object_->operator const vk::SwapchainKHR&() : nullHandle;
 }
 
 // endregion

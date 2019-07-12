@@ -75,7 +75,8 @@ void DescriptorPool::destroy() const {
 }
 
 DescriptorPool::operator const vk::DescriptorPool&() const {
-  return object_->operator const vk::DescriptorPool&();
+  static vk::DescriptorPool nullHandle(nullptr);
+return (object_) ? object_->operator const vk::DescriptorPool&() : nullHandle;
 }
 
 // endregion

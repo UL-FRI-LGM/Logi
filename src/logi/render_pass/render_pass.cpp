@@ -48,7 +48,8 @@ void RenderPass::destroy() const {
 }
 
 RenderPass::operator const vk::RenderPass&() const {
-  return object_->operator const vk::RenderPass&();
+  static vk::RenderPass nullHandle(nullptr);
+return (object_) ? object_->operator const vk::RenderPass&() : nullHandle;
 }
 
 } // namespace logi

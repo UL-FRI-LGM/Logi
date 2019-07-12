@@ -39,9 +39,9 @@ void HelloTriangle::createRenderPass() {
   renderPass_ = logicalDevice_.createRenderPass(renderPassCreateInfo);
 }
 
-void HelloTriangle::createGraphicalPipeline() {
-  logi::ShaderModule vertexShader = createShaderModule("./shaders/triangle.vert.spv");
-  logi::ShaderModule fragmentShader = createShaderModule("./shaders/triangle.frag.spv");
+void HelloTriangle::loadShaders() {
+  vertexShader_ = createShaderModule("./shaders/triangle.vert.spv");
+  fragmentShader_ = createShaderModule("./shaders/triangle.frag.spv");
 
   // Pipeline layout
   vk::PipelineLayoutCreateInfo pipelineLayoutInfo;
@@ -49,16 +49,23 @@ void HelloTriangle::createGraphicalPipeline() {
   pipelineLayoutInfo.pushConstantRangeCount = 0;
 
   pipelineLayout_ = logicalDevice_.createPipelineLayout(pipelineLayoutInfo);
+}
+
+void HelloTriangle::createGraphicalPipeline() {
+  // Destroy existing pipeline.
+  if (pipeline_) {
+    pipeline_.destroy();
+  }
 
   // Pipeline
   vk::PipelineShaderStageCreateInfo vertShaderStageInfo;
   vertShaderStageInfo.stage = vk::ShaderStageFlagBits::eVertex;
-  vertShaderStageInfo.module = vertexShader;
+  vertShaderStageInfo.module = vertexShader_;
   vertShaderStageInfo.pName = "main";
 
   vk::PipelineShaderStageCreateInfo fragShaderStageInfo;
   fragShaderStageInfo.stage = vk::ShaderStageFlagBits::eFragment;
-  fragShaderStageInfo.module = fragmentShader;
+  fragShaderStageInfo.module = fragmentShader_;
   fragShaderStageInfo.pName = "main";
 
   vk::PipelineShaderStageCreateInfo shaderStages[] = {vertShaderStageInfo, fragShaderStageInfo};
@@ -132,11 +139,16 @@ void HelloTriangle::createGraphicalPipeline() {
   pipelineInfo.subpass = 0;
 
   pipeline_ = logicalDevice_.createGraphicsPipeline(pipelineInfo);
-  vertexShader.destroy();
-  fragmentShader.destroy();
 }
 
 void HelloTriangle::createFrameBuffers() {
+  // Destroy previous framebuffers.
+  for (const auto& framebuffer : framebuffers_) {
+    framebuffer.destroy();
+  }
+  framebuffers_.clear();
+
+  // Create new framebuffers.
   for (const auto& imageView : swapchainImageViews_) {
     vk::FramebufferCreateInfo createInfo;
     createInfo.renderPass = renderPass_;
@@ -151,6 +163,11 @@ void HelloTriangle::createFrameBuffers() {
 }
 
 void HelloTriangle::recordCommandBuffers() {
+  // Destroy old command buffers.
+  for (const auto& cmdBuffer : primaryGraphicsCmdBuffers_) {
+    cmdBuffer.reset();
+  }
+
   for (size_t i = 0; i < primaryGraphicsCmdBuffers_.size(); i++) {
     vk::CommandBufferBeginInfo beginInfo = {};
     beginInfo.flags = vk::CommandBufferUsageFlagBits::eSimultaneousUse;
@@ -175,9 +192,16 @@ void HelloTriangle::recordCommandBuffers() {
   }
 }
 
+void HelloTriangle::onSwapChainRecreate() {
+  createFrameBuffers();
+  createGraphicalPipeline();
+  recordCommandBuffers();
+}
+
 void HelloTriangle::initialize() {
   createRenderPass();
   createFrameBuffers();
+  loadShaders();
   createGraphicalPipeline();
   recordCommandBuffers();
 }
