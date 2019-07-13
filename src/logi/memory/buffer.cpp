@@ -87,7 +87,8 @@ void Buffer::destroy() const {
 }
 
 Buffer::operator const vk::Buffer&() const {
-  return object_->operator const vk::Buffer&();
+  static vk::Buffer nullHandle(nullptr);
+return (object_) ? object_->operator const vk::Buffer&() : nullHandle;
 }
 
 }

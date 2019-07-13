@@ -60,7 +60,8 @@ void Pipeline::destroy() const {
 }
 
 Pipeline::operator const vk::Pipeline&() const {
-  return object_->operator const vk::Pipeline&();
+  static vk::Pipeline nullHandle(nullptr);
+return (object_) ? object_->operator const vk::Pipeline&() : nullHandle;
 }
 
 // endregion

@@ -167,7 +167,8 @@ const vk::DispatchLoaderDynamic& VulkanInstance::getDispatcher() const {
 }
 
 VulkanInstance::operator const vk::Instance&() const {
-  return object_->operator const vk::Instance&();
+  static vk::Instance nullHandle(nullptr);
+return (object_) ? object_->operator const vk::Instance&() : nullHandle;
 }
 
 void VulkanInstance::destroy() const {

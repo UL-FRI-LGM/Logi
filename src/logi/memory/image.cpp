@@ -92,7 +92,8 @@ void Image::destroy() const {
 }
 
 Image::operator const vk::Image&() const {
-  return object_->operator const vk::Image&();
+  static vk::Image nullHandle(nullptr);
+return (object_) ? object_->operator const vk::Image&() : nullHandle;
 }
 
 vk::ResultValueType<void>::type Image::bindMemory(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset) const {

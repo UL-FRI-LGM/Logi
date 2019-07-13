@@ -50,7 +50,8 @@ void BufferView::destroy() const {
 }
 
 BufferView::operator const vk::BufferView&() const {
-  return object_->operator const vk::BufferView&();
+  static vk::BufferView nullHandle(nullptr);
+  return (object_) ? object_->operator const vk::BufferView&() : nullHandle;
 }
 
 } // namespace logi

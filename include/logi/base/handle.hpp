@@ -79,7 +79,7 @@ size_t Handle<T>::id() const {
 
 template <typename T>
 Handle<T>::operator bool() const {
-  return !object_ || object_->valid();
+  return object_ && object_->valid();
 }
 
 template <typename T>

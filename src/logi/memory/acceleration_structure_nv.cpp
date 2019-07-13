@@ -61,7 +61,8 @@ void AccelerationStructureNV::destroy() const {
 }
 
 AccelerationStructureNV::operator const vk::AccelerationStructureNV&() const {
-  return object_->operator const vk::AccelerationStructureNV&();
+  static vk::AccelerationStructureNV nullHandle(nullptr);
+return (object_) ? object_->operator const vk::AccelerationStructureNV&() : nullHandle;
 }
 
 // endregion

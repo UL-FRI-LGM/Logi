@@ -55,7 +55,8 @@ void ImageView::destroy() const {
 }
 
 ImageView::operator const vk::ImageView&() const {
-  return object_->operator const vk::ImageView&();
+  static vk::ImageView nullHandle(nullptr);
+return (object_) ? object_->operator const vk::ImageView&() : nullHandle;
 }
 
 }

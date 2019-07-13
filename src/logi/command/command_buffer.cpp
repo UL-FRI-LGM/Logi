@@ -506,7 +506,8 @@ void CommandBuffer::destroy() const {
 }
 
 CommandBuffer::operator const vk::CommandBuffer&() const {
-  return object_->operator const vk::CommandBuffer&();
+  static vk::CommandBuffer nullHandle(nullptr);
+return (object_) ? object_->operator const vk::CommandBuffer&() : nullHandle;
 }
 
 // endregion

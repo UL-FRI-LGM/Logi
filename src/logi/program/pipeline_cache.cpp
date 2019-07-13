@@ -53,7 +53,8 @@ void PipelineCache::destroy() const {
 }
 
 PipelineCache::operator const vk::PipelineCache&() const {
-  return object_->operator const vk::PipelineCache&();
+  static vk::PipelineCache nullHandle(nullptr);
+return (object_) ? object_->operator const vk::PipelineCache&() : nullHandle;
 }
 
 } // namespace logi

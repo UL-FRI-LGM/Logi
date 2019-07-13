@@ -59,7 +59,8 @@ void DescriptorSet::destroy() const {
 }
 
 DescriptorSet::operator const vk::DescriptorSet&() const {
-  return object_->operator const vk::DescriptorSet&();
+  static vk::DescriptorSet nullHandle(nullptr);
+return (object_) ? object_->operator const vk::DescriptorSet&() : nullHandle;
 }
 
 // endregion

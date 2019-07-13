@@ -50,7 +50,8 @@ void QueryPool::destroy() const {
 }
 
 QueryPool::operator const vk::QueryPool&() const {
-  return object_->operator const vk::QueryPool&();
+  static vk::QueryPool nullHandle(nullptr);
+return (object_) ? object_->operator const vk::QueryPool&() : nullHandle;
 }
 
 } // namespace logi
