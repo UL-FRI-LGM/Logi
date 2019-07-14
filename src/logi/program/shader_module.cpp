@@ -76,11 +76,30 @@ ShaderStage::ShaderStage(ShaderModule shader, std::string entryPoint)
   : shader(std::move(shader)), entryPoint(std::move(entryPoint)) {}
 
 /*
-const std::vector<std::vector<DescriptorBindingReflectionInfo>>&
+std::vector<std::vector<DescriptorBindingReflectionInfo>>
 reflectDescriptorSets(const std::vector<ShaderStage>& stages) {
-if (stages.size())
-}*/
+if (stages.empty()) {
+  return {};
+}
 
-// const std::vector<PushConstantReflectionInfo>& reflectPushConstants(const std::vector<ShaderStage>& stages) {}
+std::vector<std::vector<DescriptorBindingReflectionInfo>> descSetInfo =
+  stages[0].shader.getDescriptorSetReflectionInfo(stages[0].entryPoint);
 
+for (size_t i = 1; i < stages.size(); i++) {
+  const std::vector<std::vector<DescriptorBindingReflectionInfo>>& stageDescSetInfo =
+stages[i].shader.getDescriptorSetReflectionInfo(stages[i].entryPoint);
+
+  for (size_t j = 0; j < stageDescSetInfo.size(); j++) {
+    for (size_t k = 0; k < stageDescSetInfo[j].size(); k++) {
+
+    }
+  }
+
+}
+
+return descSetInfo;
+}
+
+std::vector<PushConstantReflectionInfo> reflectPushConstants(const std::vector<ShaderStage>& stages) {}
+*/
 }

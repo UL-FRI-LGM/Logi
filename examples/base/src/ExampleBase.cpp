@@ -1,9 +1,12 @@
 #include "base/ExampleBase.h"
+#include <base/ExampleBase.h>
+#include <glm/gtx/string_cast.hpp>
 
 ExampleBase::ExampleBase(const ExampleConfiguration& config) : config_(config) {}
 
 void ExampleBase::run() {
   initWindow();
+  initInput();
   createInstance();
   initSurface();
   selectDevice();
@@ -24,6 +27,48 @@ VkBool32 ExampleBase::debugCallback(VkDebugReportFlagsEXT flags, VkDebugReportOb
 
 void ExampleBase::initWindow() {
   window = GLFWManager::instance().createWindow(config_.windowTitle, config_.windowWidth, config_.windowHeight);
+}
+
+void ExampleBase::initInput() {
+  window.setOnScrollCallback("onScroll", [this](Window, double, double yOffset) {
+    zoom += 0.5 * yOffset;
+    viewChanged = true;
+  });
+
+  window.setOnMouseButtonCallback("onClick", [this](Window, int32_t button, int32_t action, int32_t) {
+    switch (button) {
+      case GLFW_MOUSE_BUTTON_LEFT:
+        mouseButtons.left = action;
+        break;
+      case GLFW_MOUSE_BUTTON_RIGHT:
+        mouseButtons.right = action;
+        break;
+      case GLFW_MOUSE_BUTTON_MIDDLE:
+        mouseButtons.middle = action;
+        break;
+      default:
+        return;
+    }
+  });
+
+  window.setOnCursorMoveCallback("onCursorMove", [this](Window, double xPos, double yPos) {
+    glm::vec2 newPos = glm::vec2(xPos, yPos);
+    glm::vec2 dPos = newPos - mousePos;
+    mousePos = newPos;
+
+    // Apply rotation if right button is pressed.
+    if (mouseButtons.right) {
+      rotation.x += dPos.y * 1.25f;
+      rotation.y += dPos.x * 1.25f;
+      viewChanged = true;
+    }
+
+    if (mouseButtons.left) {
+      cameraPos.x += dPos.x * 0.01f;
+      cameraPos.y += dPos.y * 0.01f;
+      viewChanged = true;
+    }
+  });
 }
 
 void ExampleBase::createInstance() {
@@ -270,6 +315,8 @@ void ExampleBase::buildSyncObjects() {
   }
 }
 
+void ExampleBase::onViewChanged() {}
+
 void ExampleBase::recreateSwapChain() {
   logicalDevice_.waitIdle();
 
@@ -313,6 +360,12 @@ void ExampleBase::drawFrame() {
     currentFrame_ = (currentFrame_ + 1) % config_.maxFramesInFlight;
   } catch (const vk::OutOfDateKHRError&) {
     recreateSwapChain();
+  }
+
+  // Notify if view changed.
+  if (viewChanged) {
+    onViewChanged();
+    viewChanged = false;
   }
 }
 

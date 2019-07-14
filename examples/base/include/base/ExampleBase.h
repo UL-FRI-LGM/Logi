@@ -2,15 +2,16 @@
 #define BASE_EXAMPLE_BASE_H
 
 #define GLFW_INCLUDE_VULKAN
-#include <base/GLFWManager.h>
+#include <cppglfw/cpp_glfw.h>
 #include <fstream>
+#include <glm/glm.hpp>
 #include <iostream>
 #include "logi/logi.hpp"
 
 struct ExampleConfiguration {
   std::string windowTitle = "Example";
-  int32_t windowWidth = 800;
-  int32_t windowHeight = 600;
+  int32_t windowWidth = 1280;
+  int32_t windowHeight = 720;
   size_t maxFramesInFlight = 2u;
   std::vector<const char*> instanceExtensions;
   std::vector<const char*> deviceExtensions;
@@ -29,6 +30,8 @@ class ExampleBase {
                                                       const char* layer_prefix, const char* msg, void* user_data);
 
   void initWindow();
+
+  void initInput();
 
   void createInstance();
 
@@ -55,6 +58,8 @@ class ExampleBase {
   void recreateSwapChain();
 
   virtual void initialize() = 0;
+
+  virtual void onViewChanged();
 
   virtual void onSwapChainRecreate() = 0;
 
@@ -93,6 +98,19 @@ class ExampleBase {
   std::vector<logi::Fence> inFlightFences_;
 
   ExampleConfiguration config_;
+
+  struct {
+    bool left = false;
+    bool right = false;
+    bool middle = false;
+  } mouseButtons;
+  glm::vec2 mousePos;
+
+  glm::vec3 rotation = glm::vec3();
+  glm::vec3 cameraPos = glm::vec3();
+  float zoom = 0;
+
+  bool viewChanged = false;
 };
 
 #endif

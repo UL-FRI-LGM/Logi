@@ -71,10 +71,9 @@ struct ShaderStage {
 };
 
 /*
-const std::vector<std::vector<DescriptorBindingReflectionInfo>>&
-  reflectDescriptorSets(const std::vector<ShaderStage>& stages);
+std::vector<std::vector<DescriptorBindingReflectionInfo>> reflectDescriptorSets(const std::vector<ShaderStage>& stages);
 
-const std::vector<PushConstantReflectionInfo>& reflectPushConstants(const std::vector<ShaderStage>& stages);
+std::vector<PushConstantReflectionInfo> reflectPushConstants(const std::vector<ShaderStage>& stages);
 */
 
 } // namespace logi

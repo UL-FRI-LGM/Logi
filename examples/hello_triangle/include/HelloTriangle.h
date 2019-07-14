@@ -14,6 +14,8 @@ class HelloTriangle : public ExampleBase {
 
   void allocateBuffers();
 
+  void updateMatrixBuffers();
+
   void initializeDescriptorSets();
 
   void createRenderPass();
@@ -23,6 +25,8 @@ class HelloTriangle : public ExampleBase {
   void createFrameBuffers();
 
   void recordCommandBuffers();
+
+  void onViewChanged() override;
 
   void onSwapChainRecreate() override;
 

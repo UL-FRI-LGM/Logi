@@ -1,4 +1,8 @@
 #include "HelloTriangle.h"
+#include <HelloTriangle.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 void HelloTriangle::loadShaders() {
   vertexShader_ = createShaderModule("./shaders/triangle.vert.spv");
@@ -53,7 +57,25 @@ void HelloTriangle::allocateBuffers() {
 
   for (size_t i = 0; i < swapchainImages_.size(); i++) {
     matricesUBOBuffers_.emplace_back(allocator_.createBuffer(matricesBufferInfo, allocationInfo));
-    matricesUBOBuffers_.back().writeToBuffer(&uboMatrices, sizeof(uboMatrices));
+  }
+
+  updateMatrixBuffers();
+}
+
+void HelloTriangle::updateMatrixBuffers() {
+  // Update matrices
+  uboMatrices.projectionMatrix = glm::perspective(
+    glm::radians(60.0f), (float) swapchainImageExtent_.width / (float) swapchainImageExtent_.height, 0.1f, 256.0f);
+
+  uboMatrices.viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(cameraPos.x, cameraPos.y, zoom));
+
+  uboMatrices.modelMatrix = glm::mat4(1.0f);
+  uboMatrices.modelMatrix = glm::rotate(uboMatrices.modelMatrix, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+  uboMatrices.modelMatrix = glm::rotate(uboMatrices.modelMatrix, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+  uboMatrices.modelMatrix = glm::rotate(uboMatrices.modelMatrix, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+
+  for (const auto& buffer : matricesUBOBuffers_) {
+    buffer.writeToBuffer(&uboMatrices, sizeof(uboMatrices));
   }
 }
 
@@ -196,7 +218,7 @@ void HelloTriangle::createGraphicalPipeline() {
   rasterizer.rasterizerDiscardEnable = VK_FALSE;
   rasterizer.polygonMode = vk::PolygonMode::eFill;
   rasterizer.lineWidth = 1.0f;
-  rasterizer.cullMode = vk::CullModeFlagBits::eBack;
+  rasterizer.cullMode = vk::CullModeFlagBits::eNone;
   rasterizer.frontFace = vk::FrontFace::eClockwise;
   rasterizer.depthBiasEnable = VK_FALSE;
 
@@ -293,6 +315,10 @@ void HelloTriangle::recordCommandBuffers() {
   }
 }
 
+void HelloTriangle::onViewChanged() {
+  updateMatrixBuffers();
+}
+
 void HelloTriangle::onSwapChainRecreate() {
   createFrameBuffers();
   createGraphicalPipeline();
@@ -300,6 +326,8 @@ void HelloTriangle::onSwapChainRecreate() {
 }
 
 void HelloTriangle::initialize() {
+  zoom = -2.5f;
+
   loadShaders();
   allocateBuffers();
   initializeDescriptorSets();
