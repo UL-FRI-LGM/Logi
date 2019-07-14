@@ -79,7 +79,7 @@ class ExampleBase {
 
   // Swapchain data.
   logi::SwapchainKHR swapchain_;
-  std::vector<logi::Image> swapchainImages_;
+  std::vector<logi::SwapchainImage> swapchainImages_;
   std::vector<logi::ImageView> swapchainImageViews_;
   vk::Extent2D swapchainImageExtent_;
   vk::Format swapchainImageFormat_;

@@ -28,11 +28,11 @@ namespace logi {
 class LogicalDeviceImpl;
 class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
-class ImageImpl;
+class SwapchainImageImpl;
 
 class SwapchainKHRImpl : public VulkanObject,
                          public std::enable_shared_from_this<SwapchainKHRImpl>,
-                         public VulkanObjectComposite<ImageImpl> {
+                         public VulkanObjectComposite<SwapchainImageImpl> {
  public:
   SwapchainKHRImpl(LogicalDeviceImpl& logicalDevice, const vk::SwapchainCreateInfoKHR& createInfo,
                    const std::optional<vk::AllocationCallbacks>& allocator = {});
@@ -42,7 +42,7 @@ class SwapchainKHRImpl : public VulkanObject,
 
   // region Vulkan Declarations
 
-  const std::vector<std::shared_ptr<ImageImpl>>& getImagesKHR();
+  const std::vector<std::shared_ptr<SwapchainImageImpl>>& getImagesKHR();
 
   vk::ResultValue<uint32_t> acquireNextImageKHR(uint64_t timeout, const vk::Semaphore& semaphore,
                                                 const vk::Fence& fence) const;
@@ -95,7 +95,7 @@ class SwapchainKHRImpl : public VulkanObject,
   LogicalDeviceImpl& logicalDevice_;
   std::optional<vk::AllocationCallbacks> allocator_;
   vk::SwapchainKHR vkSwapchainKHR_;
-  std::vector<std::shared_ptr<ImageImpl>> images_;
+  std::vector<std::shared_ptr<SwapchainImageImpl>> images_;
 };
 
 } // namespace logi

@@ -30,7 +30,7 @@ class VulkanInstance;
 class PhysicalDevice;
 class LogicalDevice;
 class SwapchainKHRImpl;
-class Image;
+class SwapchainImage;
 
 class SwapchainKHR : public Handle<SwapchainKHRImpl> {
  public:
@@ -49,7 +49,7 @@ class SwapchainKHR : public Handle<SwapchainKHRImpl> {
                                                  const vk::Fence& fence, uint32_t deviceMask,
                                                  const ConstVkNextProxy<vk::AcquireNextImageInfoKHR>& next = {}) const;
 
-  std::vector<Image> getImagesKHR() const;
+  std::vector<SwapchainImage> getImagesKHR() const;
 
   vk::ResultValueType<uint64_t>::type getCounterEXT(vk::SurfaceCounterFlagBitsEXT counter) const;
 

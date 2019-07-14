@@ -16,39 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGI_MEMORY_VMA_BUFFER_HPP
-#define LOGI_MEMORY_VMA_BUFFER_HPP
-
-#include <vulkan/vulkan.hpp>
-#include "logi/base/handle.hpp"
-#include "logi/memory/buffer.hpp"
+#include "logi/swapchain/swapchain_image.hpp"
+#include "logi/swapchain/swapchain_image_impl.hpp"
+#include "logi/swapchain/swapchain_khr.hpp"
 
 namespace logi {
 
-class VMABufferImpl;
-class MemoryAllocator;
+SwapchainImage::SwapchainImage(const std::shared_ptr<SwapchainImageImpl>& swapchainImageImpl)
+  : Image(std::static_pointer_cast<ImageImpl>(swapchainImageImpl)) {}
 
-class VMABuffer : public Buffer {
- public:
-  explicit VMABuffer() = default;
+SwapchainImage::SwapchainImage(const Image& image) : Image(image) {
+  if (dynamic_cast<SwapchainImageImpl*>(object_.get()) == nullptr) {
+    object_.reset();
+  }
+}
 
-  explicit VMABuffer(const std::shared_ptr<VMABufferImpl>& vmaBufferImpl);
+SwapchainKHR SwapchainImage::getSwapchain() const {
+  return SwapchainKHR(static_cast<SwapchainImageImpl*>(object_.get())->getSwapchain().shared_from_this());
+}
 
-  explicit VMABuffer(const Buffer& buffer);
-
-  void* mapMemory() const;
-
-  void unmapMemory() const;
-
-  size_t size() const;
-
-  void writeToBuffer(const void* data, size_t size, size_t offset = 0) const;
-
-  bool isMappable() const;
-
-  MemoryAllocator getMemoryAllocator() const;
-};
-
-} // namespace logi
-
-#endif // LOGI_MEMORY_VMA_BUFFER_HPP
+}

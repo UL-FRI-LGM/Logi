@@ -42,7 +42,7 @@ void CommandBufferImpl::beginRenderPass(const vk::RenderPassBeginInfo& renderPas
 
 void CommandBufferImpl::bindDescriptorSets(vk::PipelineBindPoint pipelineBindPoint, vk::PipelineLayout layout,
                                            uint32_t firstSet, vk::ArrayProxy<const vk::DescriptorSet> descriptorSets,
-                                           vk::ArrayProxy<const uint32_t> dynamicOffsets) const {
+                                           vk::ArrayProxy<const uint32_t> dynamicOffsets = {}) const {
   vkCommandBuffer_.bindDescriptorSets(pipelineBindPoint, layout, firstSet, descriptorSets, dynamicOffsets,
                                       getDispatcher());
 }

@@ -25,6 +25,28 @@
 
 namespace logi {
 
+std::vector<std::string> ShaderModule::getEntryPointNames() const {
+  return object_->getEntryPointNames();
+}
+
+const EntryPointReflectionInfo& ShaderModule::getEntryPointReflectionInfo(const std::string& entryPointName) const {
+  return object_->getEntryPointReflectionInfo(entryPointName);
+}
+
+const std::vector<std::vector<DescriptorBindingReflectionInfo>>&
+  ShaderModule::getDescriptorSetReflectionInfo(const std::string& entryPointName) const {
+  return object_->getDescriptorSetReflectionInfo(entryPointName);
+}
+
+const std::vector<PushConstantReflectionInfo>&
+  ShaderModule::getPushConstantReflectionInfo(const std::string& entryPointName) const {
+  return object_->getPushConstantReflectionInfo(entryPointName);
+}
+const std::vector<VertexAttributeReflectionInfo>&
+  ShaderModule::getVertexAttributeReflectionInfo(const std::string& entryPointName) const {
+  return object_->getVertexAttributeReflectionInfo(entryPointName);
+}
+
 VulkanInstance ShaderModule::getInstance() const {
   return VulkanInstance(object_->getInstance().shared_from_this());
 }
@@ -47,7 +69,18 @@ void ShaderModule::destroy() const {
 
 ShaderModule::operator const vk::ShaderModule&() const {
   static vk::ShaderModule nullHandle(nullptr);
-return (object_) ? object_->operator const vk::ShaderModule&() : nullHandle;
+  return (object_) ? object_->operator const vk::ShaderModule&() : nullHandle;
 }
+
+ShaderStage::ShaderStage(ShaderModule shader, std::string entryPoint)
+  : shader(std::move(shader)), entryPoint(std::move(entryPoint)) {}
+
+/*
+const std::vector<std::vector<DescriptorBindingReflectionInfo>>&
+reflectDescriptorSets(const std::vector<ShaderStage>& stages) {
+if (stages.size())
+}*/
+
+// const std::vector<PushConstantReflectionInfo>& reflectPushConstants(const std::vector<ShaderStage>& stages) {}
 
 }

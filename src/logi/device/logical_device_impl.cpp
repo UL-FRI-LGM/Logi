@@ -433,7 +433,7 @@ std::vector<std::shared_ptr<QueueFamilyImpl>> LogicalDeviceImpl::enumerateQueueF
 
 void LogicalDeviceImpl::updateDescriptorSets(
   const vk::ArrayProxy<const vk::WriteDescriptorSet>& descriptorWrites,
-  const vk::ArrayProxy<const vk::CopyDescriptorSet>& descriptorCopies) const {
+  const vk::ArrayProxy<const vk::CopyDescriptorSet>& descriptorCopies = {}) const {
   vkDevice_.updateDescriptorSets(descriptorWrites, descriptorCopies, getDispatcher());
 }
 

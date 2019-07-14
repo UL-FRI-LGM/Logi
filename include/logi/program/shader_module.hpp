@@ -21,6 +21,7 @@
 
 #include <vulkan/vulkan.hpp>
 #include "logi/base/handle.hpp"
+#include "logi/program/shader_module_impl.hpp"
 
 namespace logi {
 
@@ -34,6 +35,18 @@ class ShaderModule : public Handle<ShaderModuleImpl> {
   using Handle::Handle;
 
   // region Logi Declarations
+
+  std::vector<std::string> getEntryPointNames() const;
+
+  const EntryPointReflectionInfo& getEntryPointReflectionInfo(const std::string& entryPointName) const;
+
+  const std::vector<std::vector<DescriptorBindingReflectionInfo>>&
+    getDescriptorSetReflectionInfo(const std::string& entryPointName) const;
+
+  const std::vector<PushConstantReflectionInfo>& getPushConstantReflectionInfo(const std::string& entryPointName) const;
+
+  const std::vector<VertexAttributeReflectionInfo>&
+    getVertexAttributeReflectionInfo(const std::string& entryPointName) const;
 
   VulkanInstance getInstance() const;
 
@@ -49,6 +62,20 @@ class ShaderModule : public Handle<ShaderModuleImpl> {
 
   // endregion
 };
+
+struct ShaderStage {
+  ShaderStage(ShaderModule shader, std::string entryPoint);
+
+  ShaderModule shader;
+  std::string entryPoint;
+};
+
+/*
+const std::vector<std::vector<DescriptorBindingReflectionInfo>>&
+  reflectDescriptorSets(const std::vector<ShaderStage>& stages);
+
+const std::vector<PushConstantReflectionInfo>& reflectPushConstants(const std::vector<ShaderStage>& stages);
+*/
 
 } // namespace logi
 

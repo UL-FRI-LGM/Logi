@@ -20,15 +20,15 @@
 #include "logi/device/logical_device.hpp"
 #include "logi/device/physical_device.hpp"
 #include "logi/instance/vulkan_instance.hpp"
-#include "logi/memory/image.hpp"
+#include "logi/swapchain/swapchain_image.hpp"
 
 namespace logi {
 
 // region Vulkan Definitions
 
-std::vector<Image> SwapchainKHR::getImagesKHR() const {
-  std::vector<std::shared_ptr<ImageImpl>> imageImpls = object_->getImagesKHR();
-  return std::vector<Image>(imageImpls.begin(), imageImpls.end());
+std::vector<SwapchainImage> SwapchainKHR::getImagesKHR() const {
+  std::vector<std::shared_ptr<SwapchainImageImpl>> imageImpls = object_->getImagesKHR();
+  return std::vector<SwapchainImage>(imageImpls.begin(), imageImpls.end());
 }
 
 #ifdef VK_USE_PLATFORM_WIN32_KHR

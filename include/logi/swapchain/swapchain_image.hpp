@@ -16,39 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGI_MEMORY_VMA_BUFFER_HPP
-#define LOGI_MEMORY_VMA_BUFFER_HPP
+#ifndef LOGI_SWAPCHAIN_SWAPCHAIN_IMAGE_HPP
+#define LOGI_SWAPCHAIN_SWAPCHAIN_IMAGE_HPP
 
 #include <vulkan/vulkan.hpp>
 #include "logi/base/handle.hpp"
-#include "logi/memory/buffer.hpp"
+#include "logi/memory/image.hpp"
 
 namespace logi {
 
-class VMABufferImpl;
-class MemoryAllocator;
+class SwapchainKHR;
+class SwapchainImageImpl;
 
-class VMABuffer : public Buffer {
+class SwapchainImage : public Image {
  public:
-  explicit VMABuffer() = default;
+  explicit SwapchainImage() = default;
 
-  explicit VMABuffer(const std::shared_ptr<VMABufferImpl>& vmaBufferImpl);
+  explicit SwapchainImage(const std::shared_ptr<SwapchainImageImpl>& swapchainImageImpl);
 
-  explicit VMABuffer(const Buffer& buffer);
+  explicit SwapchainImage(const Image& image);
 
-  void* mapMemory() const;
-
-  void unmapMemory() const;
-
-  size_t size() const;
-
-  void writeToBuffer(const void* data, size_t size, size_t offset = 0) const;
-
-  bool isMappable() const;
-
-  MemoryAllocator getMemoryAllocator() const;
+  SwapchainKHR getSwapchain() const;
 };
 
 } // namespace logi
 
-#endif // LOGI_MEMORY_VMA_BUFFER_HPP
+#endif // LOGI_SWAPCHAIN_SWAPCHAIN_IMAGE_HPP

@@ -21,6 +21,7 @@
 #include "logi/device/physical_device.hpp"
 #include "logi/instance/vulkan_instance.hpp"
 #include "logi/memory/vma_buffer.hpp"
+#include "logi/memory/vma_image.hpp"
 
 namespace logi {
 
@@ -32,6 +33,16 @@ VMABuffer MemoryAllocator::createBuffer(const vk::BufferCreateInfo& bufferCreate
 
 void MemoryAllocator::destroyBuffer(const VMABuffer& buffer) {
   object_->destroyBuffer(buffer.id());
+}
+
+VMAImage MemoryAllocator::createImage(const vk::ImageCreateInfo& imageCreateInfo,
+                                      const VmaAllocationCreateInfo& allocationCreateInfo,
+                                      const std::optional<vk::AllocationCallbacks>& allocator) {
+  return VMAImage(object_->createImage(imageCreateInfo, allocationCreateInfo, allocator));
+}
+
+void MemoryAllocator::destroyImage(const VMAImage& image) {
+  object_->destroyImage(image.id());
 }
 
 VulkanInstance MemoryAllocator::getInstance() const {

@@ -29,6 +29,7 @@ class VulkanInstance;
 class PhysicalDevice;
 class LogicalDevice;
 class VMABuffer;
+class VMAImage;
 
 class MemoryAllocator : public Handle<MemoryAllocatorImpl> {
  public:
@@ -39,6 +40,11 @@ class MemoryAllocator : public Handle<MemoryAllocatorImpl> {
                          const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyBuffer(const VMABuffer& buffer);
+
+  VMAImage createImage(const vk::ImageCreateInfo& imageCreateInfo, const VmaAllocationCreateInfo& allocationCreateInfo,
+                       const std::optional<vk::AllocationCallbacks>& allocator);
+
+  void destroyImage(const VMAImage& image);
 
   // region Logi Declarations
 

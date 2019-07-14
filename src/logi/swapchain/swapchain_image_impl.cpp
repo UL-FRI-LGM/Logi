@@ -16,39 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGI_MEMORY_VMA_BUFFER_HPP
-#define LOGI_MEMORY_VMA_BUFFER_HPP
-
-#include <vulkan/vulkan.hpp>
-#include "logi/base/handle.hpp"
-#include "logi/memory/buffer.hpp"
+#include "logi/swapchain/swapchain_image_impl.hpp"
+#include "logi/memory/image_view_impl.hpp"
+#include "logi/swapchain/swapchain_khr_impl.hpp"
 
 namespace logi {
 
-class VMABufferImpl;
-class MemoryAllocator;
+SwapchainImageImpl::SwapchainImageImpl(SwapchainKHRImpl& swapchain, const vk::Image& vkImage)
+  : ImageImpl(swapchain.getLogicalDevice(), vkImage), swapchain_(swapchain) {}
 
-class VMABuffer : public Buffer {
- public:
-  explicit VMABuffer() = default;
+SwapchainKHRImpl& SwapchainImageImpl::getSwapchain() const {
+  return swapchain_;
+}
 
-  explicit VMABuffer(const std::shared_ptr<VMABufferImpl>& vmaBufferImpl);
+void SwapchainImageImpl::destroy() const {
+  // Swapchain image is destroyed implicitly.
+}
 
-  explicit VMABuffer(const Buffer& buffer);
+void SwapchainImageImpl::free() {
+  VulkanObjectComposite<ImageViewImpl>::destroyAllObjects();
+  VulkanObject::free();
+}
 
-  void* mapMemory() const;
-
-  void unmapMemory() const;
-
-  size_t size() const;
-
-  void writeToBuffer(const void* data, size_t size, size_t offset = 0) const;
-
-  bool isMappable() const;
-
-  MemoryAllocator getMemoryAllocator() const;
-};
-
-} // namespace logi
-
-#endif // LOGI_MEMORY_VMA_BUFFER_HPP
+}

@@ -15,16 +15,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "logi/memory/vma_buffer_impl.hpp"
-#include <vk_mem_alloc.h>
+
+#include "logi/memory/vma_image_impl.hpp"
 #include "logi/memory/memory_allocator_impl.hpp"
 
 namespace logi {
 
-VMABufferImpl::VMABufferImpl(MemoryAllocatorImpl& memoryAllocator, const vk::BufferCreateInfo& bufferCreateInfo,
-                             const VmaAllocationCreateInfo& allocationCreateInfo,
-                             const std::optional<vk::AllocationCallbacks>& allocator)
-  : BufferImpl(memoryAllocator.getLogicalDevice(), bufferCreateInfo, allocator), memoryAllocator_(memoryAllocator),
+VMAImageImpl::VMAImageImpl(MemoryAllocatorImpl& memoryAllocator, const vk::ImageCreateInfo& bufferCreateInfo,
+                           const VmaAllocationCreateInfo& allocationCreateInfo,
+                           const std::optional<vk::AllocationCallbacks>& allocator)
+  : ImageImpl(memoryAllocator.getLogicalDevice(), bufferCreateInfo, allocator), memoryAllocator_(memoryAllocator),
     allocation_() {
   auto vmaAllocator = static_cast<const VmaAllocator&>(memoryAllocator_);
   vk::MemoryRequirements memoryRequirements = getMemoryRequirements();
@@ -38,34 +38,34 @@ VMABufferImpl::VMABufferImpl(MemoryAllocatorImpl& memoryAllocator, const vk::Buf
   }
 
   // Bind memory.
-  result = vmaBindBufferMemory(vmaAllocator, allocation_, static_cast<VkBuffer>(vkBuffer_));
+  result = vmaBindImageMemory(vmaAllocator, allocation_, static_cast<VkImage>(vkImage_));
 
   if (result != VK_SUCCESS) {
     throw BadAllocation("Failed to allocate memory for buffer.");
   }
 }
 
-void* VMABufferImpl::mapMemory() const {
+void* VMAImageImpl::mapMemory() const {
   void* mappedMemory;
   vmaMapMemory(static_cast<VmaAllocator>(memoryAllocator_), allocation_, &mappedMemory);
 
   return mappedMemory;
 }
 
-void VMABufferImpl::unmapMemory() const {
+void VMAImageImpl::unmapMemory() const {
   vmaUnmapMemory(static_cast<VmaAllocator>(memoryAllocator_), allocation_);
 }
 
-size_t VMABufferImpl::size() const {
+size_t VMAImageImpl::size() const {
   return allocationInfo_.size;
 }
 
-void VMABufferImpl::writeToBuffer(const void* data, size_t size, size_t offset) const {
+void VMAImageImpl::writeToImage(const void* data, size_t offset, size_t size) const {
   std::byte* mappedMemory = reinterpret_cast<std::byte*>(mapMemory()) + offset;
   std::memcpy(mappedMemory, data, size);
 }
 
-bool VMABufferImpl::isMappable() const {
+bool VMAImageImpl::isMappable() const {
   vk::MemoryPropertyFlags memFlags;
   vmaGetMemoryTypeProperties(static_cast<VmaAllocator>(memoryAllocator_), allocationInfo_.memoryType,
                              reinterpret_cast<VkMemoryPropertyFlags*>(&memFlags));
@@ -73,16 +73,16 @@ bool VMABufferImpl::isMappable() const {
   return static_cast<bool>(memFlags & vk::MemoryPropertyFlagBits::eHostVisible);
 }
 
-MemoryAllocatorImpl& VMABufferImpl::getMemoryAllocator() const {
+MemoryAllocatorImpl& VMAImageImpl::getMemoryAllocator() const {
   return memoryAllocator_;
 }
 
-void VMABufferImpl::destroy() const {
-  memoryAllocator_.destroyBuffer(id());
+void VMAImageImpl::destroy() const {
+  memoryAllocator_.destroyImage(id());
 }
 
-void VMABufferImpl::free() {
-  BufferImpl::free();
+void VMAImageImpl::free() {
+  ImageImpl::free();
   // Free memory.
   vmaFreeMemory(static_cast<VmaAllocator>(memoryAllocator_), allocation_);
 }

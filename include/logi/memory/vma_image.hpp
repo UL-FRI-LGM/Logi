@@ -16,25 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGI_MEMORY_VMA_BUFFER_HPP
-#define LOGI_MEMORY_VMA_BUFFER_HPP
+#ifndef LOGI_MEMORY_VMA_IMAGE_HPP
+#define LOGI_MEMORY_VMA_IMAGE_HPP
 
 #include <vulkan/vulkan.hpp>
 #include "logi/base/handle.hpp"
-#include "logi/memory/buffer.hpp"
+#include "logi/memory/image.hpp"
 
 namespace logi {
 
-class VMABufferImpl;
+class VMAImageImpl;
 class MemoryAllocator;
 
-class VMABuffer : public Buffer {
+class VMAImage : public Image {
  public:
-  explicit VMABuffer() = default;
+  explicit VMAImage() = default;
 
-  explicit VMABuffer(const std::shared_ptr<VMABufferImpl>& vmaBufferImpl);
+  explicit VMAImage(const std::shared_ptr<VMAImageImpl>& vmaImageImpl);
 
-  explicit VMABuffer(const Buffer& buffer);
+  explicit VMAImage(const Image& image);
 
   void* mapMemory() const;
 
@@ -42,7 +42,7 @@ class VMABuffer : public Buffer {
 
   size_t size() const;
 
-  void writeToBuffer(const void* data, size_t size, size_t offset = 0) const;
+  void writeToImage(const void* data, size_t offset, size_t size) const;
 
   bool isMappable() const;
 
@@ -51,4 +51,4 @@ class VMABuffer : public Buffer {
 
 } // namespace logi
 
-#endif // LOGI_MEMORY_VMA_BUFFER_HPP
+#endif // LOGI_MEMORY_VMA_IMAGE_HPP

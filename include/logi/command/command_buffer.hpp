@@ -46,7 +46,7 @@ class CommandBuffer : public Handle<CommandBufferImpl> {
 
   void bindDescriptorSets(vk::PipelineBindPoint pipelineBindPoint, vk::PipelineLayout layout, uint32_t firstSet,
                           vk::ArrayProxy<const vk::DescriptorSet> descriptorSets,
-                          vk::ArrayProxy<const uint32_t> dynamicOffsets) const;
+                          vk::ArrayProxy<const uint32_t> dynamicOffsets = {}) const;
 
   void bindIndexBuffer(vk::Buffer buffer, vk::DeviceSize offset, vk::IndexType indexType) const;
 

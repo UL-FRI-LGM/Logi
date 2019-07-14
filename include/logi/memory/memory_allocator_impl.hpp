@@ -32,7 +32,8 @@ class VMAImageImpl;
 
 class MemoryAllocatorImpl : public VulkanObject,
                             public std::enable_shared_from_this<MemoryAllocatorImpl>,
-                            public VulkanObjectComposite<VMABufferImpl> {
+                            public VulkanObjectComposite<VMABufferImpl>,
+                            public VulkanObjectComposite<VMAImageImpl> {
  public:
   explicit MemoryAllocatorImpl(LogicalDeviceImpl& logicalDevice, vk::DeviceSize preferredLargeHeapBlockSize = 0u,
                                uint32_t frameInUseCount = 0u, const std::vector<vk::DeviceSize>& heapSizeLimits = {},
@@ -45,6 +46,12 @@ class MemoryAllocatorImpl : public VulkanObject,
                                                      const std::optional<vk::AllocationCallbacks>& allocator);
 
   void destroyBuffer(size_t id);
+
+  const std::shared_ptr<VMAImageImpl>& createImage(const vk::ImageCreateInfo& imageCreateInfo,
+                                                   const VmaAllocationCreateInfo& allocationCreateInfo,
+                                                   const std::optional<vk::AllocationCallbacks>& allocator);
+
+  void destroyImage(size_t id);
 
   // endregion
 

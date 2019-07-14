@@ -18,7 +18,7 @@
 
 #include "logi/swapchain/swapchain_khr_impl.hpp"
 #include "logi/device/logical_device_impl.hpp"
-#include "logi/memory/image_impl.hpp"
+#include "logi/swapchain/swapchain_image_impl.hpp"
 
 namespace logi {
 
@@ -39,7 +39,7 @@ SwapchainKHRImpl::SwapchainKHRImpl(LogicalDeviceImpl& logicalDevice, const vk::S
 
 // region Vulkan Definitions
 
-const std::vector<std::shared_ptr<ImageImpl>>& SwapchainKHRImpl::getImagesKHR() {
+const std::vector<std::shared_ptr<SwapchainImageImpl>>& SwapchainKHRImpl::getImagesKHR() {
   return images_;
 }
 
@@ -129,7 +129,7 @@ SwapchainKHRImpl::operator const vk::SwapchainKHR&() const {
 }
 
 void SwapchainKHRImpl::free() {
-  VulkanObjectComposite<ImageImpl>::destroyAllObjects();
+  VulkanObjectComposite<SwapchainImageImpl>::destroyAllObjects();
   auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.destroy(vkSwapchainKHR_, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
   VulkanObject::free();
@@ -142,7 +142,7 @@ void SwapchainKHRImpl::acquireImageInternal() {
   images_.reserve(vkImages.size());
 
   for (const auto& vkImage : vkImages) {
-    images_.emplace_back(VulkanObjectComposite<ImageImpl>::createObject(*this, vkImage));
+    images_.emplace_back(VulkanObjectComposite<SwapchainImageImpl>::createObject(*this, vkImage));
   }
 }
 

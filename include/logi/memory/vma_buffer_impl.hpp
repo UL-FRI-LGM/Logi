@@ -20,9 +20,10 @@
 #define LOGI_MEMORY_VMA_BUFFER_IMPL_HPP
 
 #include "logi/memory/buffer_impl.hpp"
-#include "logi/memory/memory_allocator_impl.hpp"
 
 namespace logi {
+
+class MemoryAllocatorImpl;
 
 class VMABufferImpl : public BufferImpl {
  public:
@@ -36,7 +37,7 @@ class VMABufferImpl : public BufferImpl {
 
   size_t size() const;
 
-  void writeToBuffer(const void* data, size_t offset, size_t size) const;
+  void writeToBuffer(const void* data, size_t size, size_t offset = 0) const;
 
   bool isMappable() const;
 

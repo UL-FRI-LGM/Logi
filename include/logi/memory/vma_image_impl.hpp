@@ -16,25 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGI_MEMORY_VMA_BUFFER_HPP
-#define LOGI_MEMORY_VMA_BUFFER_HPP
+#ifndef LOGI_MEMORY_VMA_IMAGE_IMPL_HPP
+#define LOGI_MEMORY_VMA_IMAGE_IMPL_HPP
 
-#include <vulkan/vulkan.hpp>
-#include "logi/base/handle.hpp"
-#include "logi/memory/buffer.hpp"
+#include <vk_mem_alloc.h>
+#include "logi/memory/image_impl.hpp"
+
+class MemoryAllocator;
 
 namespace logi {
 
-class VMABufferImpl;
-class MemoryAllocator;
-
-class VMABuffer : public Buffer {
+class VMAImageImpl : public ImageImpl {
  public:
-  explicit VMABuffer() = default;
-
-  explicit VMABuffer(const std::shared_ptr<VMABufferImpl>& vmaBufferImpl);
-
-  explicit VMABuffer(const Buffer& buffer);
+  VMAImageImpl(MemoryAllocatorImpl& memoryAllocator, const vk::ImageCreateInfo& bufferCreateInfo,
+               const VmaAllocationCreateInfo& allocationCreateInfo,
+               const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void* mapMemory() const;
 
@@ -42,13 +38,27 @@ class VMABuffer : public Buffer {
 
   size_t size() const;
 
-  void writeToBuffer(const void* data, size_t size, size_t offset = 0) const;
+  void writeToImage(const void* data, size_t offset, size_t size) const;
 
   bool isMappable() const;
 
-  MemoryAllocator getMemoryAllocator() const;
+  // region Logi Declarations
+
+  MemoryAllocatorImpl& getMemoryAllocator() const;
+
+  void destroy() const override;
+
+ protected:
+  void free() override;
+
+  // endregion
+
+ private:
+  MemoryAllocatorImpl& memoryAllocator_;
+  VmaAllocation allocation_;
+  VmaAllocationInfo allocationInfo_;
 };
 
 } // namespace logi
 
-#endif // LOGI_MEMORY_VMA_BUFFER_HPP
+#endif // LOGI_MEMORY_VMA_IMAGE_IMPL_HPP

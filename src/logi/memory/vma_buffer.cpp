@@ -43,8 +43,8 @@ size_t VMABuffer::size() const {
   return static_cast<VMABufferImpl*>(object_.get())->size();
 }
 
-void VMABuffer::writeToBuffer(const void* data, size_t offset, size_t size) const {
-  static_cast<VMABufferImpl*>(object_.get())->writeToBuffer(data, offset, size);
+void VMABuffer::writeToBuffer(const void* data, size_t size, size_t offset) const {
+  static_cast<VMABufferImpl*>(object_.get())->writeToBuffer(data, size, offset);
 }
 
 bool VMABuffer::isMappable() const {

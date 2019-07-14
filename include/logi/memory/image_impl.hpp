@@ -30,7 +30,6 @@ class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 class MemoryAllocatorImpl;
 class ImageViewImpl;
-class SwapchainKHRImpl;
 
 class ImageImpl : public VulkanObject,
                   public std::enable_shared_from_this<ImageImpl>,
@@ -39,7 +38,7 @@ class ImageImpl : public VulkanObject,
   ImageImpl(LogicalDeviceImpl& logicalDevice, const vk::ImageCreateInfo& createInfo,
             const std::optional<vk::AllocationCallbacks>& allocator = {});
 
-  ImageImpl(SwapchainKHRImpl& swapchainKHR, const vk::Image& image);
+  ImageImpl(LogicalDeviceImpl& logicalDevice, const vk::Image& image);
 
   // region Vulkan Declarations
 
@@ -92,7 +91,7 @@ class ImageImpl : public VulkanObject,
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
-  void destroy() const;
+  virtual void destroy() const;
 
   operator const vk::Image&() const;
 
@@ -101,8 +100,8 @@ class ImageImpl : public VulkanObject,
 
   // endregion
 
- private:
-  std::variant<std::reference_wrapper<LogicalDeviceImpl>, std::reference_wrapper<SwapchainKHRImpl>> owner_;
+ protected:
+  LogicalDeviceImpl& logicalDevice_;
   vk::Image vkImage_;
   std::optional<vk::AllocationCallbacks> allocator_;
 };

@@ -1,5 +1,97 @@
 #include "HelloTriangle.h"
 
+void HelloTriangle::loadShaders() {
+  vertexShader_ = createShaderModule("./shaders/triangle.vert.spv");
+  fragmentShader_ = createShaderModule("./shaders/triangle.frag.spv");
+
+  std::vector<std::vector<logi::DescriptorBindingReflectionInfo>> descriptorBindingInfo =
+    vertexShader_.getDescriptorSetReflectionInfo("main");
+
+  assert(!descriptorBindingInfo.empty());
+
+  // Create descriptor set layout.
+  vk::DescriptorSetLayoutBinding descriptorSetLayoutBinding;
+  descriptorSetLayoutBinding.binding = descriptorBindingInfo[0][0].binding;
+  descriptorSetLayoutBinding.descriptorCount = descriptorBindingInfo[0][0].descriptorCount;
+  descriptorSetLayoutBinding.descriptorType = descriptorBindingInfo[0][0].descriptorType;
+  descriptorSetLayoutBinding.stageFlags = vk::ShaderStageFlagBits::eVertex;
+
+  vk::DescriptorSetLayoutCreateInfo descriptorSetLayoutInfo;
+  descriptorSetLayoutInfo.bindingCount = 1u;
+  descriptorSetLayoutInfo.pBindings = &descriptorSetLayoutBinding;
+
+  descriptorSetLayout_ = logicalDevice_.createDescriptorSetLayout(descriptorSetLayoutInfo);
+
+  // Pipeline layout
+  vk::PipelineLayoutCreateInfo pipelineLayoutInfo;
+  pipelineLayoutInfo.setLayoutCount = 1u;
+  pipelineLayoutInfo.pSetLayouts = &static_cast<const vk::DescriptorSetLayout&>(descriptorSetLayout_);
+
+  pipelineLayout_ = logicalDevice_.createPipelineLayout(pipelineLayoutInfo);
+}
+
+void HelloTriangle::allocateBuffers() {
+  allocator_ = logicalDevice_.createMemoryAllocator();
+
+  VmaAllocationCreateInfo allocationInfo = {};
+  allocationInfo.usage = VmaMemoryUsage::VMA_MEMORY_USAGE_CPU_TO_GPU;
+
+  // Create and fill vertex buffer.
+  vk::BufferCreateInfo vertexBufferInfo;
+  vertexBufferInfo.usage = vk::BufferUsageFlagBits::eVertexBuffer | vk::BufferUsageFlagBits::eTransferDst;
+  vertexBufferInfo.size = vertices.size() * sizeof(Vertex);
+  vertexBufferInfo.sharingMode = vk::SharingMode::eExclusive;
+
+  vertexBuffer_ = allocator_.createBuffer(vertexBufferInfo, allocationInfo);
+  vertexBuffer_.writeToBuffer(vertices.data(), vertices.size() * sizeof(Vertex));
+
+  // Create and init matrices UBO buffer.
+  vk::BufferCreateInfo matricesBufferInfo;
+  matricesBufferInfo.size = sizeof(uboMatrices);
+  matricesBufferInfo.usage = vk::BufferUsageFlagBits::eUniformBuffer | vk::BufferUsageFlagBits::eTransferDst;
+  matricesBufferInfo.sharingMode = vk::SharingMode::eExclusive;
+
+  for (size_t i = 0; i < swapchainImages_.size(); i++) {
+    matricesUBOBuffers_.emplace_back(allocator_.createBuffer(matricesBufferInfo, allocationInfo));
+    matricesUBOBuffers_.back().writeToBuffer(&uboMatrices, sizeof(uboMatrices));
+  }
+}
+
+void HelloTriangle::initializeDescriptorSets() {
+  // Create descriptor pool.
+  vk::DescriptorPoolSize poolSize;
+  poolSize.type = vk::DescriptorType::eUniformBuffer;
+  poolSize.descriptorCount = static_cast<uint32_t>(swapchainImages_.size());
+
+  vk::DescriptorPoolCreateInfo poolInfo;
+  poolInfo.pPoolSizes = &poolSize;
+  poolInfo.poolSizeCount = 1u;
+  poolInfo.maxSets = static_cast<uint32_t>(swapchainImages_.size());
+
+  descriptorPool_ = logicalDevice_.createDescriptorPool(poolInfo);
+
+  // Create descriptor sets.
+  std::vector<vk::DescriptorSetLayout> layouts(swapchainImages_.size(), descriptorSetLayout_);
+  descriptorSets_ = descriptorPool_.allocateDescriptorSets(layouts);
+
+  for (size_t i = 0; i < descriptorSets_.size(); i++) {
+    vk::DescriptorBufferInfo bufferInfo;
+    bufferInfo.buffer = matricesUBOBuffers_[i];
+    bufferInfo.offset = 0;
+    bufferInfo.range = sizeof(uboMatrices);
+
+    vk::WriteDescriptorSet descriptorWrite;
+    descriptorWrite.dstSet = descriptorSets_[i];
+    descriptorWrite.dstBinding = 0;
+    descriptorWrite.dstArrayElement = 0;
+    descriptorWrite.descriptorType = vk::DescriptorType::eUniformBuffer;
+    descriptorWrite.descriptorCount = 1;
+    descriptorWrite.pBufferInfo = &bufferInfo;
+
+    logicalDevice_.updateDescriptorSets(descriptorWrite);
+  }
+}
+
 void HelloTriangle::createRenderPass() {
   vk::AttachmentDescription colorAttachment;
   colorAttachment.format = swapchainImageFormat_;
@@ -39,18 +131,6 @@ void HelloTriangle::createRenderPass() {
   renderPass_ = logicalDevice_.createRenderPass(renderPassCreateInfo);
 }
 
-void HelloTriangle::loadShaders() {
-  vertexShader_ = createShaderModule("./shaders/triangle.vert.spv");
-  fragmentShader_ = createShaderModule("./shaders/triangle.frag.spv");
-
-  // Pipeline layout
-  vk::PipelineLayoutCreateInfo pipelineLayoutInfo;
-  pipelineLayoutInfo.setLayoutCount = 0;
-  pipelineLayoutInfo.pushConstantRangeCount = 0;
-
-  pipelineLayout_ = logicalDevice_.createPipelineLayout(pipelineLayoutInfo);
-}
-
 void HelloTriangle::createGraphicalPipeline() {
   // Destroy existing pipeline.
   if (pipeline_) {
@@ -70,9 +150,25 @@ void HelloTriangle::createGraphicalPipeline() {
 
   vk::PipelineShaderStageCreateInfo shaderStages[] = {vertShaderStageInfo, fragShaderStageInfo};
 
+  std::vector<logi::VertexAttributeReflectionInfo> vtxAttributeInfo =
+    vertexShader_.getVertexAttributeReflectionInfo("main");
+
+  std::vector<vk::VertexInputAttributeDescription> vtxAttributeDescriptions;
+  vtxAttributeDescriptions.reserve(vtxAttributeInfo.size());
+
+  uint32_t offset = 0u;
+  for (const auto& entry : vtxAttributeInfo) {
+    vtxAttributeDescriptions.emplace_back(entry.location, kVertexBinding, entry.format, offset);
+    offset += entry.elementSize;
+  }
+
+  vk::VertexInputBindingDescription vtxBindingDescription(kVertexBinding, sizeof(Vertex), vk::VertexInputRate::eVertex);
+
   vk::PipelineVertexInputStateCreateInfo vertexInputInfo;
-  vertexInputInfo.vertexBindingDescriptionCount = 0;
-  vertexInputInfo.vertexAttributeDescriptionCount = 0;
+  vertexInputInfo.pVertexBindingDescriptions = &vtxBindingDescription;
+  vertexInputInfo.vertexBindingDescriptionCount = 1u;
+  vertexInputInfo.pVertexAttributeDescriptions = vtxAttributeDescriptions.data();
+  vertexInputInfo.vertexAttributeDescriptionCount = vtxAttributeDescriptions.size();
 
   vk::PipelineInputAssemblyStateCreateInfo inputAssembly;
   inputAssembly.topology = vk::PrimitiveTopology::eTriangleList;
@@ -186,6 +282,11 @@ void HelloTriangle::recordCommandBuffers() {
 
     primaryGraphicsCmdBuffers_[i].beginRenderPass(renderPassInfo, vk::SubpassContents::eInline);
     primaryGraphicsCmdBuffers_[i].bindPipeline(vk::PipelineBindPoint::eGraphics, pipeline_);
+
+    primaryGraphicsCmdBuffers_[i].bindVertexBuffers(0, static_cast<vk::Buffer>(vertexBuffer_), 0ul);
+    primaryGraphicsCmdBuffers_[i].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, pipelineLayout_, 0,
+                                                     static_cast<vk::DescriptorSet>(descriptorSets_[i]));
+
     primaryGraphicsCmdBuffers_[i].draw(3, 1, 0, 0);
     primaryGraphicsCmdBuffers_[i].endRenderPass();
     primaryGraphicsCmdBuffers_[i].end();
@@ -199,24 +300,14 @@ void HelloTriangle::onSwapChainRecreate() {
 }
 
 void HelloTriangle::initialize() {
+  loadShaders();
+  allocateBuffers();
+  initializeDescriptorSets();
+
   createRenderPass();
   createFrameBuffers();
-  loadShaders();
   createGraphicalPipeline();
   recordCommandBuffers();
-
-  vk::BufferCreateInfo bufferInfo;
-  bufferInfo.size = 128;
-  bufferInfo.usage = vk::BufferUsageFlagBits::eUniformBuffer;
-
-  VmaAllocationCreateInfo allocInfo = {};
-  allocInfo.usage = VMA_MEMORY_USAGE_CPU_TO_GPU;
-
-  logi::MemoryAllocator allocator = logicalDevice_.createMemoryAllocator();
-  logi::Buffer buffer = allocator.createBuffer(bufferInfo, allocInfo);
-  logi::VMABuffer vmaBuffer = static_cast<logi::VMABuffer>(buffer);
-  std::vector<std::byte> data(64);
-  vmaBuffer.writeToBuffer(data.data(), 64, data.size());
 }
 
 void HelloTriangle::draw() {}

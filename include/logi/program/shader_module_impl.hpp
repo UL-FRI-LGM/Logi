@@ -19,6 +19,7 @@
 #ifndef LOGI_PROGRAM_SHADER_MODULE_IMPL_HPP
 #define LOGI_PROGRAM_SHADER_MODULE_IMPL_HPP
 
+#include <map>
 #include <optional>
 #include <spirv_cross.hpp>
 #include <vulkan/vulkan.hpp>
@@ -30,47 +31,54 @@ class VulkanInstanceImpl;
 class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 
-struct EntryPointInfo {
-  EntryPointInfo(std::string name, vk::ShaderStageFlagBits stage);
-
-  std::string name;
-  vk::ShaderStageFlagBits stage;
-};
-
-struct SpecializationConstantInfo {
-  SpecializationConstantInfo(uint32_t id, uint32_t size);
+struct SpecializationConstantReflectionInfo {
+  SpecializationConstantReflectionInfo(uint32_t id, uint32_t size);
 
   std::string name;
   uint32_t id;
   uint32_t size;
 };
 
-struct DescriptorBindingInfo {
-  DescriptorBindingInfo(std::string name, uint32_t binding, vk::DescriptorType descriptorType,
-                        uint32_t descriptorCount);
+struct DescriptorBindingReflectionInfo {
+  DescriptorBindingReflectionInfo(std::string name, const vk::ShaderStageFlags& stages, uint32_t binding,
+                                  vk::DescriptorType descriptorType, uint32_t descriptorCount);
 
   std::string name;
+  vk::ShaderStageFlags stages;
   uint32_t binding;
   vk::DescriptorType descriptorType;
   uint32_t descriptorCount;
 };
 
-struct VertexAttributeInfo {
-  VertexAttributeInfo(std::string name, uint32_t location, uint32_t binding, uint32_t elementSize, vk::Format format);
+struct VertexAttributeReflectionInfo {
+  VertexAttributeReflectionInfo(std::string name, uint32_t location, uint32_t elementSize, vk::Format format);
 
   std::string name;
   uint32_t location;
-  uint32_t binding;
   uint32_t elementSize;
   vk::Format format;
 };
 
-struct PushConstantInfo {
-  PushConstantInfo(std::string name, uint32_t offset, uint32_t size);
+struct PushConstantReflectionInfo {
+  PushConstantReflectionInfo(std::string name, const vk::ShaderStageFlags& stages, uint32_t offset, uint32_t size);
 
   std::string name;
+  vk::ShaderStageFlags stages;
   uint32_t offset;
   uint32_t size;
+};
+
+struct EntryPointReflectionInfo {
+  EntryPointReflectionInfo(std::string name, vk::ShaderStageFlagBits stage,
+                           std::vector<std::vector<DescriptorBindingReflectionInfo>> descriptorSets = {},
+                           std::vector<PushConstantReflectionInfo> pushConstants = {},
+                           std::vector<VertexAttributeReflectionInfo> vertexAttributes = {});
+
+  std::string name;
+  vk::ShaderStageFlagBits stage;
+  std::vector<std::vector<DescriptorBindingReflectionInfo>> descriptorSets;
+  std::vector<PushConstantReflectionInfo> pushConstants;
+  std::vector<VertexAttributeReflectionInfo> vertexAttributes;
 };
 
 class ShaderModuleImpl : public VulkanObject, public std::enable_shared_from_this<ShaderModuleImpl> {
@@ -78,19 +86,19 @@ class ShaderModuleImpl : public VulkanObject, public std::enable_shared_from_thi
   ShaderModuleImpl(LogicalDeviceImpl& logicalDevice, const vk::ShaderModuleCreateInfo& createInfo,
                    const std::optional<vk::AllocationCallbacks>& allocator = {});
 
-  // region Vulkan Declarations
-
-  // endregion
-
   // region Logi Declarations
 
-  std::vector<EntryPointInfo> reflectEntryPoints() const;
+  std::vector<std::string> getEntryPointNames() const;
 
-  std::vector<std::vector<DescriptorBindingInfo>> reflectDescriptorSets() const;
+  const EntryPointReflectionInfo& getEntryPointReflectionInfo(const std::string& entryPointName) const;
 
-  std::vector<PushConstantInfo> reflectPushConstants() const;
+  const std::vector<std::vector<DescriptorBindingReflectionInfo>>&
+    getDescriptorSetReflectionInfo(const std::string& entryPointName) const;
 
-  std::vector<VertexAttributeInfo> reflectVertexAttributes() const;
+  const std::vector<PushConstantReflectionInfo>& getPushConstantReflectionInfo(const std::string& entryPointName) const;
+
+  const std::vector<VertexAttributeReflectionInfo>&
+    getVertexAttributeReflectionInfo(const std::string& entryPointName) const;
 
   VulkanInstanceImpl& getInstance() const;
 
@@ -105,6 +113,17 @@ class ShaderModuleImpl : public VulkanObject, public std::enable_shared_from_thi
   operator const vk::ShaderModule&() const;
 
  protected:
+  void reflect(const uint32_t* pCode, size_t codeSize);
+
+  static std::vector<std::vector<DescriptorBindingReflectionInfo>>
+    reflectDescriptorSets(const spirv_cross::Compiler& compiler, vk::ShaderStageFlagBits stage);
+
+  static std::vector<PushConstantReflectionInfo> reflectPushConstants(const spirv_cross::Compiler& compiler,
+                                                                      vk::ShaderStageFlagBits stage);
+
+  static std::vector<VertexAttributeReflectionInfo> reflectVertexAttributes(const spirv_cross::Compiler& compiler,
+                                                                            vk::ShaderStageFlagBits stage);
+
   void free() override;
 
   static vk::ShaderStageFlagBits executionModelToStage(spv::ExecutionModel execModel);
@@ -118,7 +137,7 @@ class ShaderModuleImpl : public VulkanObject, public std::enable_shared_from_thi
   std::optional<vk::AllocationCallbacks> allocator_;
   vk::ShaderModule vkShaderModule_;
 
-  spirv_cross::Compiler compiler_;
+  std::map<std::string, EntryPointReflectionInfo> reflectionData_;
 };
 
 } // namespace logi
