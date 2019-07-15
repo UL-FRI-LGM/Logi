@@ -21,10 +21,10 @@
 
 namespace logi {
 
-VMAImageImpl::VMAImageImpl(MemoryAllocatorImpl& memoryAllocator, const vk::ImageCreateInfo& bufferCreateInfo,
+VMAImageImpl::VMAImageImpl(MemoryAllocatorImpl& memoryAllocator, const vk::ImageCreateInfo& imageCreateInfo,
                            const VmaAllocationCreateInfo& allocationCreateInfo,
                            const std::optional<vk::AllocationCallbacks>& allocator)
-  : ImageImpl(memoryAllocator.getLogicalDevice(), bufferCreateInfo, allocator), memoryAllocator_(memoryAllocator),
+  : ImageImpl(memoryAllocator.getLogicalDevice(), imageCreateInfo, allocator), memoryAllocator_(memoryAllocator),
     allocation_() {
   auto vmaAllocator = static_cast<const VmaAllocator&>(memoryAllocator_);
   vk::MemoryRequirements memoryRequirements = getMemoryRequirements();
@@ -60,7 +60,7 @@ size_t VMAImageImpl::size() const {
   return allocationInfo_.size;
 }
 
-void VMAImageImpl::writeToImage(const void* data, size_t offset, size_t size) const {
+void VMAImageImpl::writeToImage(const void* data, size_t size, size_t offset) const {
   std::byte* mappedMemory = reinterpret_cast<std::byte*>(mapMemory()) + offset;
   std::memcpy(mappedMemory, data, size);
 }

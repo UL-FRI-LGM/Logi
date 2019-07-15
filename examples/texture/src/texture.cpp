@@ -1,12 +1,14 @@
-#include "HelloTriangle.h"
-#include <HelloTriangle.h>
+#include "texture.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
 
-void HelloTriangle::loadShaders() {
-  vertexShader_ = createShaderModule("./shaders/triangle.vert.spv");
-  fragmentShader_ = createShaderModule("./shaders/triangle.frag.spv");
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
+void TextureExample::loadShaders() {
+  vertexShader_ = createShaderModule("./shaders/texture.vert.spv");
+  fragmentShader_ = createShaderModule("./shaders/texture.frag.spv");
 
   std::vector<std::vector<logi::DescriptorBindingReflectionInfo>> descriptorBindingInfo =
     vertexShader_.getDescriptorSetReflectionInfo("main");
@@ -34,7 +36,7 @@ void HelloTriangle::loadShaders() {
   pipelineLayout_ = logicalDevice_.createPipelineLayout(pipelineLayoutInfo);
 }
 
-void HelloTriangle::allocateBuffers() {
+void TextureExample::allocateBuffers() {
   allocator_ = logicalDevice_.createMemoryAllocator();
 
   VmaAllocationCreateInfo allocationInfo = {};
@@ -43,15 +45,24 @@ void HelloTriangle::allocateBuffers() {
   // Create and fill vertex buffer.
   vk::BufferCreateInfo vertexBufferInfo;
   vertexBufferInfo.usage = vk::BufferUsageFlagBits::eVertexBuffer | vk::BufferUsageFlagBits::eTransferDst;
-  vertexBufferInfo.size = vertices.size() * sizeof(Vertex);
+  vertexBufferInfo.size = vertices_.size() * sizeof(Vertex);
   vertexBufferInfo.sharingMode = vk::SharingMode::eExclusive;
 
   vertexBuffer_ = allocator_.createBuffer(vertexBufferInfo, allocationInfo);
-  vertexBuffer_.writeToBuffer(vertices.data(), vertices.size() * sizeof(Vertex));
+  vertexBuffer_.writeToBuffer(vertices_.data(), vertices_.size() * sizeof(Vertex));
+
+  // Create and fill index buffer.
+  vk::BufferCreateInfo indexBufferInfo;
+  indexBufferInfo.usage = vk::BufferUsageFlagBits::eIndexBuffer | vk::BufferUsageFlagBits::eTransferDst;
+  indexBufferInfo.size = indices_.size() * sizeof(uint32_t);
+  indexBufferInfo.sharingMode = vk::SharingMode::eExclusive;
+
+  indexBuffer_ = allocator_.createBuffer(indexBufferInfo, allocationInfo);
+  indexBuffer_.writeToBuffer(indices_.data(), indices_.size() * sizeof(uint32_t));
 
   // Create and init matrices UBO buffer.
   vk::BufferCreateInfo matricesBufferInfo;
-  matricesBufferInfo.size = sizeof(uboMatrices);
+  matricesBufferInfo.size = sizeof(ubo_);
   matricesBufferInfo.usage = vk::BufferUsageFlagBits::eUniformBuffer | vk::BufferUsageFlagBits::eTransferDst;
   matricesBufferInfo.sharingMode = vk::SharingMode::eExclusive;
 
@@ -59,27 +70,64 @@ void HelloTriangle::allocateBuffers() {
     matricesUBOBuffers_.emplace_back(allocator_.createBuffer(matricesBufferInfo, allocationInfo));
   }
 
-  updateMatrixBuffers();
+  updateUniformBuffers();
+
+  // Load image.
+  loadTextureImage();
 }
 
-void HelloTriangle::updateMatrixBuffers() {
+void TextureExample::loadTextureImage() {
+  int32_t texWidth, texHeight, texChannels;
+  stbi_uc* pixels = stbi_load("resources/images/zebra.jpg", &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+  VkDeviceSize imageSize = texWidth * texHeight * 4;
+
+  if (!pixels) {
+    throw std::runtime_error("failed to load texture image!");
+  }
+
+  VmaAllocationCreateInfo allocationInfo = {};
+  allocationInfo.usage = VmaMemoryUsage::VMA_MEMORY_USAGE_CPU_TO_GPU;
+
+  vk::ImageCreateInfo imageInfo;
+  imageInfo.imageType = vk::ImageType::e2D;
+  imageInfo.format = vk::Format::eR8G8B8A8Unorm;
+  imageInfo.mipLevels = 1;
+  imageInfo.arrayLayers = 1;
+  imageInfo.samples = vk::SampleCountFlagBits::e1;
+  imageInfo.tiling = vk::ImageTiling::eLinear;
+  imageInfo.sharingMode = vk::SharingMode::eExclusive;
+  // Set initial layout of the image to undefined
+  imageInfo.initialLayout = vk::ImageLayout::eUndefined;
+  imageInfo.extent = vk::Extent3D(texWidth, texHeight, 1);
+  imageInfo.usage = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled;
+
+  image_ = allocator_.createImage(imageInfo, allocationInfo);
+  image_.writeToImage(pixels, imageSize);
+
+  // Create image view.
+  vk::ImageViewCreateInfo viewInfo;
+  imageView_ = image_.createImageView({}, vk::ImageViewType::e2D, vk::Format::eR8G8B8A8Unorm, {},
+                                      vk::ImageSubresourceRange(vk::ImageAspectFlagBits::eColor, 0, 1, 0, 1));
+}
+
+void TextureExample::updateUniformBuffers() {
   // Update matrices
-  uboMatrices.projectionMatrix = glm::perspective(
+  ubo_.projectionMatrix = glm::perspective(
     glm::radians(60.0f), (float) swapchainImageExtent_.width / (float) swapchainImageExtent_.height, 0.1f, 256.0f);
 
-  uboMatrices.viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(cameraPos.x, cameraPos.y, zoom));
+  ubo_.viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(cameraPos.x, cameraPos.y, zoom));
 
-  uboMatrices.modelMatrix = glm::mat4(1.0f);
-  uboMatrices.modelMatrix = glm::rotate(uboMatrices.modelMatrix, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-  uboMatrices.modelMatrix = glm::rotate(uboMatrices.modelMatrix, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-  uboMatrices.modelMatrix = glm::rotate(uboMatrices.modelMatrix, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+  ubo_.modelMatrix = glm::mat4(1.0f);
+  ubo_.modelMatrix = glm::rotate(ubo_.modelMatrix, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+  ubo_.modelMatrix = glm::rotate(ubo_.modelMatrix, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+  ubo_.modelMatrix = glm::rotate(ubo_.modelMatrix, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
 
   for (const auto& buffer : matricesUBOBuffers_) {
-    buffer.writeToBuffer(&uboMatrices, sizeof(uboMatrices));
+    buffer.writeToBuffer(&ubo_, sizeof(ubo_));
   }
 }
 
-void HelloTriangle::initializeDescriptorSets() {
+void TextureExample::initializeDescriptorSets() {
   // Create descriptor pool.
   vk::DescriptorPoolSize poolSize;
   poolSize.type = vk::DescriptorType::eUniformBuffer;
@@ -100,7 +148,7 @@ void HelloTriangle::initializeDescriptorSets() {
     vk::DescriptorBufferInfo bufferInfo;
     bufferInfo.buffer = matricesUBOBuffers_[i];
     bufferInfo.offset = 0;
-    bufferInfo.range = sizeof(uboMatrices);
+    bufferInfo.range = sizeof(ubo_);
 
     vk::WriteDescriptorSet descriptorWrite;
     descriptorWrite.dstSet = descriptorSets_[i];
@@ -114,7 +162,7 @@ void HelloTriangle::initializeDescriptorSets() {
   }
 }
 
-void HelloTriangle::createRenderPass() {
+void TextureExample::createRenderPass() {
   vk::AttachmentDescription colorAttachment;
   colorAttachment.format = swapchainImageFormat_;
   colorAttachment.samples = vk::SampleCountFlagBits::e1;
@@ -153,7 +201,7 @@ void HelloTriangle::createRenderPass() {
   renderPass_ = logicalDevice_.createRenderPass(renderPassCreateInfo);
 }
 
-void HelloTriangle::createGraphicalPipeline() {
+void TextureExample::createGraphicalPipeline() {
   // Destroy existing pipeline.
   if (pipeline_) {
     pipeline_.destroy();
@@ -259,7 +307,7 @@ void HelloTriangle::createGraphicalPipeline() {
   pipeline_ = logicalDevice_.createGraphicsPipeline(pipelineInfo);
 }
 
-void HelloTriangle::createFrameBuffers() {
+void TextureExample::createFrameBuffers() {
   // Destroy previous framebuffers.
   for (const auto& framebuffer : framebuffers_) {
     framebuffer.destroy();
@@ -280,7 +328,7 @@ void HelloTriangle::createFrameBuffers() {
   }
 }
 
-void HelloTriangle::recordCommandBuffers() {
+void TextureExample::recordCommandBuffers() {
   // Destroy old command buffers.
   for (const auto& cmdBuffer : primaryGraphicsCmdBuffers_) {
     cmdBuffer.reset();
@@ -315,17 +363,17 @@ void HelloTriangle::recordCommandBuffers() {
   }
 }
 
-void HelloTriangle::onViewChanged() {
-  updateMatrixBuffers();
+void TextureExample::onViewChanged() {
+  updateUniformBuffers();
 }
 
-void HelloTriangle::onSwapChainRecreate() {
+void TextureExample::onSwapChainRecreate() {
   createFrameBuffers();
   createGraphicalPipeline();
   recordCommandBuffers();
 }
 
-void HelloTriangle::initialize() {
+void TextureExample::initialize() {
   zoom = -2.5f;
 
   loadShaders();
@@ -338,4 +386,4 @@ void HelloTriangle::initialize() {
   recordCommandBuffers();
 }
 
-void HelloTriangle::draw() {}
+void TextureExample::draw() {}

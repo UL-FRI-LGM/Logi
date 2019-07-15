@@ -43,8 +43,8 @@ size_t VMAImage::size() const {
   return static_cast<VMAImageImpl*>(object_.get())->size();
 }
 
-void VMAImage::writeToImage(const void* data, size_t offset, size_t size) const {
-  static_cast<VMAImageImpl*>(object_.get())->writeToImage(data, offset, size);
+void VMAImage::writeToImage(const void* data, size_t size, size_t offset) const {
+  static_cast<VMAImageImpl*>(object_.get())->writeToImage(data, size, offset);
 }
 
 bool VMAImage::isMappable() const {

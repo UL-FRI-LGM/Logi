@@ -49,7 +49,7 @@ class MemoryAllocatorImpl : public VulkanObject,
 
   const std::shared_ptr<VMAImageImpl>& createImage(const vk::ImageCreateInfo& imageCreateInfo,
                                                    const VmaAllocationCreateInfo& allocationCreateInfo,
-                                                   const std::optional<vk::AllocationCallbacks>& allocator);
+                                                   const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyImage(size_t id);
 

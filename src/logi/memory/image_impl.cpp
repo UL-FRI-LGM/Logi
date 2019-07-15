@@ -29,7 +29,7 @@ ImageImpl::ImageImpl(LogicalDeviceImpl& logicalDevice, const vk::ImageCreateInfo
                      const std::optional<vk::AllocationCallbacks>& allocator)
   : logicalDevice_(logicalDevice), allocator_(allocator) {
   auto vkDevice = static_cast<vk::Device>(logicalDevice_);
-  vkDevice.createImage(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
+  vkImage_ = vkDevice.createImage(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
 ImageImpl::ImageImpl(LogicalDeviceImpl& logicalDevice, const vk::Image& image)

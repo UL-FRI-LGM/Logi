@@ -28,7 +28,7 @@ namespace logi {
 
 class VMAImageImpl : public ImageImpl {
  public:
-  VMAImageImpl(MemoryAllocatorImpl& memoryAllocator, const vk::ImageCreateInfo& bufferCreateInfo,
+  VMAImageImpl(MemoryAllocatorImpl& memoryAllocator, const vk::ImageCreateInfo& imageCreateInfo,
                const VmaAllocationCreateInfo& allocationCreateInfo,
                const std::optional<vk::AllocationCallbacks>& allocator = {});
 
@@ -38,7 +38,7 @@ class VMAImageImpl : public ImageImpl {
 
   size_t size() const;
 
-  void writeToImage(const void* data, size_t offset, size_t size) const;
+  void writeToImage(const void* data, size_t size, size_t offset = 0) const;
 
   bool isMappable() const;
 

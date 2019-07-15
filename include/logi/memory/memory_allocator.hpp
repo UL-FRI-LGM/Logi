@@ -42,7 +42,7 @@ class MemoryAllocator : public Handle<MemoryAllocatorImpl> {
   void destroyBuffer(const VMABuffer& buffer);
 
   VMAImage createImage(const vk::ImageCreateInfo& imageCreateInfo, const VmaAllocationCreateInfo& allocationCreateInfo,
-                       const std::optional<vk::AllocationCallbacks>& allocator);
+                       const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyImage(const VMAImage& image);
 

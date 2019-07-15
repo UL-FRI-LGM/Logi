@@ -1,6 +1,6 @@
-#include "HelloTriangle.h"
+#include "texture.h"
 
 int main(int argc, char* argv[]) {
-  HelloTriangle example;
+  TextureExample example;
   example.run();
 }

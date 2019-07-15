@@ -42,7 +42,7 @@ class VMAImage : public Image {
 
   size_t size() const;
 
-  void writeToImage(const void* data, size_t offset, size_t size) const;
+  void writeToImage(const void* data, size_t size, size_t offset = 0) const;
 
   bool isMappable() const;
 

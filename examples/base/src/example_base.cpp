@@ -1,5 +1,5 @@
-#include "base/ExampleBase.h"
-#include <base/ExampleBase.h>
+#include "base/example_base.h"
+#include <base/example_base.h>
 #include <glm/gtx/string_cast.hpp>
 
 ExampleBase::ExampleBase(const ExampleConfiguration& config) : config_(config) {}

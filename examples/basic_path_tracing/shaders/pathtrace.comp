@@ -18,7 +18,7 @@ layout(std140, binding = 1) uniform UniformBufferObject {
 	vec2 mouse_pos;
 	float timestamp;
 	bool redraw;
-} ubo;
+} ubo_;
 
 #define MAXDEPTH 10
 #define ENABLE_NEXT_EVENT_PREDICTION
@@ -170,12 +170,12 @@ void main() {
 
   initSpheres();
 
-  seed = vec2(gl_GlobalInvocationID.x / WIDTH, gl_GlobalInvocationID.y / HEIGHT) + gl_GlobalInvocationID.xy * ubo.timestamp;
-  //seed = ubo.timestamp * gl_GlobalInvocationID.x / WIDTH + gl_GlobalInvocationID.y / HEIGHT;
+  seed = vec2(gl_GlobalInvocationID.x / WIDTH, gl_GlobalInvocationID.y / HEIGHT) + gl_GlobalInvocationID.xy * ubo_.timestamp;
+  //seed = ubo_.timestamp * gl_GlobalInvocationID.x / WIDTH + gl_GlobalInvocationID.y / HEIGHT;
 
   vec2 uv = 2 * (vec2(gl_GlobalInvocationID.xy) + vec2(0.5f, 0.5f)) / vec2(WIDTH, HEIGHT) - 1.;
 
-  vec3 camPos = vec3((vec2(WIDTH, HEIGHT) / vec2(WIDTH, HEIGHT) - 1.) * vec2(48., 40.) + vec2(50., 40.8) * ubo.mouse_pos * 2, 169.);
+  vec3 camPos = vec3((vec2(WIDTH, HEIGHT) / vec2(WIDTH, HEIGHT) - 1.) * vec2(48., 40.) + vec2(50., 40.8) * ubo_.mouse_pos * 2, 169.);
 	
   vec3 cz = normalize(vec3(50., 40., 81.6) - camPos);
   vec3 cx = vec3(1., 0., 0.);
@@ -183,7 +183,7 @@ void main() {
   vec3 color = radiance(Ray(camPos, normalize(.53135 * (WIDTH / HEIGHT * uv.x * cx + uv.y * cy) + cz)));
 
   // store to the storage buffer:
-  if (ubo.redraw) {
+  if (ubo_.redraw) {
 	imageStore(result_image, ivec2(gl_GlobalInvocationID.xy), vec4(color, 1.0));
   }
   else {
