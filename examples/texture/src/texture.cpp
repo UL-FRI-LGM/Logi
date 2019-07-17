@@ -2,6 +2,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
+#include <texture.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -10,30 +11,40 @@ void TextureExample::loadShaders() {
   vertexShader_ = createShaderModule("./shaders/texture.vert.spv");
   fragmentShader_ = createShaderModule("./shaders/texture.frag.spv");
 
-  std::vector<std::vector<logi::DescriptorBindingReflectionInfo>> descriptorBindingInfo =
-    vertexShader_.getDescriptorSetReflectionInfo("main");
+  // Generate descriptor set layouts.
+  std::vector<logi::DescriptorSetReflectionInfo> descriptorSetInfo =
+    logi::reflectDescriptorSets({{vertexShader_, "main"}, {fragmentShader_, "main"}});
 
-  assert(!descriptorBindingInfo.empty());
+  pipelineLayoutData_.descriptorSetLayouts.reserve(descriptorSetInfo.size());
 
-  // Create descriptor set layout.
-  vk::DescriptorSetLayoutBinding descriptorSetLayoutBinding;
-  descriptorSetLayoutBinding.binding = descriptorBindingInfo[0][0].binding;
-  descriptorSetLayoutBinding.descriptorCount = descriptorBindingInfo[0][0].descriptorCount;
-  descriptorSetLayoutBinding.descriptorType = descriptorBindingInfo[0][0].descriptorType;
-  descriptorSetLayoutBinding.stageFlags = vk::ShaderStageFlagBits::eVertex;
+  for (const auto& info : descriptorSetInfo) {
+    // Generate binding infos.
+    std::vector<vk::DescriptorSetLayoutBinding> bindings(info.bindings.begin(), info.bindings.end());
 
-  vk::DescriptorSetLayoutCreateInfo descriptorSetLayoutInfo;
-  descriptorSetLayoutInfo.bindingCount = 1u;
-  descriptorSetLayoutInfo.pBindings = &descriptorSetLayoutBinding;
+    vk::DescriptorSetLayoutCreateInfo descriptorSetLayoutInfo;
+    descriptorSetLayoutInfo.bindingCount = bindings.size();
+    descriptorSetLayoutInfo.pBindings = bindings.data();
 
-  descriptorSetLayout_ = logicalDevice_.createDescriptorSetLayout(descriptorSetLayoutInfo);
+    pipelineLayoutData_.descriptorSetLayouts.emplace_back(
+      logicalDevice_.createDescriptorSetLayout(descriptorSetLayoutInfo));
+  }
+
+  // Generate push constant ranges.
+  std::vector<logi::PushConstantReflectionInfo> pushConstants =
+    logi::reflectPushConstants({{vertexShader_, "main"}, {fragmentShader_, "main"}});
+
+  std::vector<vk::PushConstantRange> pushConstantRanges(pushConstants.begin(), pushConstants.end());
 
   // Pipeline layout
+  std::vector<vk::DescriptorSetLayout> descriptorSetLayouts(pipelineLayoutData_.descriptorSetLayouts.begin(),
+                                                            pipelineLayoutData_.descriptorSetLayouts.end());
   vk::PipelineLayoutCreateInfo pipelineLayoutInfo;
-  pipelineLayoutInfo.setLayoutCount = 1u;
-  pipelineLayoutInfo.pSetLayouts = &static_cast<const vk::DescriptorSetLayout&>(descriptorSetLayout_);
+  pipelineLayoutInfo.setLayoutCount = pipelineLayoutData_.descriptorSetLayouts.size();
+  pipelineLayoutInfo.pSetLayouts = descriptorSetLayouts.data();
+  pipelineLayoutInfo.pushConstantRangeCount = pushConstantRanges.size();
+  pipelineLayoutInfo.pPushConstantRanges = pushConstantRanges.data();
 
-  pipelineLayout_ = logicalDevice_.createPipelineLayout(pipelineLayoutInfo);
+  pipelineLayoutData_.layout = logicalDevice_.createPipelineLayout(pipelineLayoutInfo);
 }
 
 void TextureExample::allocateBuffers() {
@@ -97,30 +108,74 @@ void TextureExample::loadTextureImage() {
   imageInfo.tiling = vk::ImageTiling::eLinear;
   imageInfo.sharingMode = vk::SharingMode::eExclusive;
   // Set initial layout of the image to undefined
-  imageInfo.initialLayout = vk::ImageLayout::eUndefined;
+  imageInfo.initialLayout = vk::ImageLayout::ePreinitialized;
   imageInfo.extent = vk::Extent3D(texWidth, texHeight, 1);
   imageInfo.usage = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled;
 
-  image_ = allocator_.createImage(imageInfo, allocationInfo);
-  image_.writeToImage(pixels, imageSize);
+  texture_.image = allocator_.createImage(imageInfo, allocationInfo);
+  texture_.image.writeToImage(pixels, imageSize);
+
+  logi::CommandBuffer cpyCmdBuffer = graphicsFamilyCmdPool_.allocateCommandBuffer(vk::CommandBufferLevel::ePrimary);
+  cpyCmdBuffer.begin({});
+
+  // Transition the texture image layout to shader read, so it can be sampled from
+  vk::ImageMemoryBarrier imageMemoryBarrier;
+  imageMemoryBarrier.image = texture_.image;
+  imageMemoryBarrier.subresourceRange.aspectMask = vk::ImageAspectFlagBits::eColor;
+  imageMemoryBarrier.subresourceRange.baseMipLevel = 0;
+  imageMemoryBarrier.subresourceRange.levelCount = 1;
+  imageMemoryBarrier.subresourceRange.layerCount = 1;
+  imageMemoryBarrier.srcAccessMask = vk::AccessFlagBits::eHostWrite;
+  imageMemoryBarrier.dstAccessMask = vk::AccessFlagBits::eShaderRead;
+  imageMemoryBarrier.oldLayout = vk::ImageLayout::ePreinitialized;
+  imageMemoryBarrier.newLayout = vk::ImageLayout::eShaderReadOnlyOptimal;
+
+  cpyCmdBuffer.pipelineBarrier(vk::PipelineStageFlagBits::eHost, vk::PipelineStageFlagBits::eFragmentShader, {}, {}, {},
+                               imageMemoryBarrier);
+  cpyCmdBuffer.end();
+
+  vk::SubmitInfo submitInfo;
+  submitInfo.commandBufferCount = 1;
+  submitInfo.pCommandBuffers = &static_cast<const vk::CommandBuffer&>(cpyCmdBuffer);
+  graphicsQueue_.submit(submitInfo);
+  graphicsQueue_.waitIdle();
 
   // Create image view.
-  vk::ImageViewCreateInfo viewInfo;
-  imageView_ = image_.createImageView({}, vk::ImageViewType::e2D, vk::Format::eR8G8B8A8Unorm, {},
-                                      vk::ImageSubresourceRange(vk::ImageAspectFlagBits::eColor, 0, 1, 0, 1));
+  texture_.imageView =
+    texture_.image.createImageView({}, vk::ImageViewType::e2D, vk::Format::eR8G8B8A8Unorm, {},
+                                   vk::ImageSubresourceRange(vk::ImageAspectFlagBits::eColor, 0, 1, 0, 1));
+
+  // Create sampler
+  vk::SamplerCreateInfo samplerInfo;
+  samplerInfo.magFilter = vk::Filter::eLinear;
+  samplerInfo.minFilter = vk::Filter::eLinear;
+  samplerInfo.mipmapMode = vk::SamplerMipmapMode::eLinear;
+  samplerInfo.addressModeU = vk::SamplerAddressMode::eRepeat;
+  samplerInfo.addressModeV = vk::SamplerAddressMode::eRepeat;
+  samplerInfo.addressModeW = vk::SamplerAddressMode::eRepeat;
+  samplerInfo.mipLodBias = 0.0f;
+  samplerInfo.compareOp = vk::CompareOp::eNever;
+  samplerInfo.minLod = 0.0f;
+  samplerInfo.maxLod = 0.0f;
+  samplerInfo.maxAnisotropy = 1.0;
+  samplerInfo.anisotropyEnable = VK_FALSE;
+  samplerInfo.borderColor = vk::BorderColor::eFloatOpaqueWhite;
+
+  texture_.sampler = logicalDevice_.createSampler(samplerInfo);
 }
 
 void TextureExample::updateUniformBuffers() {
   // Update matrices
   ubo_.projectionMatrix = glm::perspective(
     glm::radians(60.0f), (float) swapchainImageExtent_.width / (float) swapchainImageExtent_.height, 0.1f, 256.0f);
+  glm::mat4 viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, zoom));
 
-  ubo_.viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(cameraPos.x, cameraPos.y, zoom));
+  ubo_.modelViewMatrix = viewMatrix * glm::translate(glm::mat4(1.0f), cameraPos);
+  ubo_.modelViewMatrix = glm::rotate(ubo_.modelViewMatrix, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+  ubo_.modelViewMatrix = glm::rotate(ubo_.modelViewMatrix, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+  ubo_.modelViewMatrix = glm::rotate(ubo_.modelViewMatrix, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
 
-  ubo_.modelMatrix = glm::mat4(1.0f);
-  ubo_.modelMatrix = glm::rotate(ubo_.modelMatrix, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-  ubo_.modelMatrix = glm::rotate(ubo_.modelMatrix, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-  ubo_.modelMatrix = glm::rotate(ubo_.modelMatrix, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+  ubo_.viewPos = glm::vec4(0.0f, 0.0f, -zoom, 0.0f);
 
   for (const auto& buffer : matricesUBOBuffers_) {
     buffer.writeToBuffer(&ubo_, sizeof(ubo_));
@@ -129,19 +184,25 @@ void TextureExample::updateUniformBuffers() {
 
 void TextureExample::initializeDescriptorSets() {
   // Create descriptor pool.
-  vk::DescriptorPoolSize poolSize;
-  poolSize.type = vk::DescriptorType::eUniformBuffer;
-  poolSize.descriptorCount = static_cast<uint32_t>(swapchainImages_.size());
+  vk::DescriptorPoolSize poolUBOSize;
+  poolUBOSize.type = vk::DescriptorType::eUniformBuffer;
+  poolUBOSize.descriptorCount = static_cast<uint32_t>(swapchainImages_.size());
+
+  vk::DescriptorPoolSize poolCombinedImageSamplerSize;
+  poolCombinedImageSamplerSize.type = vk::DescriptorType::eCombinedImageSampler;
+  poolCombinedImageSamplerSize.descriptorCount = static_cast<uint32_t>(swapchainImages_.size());
+
+  std::vector<vk::DescriptorPoolSize> poolSizes = {poolUBOSize, poolCombinedImageSamplerSize};
 
   vk::DescriptorPoolCreateInfo poolInfo;
-  poolInfo.pPoolSizes = &poolSize;
-  poolInfo.poolSizeCount = 1u;
-  poolInfo.maxSets = static_cast<uint32_t>(swapchainImages_.size());
+  poolInfo.pPoolSizes = poolSizes.data();
+  poolInfo.poolSizeCount = poolSizes.size();
+  poolInfo.maxSets = static_cast<uint32_t>(swapchainImages_.size() * 2);
 
   descriptorPool_ = logicalDevice_.createDescriptorPool(poolInfo);
 
   // Create descriptor sets.
-  std::vector<vk::DescriptorSetLayout> layouts(swapchainImages_.size(), descriptorSetLayout_);
+  std::vector<vk::DescriptorSetLayout> layouts(swapchainImages_.size(), pipelineLayoutData_.descriptorSetLayouts[0]);
   descriptorSets_ = descriptorPool_.allocateDescriptorSets(layouts);
 
   for (size_t i = 0; i < descriptorSets_.size(); i++) {
@@ -150,15 +211,28 @@ void TextureExample::initializeDescriptorSets() {
     bufferInfo.offset = 0;
     bufferInfo.range = sizeof(ubo_);
 
-    vk::WriteDescriptorSet descriptorWrite;
-    descriptorWrite.dstSet = descriptorSets_[i];
-    descriptorWrite.dstBinding = 0;
-    descriptorWrite.dstArrayElement = 0;
-    descriptorWrite.descriptorType = vk::DescriptorType::eUniformBuffer;
-    descriptorWrite.descriptorCount = 1;
-    descriptorWrite.pBufferInfo = &bufferInfo;
+    std::vector<vk::WriteDescriptorSet> descriptorWrites(2);
 
-    logicalDevice_.updateDescriptorSets(descriptorWrite);
+    descriptorWrites[0].dstSet = descriptorSets_[i];
+    descriptorWrites[0].dstBinding = 0;
+    descriptorWrites[0].dstArrayElement = 0;
+    descriptorWrites[0].descriptorType = vk::DescriptorType::eUniformBuffer;
+    descriptorWrites[0].descriptorCount = 1;
+    descriptorWrites[0].pBufferInfo = &bufferInfo;
+
+    vk::DescriptorImageInfo textureDescriptor;
+    textureDescriptor.imageView = texture_.imageView;
+    textureDescriptor.sampler = texture_.sampler;
+    textureDescriptor.imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal;
+
+    descriptorWrites[1].dstSet = descriptorSets_[i];
+    descriptorWrites[1].dstBinding = 1;
+    descriptorWrites[1].dstArrayElement = 0;
+    descriptorWrites[1].descriptorType = vk::DescriptorType::eCombinedImageSampler;
+    descriptorWrites[1].descriptorCount = 1;
+    descriptorWrites[1].pImageInfo = &textureDescriptor;
+
+    logicalDevice_.updateDescriptorSets(descriptorWrites);
   }
 }
 
@@ -267,7 +341,7 @@ void TextureExample::createGraphicalPipeline() {
   rasterizer.polygonMode = vk::PolygonMode::eFill;
   rasterizer.lineWidth = 1.0f;
   rasterizer.cullMode = vk::CullModeFlagBits::eNone;
-  rasterizer.frontFace = vk::FrontFace::eClockwise;
+  rasterizer.frontFace = vk::FrontFace::eCounterClockwise;
   rasterizer.depthBiasEnable = VK_FALSE;
 
   vk::PipelineMultisampleStateCreateInfo multisampling;
@@ -300,7 +374,7 @@ void TextureExample::createGraphicalPipeline() {
   pipelineInfo.pRasterizationState = &rasterizer;
   pipelineInfo.pMultisampleState = &multisampling;
   pipelineInfo.pColorBlendState = &colorBlending;
-  pipelineInfo.layout = pipelineLayout_;
+  pipelineInfo.layout = pipelineLayoutData_.layout;
   pipelineInfo.renderPass = renderPass_;
   pipelineInfo.subpass = 0;
 
@@ -354,10 +428,11 @@ void TextureExample::recordCommandBuffers() {
     primaryGraphicsCmdBuffers_[i].bindPipeline(vk::PipelineBindPoint::eGraphics, pipeline_);
 
     primaryGraphicsCmdBuffers_[i].bindVertexBuffers(0, static_cast<vk::Buffer>(vertexBuffer_), 0ul);
-    primaryGraphicsCmdBuffers_[i].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, pipelineLayout_, 0,
+    primaryGraphicsCmdBuffers_[i].bindIndexBuffer(indexBuffer_, 0, vk::IndexType::eUint32);
+    primaryGraphicsCmdBuffers_[i].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, pipelineLayoutData_.layout, 0,
                                                      static_cast<vk::DescriptorSet>(descriptorSets_[i]));
 
-    primaryGraphicsCmdBuffers_[i].draw(3, 1, 0, 0);
+    primaryGraphicsCmdBuffers_[i].drawIndexed(indices_.size(), 1, 0, 0, 0);
     primaryGraphicsCmdBuffers_[i].endRenderPass();
     primaryGraphicsCmdBuffers_[i].end();
   }
@@ -375,6 +450,7 @@ void TextureExample::onSwapChainRecreate() {
 
 void TextureExample::initialize() {
   zoom = -2.5f;
+  rotation = {-15.0f, 15.0f, 0.0f};
 
   loadShaders();
   allocateBuffers();

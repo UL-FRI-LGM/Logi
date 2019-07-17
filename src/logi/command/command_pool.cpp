@@ -36,6 +36,11 @@ std::vector<CommandBuffer>
   return std::vector<CommandBuffer>(cmdBuffersImpl.begin(), cmdBuffersImpl.end());
 }
 
+CommandBuffer CommandPool::allocateCommandBuffer(vk::CommandBufferLevel level,
+                                                 const ConstVkNextProxy<vk::CommandBufferAllocateInfo>& next) const {
+  return CommandBuffer(object_->allocateCommandBuffer(level, next));
+}
+
 // region Vulkan Definitions
 
 void CommandPool::freeCommandBuffers(const std::vector<CommandBuffer>& commandBuffers) const {

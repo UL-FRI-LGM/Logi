@@ -43,6 +43,10 @@ class CommandPoolImpl : public VulkanObject,
     allocateCommandBuffers(vk::CommandBufferLevel level, uint32_t commandBufferCount,
                            const ConstVkNextProxy<vk::CommandBufferAllocateInfo>& next = {});
 
+  std::shared_ptr<CommandBufferImpl>
+    allocateCommandBuffer(vk::CommandBufferLevel level,
+                          const ConstVkNextProxy<vk::CommandBufferAllocateInfo>& next = {});
+
   // endregion
 
   // region Vulkan Declarations

@@ -7,30 +7,40 @@ void HelloTriangle::loadShaders() {
   vertexShader_ = createShaderModule("./shaders/triangle.vert.spv");
   fragmentShader_ = createShaderModule("./shaders/triangle.frag.spv");
 
-  std::vector<std::vector<logi::DescriptorBindingReflectionInfo>> descriptorBindingInfo =
-    vertexShader_.getDescriptorSetReflectionInfo("main");
+  // Generate descriptor set layouts.
+  std::vector<logi::DescriptorSetReflectionInfo> descriptorSetInfo =
+    logi::reflectDescriptorSets({{vertexShader_, "main"}, {fragmentShader_, "main"}});
 
-  assert(!descriptorBindingInfo.empty());
+  pipelineLayoutData_.descriptorSetLayouts.reserve(descriptorSetInfo.size());
 
-  // Create descriptor set layout.
-  vk::DescriptorSetLayoutBinding descriptorSetLayoutBinding;
-  descriptorSetLayoutBinding.binding = descriptorBindingInfo[0][0].binding;
-  descriptorSetLayoutBinding.descriptorCount = descriptorBindingInfo[0][0].descriptorCount;
-  descriptorSetLayoutBinding.descriptorType = descriptorBindingInfo[0][0].descriptorType;
-  descriptorSetLayoutBinding.stageFlags = vk::ShaderStageFlagBits::eVertex;
+  for (const auto& info : descriptorSetInfo) {
+    // Generate binding infos.
+    std::vector<vk::DescriptorSetLayoutBinding> bindings(info.bindings.begin(), info.bindings.end());
 
-  vk::DescriptorSetLayoutCreateInfo descriptorSetLayoutInfo;
-  descriptorSetLayoutInfo.bindingCount = 1u;
-  descriptorSetLayoutInfo.pBindings = &descriptorSetLayoutBinding;
+    vk::DescriptorSetLayoutCreateInfo descriptorSetLayoutInfo;
+    descriptorSetLayoutInfo.bindingCount = bindings.size();
+    descriptorSetLayoutInfo.pBindings = bindings.data();
 
-  descriptorSetLayout_ = logicalDevice_.createDescriptorSetLayout(descriptorSetLayoutInfo);
+    pipelineLayoutData_.descriptorSetLayouts.emplace_back(
+      logicalDevice_.createDescriptorSetLayout(descriptorSetLayoutInfo));
+  }
+
+  // Generate push constant ranges.
+  std::vector<logi::PushConstantReflectionInfo> pushConstants =
+    logi::reflectPushConstants({{vertexShader_, "main"}, {fragmentShader_, "main"}});
+
+  std::vector<vk::PushConstantRange> pushConstantRanges(pushConstants.begin(), pushConstants.end());
 
   // Pipeline layout
+  std::vector<vk::DescriptorSetLayout> descriptorSetLayouts(pipelineLayoutData_.descriptorSetLayouts.begin(),
+                                                            pipelineLayoutData_.descriptorSetLayouts.end());
   vk::PipelineLayoutCreateInfo pipelineLayoutInfo;
-  pipelineLayoutInfo.setLayoutCount = 1u;
-  pipelineLayoutInfo.pSetLayouts = &static_cast<const vk::DescriptorSetLayout&>(descriptorSetLayout_);
+  pipelineLayoutInfo.setLayoutCount = pipelineLayoutData_.descriptorSetLayouts.size();
+  pipelineLayoutInfo.pSetLayouts = descriptorSetLayouts.data();
+  pipelineLayoutInfo.pushConstantRangeCount = pushConstantRanges.size();
+  pipelineLayoutInfo.pPushConstantRanges = pushConstantRanges.data();
 
-  pipelineLayout_ = logicalDevice_.createPipelineLayout(pipelineLayoutInfo);
+  pipelineLayoutData_.layout = logicalDevice_.createPipelineLayout(pipelineLayoutInfo);
 }
 
 void HelloTriangle::allocateBuffers() {
@@ -92,7 +102,7 @@ void HelloTriangle::initializeDescriptorSets() {
   descriptorPool_ = logicalDevice_.createDescriptorPool(poolInfo);
 
   // Create descriptor sets.
-  std::vector<vk::DescriptorSetLayout> layouts(swapchainImages_.size(), descriptorSetLayout_);
+  std::vector<vk::DescriptorSetLayout> layouts(swapchainImages_.size(), pipelineLayoutData_.descriptorSetLayouts[0]);
   descriptorSets_ = descriptorPool_.allocateDescriptorSets(layouts);
 
   for (size_t i = 0; i < descriptorSets_.size(); i++) {
@@ -251,7 +261,7 @@ void HelloTriangle::createGraphicalPipeline() {
   pipelineInfo.pRasterizationState = &rasterizer;
   pipelineInfo.pMultisampleState = &multisampling;
   pipelineInfo.pColorBlendState = &colorBlending;
-  pipelineInfo.layout = pipelineLayout_;
+  pipelineInfo.layout = pipelineLayoutData_.layout;
   pipelineInfo.renderPass = renderPass_;
   pipelineInfo.subpass = 0;
 
@@ -301,11 +311,11 @@ void HelloTriangle::recordCommandBuffers() {
     renderPassInfo.clearValueCount = 1;
     renderPassInfo.pClearValues = &clearValue;
 
-    primaryGraphicsCmdBuffers_[i].beginRenderPass(renderPassInfo, vk::SubpassContents::eInline);
+    primaryGraphicsCmdBuffers_[i].beginRenderPass(rendepipelineLayout_rPassInfo, vk::SubpassContents::eInline);
     primaryGraphicsCmdBuffers_[i].bindPipeline(vk::PipelineBindPoint::eGraphics, pipeline_);
 
     primaryGraphicsCmdBuffers_[i].bindVertexBuffers(0, static_cast<vk::Buffer>(vertexBuffer_), 0ul);
-    primaryGraphicsCmdBuffers_[i].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, pipelineLayout_, 0,
+    primaryGraphicsCmdBuffers_[i].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, pipelineLayoutData_.layout, 0,
                                                      static_cast<vk::DescriptorSet>(descriptorSets_[i]));
 
     primaryGraphicsCmdBuffers_[i].draw(3, 1, 0, 0);

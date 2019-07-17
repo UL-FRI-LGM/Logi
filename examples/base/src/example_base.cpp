@@ -2,6 +2,10 @@
 #include <base/example_base.h>
 #include <glm/gtx/string_cast.hpp>
 
+PipelineLayoutData::PipelineLayoutData(logi::PipelineLayout layout,
+                                       std::vector<logi::DescriptorSetLayout> descriptorSetLayouts)
+  : layout(std::move(layout)), descriptorSetLayouts(std::move(descriptorSetLayouts)) {}
+
 ExampleBase::ExampleBase(const ExampleConfiguration& config) : config_(config) {}
 
 void ExampleBase::run() {

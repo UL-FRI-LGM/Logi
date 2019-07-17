@@ -40,10 +40,11 @@ class ShaderModule : public Handle<ShaderModuleImpl> {
 
   const EntryPointReflectionInfo& getEntryPointReflectionInfo(const std::string& entryPointName) const;
 
-  const std::vector<std::vector<DescriptorBindingReflectionInfo>>&
+  const std::vector<DescriptorSetReflectionInfo>&
     getDescriptorSetReflectionInfo(const std::string& entryPointName) const;
 
-  const std::vector<PushConstantReflectionInfo>& getPushConstantReflectionInfo(const std::string& entryPointName) const;
+  const std::optional<PushConstantReflectionInfo>&
+    getPushConstantReflectionInfo(const std::string& entryPointName) const;
 
   const std::vector<VertexAttributeReflectionInfo>&
     getVertexAttributeReflectionInfo(const std::string& entryPointName) const;
@@ -70,11 +71,9 @@ struct ShaderStage {
   std::string entryPoint;
 };
 
-/*
-std::vector<std::vector<DescriptorBindingReflectionInfo>> reflectDescriptorSets(const std::vector<ShaderStage>& stages);
+std::vector<DescriptorSetReflectionInfo> reflectDescriptorSets(const std::vector<ShaderStage>& stages);
 
 std::vector<PushConstantReflectionInfo> reflectPushConstants(const std::vector<ShaderStage>& stages);
-*/
 
 } // namespace logi
 

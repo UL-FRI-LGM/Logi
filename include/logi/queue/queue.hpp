@@ -35,9 +35,10 @@ class Queue : public Handle<QueueImpl> {
 
   // region Vulkan Declarations
 
-  vk::ResultValueType<void>::type submit(const std::vector<vk::SubmitInfo>& submits, vk::Fence fence = {}) const;
+  vk::ResultValueType<void>::type submit(const vk::ArrayProxy<const vk::SubmitInfo>& submits,
+                                         vk::Fence fence = {}) const;
 
-  vk::ResultValueType<void>::type bindSparse(const std::vector<vk::BindSparseInfo>& bindInfo,
+  vk::ResultValueType<void>::type bindSparse(const vk::ArrayProxy<const vk::BindSparseInfo>& bindInfo,
                                              vk::Fence fence = {}) const;
 
   vk::ResultValueType<void>::type waitIdle() const;

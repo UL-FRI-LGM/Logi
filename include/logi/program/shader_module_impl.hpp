@@ -48,6 +48,17 @@ struct DescriptorBindingReflectionInfo {
   uint32_t binding;
   vk::DescriptorType descriptorType;
   uint32_t descriptorCount;
+
+  explicit operator vk::DescriptorSetLayoutBinding() const {
+    return vk::DescriptorSetLayoutBinding(binding, descriptorType, descriptorCount, stages, nullptr);
+  }
+};
+
+struct DescriptorSetReflectionInfo {
+  explicit DescriptorSetReflectionInfo(uint32_t set, std::vector<DescriptorBindingReflectionInfo> bindings = {});
+
+  uint32_t set;
+  std::vector<DescriptorBindingReflectionInfo> bindings;
 };
 
 struct VertexAttributeReflectionInfo {
@@ -60,24 +71,27 @@ struct VertexAttributeReflectionInfo {
 };
 
 struct PushConstantReflectionInfo {
-  PushConstantReflectionInfo(std::string name, const vk::ShaderStageFlags& stages, uint32_t offset, uint32_t size);
+  PushConstantReflectionInfo(const vk::ShaderStageFlags& stages, uint32_t offset, uint32_t size);
 
-  std::string name;
   vk::ShaderStageFlags stages;
   uint32_t offset;
   uint32_t size;
+
+  explicit operator vk::PushConstantRange() const {
+    return vk::PushConstantRange(stages, offset, size);
+  }
 };
 
 struct EntryPointReflectionInfo {
   EntryPointReflectionInfo(std::string name, vk::ShaderStageFlagBits stage,
-                           std::vector<std::vector<DescriptorBindingReflectionInfo>> descriptorSets = {},
-                           std::vector<PushConstantReflectionInfo> pushConstants = {},
+                           std::vector<DescriptorSetReflectionInfo> descriptorSets = {},
+                           std::optional<PushConstantReflectionInfo> pushConstants = {},
                            std::vector<VertexAttributeReflectionInfo> vertexAttributes = {});
 
   std::string name;
   vk::ShaderStageFlagBits stage;
-  std::vector<std::vector<DescriptorBindingReflectionInfo>> descriptorSets;
-  std::vector<PushConstantReflectionInfo> pushConstants;
+  std::vector<DescriptorSetReflectionInfo> descriptorSets;
+  std::optional<PushConstantReflectionInfo> pushConstants;
   std::vector<VertexAttributeReflectionInfo> vertexAttributes;
 };
 
@@ -92,10 +106,11 @@ class ShaderModuleImpl : public VulkanObject, public std::enable_shared_from_thi
 
   const EntryPointReflectionInfo& getEntryPointReflectionInfo(const std::string& entryPointName) const;
 
-  const std::vector<std::vector<DescriptorBindingReflectionInfo>>&
+  const std::vector<DescriptorSetReflectionInfo>&
     getDescriptorSetReflectionInfo(const std::string& entryPointName) const;
 
-  const std::vector<PushConstantReflectionInfo>& getPushConstantReflectionInfo(const std::string& entryPointName) const;
+  const std::optional<PushConstantReflectionInfo>&
+    getPushConstantReflectionInfo(const std::string& entryPointName) const;
 
   const std::vector<VertexAttributeReflectionInfo>&
     getVertexAttributeReflectionInfo(const std::string& entryPointName) const;
@@ -115,11 +130,11 @@ class ShaderModuleImpl : public VulkanObject, public std::enable_shared_from_thi
  protected:
   void reflect(const uint32_t* pCode, size_t codeSize);
 
-  static std::vector<std::vector<DescriptorBindingReflectionInfo>>
-    reflectDescriptorSets(const spirv_cross::Compiler& compiler, vk::ShaderStageFlagBits stage);
+  static std::vector<DescriptorSetReflectionInfo> reflectDescriptorSets(const spirv_cross::Compiler& compiler,
+                                                                        vk::ShaderStageFlagBits stage);
 
-  static std::vector<PushConstantReflectionInfo> reflectPushConstants(const spirv_cross::Compiler& compiler,
-                                                                      vk::ShaderStageFlagBits stage);
+  static std::optional<PushConstantReflectionInfo> reflectPushConstants(const spirv_cross::Compiler& compiler,
+                                                                        vk::ShaderStageFlagBits stage);
 
   static std::vector<VertexAttributeReflectionInfo> reflectVertexAttributes(const spirv_cross::Compiler& compiler,
                                                                             vk::ShaderStageFlagBits stage);

@@ -33,12 +33,12 @@ const EntryPointReflectionInfo& ShaderModule::getEntryPointReflectionInfo(const 
   return object_->getEntryPointReflectionInfo(entryPointName);
 }
 
-const std::vector<std::vector<DescriptorBindingReflectionInfo>>&
+const std::vector<DescriptorSetReflectionInfo>&
   ShaderModule::getDescriptorSetReflectionInfo(const std::string& entryPointName) const {
   return object_->getDescriptorSetReflectionInfo(entryPointName);
 }
 
-const std::vector<PushConstantReflectionInfo>&
+const std::optional<PushConstantReflectionInfo>&
   ShaderModule::getPushConstantReflectionInfo(const std::string& entryPointName) const {
   return object_->getPushConstantReflectionInfo(entryPointName);
 }
@@ -75,31 +75,81 @@ ShaderModule::operator const vk::ShaderModule&() const {
 ShaderStage::ShaderStage(ShaderModule shader, std::string entryPoint)
   : shader(std::move(shader)), entryPoint(std::move(entryPoint)) {}
 
-/*
-std::vector<std::vector<DescriptorBindingReflectionInfo>>
-reflectDescriptorSets(const std::vector<ShaderStage>& stages) {
-if (stages.empty()) {
-  return {};
+void mergeDescriptorSetReflectionInfo(DescriptorSetReflectionInfo& merged, const DescriptorSetReflectionInfo& other) {
+  for (const auto& bindingInfo : other.bindings) {
+    auto it = std::find_if(merged.bindings.begin(), merged.bindings.end(),
+                           [&bindingInfo](const DescriptorBindingReflectionInfo& current) {
+                             return current.binding >= bindingInfo.binding;
+                           });
+
+    if (it == merged.bindings.end() || it->binding != bindingInfo.binding) {
+      merged.bindings.emplace(it, bindingInfo);
+    } else {
+      it->stages |= bindingInfo.stages;
+    }
+  }
 }
 
-std::vector<std::vector<DescriptorBindingReflectionInfo>> descSetInfo =
-  stages[0].shader.getDescriptorSetReflectionInfo(stages[0].entryPoint);
+std::vector<DescriptorSetReflectionInfo> reflectDescriptorSets(const std::vector<ShaderStage>& stages) {
+  // No stages were given. Return empty vector.
+  if (stages.empty()) {
+    return {};
+  }
 
-for (size_t i = 1; i < stages.size(); i++) {
-  const std::vector<std::vector<DescriptorBindingReflectionInfo>>& stageDescSetInfo =
-stages[i].shader.getDescriptorSetReflectionInfo(stages[i].entryPoint);
+  // Use descriptors set of the first stage as a base.
+  std::vector<DescriptorSetReflectionInfo> mergedDescriptorSets =
+    stages[0].shader.getDescriptorSetReflectionInfo(stages[0].entryPoint);
 
-  for (size_t j = 0; j < stageDescSetInfo.size(); j++) {
-    for (size_t k = 0; k < stageDescSetInfo[j].size(); k++) {
+  for (auto it = stages.begin() + 1; it != stages.end(); it++) {
+    const std::vector<DescriptorSetReflectionInfo>& descriptorSets =
+      it->shader.getDescriptorSetReflectionInfo(it->entryPoint);
 
+    // Merge common descriptor sets.
+    for (size_t i = 0; i < std::min(mergedDescriptorSets.size(), descriptorSets.size()); i++) {
+      mergeDescriptorSetReflectionInfo(mergedDescriptorSets[i], descriptorSets[i]);
+    }
+
+    // Add extra descriptions sets.
+    if (mergedDescriptorSets.size() < descriptorSets.size()) {
+      mergedDescriptorSets.reserve(descriptorSets.size());
+      for (size_t i = mergedDescriptorSets.size(); i < descriptorSets.size(); i++) {
+        mergedDescriptorSets.emplace_back(descriptorSets[i]);
+      }
     }
   }
 
+  return mergedDescriptorSets;
 }
 
-return descSetInfo;
+std::vector<PushConstantReflectionInfo> reflectPushConstants(const std::vector<ShaderStage>& stages) {
+  // No stages were given. Return empty vector.
+  if (stages.empty()) {
+    return {};
+  }
+
+  std::vector<PushConstantReflectionInfo> pushConstants;
+
+  for (const auto& stage : stages) {
+    std::optional<PushConstantReflectionInfo> reflectionInfo =
+      stage.shader.getPushConstantReflectionInfo(stage.entryPoint);
+
+    if (reflectionInfo) {
+      auto it = std::find_if(
+        pushConstants.begin(), pushConstants.end(), [reflectionInfo](const PushConstantReflectionInfo& constant) {
+          return constant.offset > reflectionInfo->offset ||
+                 (constant.offset == reflectionInfo->offset && constant.size >= reflectionInfo->size);
+        });
+
+      // Merge stages if the ranges match. Otherwise insert a new range.
+      if (it == pushConstants.end() || it->offset != reflectionInfo->offset || it->size != reflectionInfo->size) {
+        pushConstants.emplace(it, *reflectionInfo);
+      } else {
+        it->stages |= reflectionInfo->stages;
+      }
+    }
+  }
+
+  return pushConstants;
 }
 
-std::vector<PushConstantReflectionInfo> reflectPushConstants(const std::vector<ShaderStage>& stages) {}
-*/
-}
+} // namespace logi

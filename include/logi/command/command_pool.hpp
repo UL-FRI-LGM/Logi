@@ -44,6 +44,9 @@ class CommandPool : public Handle<CommandPoolImpl> {
     allocateCommandBuffers(vk::CommandBufferLevel level, uint32_t commandBufferCount,
                            const ConstVkNextProxy<vk::CommandBufferAllocateInfo>& next = {}) const;
 
+  CommandBuffer allocateCommandBuffer(vk::CommandBufferLevel level,
+                                      const ConstVkNextProxy<vk::CommandBufferAllocateInfo>& next = {}) const;
+
   // endregion
 
   // region Vulkan Declarations

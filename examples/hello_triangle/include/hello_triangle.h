@@ -46,20 +46,19 @@ class HelloTriangle : public ExampleBase {
                                   {{-1.0f, 1.0f, 0.0f}, {0.0f, 1.0f, 0.0f}},
                                   {{0.0f, -1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}}};
 
+  logi::MemoryAllocator allocator_;
+  logi::DescriptorPool descriptorPool_;
+
   logi::RenderPass renderPass_;
   logi::ShaderModule vertexShader_;
   logi::ShaderModule fragmentShader_;
 
-  logi::MemoryAllocator allocator_;
-  logi::DescriptorPool descriptorPool_;
+  PipelineLayoutData pipelineLayoutData_;
 
   logi::VMABuffer vertexBuffer_;
   std::vector<logi::VMABuffer> matricesUBOBuffers_;
 
-  logi::DescriptorSetLayout descriptorSetLayout_;
   std::vector<logi::DescriptorSet> descriptorSets_;
-  logi::PipelineLayout pipelineLayout_;
-
   logi::Pipeline pipeline_;
   std::vector<logi::Framebuffer> framebuffers_;
 };

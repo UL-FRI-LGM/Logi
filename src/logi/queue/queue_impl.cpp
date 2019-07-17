@@ -26,11 +26,12 @@ namespace logi {
 
 QueueImpl::QueueImpl(QueueFamilyImpl& queueFamily, vk::Queue vkQueue) : queueFamily_(queueFamily), vkQueue_(vkQueue) {}
 
-vk::ResultValueType<void>::type QueueImpl::submit(const std::vector<vk::SubmitInfo>& submits, vk::Fence fence) const {
+vk::ResultValueType<void>::type QueueImpl::submit(const vk::ArrayProxy<const vk::SubmitInfo>& submits,
+                                                  vk::Fence fence) const {
   return vkQueue_.submit(submits, fence, getDispatcher());
 }
 
-vk::ResultValueType<void>::type QueueImpl::bindSparse(const std::vector<vk::BindSparseInfo>& bindInfo,
+vk::ResultValueType<void>::type QueueImpl::bindSparse(const vk::ArrayProxy<const vk::BindSparseInfo>& bindInfo,
                                                       vk::Fence fence) const {
   return vkQueue_.bindSparse(bindInfo, fence, getDispatcher());
 }

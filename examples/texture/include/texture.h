@@ -10,6 +10,12 @@ struct Vertex {
   glm::vec2 uv;
 };
 
+struct Texture {
+  logi::VMAImage image;
+  logi::ImageView imageView;
+  logi::Sampler sampler;
+};
+
 class TextureExample : public ExampleBase {
  protected:
   void loadShaders();
@@ -41,9 +47,8 @@ class TextureExample : public ExampleBase {
  private:
   struct {
     glm::mat4 projectionMatrix = glm::mat4(1);
-    glm::mat4 modelMatrix = glm::mat4(1);
-    glm::mat4 viewMatrix = glm::mat4(1);
-    float lodBias = 0.0f;
+    glm::mat4 modelViewMatrix = glm::mat4(1);
+    glm::vec3 viewPos = glm::vec3();
   } ubo_;
 
   static constexpr uint32_t kVertexBinding = 0u;
@@ -65,12 +70,10 @@ class TextureExample : public ExampleBase {
   logi::VMABuffer indexBuffer_;
   std::vector<logi::VMABuffer> matricesUBOBuffers_;
 
-  logi::VMAImage image_;
-  logi::ImageView imageView_;
+  Texture texture_;
 
-  logi::DescriptorSetLayout descriptorSetLayout_;
+  PipelineLayoutData pipelineLayoutData_;
   std::vector<logi::DescriptorSet> descriptorSets_;
-  logi::PipelineLayout pipelineLayout_;
 
   logi::Pipeline pipeline_;
   std::vector<logi::Framebuffer> framebuffers_;

@@ -27,11 +27,12 @@ namespace logi {
 
 // region Vulkan Definitions
 
-vk::ResultValueType<void>::type Queue::submit(const std::vector<vk::SubmitInfo>& submits, vk::Fence fence) const {
+vk::ResultValueType<void>::type Queue::submit(const vk::ArrayProxy<const vk::SubmitInfo>& submits,
+                                              vk::Fence fence) const {
   return object_->submit(submits, fence);
 }
 
-vk::ResultValueType<void>::type Queue::bindSparse(const std::vector<vk::BindSparseInfo>& bindInfo,
+vk::ResultValueType<void>::type Queue::bindSparse(const vk::ArrayProxy<const vk::BindSparseInfo>& bindInfo,
                                                   vk::Fence fence) const {
   return object_->bindSparse(bindInfo, fence);
 }
@@ -86,7 +87,7 @@ const vk::DispatchLoaderDynamic& Queue::getDispatcher() const {
 
 Queue::operator const vk::Queue&() const {
   static vk::Queue nullHandle(nullptr);
-return (object_) ? object_->operator const vk::Queue&() : nullHandle;
+  return (object_) ? object_->operator const vk::Queue&() : nullHandle;
 }
 
 void Queue::destroy() const {

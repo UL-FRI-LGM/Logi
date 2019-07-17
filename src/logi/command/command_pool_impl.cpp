@@ -54,6 +54,17 @@ std::vector<std::shared_ptr<CommandBufferImpl>>
   return logiCmdBuffers;
 }
 
+std::shared_ptr<CommandBufferImpl>
+  CommandPoolImpl::allocateCommandBuffer(vk::CommandBufferLevel level,
+                                         const ConstVkNextProxy<vk::CommandBufferAllocateInfo>& next) {
+  auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
+  vk::CommandBufferAllocateInfo allocateInfo(vkCommandPool_, level, 1u);
+  allocateInfo.pNext = next;
+
+  return VulkanObjectComposite<CommandBufferImpl>::createObject(*this,
+                                                                vkDevice.allocateCommandBuffers(allocateInfo)[0]);
+}
+
 void CommandPoolImpl::freeCommandBuffers(const std::vector<size_t>& cmdBufferIds) {
   std::vector<vk::CommandBuffer> vkCmdBuffers;
   vkCmdBuffers.reserve(cmdBufferIds.size());

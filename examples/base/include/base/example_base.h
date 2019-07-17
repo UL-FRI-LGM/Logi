@@ -18,6 +18,15 @@ struct ExampleConfiguration {
   std::vector<const char*> validationLayers = {"VK_LAYER_LUNARG_standard_validation"};
 };
 
+struct PipelineLayoutData {
+  explicit PipelineLayoutData(logi::PipelineLayout layout = {},
+                              std::vector<logi::DescriptorSetLayout> descriptorSetLayouts = {});
+  ;
+
+  logi::PipelineLayout layout;
+  std::vector<logi::DescriptorSetLayout> descriptorSetLayouts;
+};
+
 class ExampleBase {
  public:
   explicit ExampleBase(const ExampleConfiguration& config = {});
