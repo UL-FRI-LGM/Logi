@@ -1,6 +1,6 @@
 # GLFW3
-if (NOT TARGET cpp-glfw)
-    add_subdirectory(libs/cpp-glfw)
+if (NOT TARGET CppGLFW)
+    add_subdirectory(libs/CppGLFW)
 else ()
     message(STATUS "[Logi] Target glfw is already defined. Using existing target.")
 endif ()

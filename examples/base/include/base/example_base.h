@@ -2,7 +2,7 @@
 #define BASE_EXAMPLE_BASE_H
 
 #define GLFW_INCLUDE_VULKAN
-#include <cppglfw/cpp_glfw.h>
+#include <cppglfw/CppGLFW.h>
 #include <fstream>
 #include <glm/glm.hpp>
 #include <iostream>

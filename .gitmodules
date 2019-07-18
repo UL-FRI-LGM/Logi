@@ -7,3 +7,6 @@
 [submodule "examples/libs/glm"]
 	path = examples/libs/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "examples/libs/CppGLFW"]
+	path = examples/libs/CppGLFW
+	url = https://github.com/LanaBesevic/CppGLFW.git

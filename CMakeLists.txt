@@ -7,9 +7,9 @@ project(Logi VERSION 0.1.0 LANGUAGES CXX)
 list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules")
 
 # C++ Google Test
-option(BUILD_TESTS "Build tests." ON)
-option(BUILD_DOC "Build documentation" OFF)
-option(BUILD_EXAMPLES "Build examples" OFF)
+option(LOGI_BUILD_TESTS "Build tests." ON)
+option(LOGI_BUILD_DOC "Build documentation" OFF)
+option(LOGI_BUILD_EXAMPLES "Build examples" OFF)
 
 ##############################################
 # BUILD LOGI LIBRARY
@@ -35,15 +35,15 @@ target_include_directories(logi
 
 target_link_libraries(logi Vulkan::Vulkan spirv-cross-core vma)
 
-if (BUILD_EXAMPLES)
+if (LOGI_BUILD_EXAMPLES)
     add_subdirectory(examples)
-endif (BUILD_EXAMPLES)
+endif (LOGI_BUILD_EXAMPLES)
 
 ##########################################################
 ####################### DOXYGEN ##########################
 ##########################################################
 
-if (BUILD_DOC)
+if (LOGI_BUILD_DOC)
     # Check if Doxygen is installed
     find_package(Doxygen)
 
@@ -65,13 +65,13 @@ if (BUILD_DOC)
     else (DOXYGEN_FOUND)
         message("Doxygen need to be installed to generate the doxygen documentation")
     endif (DOXYGEN_FOUND)
-endif (BUILD_DOC)
+endif (LOGI_BUILD_DOC)
 
 ##############################################
 # TESTS
 ##############################################
 
-if (BUILD_TESTS)
+if (LOGI_BUILD_TESTS)
     enable_testing()
     add_subdirectory(test)
-endif (BUILD_TESTS)
+endif (LOGI_BUILD_TESTS)
