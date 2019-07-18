@@ -213,22 +213,6 @@ std::optional<PushConstantReflectionInfo> ShaderModuleImpl::reflectPushConstants
   }
 
   return {};
-  /*
-  for (auto& resource : shaderResources.push_constant_buffers) {
-    for (const spirv_cross::BufferRange& constRange : compiler.get_active_buffer_ranges(resource.id)) {
-      const std::string& name = compiler.get_name(resource.id);
-
-      // Sorted insert.
-      auto it = std::upper_bound(pushConstants.begin(), pushConstants.end(), constRange.offset,
-                                 [](const uint32_t offset, const PushConstantReflectionInfo& constantInfo) {
-                                   return offset < constantInfo.offset;
-                                 });
-
-      pushConstants.emplace(it, name, stage, constRange.offset, constRange.range);
-    }
-  }
-
-  return pushConstants;*/
 }
 
 std::vector<VertexAttributeReflectionInfo>
