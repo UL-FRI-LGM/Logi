@@ -30,16 +30,17 @@ VkBool32 ExampleBase::debugCallback(VkDebugReportFlagsEXT flags, VkDebugReportOb
 }
 
 void ExampleBase::initWindow() {
-  window = GLFWManager::instance().createWindow(config_.windowTitle, config_.windowWidth, config_.windowHeight);
+  window_ = cppglfw::GLFWManager::instance().createWindow(config_.windowTitle, config_.windowWidth,
+                                                          config_.windowHeight, {{GLFW_CLIENT_API, GLFW_NO_API}});
 }
 
 void ExampleBase::initInput() {
-  window.setOnScrollCallback("onScroll", [this](Window, double, double yOffset) {
+  window_.setOnScrollCallback("onScroll", [this](const cppglfw::Window&, double, double yOffset) {
     zoom += 0.5 * yOffset;
     viewChanged = true;
   });
 
-  window.setOnMouseButtonCallback("onClick", [this](Window, int32_t button, int32_t action, int32_t) {
+  window_.setOnMouseButtonCallback("onClick", [this](const cppglfw::Window&, int32_t button, int32_t action, int32_t) {
     switch (button) {
       case GLFW_MOUSE_BUTTON_LEFT:
         mouseButtons.left = action;
@@ -55,7 +56,7 @@ void ExampleBase::initInput() {
     }
   });
 
-  window.setOnCursorMoveCallback("onCursorMove", [this](Window, double xPos, double yPos) {
+  window_.setOnCursorMoveCallback("onCursorMove", [this](const cppglfw::Window&, double xPos, double yPos) {
     glm::vec2 newPos = glm::vec2(xPos, yPos);
     glm::vec2 dPos = newPos - mousePos;
     mousePos = newPos;
@@ -78,7 +79,7 @@ void ExampleBase::initInput() {
 void ExampleBase::createInstance() {
   // Add required extensions.
   std::vector<const char*> extensions;
-  extensions = GLFWManager::instance().getRequiredInstanceExtensions();
+  extensions = cppglfw::GLFWManager::instance().getRequiredInstanceExtensions();
   extensions.insert(extensions.end(), config_.instanceExtensions.begin(), config_.instanceExtensions.end());
   extensions.emplace_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
 
@@ -107,7 +108,7 @@ void ExampleBase::createInstance() {
 }
 
 void ExampleBase::initSurface() {
-  surface = instance_.registerSurfaceKHR(window.createWindowSurface(instance_).value);
+  surface_ = instance_.registerSurfaceKHR(window_.createWindowSurface(instance_).value);
 }
 
 void ExampleBase::selectDevice() {
@@ -143,7 +144,7 @@ void ExampleBase::initializeDevice() {
     }
 
     // Check if queue family supports present.
-    if (physicalDevice_.getSurfaceSupportKHR(graphicsFamilyIdx, surface)) {
+    if (physicalDevice_.getSurfaceSupportKHR(graphicsFamilyIdx, surface_)) {
       presentFamilyIdx = graphicsFamilyIdx;
     }
 
@@ -203,7 +204,7 @@ ExampleBase::~ExampleBase() {
 }
 
 vk::SurfaceFormatKHR ExampleBase::chooseSwapSurfaceFormat() {
-  const std::vector<vk::SurfaceFormatKHR>& availableFormats = physicalDevice_.getSurfaceFormatsKHR(surface);
+  const std::vector<vk::SurfaceFormatKHR>& availableFormats = physicalDevice_.getSurfaceFormatsKHR(surface_);
 
   for (const auto& availableFormat : availableFormats) {
     if (availableFormat.format == vk::Format::eB8G8R8A8Unorm &&
@@ -216,7 +217,7 @@ vk::SurfaceFormatKHR ExampleBase::chooseSwapSurfaceFormat() {
 }
 
 vk::PresentModeKHR ExampleBase::chooseSwapPresentMode() {
-  const std::vector<vk::PresentModeKHR>& availablePresentModes = physicalDevice_.getSurfacePresentModesKHR(surface);
+  const std::vector<vk::PresentModeKHR>& availablePresentModes = physicalDevice_.getSurfacePresentModesKHR(surface_);
 
   vk::PresentModeKHR bestMode = vk::PresentModeKHR::eFifo;
 
@@ -235,7 +236,7 @@ vk::Extent2D ExampleBase::chooseSwapExtent(const vk::SurfaceCapabilitiesKHR& cap
   if (capabilities.currentExtent.width != std::numeric_limits<uint32_t>::max()) {
     return capabilities.currentExtent;
   } else {
-    vk::Extent2D actualExtent(window.getSize().first, window.getSize().second);
+    vk::Extent2D actualExtent(window_.getSize().first, window_.getSize().second);
 
     actualExtent.width =
       std::max(capabilities.minImageExtent.width, std::min(capabilities.maxImageExtent.width, actualExtent.width));
@@ -247,7 +248,7 @@ vk::Extent2D ExampleBase::chooseSwapExtent(const vk::SurfaceCapabilitiesKHR& cap
 }
 
 void ExampleBase::initializeSwapChain() {
-  vk::SurfaceCapabilitiesKHR capabilities = physicalDevice_.getSurfaceCapabilitiesKHR(surface);
+  vk::SurfaceCapabilitiesKHR capabilities = physicalDevice_.getSurfaceCapabilitiesKHR(surface_);
 
   vk::SurfaceFormatKHR surfaceFormat = chooseSwapSurfaceFormat();
   vk::PresentModeKHR presentMode = chooseSwapPresentMode();
@@ -261,7 +262,7 @@ void ExampleBase::initializeSwapChain() {
   logi::SwapchainKHR oldSwapchain = swapchain_;
 
   vk::SwapchainCreateInfoKHR createInfo = {};
-  createInfo.surface = surface;
+  createInfo.surface = surface_;
   createInfo.minImageCount = imageCount;
   createInfo.imageFormat = surfaceFormat.format;
   createInfo.imageColorSpace = surfaceFormat.colorSpace;
@@ -374,7 +375,7 @@ void ExampleBase::drawFrame() {
 }
 
 void ExampleBase::mainLoop() {
-  while (!window.shouldClose()) {
+  while (!window_.shouldClose()) {
     glfwPollEvents();
     drawFrame();
   }

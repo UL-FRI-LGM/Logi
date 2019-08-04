@@ -81,9 +81,9 @@ class ExampleBase {
   virtual ~ExampleBase();
 
  protected:
-  Window window;
+  cppglfw::Window window_;
   logi::VulkanInstance instance_;
-  logi::SurfaceKHR surface;
+  logi::SurfaceKHR surface_;
   logi::PhysicalDevice physicalDevice_;
   logi::LogicalDevice logicalDevice_;
   logi::QueueFamily graphicsFamily_;
