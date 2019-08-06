@@ -38,7 +38,7 @@ class CommandBuffer : public Handle<CommandBufferImpl> {
 
   // region Vulkan Declarations
 
-  vk::ResultValueType<void>::type begin(const vk::CommandBufferBeginInfo& beginInfo) const;
+  vk::ResultValueType<void>::type begin(const vk::CommandBufferBeginInfo& beginInfo = {}) const;
 
   void beginQuery(vk::QueryPool queryPool, uint32_t query, const vk::QueryControlFlags& flags) const;
 
@@ -89,7 +89,8 @@ class CommandBuffer : public Handle<CommandBufferImpl> {
 
   void dispatchIndirect(vk::Buffer buffer, vk::DeviceSize offset) const;
 
-  void draw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) const;
+  void draw(uint32_t vertexCount, uint32_t instanceCount = 1, uint32_t firstVertex = 0,
+            uint32_t firstInstance = 0) const;
 
   void drawIndexed(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset,
                    uint32_t firstInstance) const;

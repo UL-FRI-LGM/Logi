@@ -95,7 +95,7 @@ const std::vector<VertexAttributeReflectionInfo>&
 void ShaderModuleImpl::reflect(const uint32_t* pCode, size_t codeSize) {
   spirv_cross::Compiler compiler(pCode, codeSize / 4u);
 
-  std::vector<spirv_cross::EntryPoint> spirvEntryPoints = compiler.get_entry_points_and_stages();
+  auto spirvEntryPoints = compiler.get_entry_points_and_stages();
   for (const auto& entry : spirvEntryPoints) {
     vk::ShaderStageFlagBits stage = ShaderModuleImpl::executionModelToStage(entry.execution_model);
     compiler.set_entry_point(entry.name, entry.execution_model);
