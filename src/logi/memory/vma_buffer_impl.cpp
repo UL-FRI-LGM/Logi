@@ -63,6 +63,7 @@ size_t VMABufferImpl::size() const {
 void VMABufferImpl::writeToBuffer(const void* data, size_t size, size_t offset) const {
   std::byte* mappedMemory = reinterpret_cast<std::byte*>(mapMemory()) + offset;
   std::memcpy(mappedMemory, data, size);
+  unmapMemory();
 }
 
 bool VMABufferImpl::isMappable() const {
