@@ -19,6 +19,7 @@
 #ifndef LOGI_SURFACE_SURFACE_KHR_IMPL_HPP
 #define LOGI_SURFACE_SURFACE_KHR_IMPL_HPP
 
+#include <optional>
 #include "logi/base/vulkan_object.hpp"
 
 namespace logi {

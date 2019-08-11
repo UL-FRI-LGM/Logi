@@ -19,6 +19,7 @@
 #ifndef LOGI_QUEUE_QUEUE_FAMILY_IMPL_HPP
 #define LOGI_QUEUE_QUEUE_FAMILY_IMPL_HPP
 
+#include <optional>
 #include "logi/base/vulkan_object.hpp"
 #include "logi/structures/extension.hpp"
 

@@ -32,7 +32,7 @@ ImageViewImpl::ImageViewImpl(logi::ImageImpl& image, const vk::ImageViewCreateFl
                              const std::optional<vk::AllocationCallbacks>& allocator)
   : image_(image), allocator_(allocator) {
   auto vkDevice = static_cast<vk::Device>(getLogicalDevice());
-  vk::ImageViewCreateInfo createInfo(flags, static_cast<vk::Image>(image_), viewType, format, components,
+  vk::ImageViewCreateInfo createInfo(flags, static_cast<const vk::Image&>(image_), viewType, format, components,
                                      subresourceRange);
   createInfo.pNext = next;
 

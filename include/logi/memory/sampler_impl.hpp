@@ -19,6 +19,7 @@
 #ifndef LOGI_MEMORY_SAMPLER_IMPL_HPP
 #define LOGI_MEMORY_SAMPLER_IMPL_HPP
 
+#include <optional>
 #include <vulkan/vulkan.hpp>
 #include "logi/base/vulkan_object.hpp"
 

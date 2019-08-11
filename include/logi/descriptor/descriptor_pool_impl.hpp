@@ -20,6 +20,7 @@
 #define LOGI_DESCRIPTOR_DESCRIPTOR_POOL_IMPL_HPP
 
 #include <vulkan/vulkan.hpp>
+#include <optional>
 #include "logi/base/vulkan_object.hpp"
 #include "logi/structures/extension.hpp"
 

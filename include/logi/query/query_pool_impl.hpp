@@ -20,6 +20,7 @@
 #define LOGI_QUERY_QUERY_POOL_IMPL_HPP
 
 #include <vulkan/vulkan.hpp>
+#include <optional>
 #include "logi/base/vulkan_object.hpp"
 #include "logi/device/logical_device_impl.hpp"
 

@@ -427,10 +427,10 @@ void TextureExample::recordCommandBuffers() {
     primaryGraphicsCmdBuffers_[i].beginRenderPass(renderPassInfo, vk::SubpassContents::eInline);
     primaryGraphicsCmdBuffers_[i].bindPipeline(vk::PipelineBindPoint::eGraphics, pipeline_);
 
-    primaryGraphicsCmdBuffers_[i].bindVertexBuffers(0, static_cast<vk::Buffer>(vertexBuffer_), 0ul);
+    primaryGraphicsCmdBuffers_[i].bindVertexBuffers(0, static_cast<const vk::Buffer&>(vertexBuffer_), VkDeviceSize(0));
     primaryGraphicsCmdBuffers_[i].bindIndexBuffer(indexBuffer_, 0, vk::IndexType::eUint32);
     primaryGraphicsCmdBuffers_[i].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, pipelineLayoutData_.layout, 0,
-                                                     static_cast<vk::DescriptorSet>(descriptorSets_[i]));
+                                                     static_cast<const vk::DescriptorSet&>(descriptorSets_[i]));
 
     primaryGraphicsCmdBuffers_[i].drawIndexed(indices_.size(), 1, 0, 0, 0);
     primaryGraphicsCmdBuffers_[i].endRenderPass();

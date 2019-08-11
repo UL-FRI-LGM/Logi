@@ -19,6 +19,8 @@
 #ifndef LOGI_MEMORY_MEMORY_ALLOCATOR_IMPL_HPP
 #define LOGI_MEMORY_MEMORY_ALLOCATOR_IMPL_HPP
 
+#include <optional>
+#include <vulkan/vulkan.hpp>
 #include <vk_mem_alloc.h>
 #include "logi/base/vulkan_object.hpp"
 

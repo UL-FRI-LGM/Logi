@@ -20,6 +20,7 @@
 #define LOGI_RENDER_PASS_RENDER_PASS_IMPL_HPP
 
 #include <vulkan/vulkan.hpp>
+#include <optional>
 #include "logi/base/vulkan_object.hpp"
 
 namespace logi {

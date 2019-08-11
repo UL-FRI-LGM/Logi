@@ -19,6 +19,7 @@
 #ifndef LOGI_PROGRAM_DESCRIPTOR_SET_LAYOUT_IMPL_HPP
 #define LOGI_PROGRAM_DESCRIPTOR_SET_LAYOUT_IMPL_HPP
 
+#include <optional>
 #include <vulkan/vulkan.hpp>
 #include "logi/base/vulkan_object.hpp"
 

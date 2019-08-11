@@ -19,6 +19,7 @@
 #ifndef LOGI_MEMORY_BUFFER_IMPL_HPP
 #define LOGI_MEMORY_BUFFER_IMPL_HPP
 
+#include <optional>
 #include <vk_mem_alloc.h>
 #include "logi/base/vulkan_object.hpp"
 #include "logi/structures/extension.hpp"

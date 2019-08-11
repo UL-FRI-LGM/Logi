@@ -20,6 +20,7 @@
 #define LOGI_SYNCHRONIZATION_SEMAPHORE_IMPL_HPP
 
 #include <vulkan/vulkan.hpp>
+#include <optional>
 #include "logi/base/vulkan_object.hpp"
 
 namespace logi {

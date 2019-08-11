@@ -20,6 +20,7 @@
 #define LOGI_COMMAND_COMMAND_POOL_IMPL_HPP
 
 #include <vulkan/vulkan.hpp>
+#include <optional>
 #include "logi/base/vulkan_object.hpp"
 #include "logi/queue/queue_family_impl.hpp"
 #include "logi/structures/extension.hpp"

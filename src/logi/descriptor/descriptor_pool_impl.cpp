@@ -63,7 +63,7 @@ vk::ResultValueType<void>::type DescriptorPoolImpl::freeDescriptorSets(const std
   // Collect VK handles and destroy logi command buffers.
   for (size_t id : descriptorSetIds) {
     vkDescriptorSets.emplace_back(
-      static_cast<vk::DescriptorSet>(*VulkanObjectComposite<DescriptorSetImpl>::getObject(id)));
+      static_cast<const vk::DescriptorSet&>(*VulkanObjectComposite<DescriptorSetImpl>::getObject(id).get()));
     VulkanObjectComposite<DescriptorSetImpl>::destroyObject(id);
   }
 

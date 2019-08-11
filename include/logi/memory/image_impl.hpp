@@ -19,6 +19,7 @@
 #ifndef LOGI_MEMORY_IMAGE_IMPL_HPP
 #define LOGI_MEMORY_IMAGE_IMPL_HPP
 
+#include <optional>
 #include <variant>
 #include "logi/base/vulkan_object.hpp"
 #include "logi/structures/extension.hpp"
