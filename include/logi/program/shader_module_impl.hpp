@@ -22,7 +22,7 @@
 #include <map>
 #include <optional>
 #include <spirv_cross.hpp>
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/vulkan_object.hpp"
 
 namespace logi {

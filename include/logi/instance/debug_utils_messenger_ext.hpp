@@ -19,7 +19,7 @@
 #ifndef LOGI_BASE_DEBUG_UTIL_MESSENGER_EXT_HPP
 #define LOGI_BASE_DEBUG_UTIL_MESSENGER_EXT_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 
 namespace logi {

@@ -20,7 +20,7 @@
 #define LOGI_BASE_EXCEPTION_HPP
 
 #include <stdexcept>
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 
 namespace logi {
 

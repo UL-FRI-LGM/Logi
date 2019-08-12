@@ -19,7 +19,7 @@
 #ifndef LOGI_MEMORY_DEVICE_MEMORY_HPP
 #define LOGI_MEMORY_DEVICE_MEMORY_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 
 namespace logi {

@@ -19,7 +19,7 @@
 #ifndef LOGI_RENDER_PASS_FRAMEBUFFER_HPP
 #define LOGI_RENDER_PASS_FRAMEBUFFER_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 #include "logi/render_pass/framebuffer_impl.hpp"
 

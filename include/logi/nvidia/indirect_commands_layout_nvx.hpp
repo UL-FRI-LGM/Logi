@@ -19,7 +19,7 @@
 #ifndef LOGI_NVIDIA_INDIRECT_COMMANDS_LAYOUT_NVX_HPP
 #define LOGI_NVIDIA_INDIRECT_COMMANDS_LAYOUT_NVX_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 #include "logi/nvidia/indirect_commands_layout_nvx_impl.hpp"
 

@@ -19,7 +19,7 @@
 #ifndef LOGI_DESCRIPTOR_DESCRIPTOR_UPDATE_TEMPLATE_HPP
 #define LOGI_DESCRIPTOR_DESCRIPTOR_UPDATE_TEMPLATE_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 
 namespace logi {

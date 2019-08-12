@@ -19,7 +19,7 @@
 #ifndef LOGI_PROGRAM_DESCRIPTOR_SET_LAYOUT_HPP
 #define LOGI_PROGRAM_DESCRIPTOR_SET_LAYOUT_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 #include "logi/program/descriptor_set_layout_impl.hpp"
 

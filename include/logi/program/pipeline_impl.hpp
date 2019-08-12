@@ -19,7 +19,7 @@
 #ifndef LOGI_PROGRAM_PIPELINE_IMPL_HPP
 #define LOGI_PROGRAM_PIPELINE_IMPL_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/vulkan_object.hpp"
 #include "logi/device/logical_device_impl.hpp"
 

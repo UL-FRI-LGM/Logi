@@ -19,7 +19,7 @@
 #ifndef LOGI_RENDER_PASS_RENDER_PASS_HPP
 #define LOGI_RENDER_PASS_RENDER_PASS_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 #include "logi/render_pass/render_pass_impl.hpp"
 

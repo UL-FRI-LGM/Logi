@@ -23,7 +23,7 @@
 #include <memory>
 #include <optional>
 #include <vector>
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/vulkan_object.hpp"
 
 namespace logi {

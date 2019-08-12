@@ -19,7 +19,7 @@
 #ifndef LOGI_SWAPCHAIN_SWAPCHAIN_IMAGE_HPP
 #define LOGI_SWAPCHAIN_SWAPCHAIN_IMAGE_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 #include "logi/memory/image.hpp"
 

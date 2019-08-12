@@ -19,7 +19,7 @@
 #ifndef LOGI_COMMAND_COMMAND_BUFFER_HPP
 #define LOGI_COMMAND_COMMAND_BUFFER_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 #include "logi/command/command_buffer_impl.hpp"
 

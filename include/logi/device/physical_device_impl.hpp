@@ -21,7 +21,7 @@
 
 #include <optional>
 #include <string>
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/vulkan_object.hpp"
 
 namespace logi {

@@ -19,7 +19,7 @@
 #ifndef LOGI_STRUCTURES_VK_STRUCTURE_HPP
 #define LOGI_STRUCTURES_VK_STRUCTURE_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/exception.hpp"
 #include "logi/structures/simple_structures.hpp"
 #include "logi/structures/structure.hpp"

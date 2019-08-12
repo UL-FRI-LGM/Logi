@@ -19,7 +19,7 @@
 #ifndef LOGI_PROGRAM_VALIDATION_CACHE_EXT_HPP
 #define LOGI_PROGRAM_VALIDATION_CACHE_EXT_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 #include "logi/program/validation_cache_ext_impl.hpp"
 

@@ -19,7 +19,7 @@
 #ifndef LOGI_DEVICE_LOGICAL_DEVICE_IMPL_HPP
 #define LOGI_DEVICE_LOGICAL_DEVICE_IMPL_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include <optional>
 #include "logi/base/vulkan_object.hpp"
 

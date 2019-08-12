@@ -19,7 +19,7 @@
 #ifndef LOGI_SWAPCHAIN_SWAPCHAIN_KHR_IMPL_HPP
 #define LOGI_SWAPCHAIN_SWAPCHAIN_KHR_IMPL_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include <optional>
 #include "logi/base/vulkan_object.hpp"
 #include "logi/structures/extension.hpp"

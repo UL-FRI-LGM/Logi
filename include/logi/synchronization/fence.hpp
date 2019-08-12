@@ -19,7 +19,7 @@
 #ifndef LOGI_SYNCHRONIZATION_FENCE_HPP
 #define LOGI_SYNCHRONIZATION_FENCE_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 #include "logi/structures/extension.hpp"
 

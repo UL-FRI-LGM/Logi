@@ -20,7 +20,7 @@
 #define LOGI_BASE_VULKAN_INSTANCE_HPP
 
 #include <optional>
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 #include "logi/device/physical_device.hpp"
 #include "logi/instance/debug_report_callback.hpp"

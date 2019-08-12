@@ -20,7 +20,7 @@
 #define LOGI_MEMORY_BUFFER_HPP
 
 #include <optional>
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 #include "logi/memory/buffer_impl.hpp"
 #include "logi/structures/extension.hpp"

@@ -19,7 +19,7 @@
 #ifndef LOGI_PROGRAM_PIPELINE_CACHE_HPP
 #define LOGI_PROGRAM_PIPELINE_CACHE_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 #include "logi/program/pipeline_cache_impl.hpp"
 

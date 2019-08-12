@@ -19,7 +19,7 @@
 #ifndef LOGI_QUERY_QUERY_POOL_HPP
 #define LOGI_QUERY_QUERY_POOL_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 #include "logi/query/query_pool_impl.hpp"
 

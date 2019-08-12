@@ -19,7 +19,7 @@
 #ifndef LOGI_MEMORY_BUFFER_VIEW_HPP
 #define LOGI_MEMORY_BUFFER_VIEW_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 #include "logi/memory/buffer_view_impl.hpp"
 

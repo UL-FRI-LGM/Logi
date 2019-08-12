@@ -19,7 +19,7 @@
 #ifndef LOGI_NVIDIA_ACCELERATION_STRUCTURE_NV_HPP
 #define LOGI_NVIDIA_ACCELERATION_STRUCTURE_NV_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 #include "logi/memory/acceleration_structure_nv_impl.hpp"
 

@@ -19,7 +19,7 @@
 #ifndef LOGI_DESCRIPTOR_DESCRIPTOR_POOL_HPP
 #define LOGI_DESCRIPTOR_DESCRIPTOR_POOL_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 #include "logi/descriptor/descriptor_pool_impl.hpp"
 

@@ -19,7 +19,7 @@
 #ifndef LOGI_PROGRAM_SHADER_MODULE_HPP
 #define LOGI_PROGRAM_SHADER_MODULE_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 #include "logi/program/shader_module_impl.hpp"
 

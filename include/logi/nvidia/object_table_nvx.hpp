@@ -19,7 +19,7 @@
 #ifndef LOGI_NVIDIA_OBJECT_TABLE_NVX_HPP
 #define LOGI_NVIDIA_OBJECT_TABLE_NVX_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 #include "logi/nvidia/object_table_nvx_impl.hpp"
 

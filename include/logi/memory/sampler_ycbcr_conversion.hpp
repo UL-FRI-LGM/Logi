@@ -19,7 +19,7 @@
 #ifndef LOGI_MEMORY_SAMPLER_YCBCR_CONVERSION_HPP
 #define LOGI_MEMORY_SAMPLER_YCBCR_CONVERSION_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 #include "logi/memory/sampler_ycbcr_conversion_impl.hpp"
 

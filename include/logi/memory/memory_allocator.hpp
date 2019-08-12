@@ -20,7 +20,7 @@
 #define LOGI_MEMORY_MEMORY_ALLOCATOR_HPP
 
 #include <optional>
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 #include "logi/memory/memory_allocator_impl.hpp"
 

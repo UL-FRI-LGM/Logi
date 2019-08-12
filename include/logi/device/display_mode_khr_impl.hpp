@@ -20,7 +20,7 @@
 #define LOGI_DEVICE_DISPLAY_MODE_KHR_IMPL_HPP
 
 #include <optional>
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/vulkan_object.hpp"
 
 namespace logi {

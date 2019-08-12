@@ -19,7 +19,7 @@
 #ifndef LOGI_MEMORY_IMAGE_VIEW_HPP
 #define LOGI_MEMORY_IMAGE_VIEW_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 #include "logi/memory/image_view_impl.hpp"
 #include "logi/structures/extension.hpp"

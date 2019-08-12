@@ -19,7 +19,7 @@
 #ifndef LOGI_BASE_DEBUG_REPORT_CALLBACK_HPP
 #define LOGI_BASE_DEBUG_REPORT_CALLBACK_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 
 namespace logi {

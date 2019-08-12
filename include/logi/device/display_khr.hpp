@@ -19,7 +19,7 @@
 #ifndef LOGI_DEVICE_DISPLAY_KHR_HPP
 #define LOGI_DEVICE_DISPLAY_KHR_HPP
 
-#include <vulkan/vulkan.hpp>
+#include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
 #include "logi/device/display_khr_impl.hpp"
 
