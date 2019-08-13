@@ -10,3 +10,4 @@
 [submodule "examples/libs/CppGLFW"]
 	path = examples/libs/CppGLFW
 	url = https://github.com/LanaBesevic/CppGLFW.git
+	branch = master
