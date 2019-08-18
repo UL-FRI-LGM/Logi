@@ -43,7 +43,7 @@ class AccelerationStructureNVImpl : public VulkanObject,
 
   vk::MemoryRequirements2KHR
     getMemoryRequirementsNV(vk::AccelerationStructureMemoryRequirementsTypeNV type,
-                            const ConstVkNextProxy<vk::AccelerationStructureMemoryRequirementsInfoNV>& next) const;
+                            const ConstVkNextProxy<vk::AccelerationStructureMemoryRequirementsInfoNV>& next = {}) const;
 
   vk::ResultValueType<void>::type
     bindMemory(vk::DeviceMemory memory, vk::DeviceSize memoryOffset,
@@ -62,7 +62,7 @@ class AccelerationStructureNVImpl : public VulkanObject,
 
   const vk::DispatchLoaderDynamic& getDispatcher() const;
 
-  void destroy() const;
+  virtual void destroy() const;
 
   operator const vk::AccelerationStructureNV&() const;
 
