@@ -44,12 +44,14 @@ const vk::DispatchLoaderDynamic& RenderPass::getDispatcher() const {
 }
 
 void RenderPass::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 RenderPass::operator const vk::RenderPass&() const {
   static vk::RenderPass nullHandle(nullptr);
-return (object_) ? object_->operator const vk::RenderPass&() : nullHandle;
+  return (object_) ? object_->operator const vk::RenderPass&() : nullHandle;
 }
 
 } // namespace logi

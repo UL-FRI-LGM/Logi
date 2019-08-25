@@ -32,7 +32,9 @@ const vk::DispatchLoaderDynamic& SurfaceKHR::getDispatcher() const {
 }
 
 void SurfaceKHR::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 SurfaceKHR::operator const vk::SurfaceKHR&() const {

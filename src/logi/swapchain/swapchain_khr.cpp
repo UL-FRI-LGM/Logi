@@ -91,7 +91,9 @@ const vk::DispatchLoaderDynamic& SwapchainKHR::getDispatcher() const {
 }
 
 void SwapchainKHR::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 SwapchainKHR::operator const vk::SwapchainKHR&() const {

@@ -64,7 +64,9 @@ const vk::DispatchLoaderDynamic& ShaderModule::getDispatcher() const {
 }
 
 void ShaderModule::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 ShaderModule::operator const vk::ShaderModule&() const {

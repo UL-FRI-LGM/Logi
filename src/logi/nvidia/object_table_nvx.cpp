@@ -60,12 +60,14 @@ const vk::DispatchLoaderDynamic& ObjectTableNVX::getDispatcher() const {
 }
 
 void ObjectTableNVX::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 ObjectTableNVX::operator const vk::ObjectTableNVX&() const {
   static vk::ObjectTableNVX nullHandle(nullptr);
-return (object_) ? object_->operator const vk::ObjectTableNVX&() : nullHandle;
+  return (object_) ? object_->operator const vk::ObjectTableNVX&() : nullHandle;
 }
 
 // endregion

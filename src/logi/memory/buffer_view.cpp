@@ -46,7 +46,9 @@ const vk::DispatchLoaderDynamic& BufferView::getDispatcher() const {
 }
 
 void BufferView::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 BufferView::operator const vk::BufferView&() const {

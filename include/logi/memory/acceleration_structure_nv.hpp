@@ -41,7 +41,7 @@ class AccelerationStructureNV : public Handle<AccelerationStructureNVImpl> {
 
   vk::MemoryRequirements2KHR
     getMemoryRequirementsNV(vk::AccelerationStructureMemoryRequirementsTypeNV type,
-                            const ConstVkNextProxy<vk::AccelerationStructureMemoryRequirementsInfoNV>& next) const;
+                            const ConstVkNextProxy<vk::AccelerationStructureMemoryRequirementsInfoNV>& next = {}) const;
 
   vk::ResultValueType<void>::type
     bindMemory(vk::DeviceMemory memory, vk::DeviceSize memoryOffset,

@@ -91,7 +91,9 @@ const vk::DispatchLoaderDynamic& CommandPool::getDispatcher() const {
 }
 
 void CommandPool::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 CommandPool::operator const vk::CommandPool&() const {

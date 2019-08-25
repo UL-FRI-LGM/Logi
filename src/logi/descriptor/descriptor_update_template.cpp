@@ -43,12 +43,14 @@ const vk::DispatchLoaderDynamic& DescriptorUpdateTemplate::getDispatcher() const
 }
 
 void DescriptorUpdateTemplate::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 DescriptorUpdateTemplate::operator const vk::DescriptorUpdateTemplate&() const {
   static vk::DescriptorUpdateTemplate nullHandle(nullptr);
-return (object_) ? object_->operator const vk::DescriptorUpdateTemplate&() : nullHandle;
+  return (object_) ? object_->operator const vk::DescriptorUpdateTemplate&() : nullHandle;
 }
 
 // endregion

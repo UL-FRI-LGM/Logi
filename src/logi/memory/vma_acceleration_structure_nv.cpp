@@ -22,9 +22,15 @@
 
 namespace logi {
 VMAAccelerationStructureNV::VMAAccelerationStructureNV(
-  const std::shared_ptr<VMAAccelerationStructureNVImpl>& VMAAccelerationStructureNVImpl) {}
+  const std::shared_ptr<VMAAccelerationStructureNVImpl>& vmaAccelerationStructureNVImpl)
+  : AccelerationStructureNV(std::static_pointer_cast<AccelerationStructureNVImpl>(vmaAccelerationStructureNVImpl)) {}
 
-VMAAccelerationStructureNV::VMAAccelerationStructureNV(const AccelerationStructureNV& accelerationStructure) {}
+VMAAccelerationStructureNV::VMAAccelerationStructureNV(const AccelerationStructureNV& accelerationStructure)
+  : AccelerationStructureNV(accelerationStructure) {
+  if (dynamic_cast<VMAAccelerationStructureNVImpl*>(object_.get()) == nullptr) {
+    object_.reset();
+  }
+}
 
 void* VMAAccelerationStructureNV::mapMemory() const {
   return static_cast<VMAAccelerationStructureNVImpl*>(object_.get())->mapMemory();

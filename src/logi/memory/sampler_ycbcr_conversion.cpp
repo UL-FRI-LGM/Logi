@@ -40,12 +40,14 @@ const vk::DispatchLoaderDynamic& SamplerYcbcrConversion::getDispatcher() const {
 }
 
 void SamplerYcbcrConversion::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 SamplerYcbcrConversion::operator const vk::SamplerYcbcrConversion&() const {
   static vk::SamplerYcbcrConversion nullHandle(nullptr);
-return (object_) ? object_->operator const vk::SamplerYcbcrConversion&() : nullHandle;
+  return (object_) ? object_->operator const vk::SamplerYcbcrConversion&() : nullHandle;
 }
 
 } // namespace logi

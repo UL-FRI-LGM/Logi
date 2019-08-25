@@ -32,7 +32,9 @@ const vk::DispatchLoaderDynamic& DebugUtilsMessengerEXT::getDispatcher() const {
 }
 
 void DebugUtilsMessengerEXT::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 DebugUtilsMessengerEXT::operator const vk::DebugUtilsMessengerEXT&() const {

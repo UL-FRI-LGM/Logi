@@ -92,7 +92,9 @@ const vk::DispatchLoaderDynamic& Fence::getDispatcher() const {
 }
 
 void Fence::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 Fence::operator const vk::Fence&() const {

@@ -22,7 +22,6 @@ include(ExternalDependencies.cmake)
 
 file(GLOB_RECURSE SRC_LIST "src/*.cpp")
 
-message(STATUS ${SRC_LIST})
 add_library(logi STATIC ${SRC_LIST})
 set_property(TARGET logi PROPERTY CXX_STANDARD 17)
 set_property(TARGET logi PROPERTY CXX_STANDARD_REQUIRED ON)

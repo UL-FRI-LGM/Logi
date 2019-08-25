@@ -20,8 +20,8 @@
 #define LOGI_MEMORY_MEMORY_ALLOCATOR_IMPL_HPP
 
 #include <optional>
-#include "logi/base/common.hpp"
 #include <vk_mem_alloc.h>
+#include "logi/base/common.hpp"
 #include "logi/base/vulkan_object.hpp"
 
 namespace logi {
@@ -31,11 +31,13 @@ class PhysicalDeviceImpl;
 class LogicalDeviceImpl;
 class VMABufferImpl;
 class VMAImageImpl;
+class VMAAccelerationStructureNVImpl;
 
 class MemoryAllocatorImpl : public VulkanObject,
                             public std::enable_shared_from_this<MemoryAllocatorImpl>,
                             public VulkanObjectComposite<VMABufferImpl>,
-                            public VulkanObjectComposite<VMAImageImpl> {
+                            public VulkanObjectComposite<VMAImageImpl>,
+                            public VulkanObjectComposite<VMAAccelerationStructureNVImpl> {
  public:
   explicit MemoryAllocatorImpl(LogicalDeviceImpl& logicalDevice, vk::DeviceSize preferredLargeHeapBlockSize = 0u,
                                uint32_t frameInUseCount = 0u, const std::vector<vk::DeviceSize>& heapSizeLimits = {},
@@ -54,6 +56,13 @@ class MemoryAllocatorImpl : public VulkanObject,
                                                    const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyImage(size_t id);
+
+  const std::shared_ptr<VMAAccelerationStructureNVImpl>&
+    createAccelerationStructureNV(const vk::AccelerationStructureCreateInfoNV& accelerationStructureCreateInfo,
+                                  const VmaAllocationCreateInfo& allocationCreateInfo,
+                                  const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyAccelerationStructureNV(size_t id);
 
   // endregion
 

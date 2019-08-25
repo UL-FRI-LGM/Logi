@@ -168,11 +168,13 @@ const vk::DispatchLoaderDynamic& VulkanInstance::getDispatcher() const {
 
 VulkanInstance::operator const vk::Instance&() const {
   static vk::Instance nullHandle(nullptr);
-return (object_) ? object_->operator const vk::Instance&() : nullHandle;
+  return (object_) ? object_->operator const vk::Instance&() : nullHandle;
 }
 
 void VulkanInstance::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 VulkanInstance createInstance(const vk::InstanceCreateInfo& createInfo, PFN_vkCreateInstance pfnCreateInstance,

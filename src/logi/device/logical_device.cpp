@@ -460,12 +460,14 @@ const vk::DispatchLoaderDynamic& LogicalDevice::getDispatcher() const {
 }
 
 void LogicalDevice::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 LogicalDevice::operator const vk::Device&() const {
   static vk::Device nullHandle(nullptr);
-return (object_) ? object_->operator const vk::Device&() : nullHandle;
+  return (object_) ? object_->operator const vk::Device&() : nullHandle;
 }
 
 // endregion

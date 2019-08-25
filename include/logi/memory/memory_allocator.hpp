@@ -31,6 +31,7 @@ class PhysicalDevice;
 class LogicalDevice;
 class VMABuffer;
 class VMAImage;
+class VMAAccelerationStructureNV;
 
 class MemoryAllocator : public Handle<MemoryAllocatorImpl> {
  public:
@@ -46,6 +47,13 @@ class MemoryAllocator : public Handle<MemoryAllocatorImpl> {
                        const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyImage(const VMAImage& image);
+
+  VMAAccelerationStructureNV
+    createAccelerationStructureNV(const vk::AccelerationStructureCreateInfoNV& accelerationStructureCreateInfo,
+                                  const VmaAllocationCreateInfo& allocationCreateInfo,
+                                  const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyAccelerationStructureNV(const VMAAccelerationStructureNV& accelerationStructure);
 
   // region Logi Declarations
 

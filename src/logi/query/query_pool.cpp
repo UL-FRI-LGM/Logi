@@ -46,12 +46,14 @@ const vk::DispatchLoaderDynamic& QueryPool::getDispatcher() const {
 }
 
 void QueryPool::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 QueryPool::operator const vk::QueryPool&() const {
   static vk::QueryPool nullHandle(nullptr);
-return (object_) ? object_->operator const vk::QueryPool&() : nullHandle;
+  return (object_) ? object_->operator const vk::QueryPool&() : nullHandle;
 }
 
 } // namespace logi

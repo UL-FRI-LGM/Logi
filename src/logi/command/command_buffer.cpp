@@ -502,12 +502,14 @@ const vk::DispatchLoaderDynamic& CommandBuffer::getDispatcher() const {
 }
 
 void CommandBuffer::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 CommandBuffer::operator const vk::CommandBuffer&() const {
   static vk::CommandBuffer nullHandle(nullptr);
-return (object_) ? object_->operator const vk::CommandBuffer&() : nullHandle;
+  return (object_) ? object_->operator const vk::CommandBuffer&() : nullHandle;
 }
 
 // endregion

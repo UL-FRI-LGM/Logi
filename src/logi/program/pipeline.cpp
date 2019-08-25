@@ -56,12 +56,14 @@ const vk::DispatchLoaderDynamic& Pipeline::getDispatcher() const {
 }
 
 void Pipeline::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 Pipeline::operator const vk::Pipeline&() const {
   static vk::Pipeline nullHandle(nullptr);
-return (object_) ? object_->operator const vk::Pipeline&() : nullHandle;
+  return (object_) ? object_->operator const vk::Pipeline&() : nullHandle;
 }
 
 // endregion

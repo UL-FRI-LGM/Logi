@@ -42,7 +42,9 @@ const vk::DispatchLoaderDynamic& Semaphore::getDispatcher() const {
 }
 
 void Semaphore::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 Semaphore::operator const vk::Semaphore&() const {

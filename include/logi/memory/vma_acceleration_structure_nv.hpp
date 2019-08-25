@@ -33,7 +33,7 @@ class VMAAccelerationStructureNV : public AccelerationStructureNV {
   explicit VMAAccelerationStructureNV() = default;
 
   explicit VMAAccelerationStructureNV(
-    const std::shared_ptr<VMAAccelerationStructureNVImpl>& VMAAccelerationStructureNVImpl);
+    const std::shared_ptr<VMAAccelerationStructureNVImpl>& vmaAccelerationStructureNVImpl);
 
   explicit VMAAccelerationStructureNV(const AccelerationStructureNV& accelerationStructure);
 

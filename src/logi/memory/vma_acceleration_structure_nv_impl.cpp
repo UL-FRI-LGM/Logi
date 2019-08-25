@@ -76,7 +76,9 @@ MemoryAllocatorImpl& VMAAccelerationStructureNVImpl::getMemoryAllocator() const 
   return memoryAllocator_;
 }
 
-void VMAAccelerationStructureNVImpl::destroy() const {}
+void VMAAccelerationStructureNVImpl::destroy() const {
+  memoryAllocator_.destroyAccelerationStructureNV(id());
+}
 
 void VMAAccelerationStructureNVImpl::free() {
   AccelerationStructureNVImpl::free();

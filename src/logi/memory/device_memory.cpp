@@ -60,12 +60,14 @@ const vk::DispatchLoaderDynamic& DeviceMemory::getDispatcher() const {
 }
 
 void DeviceMemory::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 DeviceMemory::operator const vk::DeviceMemory&() const {
   static vk::DeviceMemory nullHandle(nullptr);
-return (object_) ? object_->operator const vk::DeviceMemory&() : nullHandle;
+  return (object_) ? object_->operator const vk::DeviceMemory&() : nullHandle;
 }
 
 // endregion

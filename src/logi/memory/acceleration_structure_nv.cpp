@@ -57,12 +57,14 @@ const vk::DispatchLoaderDynamic& AccelerationStructureNV::getDispatcher() const 
 }
 
 void AccelerationStructureNV::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 AccelerationStructureNV::operator const vk::AccelerationStructureNV&() const {
   static vk::AccelerationStructureNV nullHandle(nullptr);
-return (object_) ? object_->operator const vk::AccelerationStructureNV&() : nullHandle;
+  return (object_) ? object_->operator const vk::AccelerationStructureNV&() : nullHandle;
 }
 
 // endregion

@@ -54,7 +54,9 @@ const vk::DispatchLoaderDynamic& Event::getDispatcher() const {
 }
 
 void Event::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 Event::operator const vk::Event&() const {

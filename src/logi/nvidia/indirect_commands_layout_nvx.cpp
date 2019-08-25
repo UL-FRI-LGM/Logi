@@ -44,12 +44,14 @@ const vk::DispatchLoaderDynamic& IndirectCommandsLayoutNVX::getDispatcher() cons
 }
 
 void IndirectCommandsLayoutNVX::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 IndirectCommandsLayoutNVX::operator const vk::IndirectCommandsLayoutNVX&() const {
   static vk::IndirectCommandsLayoutNVX nullHandle(nullptr);
-return (object_) ? object_->operator const vk::IndirectCommandsLayoutNVX&() : nullHandle;
+  return (object_) ? object_->operator const vk::IndirectCommandsLayoutNVX&() : nullHandle;
 }
 
 // endregion

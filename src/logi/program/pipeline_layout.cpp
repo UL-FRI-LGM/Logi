@@ -40,7 +40,9 @@ const vk::DispatchLoaderDynamic& PipelineLayout::getDispatcher() const {
 }
 
 void PipelineLayout::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 PipelineLayout::operator const vk::PipelineLayout&() const {

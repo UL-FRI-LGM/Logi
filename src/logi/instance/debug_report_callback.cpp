@@ -32,7 +32,9 @@ const vk::DispatchLoaderDynamic& DebugReportCallbackEXT::getDispatcher() const {
 }
 
 void DebugReportCallbackEXT::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 DebugReportCallbackEXT::operator const vk::DebugReportCallbackEXT&() const {

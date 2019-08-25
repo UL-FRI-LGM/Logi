@@ -51,12 +51,14 @@ const vk::DispatchLoaderDynamic& ImageView::getDispatcher() const {
 }
 
 void ImageView::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 ImageView::operator const vk::ImageView&() const {
   static vk::ImageView nullHandle(nullptr);
-return (object_) ? object_->operator const vk::ImageView&() : nullHandle;
+  return (object_) ? object_->operator const vk::ImageView&() : nullHandle;
 }
 
 }

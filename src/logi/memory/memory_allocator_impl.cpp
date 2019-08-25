@@ -22,6 +22,7 @@
 #include "logi/device/logical_device_impl.hpp"
 #include "logi/device/physical_device_impl.hpp"
 #include "logi/instance/vulkan_instance_impl.hpp"
+#include "logi/memory/vma_acceleration_structure_nv_impl.hpp"
 #include "logi/memory/vma_buffer_impl.hpp"
 #include "logi/memory/vma_image_impl.hpp"
 
@@ -89,8 +90,20 @@ const std::shared_ptr<VMAImageImpl>&
                                    const std::optional<vk::AllocationCallbacks>& allocator) {
   return VulkanObjectComposite<VMAImageImpl>::createObject(*this, imageCreateInfo, allocationCreateInfo, allocator);
 }
+
 void MemoryAllocatorImpl::destroyImage(size_t id) {
   VulkanObjectComposite<VMAImageImpl>::destroyObject(id);
+}
+
+const std::shared_ptr<VMAAccelerationStructureNVImpl>& MemoryAllocatorImpl::createAccelerationStructureNV(
+  const vk::AccelerationStructureCreateInfoNV& accelerationStructureCreateInfo,
+  const VmaAllocationCreateInfo& allocationCreateInfo, const std::optional<vk::AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<VMAAccelerationStructureNVImpl>::createObject(*this, accelerationStructureCreateInfo,
+                                                                             allocationCreateInfo, allocator);
+}
+
+void MemoryAllocatorImpl::destroyAccelerationStructureNV(size_t id) {
+  VulkanObjectComposite<VMAAccelerationStructureNVImpl>::destroyObject(id);
 }
 
 VulkanInstanceImpl& MemoryAllocatorImpl::getInstance() const {

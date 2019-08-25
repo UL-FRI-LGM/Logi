@@ -88,12 +88,14 @@ const vk::DispatchLoaderDynamic& Image::getDispatcher() const {
 }
 
 void Image::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 Image::operator const vk::Image&() const {
   static vk::Image nullHandle(nullptr);
-return (object_) ? object_->operator const vk::Image&() : nullHandle;
+  return (object_) ? object_->operator const vk::Image&() : nullHandle;
 }
 
 vk::ResultValueType<void>::type Image::bindMemory(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset) const {

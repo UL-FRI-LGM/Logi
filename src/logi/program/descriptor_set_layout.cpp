@@ -40,12 +40,14 @@ const vk::DispatchLoaderDynamic& DescriptorSetLayout::getDispatcher() const {
 }
 
 void DescriptorSetLayout::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 DescriptorSetLayout::operator const vk::DescriptorSetLayout&() const {
   static vk::DescriptorSetLayout nullHandle(nullptr);
-return (object_) ? object_->operator const vk::DescriptorSetLayout&() : nullHandle;
+  return (object_) ? object_->operator const vk::DescriptorSetLayout&() : nullHandle;
 }
 
 } // namespace logi

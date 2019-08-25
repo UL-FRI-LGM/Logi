@@ -20,6 +20,7 @@
 #include "logi/device/logical_device.hpp"
 #include "logi/device/physical_device.hpp"
 #include "logi/instance/vulkan_instance.hpp"
+#include "logi/memory/vma_acceleration_structure_nv.hpp"
 #include "logi/memory/vma_buffer.hpp"
 #include "logi/memory/vma_image.hpp"
 
@@ -45,6 +46,17 @@ void MemoryAllocator::destroyImage(const VMAImage& image) {
   object_->destroyImage(image.id());
 }
 
+VMAAccelerationStructureNV MemoryAllocator::createAccelerationStructureNV(
+  const vk::AccelerationStructureCreateInfoNV& accelerationStructureCreateInfo,
+  const VmaAllocationCreateInfo& allocationCreateInfo, const std::optional<vk::AllocationCallbacks>& allocator) {
+  return VMAAccelerationStructureNV(
+    object_->createAccelerationStructureNV(accelerationStructureCreateInfo, allocationCreateInfo, allocator));
+}
+
+void MemoryAllocator::destroyAccelerationStructureNV(const VMAAccelerationStructureNV& accelerationStructure) {
+  object_->destroyAccelerationStructureNV(accelerationStructure.id());
+}
+
 VulkanInstance MemoryAllocator::getInstance() const {
   return VulkanInstance(object_->getInstance().shared_from_this());
 }
@@ -62,7 +74,9 @@ const vk::DispatchLoaderDynamic& MemoryAllocator::getDispatcher() const {
 }
 
 void MemoryAllocator::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 MemoryAllocator::operator const VmaAllocator&() const {

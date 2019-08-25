@@ -40,12 +40,14 @@ const vk::DispatchLoaderDynamic& Sampler::getDispatcher() const {
 }
 
 void Sampler::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 Sampler::operator const vk::Sampler&() const {
   static vk::Sampler nullHandle(nullptr);
-return (object_) ? object_->operator const vk::Sampler&() : nullHandle;
+  return (object_) ? object_->operator const vk::Sampler&() : nullHandle;
 }
 
 } // namespace logi

@@ -40,7 +40,9 @@ const vk::DispatchLoaderDynamic& Framebuffer::getDispatcher() const {
 }
 
 void Framebuffer::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 Framebuffer::operator const vk::Framebuffer&() const {

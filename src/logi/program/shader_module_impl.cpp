@@ -188,6 +188,10 @@ std::vector<DescriptorSetReflectionInfo> ShaderModuleImpl::reflectDescriptorSets
     reflectDescriptorBinding(resource.id, vk::DescriptorType::eInputAttachment);
   }
 
+  for (auto& resource : shaderResources.acceleration_structures) {
+    reflectDescriptorBinding(resource.id, vk::DescriptorType::eAccelerationStructureNV);
+  }
+
   return descriptorSets;
 }
 

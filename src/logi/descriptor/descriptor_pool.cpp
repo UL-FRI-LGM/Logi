@@ -71,12 +71,14 @@ const vk::DispatchLoaderDynamic& DescriptorPool::getDispatcher() const {
 }
 
 void DescriptorPool::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 DescriptorPool::operator const vk::DescriptorPool&() const {
   static vk::DescriptorPool nullHandle(nullptr);
-return (object_) ? object_->operator const vk::DescriptorPool&() : nullHandle;
+  return (object_) ? object_->operator const vk::DescriptorPool&() : nullHandle;
 }
 
 // endregion

@@ -49,12 +49,14 @@ const vk::DispatchLoaderDynamic& PipelineCache::getDispatcher() const {
 }
 
 void PipelineCache::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 PipelineCache::operator const vk::PipelineCache&() const {
   static vk::PipelineCache nullHandle(nullptr);
-return (object_) ? object_->operator const vk::PipelineCache&() : nullHandle;
+  return (object_) ? object_->operator const vk::PipelineCache&() : nullHandle;
 }
 
 } // namespace logi

@@ -83,12 +83,14 @@ const vk::DispatchLoaderDynamic& Buffer::getDispatcher() const {
 }
 
 void Buffer::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 Buffer::operator const vk::Buffer&() const {
   static vk::Buffer nullHandle(nullptr);
-return (object_) ? object_->operator const vk::Buffer&() : nullHandle;
+  return (object_) ? object_->operator const vk::Buffer&() : nullHandle;
 }
 
 }

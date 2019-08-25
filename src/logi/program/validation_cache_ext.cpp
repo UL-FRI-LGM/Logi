@@ -55,7 +55,9 @@ const vk::DispatchLoaderDynamic& ValidationCacheEXT::getDispatcher() const {
 }
 
 void ValidationCacheEXT::destroy() const {
-  object_->destroy();
+  if (object_) {
+    object_->destroy();
+  }
 }
 
 ValidationCacheEXT::operator const vk::ValidationCacheEXT&() const {
