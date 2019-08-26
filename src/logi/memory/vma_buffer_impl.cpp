@@ -25,7 +25,7 @@ VMABufferImpl::VMABufferImpl(MemoryAllocatorImpl& memoryAllocator, const vk::Buf
                              const VmaAllocationCreateInfo& allocationCreateInfo,
                              const std::optional<vk::AllocationCallbacks>& allocator)
   : BufferImpl(memoryAllocator.getLogicalDevice(), bufferCreateInfo, allocator), memoryAllocator_(memoryAllocator),
-    allocation_() {
+    allocation_(), size_(0) {
   auto vmaAllocator = static_cast<const VmaAllocator&>(memoryAllocator_);
   vk::MemoryRequirements memoryRequirements = getMemoryRequirements();
 
@@ -43,6 +43,8 @@ VMABufferImpl::VMABufferImpl(MemoryAllocatorImpl& memoryAllocator, const vk::Buf
   if (result != VK_SUCCESS) {
     throw BadAllocation("Failed to allocate memory for buffer.");
   }
+
+  size_ = bufferCreateInfo.size;
 }
 
 void* VMABufferImpl::mapMemory() const {
@@ -57,7 +59,7 @@ void VMABufferImpl::unmapMemory() const {
 }
 
 size_t VMABufferImpl::size() const {
-  return allocationInfo_.size;
+  return size_;
 }
 
 void VMABufferImpl::writeToBuffer(const void* data, size_t size, size_t offset) const {

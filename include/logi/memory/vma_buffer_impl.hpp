@@ -56,6 +56,7 @@ class VMABufferImpl : public BufferImpl {
   MemoryAllocatorImpl& memoryAllocator_;
   VmaAllocation allocation_;
   VmaAllocationInfo allocationInfo_;
+  size_t size_;
 };
 
 } // namespace logi
