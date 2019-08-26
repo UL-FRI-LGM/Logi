@@ -43,10 +43,10 @@ VMAAccelerationStructureNVImpl::VMAAccelerationStructureNVImpl(
   // Bind memory.
   vk::BindAccelerationStructureMemoryInfoNV bindInfo;
   bindInfo.accelerationStructure = static_cast<const vk::AccelerationStructureNV&>(*this);
-  bindInfo.memory = allocationInfo_.deviceMemory;
+  bindInfo.memory = vk::DeviceMemory(allocationInfo_.deviceMemory);
   bindInfo.memoryOffset = allocationInfo_.offset;
 
-  bindMemory(allocationInfo_.deviceMemory, allocationInfo_.offset);
+  bindMemory(vk::DeviceMemory(allocationInfo_.deviceMemory), allocationInfo_.offset);
 }
 
 void* VMAAccelerationStructureNVImpl::mapMemory() const {
