@@ -4,8 +4,8 @@
 #include <glm/gtx/string_cast.hpp>
 
 void HelloTriangle::loadShaders() {
-  vertexShader_ = createShaderModule("./shaders/triangle.vert.spv");
-  fragmentShader_ = createShaderModule("./shaders/triangle.frag.spv");
+  vertexShader_ = createShaderModule("./build/examples/hello_triangle/shaders/triangle.vert.spv");
+  fragmentShader_ = createShaderModule("./build/examples/hello_triangle/shaders/triangle.frag.spv");
 
   // Generate descriptor set layouts.
   std::vector<logi::DescriptorSetReflectionInfo> descriptorSetInfo =
@@ -314,7 +314,7 @@ void HelloTriangle::recordCommandBuffers() {
     primaryGraphicsCmdBuffers_[i].beginRenderPass(renderPassInfo, vk::SubpassContents::eInline);
     primaryGraphicsCmdBuffers_[i].bindPipeline(vk::PipelineBindPoint::eGraphics, pipeline_);
 
-    primaryGraphicsCmdBuffers_[i].bindVertexBuffers(0, static_cast<vk::Buffer>(vertexBuffer_), 0ul);
+    primaryGraphicsCmdBuffers_[i].bindVertexBuffers(0, static_cast<vk::Buffer>(vertexBuffer_), static_cast<VkDeviceSize>(0ul));
     primaryGraphicsCmdBuffers_[i].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, pipelineLayoutData_.layout, 0,
                                                      static_cast<vk::DescriptorSet>(descriptorSets_[i]));
 

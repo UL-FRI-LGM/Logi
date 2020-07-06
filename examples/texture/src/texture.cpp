@@ -8,8 +8,9 @@
 #include "stb_image.h"
 
 void TextureExample::loadShaders() {
-  vertexShader_ = createShaderModule("./shaders/texture.vert.spv");
-  fragmentShader_ = createShaderModule("./shaders/texture.frag.spv");
+
+  vertexShader_ = createShaderModule("./build/examples/texture/shaders/texture.vert.spv");
+  fragmentShader_ = createShaderModule("./build/examples/texture/shaders/texture.frag.spv");
 
   // Generate descriptor set layouts.
   std::vector<logi::DescriptorSetReflectionInfo> descriptorSetInfo =
@@ -89,7 +90,7 @@ void TextureExample::allocateBuffers() {
 
 void TextureExample::loadTextureImage() {
   int32_t texWidth, texHeight, texChannels;
-  stbi_uc* pixels = stbi_load("resources/images/zebra.jpg", &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+  stbi_uc* pixels = stbi_load("./build/examples/texture/resources/images/zebra.jpg", &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
   VkDeviceSize imageSize = texWidth * texHeight * 4;
 
   if (!pixels) {
