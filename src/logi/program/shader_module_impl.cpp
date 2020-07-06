@@ -205,12 +205,13 @@ std::optional<PushConstantReflectionInfo> ShaderModuleImpl::reflectPushConstants
     const std::string& name = compiler.get_name(pushConstantBuffer.id);
 
     // Find the beginning and the end of the buffer.
-    size_t bufferStart = std::numeric_limits<size_t>::max();
+    // size_t bufferStart = std::numeric_limits<size_t>::max();
+    size_t bufferStart = 0u;
     size_t bufferEnd = 0u;
 
     for (const spirv_cross::BufferRange& constMemberRange : compiler.get_active_buffer_ranges(pushConstantBuffer.id)) {
-      bufferStart = std::min(bufferStart, constMemberRange.offset);
-      bufferEnd = std::max(bufferEnd, constMemberRange.offset + constMemberRange.range);
+      bufferStart = std::min<size_t>(bufferStart, constMemberRange.offset);
+      bufferEnd = std::max<size_t>(bufferEnd, constMemberRange.offset + constMemberRange.range);
     }
 
     return std::make_optional<PushConstantReflectionInfo>(stage, bufferStart, bufferEnd - bufferStart);

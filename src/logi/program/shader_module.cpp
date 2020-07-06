@@ -107,7 +107,7 @@ std::vector<DescriptorSetReflectionInfo> reflectDescriptorSets(const std::vector
       it->shader.getDescriptorSetReflectionInfo(it->entryPoint);
 
     // Merge common descriptor sets.
-    for (size_t i = 0; i < std::min(mergedDescriptorSets.size(), descriptorSets.size()); i++) {
+    for (size_t i = 0; i < std::min<size_t>(mergedDescriptorSets.size(), descriptorSets.size()); i++) {
       mergeDescriptorSetReflectionInfo(mergedDescriptorSets[i], descriptorSets[i]);
     }
 
