@@ -1,6 +1,5 @@
 #include "base/example_base.h"
 #include <base/example_base.h>
-#include <glm/gtx/string_cast.hpp>
 
 PipelineLayoutData::PipelineLayoutData(logi::PipelineLayout layout,
                                        std::vector<logi::DescriptorSetLayout> descriptorSetLayouts)
@@ -36,7 +35,7 @@ void ExampleBase::initWindow() {
 
 void ExampleBase::initInput() {
   window_.setOnScrollCallback("onScroll", [this](const cppglfw::Window&, double, double yOffset) {
-    zoom += 0.5 * yOffset;
+    zoom += (double) (0.5 * yOffset);
     viewChanged = true;
   });
 

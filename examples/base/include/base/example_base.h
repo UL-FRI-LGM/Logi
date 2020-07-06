@@ -3,6 +3,7 @@
 
 #define GLFW_INCLUDE_VULKAN
 #include <cppglfw/CppGLFW.h>
+#include <glm/gtx/string_cast.hpp>
 #include <fstream>
 #include <glm/glm.hpp>
 #include <iostream>
