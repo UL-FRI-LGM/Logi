@@ -9,6 +9,83 @@
 
 namespace utility
 {   
+    //----------Region: Vulkan state-------------------
+    struct VulkanState
+    {
+        std::map<std::string, logi::LogicalDevice> logicalDevices;
+        std::map<std::string, logi::MemoryAllocator> allocators;
+        std::map<std::string, logi::Queue> queues;
+        std::map<std::string, logi::CommandPool> commandPools;
+
+        logi::LogicalDevice* defaultLogicalDevice;
+        logi::MemoryAllocator* defaultAllocator;
+        logi::Queue* defaultGraphicsQueue;
+        logi::Queue* defaultComputeQueue;
+        logi::Queue* defaultPresentQueue;
+        logi::CommandPool* defaultCommandPool;
+
+        VulkanState() : defaultLogicalDevice(nullptr), defaultAllocator(nullptr), defaultGraphicsQueue(nullptr),
+                            defaultComputeQueue(nullptr), defaultPresentQueue(nullptr), defaultCommandPool(nullptr) 
+        {}
+
+        void addLogicalDevice(std::string& key, logi::LogicalDevice& logicalDevice)
+        {
+            // Returns iterator if key is already present in map
+            auto const result = logicalDevices.insert(std::pair<std::string, logi::LogicalDevice>(key, logicalDevice));
+            if(!result.second) {result.first->second = logicalDevice;} // Update if key already exists
+        }
+
+        void addAllocator(std::string& key, logi::MemoryAllocator& allocator)
+        {
+            auto const result = allocators.insert(std::pair<std::string, logi::MemoryAllocator>(key, allocator));
+            if(!result.second) {result.first->second = allocator;}
+        }
+
+        void addQueue(std::string& key, logi::Queue& queue) 
+        {
+            auto const result = queues.insert(std::pair<std::string, logi::Queue>(key, queue));
+            if(!result.second) {result.first->second = queue;}
+        }
+
+        void addCommandPool(std::string& key, logi::CommandPool& commandPool) 
+        {
+            auto const result = commandPools.insert(std::pair<std::string, logi::CommandPool>(key, commandPool));
+            if(!result.second) {result.first->second = commandPool;}
+        }
+
+        void setDefaultLogicalDevice(std::string& key)
+        {
+            defaultLogicalDevice = &logicalDevices.at(key);
+        }
+
+        void setDefaultAllocator(std::string& key) 
+        {
+            defaultAllocator = &allocators.at(key);
+        }
+
+        void setDefaultGraphicsQueue(std::string& key) 
+        {
+            defaultGraphicsQueue = &queues.at(key);
+        }
+
+        void setDefaultComputeQueue(std::string& key) 
+        {
+            defaultComputeQueue = &queues.at(key);
+        }
+
+        void setDefaultPresentQueue(std::string& key) 
+        {
+            defaultPresentQueue = &queues.at(key);
+        }        
+
+        void setDefaultCommandPool(std::string& key) 
+        {
+            defaultCommandPool = &commandPools.at(key);
+        }
+
+    };
+
+
     //----------Region: Shader Reflection----------
     struct ShaderReflection 
     {   
@@ -105,62 +182,62 @@ namespace utility
     void endSingleTimeCommand(logi::Queue& queue, logi::CommandBuffer& commandBuffer);
 
 
-    //----------Region: framebuffer----------
-    struct FramebufferAttachmentCreateInfo {
-        uint32_t width; 
-        uint32_t height; 
-        vk::Format format;
-        vk::ImageUsageFlags usage;
-        VmaMemoryUsage& memoryUsage;
-    };
+    // //----------Region: framebuffer----------
+    // struct FramebufferAttachmentCreateInfo {
+    //     uint32_t width; 
+    //     uint32_t height; 
+    //     vk::Format format;
+    //     vk::ImageUsageFlags usage;
+    //     VmaMemoryUsage& memoryUsage;
+    // };
 
-    struct FramebufferAttachment {
-        logi::VMAImage image;
-        logi::ImageView imageView;
-        vk::Format format;
-        vk::AttachmentDescription attachemntDescription;
+    // struct FramebufferAttachment {
+    //     logi::VMAImage image;
+    //     logi::ImageView imageView;
+    //     vk::Format format;
+    //     vk::AttachmentDescription attachemntDescription;
 
-        // vk::ImageSubresourceRange subresourceRange;
+    //     // vk::ImageSubresourceRange subresourceRange;
 
-		bool hasDepth()
-		{
-			std::vector<VkFormat> formats = 
-			{
-				VK_FORMAT_D16_UNORM,
-				VK_FORMAT_X8_D24_UNORM_PACK32,
-				VK_FORMAT_D32_SFLOAT,
-				VK_FORMAT_D16_UNORM_S8_UINT,
-				VK_FORMAT_D24_UNORM_S8_UINT,
-				VK_FORMAT_D32_SFLOAT_S8_UINT,
-			};
-			return std::find(formats.begin(), formats.end(), format) != std::end(formats);
-		}
+	// 	bool hasDepth()
+	// 	{
+	// 		std::vector<VkFormat> formats = 
+	// 		{
+	// 			VK_FORMAT_D16_UNORM,
+	// 			VK_FORMAT_X8_D24_UNORM_PACK32,
+	// 			VK_FORMAT_D32_SFLOAT,
+	// 			VK_FORMAT_D16_UNORM_S8_UINT,
+	// 			VK_FORMAT_D24_UNORM_S8_UINT,
+	// 			VK_FORMAT_D32_SFLOAT_S8_UINT,
+	// 		};
+	// 		return std::find(formats.begin(), formats.end(), format) != std::end(formats);
+	// 	}
 
-		bool hasStencil()
-		{
-			std::vector<VkFormat> formats = 
-			{
-				VK_FORMAT_S8_UINT,
-				VK_FORMAT_D16_UNORM_S8_UINT,
-				VK_FORMAT_D24_UNORM_S8_UINT,
-				VK_FORMAT_D32_SFLOAT_S8_UINT,
-			};
-			return std::find(formats.begin(), formats.end(), format) != std::end(formats);
-		}
+	// 	bool hasStencil()
+	// 	{
+	// 		std::vector<VkFormat> formats = 
+	// 		{
+	// 			VK_FORMAT_S8_UINT,
+	// 			VK_FORMAT_D16_UNORM_S8_UINT,
+	// 			VK_FORMAT_D24_UNORM_S8_UINT,
+	// 			VK_FORMAT_D32_SFLOAT_S8_UINT,
+	// 		};
+	// 		return std::find(formats.begin(), formats.end(), format) != std::end(formats);
+	// 	}
 
-		bool isDepthStencil()
-		{
-			return(hasDepth() || hasStencil());
-		}
-    };
+	// 	bool isDepthStencil()
+	// 	{
+	// 		return(hasDepth() || hasStencil());
+	// 	}
+    // };
 
-    struct Framebuffer {
-        private:
-            logi::MemoryAllocator allocator_;
+    // struct Framebuffer {
+    //     private:
+    //         logi::MemoryAllocator allocator_;
         
-        public:
+    //     public:
 
-    };
+    // };
 
 } // namespace utility
 
