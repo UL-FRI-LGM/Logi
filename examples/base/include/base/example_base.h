@@ -8,6 +8,8 @@
 #include <glm/glm.hpp>
 #include <iostream>
 #include "logi/logi.hpp"
+#include "base/utility.h"
+#include "base/vulkanState.h"
 
 struct ExampleConfiguration {
   std::string windowTitle = "Example";
@@ -77,20 +79,13 @@ class ExampleBase {
 
   void mainLoop();
 
-  logi::ShaderModule createShaderModule(const std::string& shaderPath);
-
   virtual ~ExampleBase();
 
  protected:
+  VulkanState vulkanState_;
+
   cppglfw::Window window_;
-  logi::VulkanInstance instance_;
   logi::SurfaceKHR surface_;
-  logi::PhysicalDevice physicalDevice_;
-  logi::LogicalDevice logicalDevice_;
-  logi::QueueFamily graphicsFamily_;
-  logi::QueueFamily presentFamily_;
-  logi::Queue graphicsQueue_;
-  logi::Queue presentQueue_;
 
   // Swapchain data.
   logi::SwapchainKHR swapchain_;
@@ -98,8 +93,7 @@ class ExampleBase {
   std::vector<logi::ImageView> swapchainImageViews_;
   vk::Extent2D swapchainImageExtent_;
   vk::Format swapchainImageFormat_;
-
-  logi::CommandPool graphicsFamilyCmdPool_;
+  
   std::vector<logi::CommandBuffer> primaryGraphicsCmdBuffers_;
 
   size_t currentFrame_ = 0u;

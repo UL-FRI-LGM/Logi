@@ -13,10 +13,11 @@ namespace utility {
                                     std::vector<logi::DescriptorSetLayout> descriptorSetLayouts)
                 : layout(std::move(layout)), descriptorSetLayouts(std::move(descriptorSetLayouts)) {}
 
-                
 
-    logi::ShaderModule createShaderModule(const logi::LogicalDevice& logicalDevice, const std::string& shaderPath)
-    {
+    logi::ShaderModule createShaderModule(const VulkanState& vulkanState, const std::string& shaderPath)
+    {   
+        assert(vulkanState.defaultLogicalDevice_ != nullptr && "Default logical device not initialized!");
+
         std::ifstream file(shaderPath, std::ios::ate | std::ios::binary);
 
         if (!file.is_open()) {
@@ -35,16 +36,18 @@ namespace utility {
         createInfo.codeSize = code.size();
         createInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
 
-        return logicalDevice.createShaderModule(createInfo);
+        return vulkanState.defaultLogicalDevice_->createShaderModule(createInfo);
     }
 
+    ShaderReflection loadShaders(const VulkanState& vulkanState, 
+                                 const std::string& vertexPath, const std::string& fragmentPath)
+    {   
+        assert(vulkanState.defaultLogicalDevice_ != nullptr && "Default logical device not initialized!");
 
-    ShaderReflection loadShaders(const logi::LogicalDevice& logicalDevice, const std::string& vertexPath, const std::string& fragmentPath)
-    {
         ShaderReflection shaderReflection;
         
-        shaderReflection.vertexShader = createShaderModule(logicalDevice, vertexPath);
-        shaderReflection.fragmentShader = createShaderModule(logicalDevice, fragmentPath);
+        shaderReflection.vertexShader = createShaderModule(vulkanState, vertexPath);
+        shaderReflection.fragmentShader = createShaderModule(vulkanState, fragmentPath);
 
         // Generate descriptor set layouts
         shaderReflection.descriptorSetInfo = 
@@ -56,8 +59,9 @@ namespace utility {
 
         return shaderReflection;
     }
-
-    PipelineLayoutData createPipelineLayout(const logi::LogicalDevice& logicalDevice, const ShaderReflection& shaderReflection)
+    
+    
+    PipelineLayoutData createPipelineLayout(const VulkanState& vulkanState, const ShaderReflection& shaderReflection)
     {
         PipelineLayoutData pipelineLayoutData;
 
@@ -71,7 +75,7 @@ namespace utility {
             descriptorSetLayoutInfo.pBindings = bindings.data();
 
             pipelineLayoutData.descriptorSetLayouts.emplace_back(
-            logicalDevice.createDescriptorSetLayout(descriptorSetLayoutInfo));
+            vulkanState.defaultLogicalDevice_->createDescriptorSetLayout(descriptorSetLayoutInfo));
         }
         
         // Transform to Vulkan namespace
@@ -85,9 +89,9 @@ namespace utility {
         pipelineLayoutInfo.pushConstantRangeCount = static_cast<uint32_t>(pushConstantRanges.size());
         pipelineLayoutInfo.pPushConstantRanges = pushConstantRanges.data();
 
-        pipelineLayoutData.layout = logicalDevice.createPipelineLayout(pipelineLayoutInfo);
+        pipelineLayoutData.layout = vulkanState.defaultLogicalDevice_->createPipelineLayout(pipelineLayoutInfo);
 
-        return pipelineLayoutData;                                                       
+        return pipelineLayoutData;   
     }
 
 } // namespace utility

@@ -2,9 +2,10 @@
 
 namespace utility
 {
-    void allocateBuffer(logi::MemoryAllocator& allocator, const VmaMemoryUsage& allocatorUsage,
-                             std::vector<BufferAllocateInfo>& bufferAllocateInfos, std::vector<logi::VMABuffer>& bufferHandles)
+    void allocateBuffer(const VulkanState& vulkanState, const VmaMemoryUsage& allocatorUsage,
+                        std::vector<BufferAllocateInfo>& bufferAllocateInfos, std::vector<logi::VMABuffer>& bufferHandles)
     {
+        assert(vulkanState.defaultAllocator_ != nullptr && "Default allocator not initialized!");
         assert(allocatorUsage != VMA_MEMORY_USAGE_GPU_ONLY && "To allocate on GPU use allocateBufferStaged!");
 
         VmaAllocationCreateInfo allocatorInfo = {};
@@ -16,16 +17,16 @@ namespace utility
             bufferInfo.usage = bufferAllocateInfos[i].usage;
             bufferInfo.sharingMode = bufferAllocateInfos[i].sharingMode;
 
-            bufferHandles.emplace_back(allocator.createBuffer(bufferInfo, allocatorInfo));
+            bufferHandles.emplace_back(vulkanState.defaultAllocator_->createBuffer(bufferInfo, allocatorInfo));
 
             if(bufferAllocateInfos[i].data) bufferHandles[i].writeToBuffer(bufferAllocateInfos[i].data, bufferAllocateInfos[i].size);
-        }        
+        }    
     }
 
-    void allocateBufferStaged(logi::Queue& queue, logi::CommandPool& commandPool, logi::MemoryAllocator& allocator, 
-                                const VmaMemoryUsage& allocatorUsage, std::vector<BufferAllocateInfo>& bufferAllocateInfos,
-                                     std::vector<logi::VMABuffer>& bufferHandles)
-    {
+    void allocateBufferStaged(const VulkanState& vulkanState, const VmaMemoryUsage& allocatorUsage, 
+                              std::vector<BufferAllocateInfo>& bufferAllocateInfos, std::vector<logi::VMABuffer>& bufferHandles)
+    {   
+        assert(vulkanState.defaultAllocator_ != nullptr && "Default allocator not initialized!");
         assert(allocatorUsage == VMA_MEMORY_USAGE_GPU_ONLY && "To allocate host visible use allocateBuffers!");
       
         VmaAllocationCreateInfo allocatorStagingInfo = {};
@@ -40,13 +41,13 @@ namespace utility
             bufferInfo.usage = vk::BufferUsageFlagBits::eTransferSrc;
             bufferInfo.sharingMode = vk::SharingMode::eExclusive;
 
-            stagingBuffers[i] = allocator.createBuffer(bufferInfo, allocatorStagingInfo);
+            stagingBuffers[i] = vulkanState.defaultAllocator_->createBuffer(bufferInfo, allocatorStagingInfo);
             stagingBuffers[i].writeToBuffer(bufferAllocateInfos[i].data, bufferAllocateInfos[i].size);
         }
 
         
         // Transfer to device
-        logi::CommandBuffer commands = beginSingleTimeCommand(commandPool);
+        logi::CommandBuffer commands = beginSingleTimeCommand(vulkanState, utility::Graphics);
 
         VmaAllocationCreateInfo allocatorInfo = {};
         allocatorInfo.usage = allocatorUsage;
@@ -57,7 +58,7 @@ namespace utility
             bufferInfo.usage = bufferAllocateInfos[i].usage | vk::BufferUsageFlagBits::eTransferDst;
             bufferInfo.sharingMode = bufferAllocateInfos[i].sharingMode;
 
-            bufferHandles.emplace_back(allocator.createBuffer(bufferInfo, allocatorInfo));
+            bufferHandles.emplace_back(vulkanState.defaultAllocator_->createBuffer(bufferInfo, allocatorInfo));
 
             vk::BufferCopy region;
             region.srcOffset = 0;
@@ -67,6 +68,6 @@ namespace utility
             commands.copyBuffer(stagingBuffers[i], bufferHandles[i], region);
         }
 
-        endSingleTimeCommand(queue, commands);    
-    }              
+        endSingleTimeCommand(vulkanState, Graphics, commands);       
+    }
 } // namespace utility

@@ -5,7 +5,7 @@ PipelineLayoutData::PipelineLayoutData(logi::PipelineLayout layout,
                                        std::vector<logi::DescriptorSetLayout> descriptorSetLayouts)
   : layout(std::move(layout)), descriptorSetLayouts(std::move(descriptorSetLayouts)) {}
 
-ExampleBase::ExampleBase(const ExampleConfiguration& config) : config_(config) {}
+ExampleBase::ExampleBase(const ExampleConfiguration& config) : config_(config), vulkanState_() {}
 
 void ExampleBase::run() {
   initWindow();
@@ -93,9 +93,9 @@ void ExampleBase::createInstance() {
   instanceCI.ppEnabledExtensionNames = extensions.data();
   instanceCI.enabledExtensionCount = extensions.size();
 
-  instance_ = logi::createInstance(
+  vulkanState_.setInstance(logi::createInstance(
     instanceCI, reinterpret_cast<PFN_vkCreateInstance>(glfwGetInstanceProcAddress(nullptr, "vkCreateInstance")),
-    reinterpret_cast<PFN_vkGetInstanceProcAddr>(glfwGetInstanceProcAddress(nullptr, "vkGetInstanceProcAddr")));
+    reinterpret_cast<PFN_vkGetInstanceProcAddr>(glfwGetInstanceProcAddress(nullptr, "vkGetInstanceProcAddr"))));
 
   // Setup debug report callback.
   vk::DebugReportCallbackCreateInfoEXT debugReportCI;
@@ -103,35 +103,35 @@ void ExampleBase::createInstance() {
     vk::DebugReportFlagBitsEXT::eError | vk::DebugReportFlagBitsEXT::eDebug | vk::DebugReportFlagBitsEXT::eWarning;
   debugReportCI.pfnCallback = debugCallback;
 
-  instance_.createDebugReportCallbackEXT(debugReportCI);
+  vulkanState_.instance_.createDebugReportCallbackEXT(debugReportCI);
 }
 
 void ExampleBase::initSurface() {
-  surface_ = instance_.registerSurfaceKHR(window_.createWindowSurface(instance_).value);
+  surface_ = vulkanState_.instance_.registerSurfaceKHR(window_.createWindowSurface(vulkanState_.instance_).value);
 }
 
 void ExampleBase::selectDevice() {
   // Select GPU
-  const std::vector<logi::PhysicalDevice>& devices = instance_.enumeratePhysicalDevices();
+  const std::vector<logi::PhysicalDevice>& devices = vulkanState_.instance_.enumeratePhysicalDevices();
 
   for (const auto& device : devices) {
     vk::PhysicalDeviceType type = device.getProperties().deviceType;
 
     if (type == vk::PhysicalDeviceType::eDiscreteGpu) {
       // If discrete gpu is found select it immediately.
-      physicalDevice_ = device;
+      vulkanState_.physicalDevice_ = device;
       return;
     } else if (type == vk::PhysicalDeviceType::eIntegratedGpu || type == vk::PhysicalDeviceType::eVirtualGpu) {
-      physicalDevice_ = device;
+      vulkanState_.physicalDevice_ = device;
     }
   }
 
   // Assert if no device is found.
-  assert(physicalDevice_);
+  assert(vulkanState_.physicalDevice_);
 }
 
 void ExampleBase::initializeDevice() {
-  std::vector<vk::QueueFamilyProperties> familyProperties = physicalDevice_.getQueueFamilyProperties();
+  std::vector<vk::QueueFamilyProperties> familyProperties = vulkanState_.physicalDevice_.getQueueFamilyProperties();
 
   // Search for graphical queue family.
   uint32_t graphicsFamilyIdx = std::numeric_limits<uint32_t>::max();
@@ -143,7 +143,7 @@ void ExampleBase::initializeDevice() {
     }
 
     // Check if queue family supports present.
-    if (physicalDevice_.getSurfaceSupportKHR(graphicsFamilyIdx, surface_)) {
+    if (vulkanState_.physicalDevice_.getSurfaceSupportKHR(graphicsFamilyIdx, surface_)) {
       presentFamilyIdx = graphicsFamilyIdx;
     }
 
@@ -177,33 +177,38 @@ void ExampleBase::initializeDevice() {
   deviceCI.ppEnabledExtensionNames = extensions.data();
   deviceCI.queueCreateInfoCount = queueCIs.size();
   deviceCI.pQueueCreateInfos = queueCIs.data();
+  
+  vulkanState_.addLogicalDevice("MainLogical", vulkanState_.physicalDevice_.createLogicalDevice(deviceCI));
+  vulkanState_.setDefaultLogicalDevice("MainLogical");
 
-  logicalDevice_ = physicalDevice_.createLogicalDevice(deviceCI);
-  std::vector<logi::QueueFamily> queueFamilies = logicalDevice_.enumerateQueueFamilies();
+  std::vector<logi::QueueFamily> queueFamilies = vulkanState_.defaultLogicalDevice_->enumerateQueueFamilies();
   for (const auto& family : queueFamilies) {
     if (static_cast<uint32_t>(family) == graphicsFamilyIdx) {
-      graphicsFamily_ = family;
+      vulkanState_.graphicsFamily_ = family;
     }
     if (static_cast<uint32_t>(family) == presentFamilyIdx) {
-      presentFamily_ = family;
+      vulkanState_.presentFamily_ = family;
     }
   }
 
-  assert(graphicsFamily_);
-  assert(presentFamily_);
+  assert(vulkanState_.graphicsFamily_);
+  assert(vulkanState_.presentFamily_);
 
-  graphicsQueue_ = graphicsFamily_.getQueue(0);
-  presentQueue_ = presentFamily_.getQueue(0);
+  vulkanState_.addQueue("GraphicsQueue", vulkanState_.graphicsFamily_.getQueue(0));
+  vulkanState_.addQueue("PresentQueue", vulkanState_.presentFamily_.getQueue(0));
+  vulkanState_.setDefaultGraphicsQueue("GraphicsQueue");
+  vulkanState_.setDefaultPresentQueue("PresentQueue");
 }
 
 ExampleBase::~ExampleBase() {
-  if (instance_) {
-    instance_.destroy();
+  if (vulkanState_.instance_) {
+    vulkanState_.instance_.destroy();
   }
 }
 
+// Move to utility
 vk::SurfaceFormatKHR ExampleBase::chooseSwapSurfaceFormat() {
-  const std::vector<vk::SurfaceFormatKHR>& availableFormats = physicalDevice_.getSurfaceFormatsKHR(surface_);
+  const std::vector<vk::SurfaceFormatKHR>& availableFormats = vulkanState_.physicalDevice_.getSurfaceFormatsKHR(surface_);
 
   for (const auto& availableFormat : availableFormats) {
     if (availableFormat.format == vk::Format::eB8G8R8A8Unorm &&
@@ -216,7 +221,7 @@ vk::SurfaceFormatKHR ExampleBase::chooseSwapSurfaceFormat() {
 }
 
 vk::PresentModeKHR ExampleBase::chooseSwapPresentMode() {
-  const std::vector<vk::PresentModeKHR>& availablePresentModes = physicalDevice_.getSurfacePresentModesKHR(surface_);
+  const std::vector<vk::PresentModeKHR>& availablePresentModes = vulkanState_.physicalDevice_.getSurfacePresentModesKHR(surface_);
 
   vk::PresentModeKHR bestMode = vk::PresentModeKHR::eFifo;
 
@@ -247,7 +252,7 @@ vk::Extent2D ExampleBase::chooseSwapExtent(const vk::SurfaceCapabilitiesKHR& cap
 }
 
 void ExampleBase::initializeSwapChain() {
-  vk::SurfaceCapabilitiesKHR capabilities = physicalDevice_.getSurfaceCapabilitiesKHR(surface_);
+  vk::SurfaceCapabilitiesKHR capabilities = vulkanState_.physicalDevice_.getSurfaceCapabilitiesKHR(surface_);
 
   vk::SurfaceFormatKHR surfaceFormat = chooseSwapSurfaceFormat();
   vk::PresentModeKHR presentMode = chooseSwapPresentMode();
@@ -268,10 +273,10 @@ void ExampleBase::initializeSwapChain() {
   createInfo.imageExtent = extent;
   createInfo.imageArrayLayers = 1;
   createInfo.imageUsage = vk::ImageUsageFlagBits::eColorAttachment;
-  if (graphicsFamily_ != presentFamily_) {
+  if (vulkanState_.graphicsFamily_ != vulkanState_.presentFamily_) {
     createInfo.imageSharingMode = vk::SharingMode::eConcurrent;
     createInfo.queueFamilyIndexCount = 2;
-    uint32_t indices[2]{graphicsFamily_, presentFamily_};
+    uint32_t indices[2]{vulkanState_.graphicsFamily_, vulkanState_.presentFamily_};
     createInfo.pQueueFamilyIndices = indices;
   } else {
     createInfo.imageSharingMode = vk::SharingMode::eExclusive;
@@ -283,7 +288,7 @@ void ExampleBase::initializeSwapChain() {
   createInfo.clipped = VK_TRUE;
   createInfo.oldSwapchain = static_cast<vk::SwapchainKHR>(oldSwapchain);
 
-  swapchain_ = logicalDevice_.createSwapchainKHR(createInfo);
+  swapchain_ = vulkanState_.defaultLogicalDevice_->createSwapchainKHR(createInfo);
   // Destroy old swapchain and clear the images.
   if (oldSwapchain) {
     oldSwapchain.destroy();
@@ -306,23 +311,25 @@ void ExampleBase::initializeSwapChain() {
 }
 
 void ExampleBase::initializeCommandBuffers() {
-  graphicsFamilyCmdPool_ = graphicsFamily_.createCommandPool(vk::CommandPoolCreateFlagBits::eResetCommandBuffer);
+  vulkanState_.addCommandPool("GraphicsFamilyCmd", vulkanState_.graphicsFamily_.createCommandPool(vk::CommandPoolCreateFlagBits::eResetCommandBuffer));
+  vulkanState_.setDefaultGraphicsCommandPool("GraphicsFamilyCmd");
+
   primaryGraphicsCmdBuffers_ =
-    graphicsFamilyCmdPool_.allocateCommandBuffers(vk::CommandBufferLevel::ePrimary, swapchainImages_.size());
+    vulkanState_.defaultGraphicsCommandPool_->allocateCommandBuffers(vk::CommandBufferLevel::ePrimary, swapchainImages_.size());
 }
 
 void ExampleBase::buildSyncObjects() {
   for (size_t i = 0; i < config_.maxFramesInFlight; i++) {
-    imageAvailableSemaphores_.emplace_back(logicalDevice_.createSemaphore(vk::SemaphoreCreateInfo()));
-    renderFinishedSemaphores_.emplace_back(logicalDevice_.createSemaphore(vk::SemaphoreCreateInfo()));
-    inFlightFences_.emplace_back(logicalDevice_.createFence(vk::FenceCreateInfo(vk::FenceCreateFlagBits::eSignaled)));
+    imageAvailableSemaphores_.emplace_back(vulkanState_.defaultLogicalDevice_->createSemaphore(vk::SemaphoreCreateInfo()));
+    renderFinishedSemaphores_.emplace_back(vulkanState_.defaultLogicalDevice_->createSemaphore(vk::SemaphoreCreateInfo()));
+    inFlightFences_.emplace_back(vulkanState_.defaultLogicalDevice_->createFence(vk::FenceCreateInfo(vk::FenceCreateFlagBits::eSignaled)));
   }
 }
 
 void ExampleBase::onViewChanged() {}
 
 void ExampleBase::recreateSwapChain() {
-  logicalDevice_.waitIdle();
+  vulkanState_.defaultLogicalDevice_->waitIdle();
 
   initializeSwapChain();
   onSwapChainRecreate();
@@ -355,12 +362,14 @@ void ExampleBase::drawFrame() {
 
     submit_info.signalSemaphoreCount = 1;
     submit_info.pSignalSemaphores = &static_cast<const vk::Semaphore&>(renderFinishedSemaphores_[currentFrame_]);
-    graphicsQueue_.submit({submit_info}, inFlightFences_[currentFrame_]);
+
+    vulkanState_.defaultGraphicsQueue_->submit({submit_info}, inFlightFences_[currentFrame_]);
 
     // Present image.
-    presentQueue_.presentKHR(
+    vulkanState_.defaultPresentQueue_->presentKHR(
       vk::PresentInfoKHR(1, &static_cast<const vk::Semaphore&>(renderFinishedSemaphores_[currentFrame_]), 1,
                          &static_cast<const vk::SwapchainKHR&>(swapchain_), &imageIndex));
+
     currentFrame_ = (currentFrame_ + 1) % config_.maxFramesInFlight;
   } catch (const vk::OutOfDateKHRError&) {
     recreateSwapChain();
@@ -379,27 +388,6 @@ void ExampleBase::mainLoop() {
     drawFrame();
   }
 
-  logicalDevice_.waitIdle();
+  vulkanState_.defaultLogicalDevice_->waitIdle();
 }
 
-logi::ShaderModule ExampleBase::createShaderModule(const std::string& shaderPath) {
-  std::ifstream file(shaderPath, std::ios::ate | std::ios::binary);
-
-  if (!file.is_open()) {
-    throw std::runtime_error("failed to open file!");
-  }
-
-  size_t fileSize = (size_t) file.tellg();
-  std::vector<char> code(fileSize);
-
-  file.seekg(0);
-  file.read(code.data(), fileSize);
-
-  file.close();
-
-  vk::ShaderModuleCreateInfo createInfo;
-  createInfo.codeSize = code.size();
-  createInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
-
-  return logicalDevice_.createShaderModule(createInfo);
-}

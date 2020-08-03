@@ -2,6 +2,7 @@
 #define UTILITY_H
 
 #include "logi/logi.hpp"
+#include "base/vulkanState.h"
 #include <fstream>
 #include <glm/glm.hpp>
 #include <glm/gtx/hash.hpp>
@@ -9,82 +10,7 @@
 
 namespace utility
 {   
-    //----------Region: Vulkan state-------------------
-    struct VulkanState
-    {
-        std::map<std::string, logi::LogicalDevice> logicalDevices;
-        std::map<std::string, logi::MemoryAllocator> allocators;
-        std::map<std::string, logi::Queue> queues;
-        std::map<std::string, logi::CommandPool> commandPools;
-
-        logi::LogicalDevice* defaultLogicalDevice;
-        logi::MemoryAllocator* defaultAllocator;
-        logi::Queue* defaultGraphicsQueue;
-        logi::Queue* defaultComputeQueue;
-        logi::Queue* defaultPresentQueue;
-        logi::CommandPool* defaultCommandPool;
-
-        VulkanState() : defaultLogicalDevice(nullptr), defaultAllocator(nullptr), defaultGraphicsQueue(nullptr),
-                            defaultComputeQueue(nullptr), defaultPresentQueue(nullptr), defaultCommandPool(nullptr) 
-        {}
-
-        void addLogicalDevice(std::string& key, logi::LogicalDevice& logicalDevice)
-        {
-            // Returns iterator if key is already present in map
-            auto const result = logicalDevices.insert(std::pair<std::string, logi::LogicalDevice>(key, logicalDevice));
-            if(!result.second) {result.first->second = logicalDevice;} // Update if key already exists
-        }
-
-        void addAllocator(std::string& key, logi::MemoryAllocator& allocator)
-        {
-            auto const result = allocators.insert(std::pair<std::string, logi::MemoryAllocator>(key, allocator));
-            if(!result.second) {result.first->second = allocator;}
-        }
-
-        void addQueue(std::string& key, logi::Queue& queue) 
-        {
-            auto const result = queues.insert(std::pair<std::string, logi::Queue>(key, queue));
-            if(!result.second) {result.first->second = queue;}
-        }
-
-        void addCommandPool(std::string& key, logi::CommandPool& commandPool) 
-        {
-            auto const result = commandPools.insert(std::pair<std::string, logi::CommandPool>(key, commandPool));
-            if(!result.second) {result.first->second = commandPool;}
-        }
-
-        void setDefaultLogicalDevice(std::string& key)
-        {
-            defaultLogicalDevice = &logicalDevices.at(key);
-        }
-
-        void setDefaultAllocator(std::string& key) 
-        {
-            defaultAllocator = &allocators.at(key);
-        }
-
-        void setDefaultGraphicsQueue(std::string& key) 
-        {
-            defaultGraphicsQueue = &queues.at(key);
-        }
-
-        void setDefaultComputeQueue(std::string& key) 
-        {
-            defaultComputeQueue = &queues.at(key);
-        }
-
-        void setDefaultPresentQueue(std::string& key) 
-        {
-            defaultPresentQueue = &queues.at(key);
-        }        
-
-        void setDefaultCommandPool(std::string& key) 
-        {
-            defaultCommandPool = &commandPools.at(key);
-        }
-
-    };
-
+    enum PipelineType {Graphics, Compute, Present};
 
     //----------Region: Shader Reflection----------
     struct ShaderReflection 
@@ -107,12 +33,12 @@ namespace utility
 
         logi::PipelineLayout layout;
         std::vector<logi::DescriptorSetLayout> descriptorSetLayouts;
-    };
+    };  
 
-    logi::ShaderModule createShaderModule(const logi::LogicalDevice& logicalDevice, const std::string& shaderPath);
-    ShaderReflection loadShaders(const logi::LogicalDevice& logicalDevice, 
+    logi::ShaderModule createShaderModule(const VulkanState& vulkanState, const std::string& shaderPath);
+    ShaderReflection loadShaders(const VulkanState& vulkanState, 
                                  const std::string& vertexPath, const std::string& fragmentPath);
-    PipelineLayoutData createPipelineLayout(const logi::LogicalDevice& logicalDevice, const ShaderReflection&);  
+    PipelineLayoutData createPipelineLayout(const VulkanState& vulkanState, const ShaderReflection& shaderReflection);  
 
 
     //----------Region: model loading----------
@@ -148,38 +74,44 @@ namespace utility
         vk::SharingMode sharingMode;
     };
 
-    void allocateBuffer(logi::MemoryAllocator& allocator, const VmaMemoryUsage& allocatorUsage,
+    void allocateBuffer(const VulkanState& vulkanState, const VmaMemoryUsage& allocatorUsage,
                         std::vector<BufferAllocateInfo>& bufferAllocateInfos, std::vector<logi::VMABuffer>& bufferHandles);
 
-    void allocateBufferStaged(logi::Queue& queue, logi::CommandPool& commandPool, logi::MemoryAllocator& allocator, 
-                              const VmaMemoryUsage& allocatorUsage, std::vector<BufferAllocateInfo>& bufferAllocateInfos,
-                              std::vector<logi::VMABuffer>& bufferHandles);
+    void allocateBufferStaged(const VulkanState& vulkanState, const VmaMemoryUsage& allocatorUsage, 
+                              std::vector<BufferAllocateInfo>& bufferAllocateInfos, std::vector<logi::VMABuffer>& bufferHandles);
 
 
     //----------Region: image manipulation----------
-    logi::VMAImage loadImage(logi::MemoryAllocator allocator, const VmaMemoryUsage& memoryUsage, 
-                             const vk::ImageUsageFlagBits& usage, const char* path, const uint32_t& mipLevels = 1, 
-                             const vk::SampleCountFlagBits& sampleCount = vk::SampleCountFlagBits::e1);
+    logi::VMAImage loadImage(const VulkanState& vulkanState, const VmaMemoryUsage& memoryUsage, 
+                            const vk::ImageUsageFlagBits& usage, const char* path, const uint32_t& mipLevels = 1, 
+                            const vk::SampleCountFlagBits& sampleCount = vk::SampleCountFlagBits::e1);
 
-    logi::VMAImage loadImageStaged(logi::MemoryAllocator allocator, const VmaMemoryUsage& memoryUsage, 
+    logi::VMAImage loadImageStaged(const VulkanState& vulkanState, const VmaMemoryUsage& memoryUsage, 
                                    const vk::ImageUsageFlagBits& usage, const vk::ImageLayout& layout, const char* path,
-                                   logi::CommandPool& commandPool, logi::Queue& queue, const uint32_t& mipLevels = 1, 
-                                   const vk::SampleCountFlagBits& sampleCount = vk::SampleCountFlagBits::e1);
+                                   const uint32_t& mipLevels = 1, const vk::SampleCountFlagBits& sampleCount = vk::SampleCountFlagBits::e1);
 
-    logi::VMAImage createImage(logi::MemoryAllocator& allocator, const uint32_t& width, const uint32_t& height, const vk::Format& format,
+    logi::VMAImage createImage(const VulkanState& vulkanState, const uint32_t& width, const uint32_t& height, const vk::Format& format,
                                const vk::ImageUsageFlags& usage, const VmaMemoryUsage& memoryUsage, const uint32_t& mipLevels = 1, 
                                const vk::SampleCountFlagBits& sampleCount = vk::SampleCountFlagBits::e1);
 
-    void transitionImageLayout(logi::VMAImage& image, const vk::ImageLayout& oldLayout, const vk::ImageLayout& newLayout,
-                               logi::CommandPool& commandPool, logi::Queue& queue, const uint32_t& mipLevel = 1);
+    void transitionImageLayout(const VulkanState& vulkanState, logi::VMAImage& image, const vk::ImageLayout& oldLayout,
+                               const vk::ImageLayout& newLayout, const uint32_t& mipLevel = 1);
 
-    void copyBufferToImage(logi::VMABuffer& buffer, logi::Image& image, const uint32_t& width, const uint32_t& height, 
-                           logi::CommandPool& commandPool, logi::Queue& queue);
+    void copyBufferToImage(const VulkanState& vulkanState, logi::VMABuffer& buffer, 
+                           logi::Image& image, const uint32_t& width, const uint32_t& height);
 
 
     //----------Region: common command buffer patterns----------
-    logi::CommandBuffer beginSingleTimeCommand(logi::CommandPool& commandPool);
-    void endSingleTimeCommand(logi::Queue& queue, logi::CommandBuffer& commandBuffer);
+    logi::CommandBuffer beginSingleTimeCommand(const VulkanState& vulkanState, const utility::PipelineType& queueType);
+    logi::CommandBuffer getGraphicsCommand(const VulkanState& vulkanState);
+    logi::CommandBuffer getComputeCommand(const VulkanState& vulkanState);
+    logi::CommandBuffer getPresentCommand(const VulkanState& vulkanState);
+    
+    void endSingleTimeCommand(const VulkanState& vulkanState, const utility::PipelineType& queueType, logi::CommandBuffer& commandBuffer);
+    void submitGraphicsCommand(const VulkanState& vulkanState, const vk::SubmitInfo& submitInfo);
+    void submitComputeCommand(const VulkanState& vulkanState, const vk::SubmitInfo& submitInfo);
+    void submitPresentCommand(const VulkanState& vulkanState, const vk::SubmitInfo& submitInfo);
+
 
 
     // //----------Region: framebuffer----------

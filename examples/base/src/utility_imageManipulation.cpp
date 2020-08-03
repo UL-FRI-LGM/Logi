@@ -5,11 +5,11 @@
 
 namespace utility {
     
-    logi::VMAImage loadImage
-            (logi::MemoryAllocator allocator, const VmaMemoryUsage& memoryUsage, const vk::ImageUsageFlagBits& usage,
-             const char* path, const uint32_t& mipLevels, const vk::SampleCountFlagBits& sampleCount)
-    {
-        
+    logi::VMAImage loadImage(const VulkanState& vulkanState, const VmaMemoryUsage& memoryUsage, 
+                        const vk::ImageUsageFlagBits& usage, const char* path, const uint32_t& mipLevels, 
+                        const vk::SampleCountFlagBits& sampleCount)
+    {   
+        assert(vulkanState.defaultAllocator_ != nullptr && "Default allocator not initialized!");
         assert(memoryUsage != VMA_MEMORY_USAGE_GPU_ONLY && "To allocate on GPU use loadImageStaged!");
 
         int texWidth, texHeight, texChannels;
@@ -41,21 +41,20 @@ namespace utility {
         imageInfo.extent = vk::Extent3D(texWidth, texHeight, 1);
         imageInfo.usage = vk::ImageUsageFlagBits::eTransferDst | usage;
 
-        image = allocator.createImage(imageInfo, allocationInfo);
+        image = vulkanState.defaultAllocator_->createImage(imageInfo, allocationInfo);
         image.writeToImage(pixels, imageSize);
 
             
         stbi_image_free(pixels);
 
-        return image;
+        return image;        
     }
 
-    logi::VMAImage loadImageStaged(logi::MemoryAllocator allocator, const VmaMemoryUsage& memoryUsage, 
-                                const vk::ImageUsageFlagBits& usage, const vk::ImageLayout& layout,  const char* path,
-                                logi::CommandPool& commandPool, logi::Queue& queue, const uint32_t& mipLevels, 
-                                const vk::SampleCountFlagBits& sampleCount)
-    {
-
+    logi::VMAImage loadImageStaged(const VulkanState& vulkanState, const VmaMemoryUsage& memoryUsage, 
+                                   const vk::ImageUsageFlagBits& usage, const vk::ImageLayout& layout, const char* path,
+                                   const uint32_t& mipLevels, const vk::SampleCountFlagBits& sampleCount)
+    {   
+        assert(vulkanState.defaultAllocator_ != nullptr && "Default allocator not initialized!");
         assert(memoryUsage == VMA_MEMORY_USAGE_GPU_ONLY && "To allocate host visible use loadImage!");
 
         int texWidth, texHeight, texChannels;
@@ -78,30 +77,31 @@ namespace utility {
         imageStaging.usage = vk::BufferUsageFlagBits::eTransferSrc;
         imageStaging.sharingMode = vk::SharingMode::eExclusive;
 
-        logi::VMABuffer stagingBuffer = allocator.createBuffer(imageStaging, allocStaged);
+        logi::VMABuffer stagingBuffer = vulkanState.defaultAllocator_->createBuffer(imageStaging, allocStaged);
         stagingBuffer.writeToBuffer(pixels, imageSize);  
                 
         // Image allocation
-        image = createImage(allocator, texWidth, texHeight, vk::Format::eR8G8B8A8Unorm, 
+        image = createImage(vulkanState, texWidth, texHeight, vk::Format::eR8G8B8A8Unorm, 
                             vk::ImageUsageFlagBits::eTransferDst | usage, memoryUsage);
 
-        transitionImageLayout(image, vk::ImageLayout::eUndefined, vk::ImageLayout::eTransferDstOptimal,
-                                commandPool, queue);
+        transitionImageLayout(vulkanState, image, vk::ImageLayout::eUndefined, vk::ImageLayout::eTransferDstOptimal);
 
-        copyBufferToImage(stagingBuffer, image, texWidth, texHeight, commandPool, queue);
+        copyBufferToImage(vulkanState, stagingBuffer, image, texWidth, texHeight);
 
-        transitionImageLayout(image, vk::ImageLayout::eTransferDstOptimal, layout, commandPool, queue);
+        transitionImageLayout(vulkanState, image, vk::ImageLayout::eTransferDstOptimal, layout);
 
 
         stbi_image_free(pixels);
 
         return image;
-    }                           
+    }
 
-    logi::VMAImage createImage(logi::MemoryAllocator& allocator, const uint32_t& width, const uint32_t& height, const vk::Format& format,
-                                const vk::ImageUsageFlags& usage, const VmaMemoryUsage& memoryUsage, 
-                                const uint32_t& mipLevels, const vk::SampleCountFlagBits& sampleCount)
-    {
+    logi::VMAImage createImage(const VulkanState& vulkanState, const uint32_t& width, const uint32_t& height, const vk::Format& format,
+                               const vk::ImageUsageFlags& usage, const VmaMemoryUsage& memoryUsage, const uint32_t& mipLevels, 
+                               const vk::SampleCountFlagBits& sampleCount)
+    {   
+        assert(vulkanState.defaultAllocator_ != nullptr && "Default allocator not initialized!");
+
         VmaAllocationCreateInfo allocInfo = {};
         allocInfo.usage = memoryUsage;
 
@@ -120,14 +120,13 @@ namespace utility {
         imageInfo.extent = vk::Extent3D(width, height, 1);
         imageInfo.usage = usage;
 
-        return allocator.createImage(imageInfo, allocInfo);   
+        return vulkanState.defaultAllocator_->createImage(imageInfo, allocInfo);   
     }
 
-    
-    void transitionImageLayout(logi::VMAImage& image, const vk::ImageLayout& oldLayout, const vk::ImageLayout& newLayout,
-                               logi::CommandPool& commandPool, logi::Queue& queue, const uint32_t& mipLevel)
+    void transitionImageLayout(const VulkanState& vulkanState, logi::VMAImage& image, const vk::ImageLayout& oldLayout,
+                               const vk::ImageLayout& newLayout, const uint32_t& mipLevel)
     {
-        logi::CommandBuffer commandBuffer = utility::beginSingleTimeCommand(commandPool);
+        logi::CommandBuffer commandBuffer = utility::beginSingleTimeCommand(vulkanState, utility::Graphics);
 
         vk::ImageMemoryBarrier barrier = {};
         barrier.image = image;
@@ -171,14 +170,13 @@ namespace utility {
         commandBuffer.pipelineBarrier(sourceStage, destinationStage,
                                         {}, {}, {}, barrier);
 
-        utility::endSingleTimeCommand(queue, commandBuffer);
+        utility::endSingleTimeCommand(vulkanState, Graphics, commandBuffer);
     }
 
-    
-    void copyBufferToImage(logi::VMABuffer& buffer, logi::Image& image, const uint32_t& width, const uint32_t& height, 
-                           logi::CommandPool& commandPool, logi::Queue& queue)
+    void copyBufferToImage(const VulkanState& vulkanState, logi::VMABuffer& buffer, 
+                           logi::Image& image, const uint32_t& width, const uint32_t& height)
     {
-        logi::CommandBuffer commandBuffer = utility::beginSingleTimeCommand(commandPool);
+        logi::CommandBuffer commandBuffer = utility::beginSingleTimeCommand(vulkanState, utility::Graphics);
 
         vk::BufferImageCopy region;
         region.bufferOffset = 0;
@@ -193,7 +191,7 @@ namespace utility {
 
         commandBuffer.copyBufferToImage(buffer, image, vk::ImageLayout::eTransferDstOptimal, region);
 
-        utility::endSingleTimeCommand(queue, commandBuffer);
+        utility::endSingleTimeCommand(vulkanState, Graphics, commandBuffer);
     }
-
+    
 } // namespace utility

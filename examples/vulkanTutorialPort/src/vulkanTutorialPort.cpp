@@ -6,11 +6,11 @@
 
 void VulkanTutorialPort::loadShaders()
 {
-    shaderReflection_ = utility::loadShaders(logicalDevice_, 
+    shaderReflection_ = utility::loadShaders(vulkanState_, 
                                              "./build/examples/vulkanTutorialPort/shaders/basic.vert.spv",
                                              "./build/examples/vulkanTutorialPort/shaders/basic.frag.spv");
 
-    pipelineLayoutData_ = utility::createPipelineLayout(logicalDevice_, shaderReflection_);
+    pipelineLayoutData_ = utility::createPipelineLayout(vulkanState_, shaderReflection_);
 }
 
 void VulkanTutorialPort::loadModel()
@@ -20,7 +20,9 @@ void VulkanTutorialPort::loadModel()
 
 void VulkanTutorialPort::allocateBuffers()
 {
-    allocator_ = logicalDevice_.createMemoryAllocator();
+    logi::MemoryAllocator allocator = vulkanState_.defaultLogicalDevice_->createMemoryAllocator();
+    vulkanState_.addAllocator("MainAlloc", allocator);
+    vulkanState_.setDefaultAllocator("MainAlloc");
 
     // Create model buffers
     utility::BufferAllocateInfo vertexBufferAllocate = {};
@@ -38,9 +40,8 @@ void VulkanTutorialPort::allocateBuffers()
     std::vector<utility::BufferAllocateInfo> bufferAllocateInfos = {vertexBufferAllocate, indexBufferAllocate};
     std::vector<logi::VMABuffer> buffers;
 
-    utility::allocateBufferStaged(graphicsQueue_, graphicsFamilyCmdPool_, allocator_, VMA_MEMORY_USAGE_GPU_ONLY,
-                                        bufferAllocateInfos, buffers);
-
+    utility::allocateBufferStaged(vulkanState_, VMA_MEMORY_USAGE_GPU_ONLY, bufferAllocateInfos, buffers);
+    
     vertexBuffer_ = buffers[0];
     indexBuffer_ = buffers[1];
 
@@ -54,7 +55,7 @@ void VulkanTutorialPort::allocateBuffers()
 
     std::vector<utility::BufferAllocateInfo> matrixBufferAllocations(swapchainImages_.size(), matrixBufferAllocate);
 
-    utility::allocateBuffer(allocator_, VMA_MEMORY_USAGE_CPU_TO_GPU, matrixBufferAllocations, matrixUniformBuffers_);
+    utility::allocateBuffer(vulkanState_, VMA_MEMORY_USAGE_CPU_TO_GPU, matrixBufferAllocations, matrixUniformBuffers_);
 
 
     updateUniformBuffers();
@@ -85,7 +86,7 @@ void VulkanTutorialPort::updateUniformBuffers() {
 void VulkanTutorialPort::createDepthResource()
 {   
     depthResource_.format = vk::Format::eD32Sfloat;
-    depthResource_.image = utility::createImage(allocator_, swapchainImageExtent_.width, swapchainImageExtent_.height, depthResource_.format,
+    depthResource_.image = utility::createImage(vulkanState_, swapchainImageExtent_.width, swapchainImageExtent_.height, depthResource_.format,
                                                  vk::ImageUsageFlagBits::eDepthStencilAttachment, VMA_MEMORY_USAGE_GPU_ONLY);
 
     depthResource_.imageView = depthResource_.image.createImageView({},vk::ImageViewType::e2D , depthResource_.format, {},
@@ -94,9 +95,8 @@ void VulkanTutorialPort::createDepthResource()
 
 void VulkanTutorialPort::createTexture()
 {
-    texture_.image = utility::loadImageStaged(allocator_, VMA_MEMORY_USAGE_GPU_ONLY, vk::ImageUsageFlagBits::eSampled,
-                                              vk::ImageLayout::eShaderReadOnlyOptimal, TEXTURE_PATH.c_str(), 
-                                              graphicsFamilyCmdPool_, graphicsQueue_);
+    texture_.image = utility::loadImageStaged(vulkanState_, VMA_MEMORY_USAGE_GPU_ONLY, vk::ImageUsageFlagBits::eSampled,
+                                              vk::ImageLayout::eShaderReadOnlyOptimal, TEXTURE_PATH.c_str());
 
     // Image View creation
     texture_.imageView = texture_.image.createImageView({}, vk::ImageViewType::e2D, vk::Format::eR8G8B8A8Unorm, {}, 
@@ -118,7 +118,7 @@ void VulkanTutorialPort::createTexture()
     samplerInfo.anisotropyEnable = VK_FALSE;
     samplerInfo.borderColor = vk::BorderColor::eFloatOpaqueWhite;
 
-    texture_.sampler = logicalDevice_.createSampler(samplerInfo);
+    texture_.sampler = vulkanState_.defaultLogicalDevice_->createSampler(samplerInfo);
 }
 
 void VulkanTutorialPort::initializeDescriptorSets()
@@ -139,7 +139,7 @@ void VulkanTutorialPort::initializeDescriptorSets()
     poolInfo.poolSizeCount = static_cast<uint32_t>(poolSizes.size());
     poolInfo.pPoolSizes = poolSizes.data();
 
-    descriptorPool_ = logicalDevice_.createDescriptorPool(poolInfo);
+    descriptorPool_ = vulkanState_.defaultLogicalDevice_->createDescriptorPool(poolInfo);
 
     // Create descriptor sets
     std::vector<vk::DescriptorSetLayout> layouts(swapchainImages_.size(), pipelineLayoutData_.descriptorSetLayouts[0]);
@@ -173,7 +173,7 @@ void VulkanTutorialPort::initializeDescriptorSets()
 			writeDescriptorSet[1].descriptorType = vk::DescriptorType::eCombinedImageSampler;
 			writeDescriptorSet[1].pImageInfo = &imageInfo;
 
-            logicalDevice_.updateDescriptorSets(writeDescriptorSet);
+            vulkanState_.defaultLogicalDevice_->updateDescriptorSets(writeDescriptorSet);
 		}
 }
 
@@ -231,7 +231,7 @@ void VulkanTutorialPort::createRenderPass()
     renderPassInfo.dependencyCount = 1;
     renderPassInfo.pDependencies = &dependency;
 
-    renderPass_ = logicalDevice_.createRenderPass(renderPassInfo);
+    renderPass_ = vulkanState_.defaultLogicalDevice_->createRenderPass(renderPassInfo);
 }
 
 void VulkanTutorialPort::createGraphicsPipeline() 
@@ -354,7 +354,7 @@ void VulkanTutorialPort::createGraphicsPipeline()
     pipelineInfo.renderPass = renderPass_;
     pipelineInfo.subpass = 0;
 
-    graphicsPipeline_ = logicalDevice_.createGraphicsPipeline(pipelineInfo);
+    graphicsPipeline_ = vulkanState_.defaultLogicalDevice_->createGraphicsPipeline(pipelineInfo);
 }
 
 void VulkanTutorialPort::createFramebuffers()
@@ -377,7 +377,7 @@ void VulkanTutorialPort::createFramebuffers()
         info.height = swapchainImageExtent_.height;
         info.layers = 1;
 
-        framebuffers_.emplace_back(logicalDevice_.createFramebuffer(info));
+        framebuffers_.emplace_back(vulkanState_.defaultLogicalDevice_->createFramebuffer(info));
     }
 }
 
