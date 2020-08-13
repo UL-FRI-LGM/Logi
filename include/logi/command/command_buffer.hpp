@@ -44,6 +44,8 @@ class CommandBuffer : public Handle<CommandBufferImpl> {
 
   void beginRenderPass(const vk::RenderPassBeginInfo& renderPassBegin, vk::SubpassContents contents) const;
 
+  void beginRenderPass2(const vk::RenderPassBeginInfo& renderPassBegin, vk::SubpassContents contens) const;
+
   void bindDescriptorSets(vk::PipelineBindPoint pipelineBindPoint, vk::PipelineLayout layout, uint32_t firstSet,
                           vk::ArrayProxy<const vk::DescriptorSet> descriptorSets,
                           vk::ArrayProxy<const uint32_t> dynamicOffsets = {}) const;
@@ -97,17 +99,27 @@ class CommandBuffer : public Handle<CommandBufferImpl> {
 
   void drawIndexedIndirect(vk::Buffer buffer, vk::DeviceSize offset, uint32_t drawCount, uint32_t stride) const;
 
+  void drawIndexedIndirectCount(vk::Buffer buffer, vk::DeviceSize offset, vk::Buffer countBuffer,
+                                vk::DeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride) const;
+
   void drawIndirect(vk::Buffer buffer, vk::DeviceSize offset, uint32_t drawCount, uint32_t stride) const;
+
+  void drawIndirectCount(vk::Buffer buffer, vk::DeviceSize offset, vk::Buffer countBuffer,
+                         vk::DeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride) const;
 
   void endQuery(vk::QueryPool queryPool, uint32_t query) const;
 
   void endRenderPass() const;
+
+  void endRenderPass2(const vk::SubpassEndInfo& subpassEndInfo) const;
 
   void executeCommands(vk::ArrayProxy<const vk::CommandBuffer> commandBuffers) const;
 
   void fillBuffer(vk::Buffer dstBuffer, vk::DeviceSize dstOffset, vk::DeviceSize size, uint32_t data) const;
 
   void nextSubpass(vk::SubpassContents contents) const;
+
+  void nextSubpass2(vk::SubpassBeginInfo subpassBeginInfo, vk::SubpassEndInfo subpassEndInfo) const;
 
   void pipelineBarrier(const vk::PipelineStageFlags& srcStageMask, vk::PipelineStageFlags dstStageMask,
                        const vk::DependencyFlags& dependencyFlags,

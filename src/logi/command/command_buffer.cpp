@@ -43,6 +43,11 @@ void CommandBuffer::beginRenderPass(const vk::RenderPassBeginInfo& renderPassBeg
   object_->beginRenderPass(renderPassBegin, contents);
 }
 
+void CommandBuffer::beginRenderPass2(const vk::RenderPassBeginInfo& renderPassBegin,
+                                     vk::SubpassContents contents) const {
+  object_->beginRenderPass2(renderPassBegin, contents);
+}
+
 void CommandBuffer::bindDescriptorSets(vk::PipelineBindPoint pipelineBindPoint, vk::PipelineLayout layout,
                                        uint32_t firstSet, vk::ArrayProxy<const vk::DescriptorSet> descriptorSets,
                                        vk::ArrayProxy<const uint32_t> dynamicOffsets) const {
@@ -138,8 +143,18 @@ void CommandBuffer::drawIndexedIndirect(vk::Buffer buffer, vk::DeviceSize offset
   object_->drawIndexedIndirect(buffer, offset, drawCount, stride);
 }
 
+void CommandBuffer::drawIndexedIndirectCount(vk::Buffer buffer, vk::DeviceSize offset, vk::Buffer countBuffer,
+                                             vk::DeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride) const {
+  object_->drawIndexedIndirectCount(buffer, offset, countBuffer, countBufferOffset, maxDrawCount, stride);
+}
+
 void CommandBuffer::drawIndirect(vk::Buffer buffer, vk::DeviceSize offset, uint32_t drawCount, uint32_t stride) const {
   object_->drawIndirect(buffer, offset, drawCount, stride);
+}
+
+void CommandBuffer::drawIndirectCount(vk::Buffer buffer, vk::DeviceSize offset, vk::Buffer countBuffer,
+                                      vk::DeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride) const {
+  object_->drawIndirectCount(buffer, offset, countBuffer, countBufferOffset, maxDrawCount, stride);
 }
 
 void CommandBuffer::endQuery(vk::QueryPool queryPool, uint32_t query) const {
@@ -148,6 +163,10 @@ void CommandBuffer::endQuery(vk::QueryPool queryPool, uint32_t query) const {
 
 void CommandBuffer::endRenderPass() const {
   object_->endRenderPass();
+}
+
+void CommandBuffer::endRenderPass2(const vk::SubpassEndInfo& subpassEndInfo) const {
+  object_->endRenderPass2(subpassEndInfo);
 }
 
 void CommandBuffer::executeCommands(vk::ArrayProxy<const vk::CommandBuffer> commandBuffers) const {
@@ -161,6 +180,10 @@ void CommandBuffer::fillBuffer(vk::Buffer dstBuffer, vk::DeviceSize dstOffset, v
 
 void CommandBuffer::nextSubpass(vk::SubpassContents contents) const {
   object_->nextSubpass(contents);
+}
+
+void CommandBuffer::nextSubpass2(vk::SubpassBeginInfo subpassBeginInfo, vk::SubpassEndInfo subpassEndInfo) const {
+  object_->nextSubpass2(subpassBeginInfo, subpassEndInfo);
 }
 
 void CommandBuffer::pipelineBarrier(const vk::PipelineStageFlags& srcStageMask, vk::PipelineStageFlags dstStageMask,

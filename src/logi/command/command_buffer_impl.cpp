@@ -40,6 +40,11 @@ void CommandBufferImpl::beginRenderPass(const vk::RenderPassBeginInfo& renderPas
   vkCommandBuffer_.beginRenderPass(renderPassBegin, contents, getDispatcher());
 }
 
+void CommandBufferImpl::beginRenderPass2(const vk::RenderPassBeginInfo& renderPassBegin,
+                                        vk::SubpassContents contents) const {
+  vkCommandBuffer_.beginRenderPass2(renderPassBegin, contents, getDispatcher());
+}
+
 void CommandBufferImpl::bindDescriptorSets(vk::PipelineBindPoint pipelineBindPoint, vk::PipelineLayout layout,
                                            uint32_t firstSet, vk::ArrayProxy<const vk::DescriptorSet> descriptorSets,
                                            vk::ArrayProxy<const uint32_t> dynamicOffsets = {}) const {
@@ -138,6 +143,20 @@ void CommandBufferImpl::drawIndexedIndirect(vk::Buffer buffer, vk::DeviceSize of
   vkCommandBuffer_.drawIndexedIndirect(buffer, offset, drawCount, stride, getDispatcher());
 }
 
+void CommandBufferImpl::drawIndexedIndirectCount(vk::Buffer buffer, vk::DeviceSize offset,
+                                                 vk::Buffer countBuffer, vk::DeviceSize countBufferOffset,
+                                                 uint32_t maxDrawCount, uint32_t stride) const {
+  vkCommandBuffer_.drawIndexedIndirectCount(buffer, offset, countBuffer, countBufferOffset, maxDrawCount,
+                                            stride, getDispatcher());
+}
+
+void CommandBufferImpl::drawIndirectCount(vk::Buffer buffer, vk::DeviceSize offset, 
+                                          vk::Buffer countBuffer, vk::DeviceSize countBufferOffset,
+                                          uint32_t maxDrawCount, uint32_t stride) const {
+  vkCommandBuffer_.drawIndirectCount(buffer, offset, countBuffer, countBufferOffset, maxDrawCount,
+                                     stride, getDispatcher());
+}
+
 void CommandBufferImpl::drawIndirect(vk::Buffer buffer, vk::DeviceSize offset, uint32_t drawCount,
                                      uint32_t stride) const {
   vkCommandBuffer_.drawIndirect(buffer, offset, drawCount, stride, getDispatcher());
@@ -151,6 +170,10 @@ void CommandBufferImpl::endRenderPass() const {
   vkCommandBuffer_.endRenderPass(getDispatcher());
 }
 
+void CommandBufferImpl::endRenderPass2(const vk::SubpassEndInfo& subpassEndInfo) const {
+  vkCommandBuffer_.endRenderPass2(subpassEndInfo, getDispatcher());
+}
+
 void CommandBufferImpl::executeCommands(vk::ArrayProxy<const vk::CommandBuffer> commandBuffers) const {
   vkCommandBuffer_.executeCommands(commandBuffers, getDispatcher());
 }
@@ -162,6 +185,10 @@ void CommandBufferImpl::fillBuffer(vk::Buffer dstBuffer, vk::DeviceSize dstOffse
 
 void CommandBufferImpl::nextSubpass(vk::SubpassContents contents) const {
   vkCommandBuffer_.nextSubpass(contents, getDispatcher());
+}
+
+void CommandBufferImpl::nextSubpass2(vk::SubpassBeginInfo subpassBeginInfo, vk::SubpassEndInfo subpassEndInfo) const {
+  vkCommandBuffer_.nextSubpass2(subpassBeginInfo, subpassEndInfo, getDispatcher());
 }
 
 void CommandBufferImpl::pipelineBarrier(const vk::PipelineStageFlags& srcStageMask, vk::PipelineStageFlags dstStageMask,
