@@ -57,6 +57,15 @@ vk::MemoryRequirements2KHR BufferImpl::getBufferMemoryRequirements2KHR(
   return vkDevice.getBufferMemoryRequirements2KHR(memoryRequirementsInfo, getDispatcher());
 }
 
+vk::DeviceAddress BufferImpl::getDeviceAddress(const ConstVkNextProxy<vk::BufferDeviceAddressInfo>& next) const {
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+
+  vk::BufferDeviceAddressInfo deviceAddressInfo(vkBuffer_);
+  deviceAddressInfo.pNext = next;
+
+  return vkDevice.getBufferAddress(deviceAddressInfo, getDispatcher());
+}
+
 vk::DeviceAddress BufferImpl::getDeviceAddressEXT(const ConstVkNextProxy<vk::BufferDeviceAddressInfoEXT>& next) const {
   auto vkDevice = static_cast<vk::Device>(logicalDevice_);
 
@@ -64,6 +73,15 @@ vk::DeviceAddress BufferImpl::getDeviceAddressEXT(const ConstVkNextProxy<vk::Buf
   deviceAddressInfo.pNext = next;
 
   return vkDevice.getBufferAddressEXT(deviceAddressInfo, getDispatcher());
+}
+
+uint64_t BufferImpl::getBufferOpaqueCaptureAddress(const ConstVkNextProxy<vk::BufferDeviceAddressInfo>& next) const {
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+
+  vk::BufferDeviceAddressInfo deviceAddressInfo(vkBuffer_);
+  deviceAddressInfo.pNext = next;
+
+  return vkDevice.getBufferOpaqueCaptureAddress(deviceAddressInfo, getDispatcher());
 }
 
 vk::ResultValueType<void>::type BufferImpl::bindMemory(const vk::DeviceMemory& memory,

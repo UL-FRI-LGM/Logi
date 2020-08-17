@@ -331,6 +331,12 @@ const std::shared_ptr<RenderPassImpl>&
 }
 
 const std::shared_ptr<RenderPassImpl>&
+  LogicalDeviceImpl::createRenderPass2(const vk::RenderPassCreateInfo2& createInfo, 
+                                       const std::optional<vk::AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<RenderPassImpl>::createObject(*this, createInfo, allocator);                                       
+}
+
+const std::shared_ptr<RenderPassImpl>&
   LogicalDeviceImpl::createRenderPass(const vk::RenderPassCreateInfo2KHR& createInfo,
                                       const std::optional<vk::AllocationCallbacks>& allocator) {
   return VulkanObjectComposite<RenderPassImpl>::createObject(*this, createInfo, allocator);

@@ -22,6 +22,7 @@
 #include <optional>
 #include "logi/base/common.hpp"
 #include "logi/base/vulkan_object.hpp"
+#include "logi/structures/extension.hpp"
 
 namespace logi {
 
@@ -42,6 +43,8 @@ class DeviceMemoryImpl : public VulkanObject, public std::enable_shared_from_thi
                                              const vk::MemoryMapFlags& flags) const;
 
   void unmapMemory() const;
+
+  uint64_t getOpaqueCaptureAddress(const ConstVkNextProxy<vk::DeviceMemoryOpaqueCaptureAddressInfo>& next = {}) const;
 
   // endregion
 

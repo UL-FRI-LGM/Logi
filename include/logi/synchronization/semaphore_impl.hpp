@@ -34,6 +34,12 @@ class SemaphoreImpl : public VulkanObject, public std::enable_shared_from_this<S
   SemaphoreImpl(LogicalDeviceImpl& logicalDevice, const vk::SemaphoreCreateInfo& createInfo,
                 const std::optional<vk::AllocationCallbacks>& allocator = {});
 
+  // region Vulkan Declarations
+
+  uint64_t getCounterValue() const;
+
+  // endregion              
+
   // region Logi Declarations
 
   VulkanInstanceImpl& getInstance() const;

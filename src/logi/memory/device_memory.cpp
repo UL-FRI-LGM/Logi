@@ -39,6 +39,10 @@ void DeviceMemory::unmapMemory() const {
   object_->unmapMemory();
 }
 
+uint64_t DeviceMemory::getOpaqueCaptureAddress(const ConstVkNextProxy<vk::DeviceMemoryOpaqueCaptureAddressInfo>& next) const {
+  return object_->getOpaqueCaptureAddress(next);
+}
+
 // endregion
 
 // region Vulkan Definitions

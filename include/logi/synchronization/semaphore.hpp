@@ -33,6 +33,12 @@ class Semaphore : public Handle<SemaphoreImpl> {
  public:
   using Handle::Handle;
 
+  // region Vulkan Declarations
+
+  uint64_t getCounterValue() const;
+
+  // endregion
+
   // region Logi Declarations
 
   VulkanInstance getInstance() const;

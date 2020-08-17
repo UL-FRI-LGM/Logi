@@ -66,7 +66,7 @@ class LogicalDevice : public Handle<LogicalDeviceImpl> {
   DeviceMemory allocateMemory(const vk::MemoryAllocateInfo& createInfo,
                               const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
-  void freeMemory(const DeviceMemory& deviceMemory) const;
+  void freeMemory(const DeviceMemory& deviceMemory) const;b
 
   Buffer createBuffer(const vk::BufferCreateInfo& createInfo,
                       const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
@@ -175,6 +175,9 @@ class LogicalDevice : public Handle<LogicalDeviceImpl> {
 
   RenderPass createRenderPass(const vk::RenderPassCreateInfo& createInfo,
                               const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
+
+  RenderPass createRenderPass2(const vk::RenderPassCreateInfo2& createInfo, 
+                               const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
   RenderPass createRenderPass(const vk::RenderPassCreateInfo2KHR& createInfo,
                               const std::optional<vk::AllocationCallbacks>& allocator = {}) const;

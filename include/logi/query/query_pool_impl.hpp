@@ -41,6 +41,8 @@ class QueryPoolImpl : public VulkanObject, public std::enable_shared_from_this<Q
   vk::Result getResults(uint32_t firstQuery, uint32_t queryCount, vk::ArrayProxy<T> data, vk::DeviceSize stride,
                         vk::QueryResultFlags flags) const;
 
+  void resetQueryPool(uint32_t firstQuery, uint32_t queryCount) const;
+
   void resetQueryPoolEXT(uint32_t firstQuery, uint32_t queryCount) const;
 
   // endregion

@@ -46,6 +46,15 @@ void DeviceMemoryImpl::unmapMemory() const {
   vkDevice.unmapMemory(vkDeviceMemory_, getDispatcher());
 }
 
+uint64_t DeviceMemoryImpl::getOpaqueCaptureAddress(const ConstVkNextProxy<vk::DeviceMemoryOpaqueCaptureAddressInfo>& next) const {
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+
+  vk::DeviceMemoryOpaqueCaptureAddressInfo addressInfo(vkDeviceMemory_);
+  addressInfo.pNext = next;
+
+  return vkDevice.getMemoryOpaqueCaptureAddress(addressInfo, getDispatcher());
+}
+
 // endregion
 
 // region Logi Definitions

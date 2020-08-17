@@ -25,6 +25,10 @@
 
 namespace logi {
 
+void QueryPool::resetQueryPool(uint32_t firstQuery, uint32_t queryCount) const {
+  object_->resetQueryPool(firstQuery, queryCount);
+}
+
 void QueryPool::resetQueryPoolEXT(uint32_t firstQuery, uint32_t queryCount) const {
   object_->resetQueryPoolEXT(firstQuery, queryCount);
 }

@@ -215,6 +215,9 @@ class LogicalDeviceImpl : public VulkanObject,
   const std::shared_ptr<RenderPassImpl>& createRenderPass(const vk::RenderPassCreateInfo& createInfo,
                                                           const std::optional<vk::AllocationCallbacks>& allocator = {});
 
+  const std::shared_ptr<RenderPassImpl>& createRenderPass2(const vk::RenderPassCreateInfo2& createInfo,
+                                                           const std::optional<vk::AllocationCallbacks>& allocator = {});                                                          
+
   const std::shared_ptr<RenderPassImpl>& createRenderPass(const vk::RenderPassCreateInfo2KHR& createInfo,
                                                           const std::optional<vk::AllocationCallbacks>& allocator = {});
 

@@ -28,6 +28,11 @@ SemaphoreImpl::SemaphoreImpl(LogicalDeviceImpl& logicalDevice, const vk::Semapho
   vkSemaphore_ = vkDevice.createSemaphore(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
+uint64_t SemaphoreImpl::getCounterValue() const {
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  return vkDevice.getSemaphoreCounterValue(vkSemaphore_, getDispatcher());
+}
+
 VulkanInstanceImpl& SemaphoreImpl::getInstance() const {
   return logicalDevice_.getInstance();
 }

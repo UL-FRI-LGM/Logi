@@ -28,6 +28,11 @@ QueryPoolImpl::QueryPoolImpl(LogicalDeviceImpl& logicalDevice, const vk::QueryPo
   vkQueryPool_ = vkDevice.createQueryPool(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
+void QueryPoolImpl::resetQueryPool(uint32_t firstQuery, uint32_t queryCount) const {
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  vkDevice.resetQueryPool(vkQueryPool_, firstQuery, queryCount, getDispatcher());
+}
+
 void QueryPoolImpl::resetQueryPoolEXT(uint32_t firstQuery, uint32_t queryCount) const {
   auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   vkDevice.resetQueryPoolEXT(vkQueryPool_, firstQuery, queryCount, getDispatcher());

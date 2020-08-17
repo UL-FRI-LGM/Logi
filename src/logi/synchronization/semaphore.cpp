@@ -25,6 +25,10 @@
 
 namespace logi {
 
+uint64_t Semaphore::getCounterValue() const {
+  return object_->getCounterValue();
+}
+
 VulkanInstance Semaphore::getInstance() const {
   return VulkanInstance(object_->getInstance().shared_from_this());
 }

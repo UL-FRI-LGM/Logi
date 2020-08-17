@@ -42,6 +42,8 @@ class DeviceMemory : public Handle<DeviceMemoryImpl> {
 
   void unmapMemory() const;
 
+  uint64_t getOpaqueCaptureAddress(const ConstVkNextProxy<vk::DeviceMemoryOpaqueCaptureAddressInfo>& next = {}) const;
+
   // endregion
 
   // region Logi Declarations

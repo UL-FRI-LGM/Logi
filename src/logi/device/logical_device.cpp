@@ -264,6 +264,11 @@ RenderPass LogicalDevice::createRenderPass(const vk::RenderPassCreateInfo& creat
   return RenderPass(object_->createRenderPass(createInfo, allocator));
 }
 
+RenderPass LogicalDevice::createRenderPass2(const vk::RenderPassCreateInfo2& createInfo, 
+                                            const std::optional<vk::AllocationCallbacks>& allocator) const {
+  return RenderPass(object_->createRenderPass2(createInfo, allocator));
+}
+
 RenderPass LogicalDevice::createRenderPass(const vk::RenderPassCreateInfo2KHR& createInfo,
                                            const std::optional<vk::AllocationCallbacks>& allocator) const {
   return RenderPass(object_->createRenderPass(createInfo, allocator));

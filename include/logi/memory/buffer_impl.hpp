@@ -49,7 +49,11 @@ class BufferImpl : public VulkanObject,
   vk::MemoryRequirements2KHR
     getBufferMemoryRequirements2KHR(const ConstVkNextProxy<vk::BufferMemoryRequirementsInfo2KHR>& next = {}) const;
 
+  vk::DeviceAddress getDeviceAddress(const ConstVkNextProxy<vk::BufferDeviceAddressInfo>& next = {}) const;
+
   vk::DeviceAddress getDeviceAddressEXT(const ConstVkNextProxy<vk::BufferDeviceAddressInfoEXT>& next = {}) const;
+
+  uint64_t getBufferOpaqueCaptureAddress(const ConstVkNextProxy<vk::BufferDeviceAddressInfo>& next = {}) const;
 
   vk::ResultValueType<void>::type bindMemory(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset) const;
 
