@@ -37,7 +37,7 @@ class PhysicalDevice : public Handle<PhysicalDeviceImpl> {
     enumerateDeviceExtensionProperties(const std::string* layer = nullptr) const;
 
   typename vk::ResultValueType<std::vector<vk::LayerProperties>>::type enumerateDeviceLayerProperties() const;
-
+  
   vk::ExternalBufferProperties
     getExternalBufferProperties(const vk::PhysicalDeviceExternalBufferInfo& externalBufferInfo) const;
 

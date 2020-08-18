@@ -25,6 +25,10 @@
 
 namespace logi {
 
+void Semaphore::signalSemaphore(const ConstVkNextProxy<vk::SemaphoreSignalInfo>& next, uint64_t value) const {
+  object_->signalSemaphore(next, value);
+}
+
 uint64_t Semaphore::getCounterValue() const {
   return object_->getCounterValue();
 }

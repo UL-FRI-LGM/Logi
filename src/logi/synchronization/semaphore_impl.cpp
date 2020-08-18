@@ -28,6 +28,16 @@ SemaphoreImpl::SemaphoreImpl(LogicalDeviceImpl& logicalDevice, const vk::Semapho
   vkSemaphore_ = vkDevice.createSemaphore(createInfo, allocator_ ? &allocator_.value() : nullptr, getDispatcher());
 }
 
+void SemaphoreImpl::signalSemaphore(const ConstVkNextProxy<vk::SemaphoreSignalInfo>& next, uint64_t value) const {
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+
+  vk::SemaphoreSignalInfo semaphoreSignalInfo(vkSemaphore_);
+  semaphoreSignalInfo.pNext = next;
+  semaphoreSignalInfo.value = value;
+
+  vkDevice.signalSemaphore(semaphoreSignalInfo, getDispatcher());
+}
+
 uint64_t SemaphoreImpl::getCounterValue() const {
   auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   return vkDevice.getSemaphoreCounterValue(vkSemaphore_, getDispatcher());

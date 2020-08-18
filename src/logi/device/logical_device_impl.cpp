@@ -324,6 +324,10 @@ void LogicalDeviceImpl::destroySemaphore(size_t id) {
   VulkanObjectComposite<SemaphoreImpl>::destroyObject(id);
 }
 
+void LogicalDeviceImpl::waitSemaphores(const vk::SemaphoreWaitInfo& waitInfo, uint64_t timeout) const {
+  vkDevice_.waitSemaphores(waitInfo, timeout, getDispatcher());
+}
+
 const std::shared_ptr<RenderPassImpl>&
   LogicalDeviceImpl::createRenderPass(const vk::RenderPassCreateInfo& createInfo,
                                       const std::optional<vk::AllocationCallbacks>& allocator) {

@@ -259,6 +259,10 @@ void LogicalDevice::destroySemaphore(const Semaphore& semaphore) const {
   object_->destroySemaphore(semaphore.id());
 }
 
+void LogicalDevice::waitSemaphores(const vk::SemaphoreWaitInfo& waitInfo, uint64_t timeout) const {
+  object_->waitSemaphores(waitInfo, timeout);
+}
+
 RenderPass LogicalDevice::createRenderPass(const vk::RenderPassCreateInfo& createInfo,
                                            const std::optional<vk::AllocationCallbacks>& allocator) const {
   return RenderPass(object_->createRenderPass(createInfo, allocator));

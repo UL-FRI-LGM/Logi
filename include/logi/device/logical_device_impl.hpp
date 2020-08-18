@@ -212,6 +212,8 @@ class LogicalDeviceImpl : public VulkanObject,
 
   void destroySemaphore(size_t id);
 
+  void waitSemaphores(const vk::SemaphoreWaitInfo& waitInfo, uint64_t timeout) const;
+
   const std::shared_ptr<RenderPassImpl>& createRenderPass(const vk::RenderPassCreateInfo& createInfo,
                                                           const std::optional<vk::AllocationCallbacks>& allocator = {});
 

@@ -35,6 +35,8 @@ class Semaphore : public Handle<SemaphoreImpl> {
 
   // region Vulkan Declarations
 
+  void signalSemaphore(const ConstVkNextProxy<vk::SemaphoreSignalInfo>& next, uint64_t value) const;
+
   uint64_t getCounterValue() const;
 
   // endregion

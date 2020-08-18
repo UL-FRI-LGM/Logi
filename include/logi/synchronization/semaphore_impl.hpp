@@ -22,6 +22,7 @@
 #include "logi/base/common.hpp"
 #include <optional>
 #include "logi/base/vulkan_object.hpp"
+#include "logi/structures/extension.hpp"
 
 namespace logi {
 
@@ -35,6 +36,8 @@ class SemaphoreImpl : public VulkanObject, public std::enable_shared_from_this<S
                 const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   // region Vulkan Declarations
+
+  void signalSemaphore(const ConstVkNextProxy<vk::SemaphoreSignalInfo>& next, uint64_t value) const;
 
   uint64_t getCounterValue() const;
 
