@@ -30,15 +30,6 @@ void HelloTriangle::allocateBuffers() {
   utility::allocateBuffer(vulkanState_, VMA_MEMORY_USAGE_CPU_TO_GPU, bufferAllocateInfo, buffers);
   vertexBuffer_ = buffers[0];
 
-
-  // vk::BufferCreateInfo vertexBufferInfo;
-  // vertexBufferInfo.usage = vk::BufferUsageFlagBits::eVertexBuffer | vk::BufferUsageFlagBits::eTransferDst;
-  // vertexBufferInfo.size = vertices.size() * sizeof(Vertex);
-  // vertexBufferInfo.sharingMode = vk::SharingMode::eExclusive;
-
-  // vertexBuffer_ = allocator_.createBuffer(vertexBufferInfo, allocationInfo);
-  // vertexBuffer_.writeToBuffer(vertices.data(), vertices.size() * sizeof(Vertex));
-
   // Create and init matrices UBO buffer
   VmaAllocationCreateInfo allocationInfo = {};
   allocationInfo.usage = VmaMemoryUsage::VMA_MEMORY_USAGE_CPU_TO_GPU;
