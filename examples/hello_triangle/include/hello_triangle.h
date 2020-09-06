@@ -2,6 +2,7 @@
 #define EXAMPLE_HELLO_TRIANGLE_H
 #include <glm/glm.hpp>
 #include "base/example_base.h"
+#include "base/utility.h"
 
 struct Vertex {
   glm::vec3 position;
@@ -46,14 +47,17 @@ class HelloTriangle : public ExampleBase {
                                   {{-1.0f, 1.0f, 0.0f}, {0.0f, 1.0f, 0.0f}},
                                   {{0.0f, -1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}}};
 
-  logi::MemoryAllocator allocator_;
+  // logi::MemoryAllocator allocator_;
   logi::DescriptorPool descriptorPool_;
 
   logi::RenderPass renderPass_;
-  logi::ShaderModule vertexShader_;
-  logi::ShaderModule fragmentShader_;
 
-  PipelineLayoutData pipelineLayoutData_;
+  utility::ShaderReflection shaderReflection_;
+  utility::PipelineLayoutData pipelineLayoutData_;
+
+  // logi::ShaderModule vertexShader_;
+  // logi::ShaderModule fragmentShader_;
+  // PipelineLayoutData pipelineLayoutData_;
 
   logi::VMABuffer vertexBuffer_;
   std::vector<logi::VMABuffer> matricesUBOBuffers_;

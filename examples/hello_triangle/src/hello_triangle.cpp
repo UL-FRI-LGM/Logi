@@ -4,68 +4,52 @@
 #include <glm/gtx/string_cast.hpp>
 
 void HelloTriangle::loadShaders() {
-  vertexShader_ = createShaderModule("./build/examples/hello_triangle/shaders/triangle.vert.spv");
-  fragmentShader_ = createShaderModule("./build/examples/hello_triangle/shaders/triangle.frag.spv");
+  shaderReflection_ = utility::loadShaders(vulkanState_,
+                                           "./build/examples/hello_triangle/shaders/triangle.vert.spv",
+                                           "./build/examples/hello_triangle/shaders/triangle.frag.spv");
 
-  // Generate descriptor set layouts.
-  std::vector<logi::DescriptorSetReflectionInfo> descriptorSetInfo =
-    logi::reflectDescriptorSets({{vertexShader_, "main"}, {fragmentShader_, "main"}});
-
-  pipelineLayoutData_.descriptorSetLayouts.reserve(descriptorSetInfo.size());
-
-  for (const auto& info : descriptorSetInfo) {
-    // Generate binding infos.
-    std::vector<vk::DescriptorSetLayoutBinding> bindings(info.bindings.begin(), info.bindings.end());
-
-    vk::DescriptorSetLayoutCreateInfo descriptorSetLayoutInfo;
-    descriptorSetLayoutInfo.bindingCount = bindings.size();
-    descriptorSetLayoutInfo.pBindings = bindings.data();
-
-    pipelineLayoutData_.descriptorSetLayouts.emplace_back(
-      logicalDevice_.createDescriptorSetLayout(descriptorSetLayoutInfo));
-  }
-
-  // Generate push constant ranges.
-  std::vector<logi::PushConstantReflectionInfo> pushConstants =
-    logi::reflectPushConstants({{vertexShader_, "main"}, {fragmentShader_, "main"}});
-
-  std::vector<vk::PushConstantRange> pushConstantRanges(pushConstants.begin(), pushConstants.end());
-
-  // Pipeline layout
-  std::vector<vk::DescriptorSetLayout> descriptorSetLayouts(pipelineLayoutData_.descriptorSetLayouts.begin(),
-                                                            pipelineLayoutData_.descriptorSetLayouts.end());
-  vk::PipelineLayoutCreateInfo pipelineLayoutInfo;
-  pipelineLayoutInfo.setLayoutCount = pipelineLayoutData_.descriptorSetLayouts.size();
-  pipelineLayoutInfo.pSetLayouts = descriptorSetLayouts.data();
-  pipelineLayoutInfo.pushConstantRangeCount = pushConstantRanges.size();
-  pipelineLayoutInfo.pPushConstantRanges = pushConstantRanges.data();
-
-  pipelineLayoutData_.layout = logicalDevice_.createPipelineLayout(pipelineLayoutInfo);
+  pipelineLayoutData_ = utility::createPipelineLayout(vulkanState_, shaderReflection_);
 }
 
 void HelloTriangle::allocateBuffers() {
-  allocator_ = logicalDevice_.createMemoryAllocator();
+  // Set allocator
+  logi::MemoryAllocator allocator = vulkanState_.defaultLogicalDevice_->createMemoryAllocator();
+  vulkanState_.addAllocator("MainAlloc", allocator);
+  vulkanState_.setDefaultAllocator("MainAlloc");
 
+  // Create vertex buffer
+  utility::BufferAllocateInfo vertexBufferAllocate = {};
+  vertexBufferAllocate.data = vertices.data();
+  vertexBufferAllocate.size = vertices.size() * sizeof(Vertex);
+  vertexBufferAllocate.usage = vk::BufferUsageFlagBits::eVertexBuffer;
+  vertexBufferAllocate.sharingMode = vk::SharingMode::eExclusive;
+
+  std::vector<utility::BufferAllocateInfo> bufferAllocateInfo = {vertexBufferAllocate};
+  std::vector<logi::VMABuffer> buffers;
+
+  utility::allocateBuffer(vulkanState_, VMA_MEMORY_USAGE_CPU_TO_GPU, bufferAllocateInfo, buffers);
+  vertexBuffer_ = buffers[0];
+
+
+  // vk::BufferCreateInfo vertexBufferInfo;
+  // vertexBufferInfo.usage = vk::BufferUsageFlagBits::eVertexBuffer | vk::BufferUsageFlagBits::eTransferDst;
+  // vertexBufferInfo.size = vertices.size() * sizeof(Vertex);
+  // vertexBufferInfo.sharingMode = vk::SharingMode::eExclusive;
+
+  // vertexBuffer_ = allocator_.createBuffer(vertexBufferInfo, allocationInfo);
+  // vertexBuffer_.writeToBuffer(vertices.data(), vertices.size() * sizeof(Vertex));
+
+  // Create and init matrices UBO buffer
   VmaAllocationCreateInfo allocationInfo = {};
   allocationInfo.usage = VmaMemoryUsage::VMA_MEMORY_USAGE_CPU_TO_GPU;
 
-  // Create and fill vertex buffer.
-  vk::BufferCreateInfo vertexBufferInfo;
-  vertexBufferInfo.usage = vk::BufferUsageFlagBits::eVertexBuffer | vk::BufferUsageFlagBits::eTransferDst;
-  vertexBufferInfo.size = vertices.size() * sizeof(Vertex);
-  vertexBufferInfo.sharingMode = vk::SharingMode::eExclusive;
-
-  vertexBuffer_ = allocator_.createBuffer(vertexBufferInfo, allocationInfo);
-  vertexBuffer_.writeToBuffer(vertices.data(), vertices.size() * sizeof(Vertex));
-
-  // Create and init matrices UBO buffer.
   vk::BufferCreateInfo matricesBufferInfo;
   matricesBufferInfo.size = sizeof(uboMatrices);
   matricesBufferInfo.usage = vk::BufferUsageFlagBits::eUniformBuffer | vk::BufferUsageFlagBits::eTransferDst;
   matricesBufferInfo.sharingMode = vk::SharingMode::eExclusive;
 
   for (size_t i = 0; i < swapchainImages_.size(); i++) {
-    matricesUBOBuffers_.emplace_back(allocator_.createBuffer(matricesBufferInfo, allocationInfo));
+    matricesUBOBuffers_.emplace_back(vulkanState_.defaultAllocator_->createBuffer(matricesBufferInfo, allocationInfo));
   }
 
   updateMatrixBuffers();
@@ -99,7 +83,7 @@ void HelloTriangle::initializeDescriptorSets() {
   poolInfo.poolSizeCount = 1u;
   poolInfo.maxSets = static_cast<uint32_t>(swapchainImages_.size());
 
-  descriptorPool_ = logicalDevice_.createDescriptorPool(poolInfo);
+  descriptorPool_ = vulkanState_.defaultLogicalDevice_->createDescriptorPool(poolInfo);
 
   // Create descriptor sets.
   std::vector<vk::DescriptorSetLayout> layouts(swapchainImages_.size(), pipelineLayoutData_.descriptorSetLayouts[0]);
@@ -119,7 +103,7 @@ void HelloTriangle::initializeDescriptorSets() {
     descriptorWrite.descriptorCount = 1;
     descriptorWrite.pBufferInfo = &bufferInfo;
 
-    logicalDevice_.updateDescriptorSets(descriptorWrite);
+    vulkanState_.defaultLogicalDevice_->updateDescriptorSets(descriptorWrite);
   }
 }
 
@@ -159,7 +143,7 @@ void HelloTriangle::createRenderPass() {
   renderPassCreateInfo.dependencyCount = 1;
   renderPassCreateInfo.pDependencies = &dependency;
 
-  renderPass_ = logicalDevice_.createRenderPass(renderPassCreateInfo);
+  renderPass_ = vulkanState_.defaultLogicalDevice_->createRenderPass(renderPassCreateInfo);
 }
 
 void HelloTriangle::createGraphicalPipeline() {
@@ -171,18 +155,18 @@ void HelloTriangle::createGraphicalPipeline() {
   // Pipeline
   vk::PipelineShaderStageCreateInfo vertShaderStageInfo;
   vertShaderStageInfo.stage = vk::ShaderStageFlagBits::eVertex;
-  vertShaderStageInfo.module = vertexShader_;
+  vertShaderStageInfo.module = shaderReflection_.vertexShader;
   vertShaderStageInfo.pName = "main";
 
   vk::PipelineShaderStageCreateInfo fragShaderStageInfo;
   fragShaderStageInfo.stage = vk::ShaderStageFlagBits::eFragment;
-  fragShaderStageInfo.module = fragmentShader_;
+  fragShaderStageInfo.module = shaderReflection_.fragmentShader;
   fragShaderStageInfo.pName = "main";
 
   vk::PipelineShaderStageCreateInfo shaderStages[] = {vertShaderStageInfo, fragShaderStageInfo};
 
   std::vector<logi::VertexAttributeReflectionInfo> vtxAttributeInfo =
-    vertexShader_.getVertexAttributeReflectionInfo("main");
+    shaderReflection_.vertexShader.getVertexAttributeReflectionInfo("main");
 
   std::vector<vk::VertexInputAttributeDescription> vtxAttributeDescriptions;
   vtxAttributeDescriptions.reserve(vtxAttributeInfo.size());
@@ -265,7 +249,7 @@ void HelloTriangle::createGraphicalPipeline() {
   pipelineInfo.renderPass = renderPass_;
   pipelineInfo.subpass = 0;
 
-  pipeline_ = logicalDevice_.createGraphicsPipeline(pipelineInfo);
+  pipeline_ = vulkanState_.defaultLogicalDevice_->createGraphicsPipeline(pipelineInfo);
 }
 
 void HelloTriangle::createFrameBuffers() {
@@ -285,7 +269,7 @@ void HelloTriangle::createFrameBuffers() {
     createInfo.height = swapchainImageExtent_.height;
     createInfo.layers = 1;
 
-    framebuffers_.emplace_back(logicalDevice_.createFramebuffer(createInfo));
+    framebuffers_.emplace_back(vulkanState_.defaultLogicalDevice_->createFramebuffer(createInfo));
   }
 }
 
