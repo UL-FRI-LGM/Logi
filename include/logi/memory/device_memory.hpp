@@ -21,6 +21,7 @@
 
 #include "logi/base/common.hpp"
 #include "logi/base/handle.hpp"
+#include "logi/structures/extension.hpp"
 
 namespace logi {
 
