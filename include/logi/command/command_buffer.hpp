@@ -130,7 +130,7 @@ class CommandBuffer : public Handle<CommandBufferImpl> {
   template <typename T>
   void pushConstants(vk::PipelineLayout layout, vk::ShaderStageFlags stageFlags, uint32_t offset,
                      vk::ArrayProxy<const T> values) const {
-    object_->pushConstants(layout, stageFlags, offset, values, getDispatcher());
+    object_->pushConstants(layout, stageFlags, offset, values);
   }
 
   vk::ResultValueType<void>::type reset(const vk::CommandBufferResetFlags& flags = {}) const;
@@ -166,7 +166,7 @@ class CommandBuffer : public Handle<CommandBufferImpl> {
 
   template <typename T>
   void updateBuffer(vk::Buffer dstBuffer, vk::DeviceSize dstOffset, vk::ArrayProxy<const T> data) const {
-    object_->updateBuffer(dstBuffer, dstOffset, data, getDispatcher());
+    object_->updateBuffer(dstBuffer, dstOffset, data);
   }
 
   void waitEvents(vk::ArrayProxy<const vk::Event> events, const vk::PipelineStageFlags& srcStageMask,
