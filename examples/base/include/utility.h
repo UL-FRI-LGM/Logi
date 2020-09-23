@@ -2,7 +2,7 @@
 #define UTILITY_H
 
 #include "logi/logi.hpp"
-#include "base/vulkanState.h"
+#include "vulkanState.h"
 #include <fstream>
 #include <glm/glm.hpp>
 #include <glm/gtx/hash.hpp>

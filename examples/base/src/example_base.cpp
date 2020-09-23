@@ -1,5 +1,5 @@
-#include "base/example_base.h"
-#include <base/example_base.h>
+#include "example_base.h"
+#include <example_base.h>
 
 PipelineLayoutData::PipelineLayoutData(logi::PipelineLayout layout,
                                        std::vector<logi::DescriptorSetLayout> descriptorSetLayouts)
@@ -58,20 +58,22 @@ void ExampleBase::initInput() {
   window_.setOnCursorMoveCallback("onCursorMove", [this](const cppglfw::Window&, double xPos, double yPos) {
     glm::vec2 newPos = glm::vec2(xPos, yPos);
     glm::vec2 dPos = newPos - mousePos;
-    mousePos = newPos;
 
-    // Apply rotation if right button is pressed.
+    // Rotate object
     if (mouseButtons.right) {
-      rotation.x += dPos.y * 1.25f;
-      rotation.y += dPos.x * 1.25f;
+      rotation.y -= dPos.x * 0.2f;
+      rotation.x -= dPos.y * 0.25f;
       viewChanged = true;
     }
 
+    // Move camera
     if (mouseButtons.left) {
       cameraPos.x += dPos.x * 0.01f;
-      cameraPos.y += dPos.y * 0.01f;
+      cameraPos.y -= dPos.y * 0.01f;
       viewChanged = true;
     }
+
+    mousePos = newPos;
   });
 }
 
@@ -201,9 +203,9 @@ void ExampleBase::initializeDevice() {
 }
 
 ExampleBase::~ExampleBase() {
-  if (vulkanState_.instance_) {
+  // if (vulkanState_.instance_) {
     vulkanState_.instance_.destroy();
-  }
+  // }
 }
 
 // Move to utility
@@ -258,16 +260,16 @@ void ExampleBase::initializeSwapChain() {
   vk::PresentModeKHR presentMode = chooseSwapPresentMode();
   vk::Extent2D extent = chooseSwapExtent(capabilities);
 
-  uint32_t imageCount = capabilities.minImageCount + 1;
-  if (capabilities.maxImageCount > 0 && imageCount > capabilities.maxImageCount) {
-    imageCount = capabilities.maxImageCount;
+  imageCount_ = capabilities.minImageCount + 1;
+  if (capabilities.maxImageCount > 0 && imageCount_ > capabilities.maxImageCount) {
+    imageCount_ = capabilities.maxImageCount;
   }
 
   logi::SwapchainKHR oldSwapchain = swapchain_;
 
   vk::SwapchainCreateInfoKHR createInfo = {};
   createInfo.surface = surface_;
-  createInfo.minImageCount = imageCount;
+  createInfo.minImageCount = imageCount_;
   createInfo.imageFormat = surfaceFormat.format;
   createInfo.imageColorSpace = surfaceFormat.colorSpace;
   createInfo.imageExtent = extent;
@@ -328,6 +330,12 @@ void ExampleBase::buildSyncObjects() {
 
 void ExampleBase::onViewChanged() {}
 
+void ExampleBase::imGUI_createUI() {} // Prevent necessity to implement in subclass
+
+logi::CommandBuffer* ExampleBase::imGUI_createOverlay(const uint32_t& i) {
+  return nullptr;
+}
+
 void ExampleBase::recreateSwapChain() {
   vulkanState_.defaultLogicalDevice_->waitIdle();
 
@@ -349,16 +357,23 @@ void ExampleBase::drawFrame() {
 
     static const vk::PipelineStageFlags wait_stages{vk::PipelineStageFlagBits::eColorAttachmentOutput};
 
-    // Example draw.
-    draw();
+
+    draw(); // Example draw.
+    logi::CommandBuffer* overlayCommandBuffer = imGUI_createOverlay(imageIndex); // Overlay command buffer - ImGUI
+
+    // Command buffers to submit
+    std::vector<vk::CommandBuffer> submitCommandBuffers = {primaryGraphicsCmdBuffers_[imageIndex]};
+    if(overlayCommandBuffer) {
+      submitCommandBuffers.emplace_back(*overlayCommandBuffer);
+    }
 
     vk::SubmitInfo submit_info;
     submit_info.pWaitDstStageMask = &wait_stages;
     submit_info.pWaitSemaphores = &static_cast<const vk::Semaphore&>(imageAvailableSemaphores_[currentFrame_]);
     submit_info.waitSemaphoreCount = 1u;
 
-    submit_info.commandBufferCount = 1;
-    submit_info.pCommandBuffers = &static_cast<const vk::CommandBuffer&>(primaryGraphicsCmdBuffers_[imageIndex]);
+    submit_info.commandBufferCount = static_cast<uint32_t>(submitCommandBuffers.size());
+    submit_info.pCommandBuffers = submitCommandBuffers.data();
 
     submit_info.signalSemaphoreCount = 1;
     submit_info.pSignalSemaphores = &static_cast<const vk::Semaphore&>(renderFinishedSemaphores_[currentFrame_]);

@@ -1,7 +1,7 @@
-#include "base/utility.h"
+#include "utility.h"
 
 #define TINYOBJLOADER_IMPLEMENTATION
-#include "base/tiny_obj_loader.h"
+#include "tiny_obj_loader.h"
 
 namespace utility {
 

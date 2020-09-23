@@ -1,7 +1,7 @@
-#include "base/utility.h"
+#include "utility.h"
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "base/stb_image.h"
+#include "stb_image.h"
 
 namespace utility {
     

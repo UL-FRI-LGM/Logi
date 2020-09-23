@@ -1,4 +1,4 @@
-#include "base/utility.h"
+#include "utility.h"
 
 namespace utility {
     ShaderReflection::ShaderReflection(logi::ShaderModule vertexShader,
@@ -16,6 +16,7 @@ namespace utility {
 
     logi::ShaderModule createShaderModule(const VulkanState& vulkanState, const std::string& shaderPath)
     {   
+        
         assert(vulkanState.defaultLogicalDevice_ != nullptr && "Default logical device not initialized!");
 
         std::ifstream file(shaderPath, std::ios::ate | std::ios::binary);
