@@ -7,8 +7,8 @@
 void VulkanTutorialPort::loadShaders()
 {
     shaderReflection_ = utility::loadShaders(vulkanState_, 
-                                             "./build/examples/vulkanTutorialPort/shaders/basic.vert.spv",
-                                             "./build/examples/vulkanTutorialPort/shaders/basic.frag.spv");
+                                             "./shaders/basic.vert.spv",
+                                             "./shaders/basic.frag.spv");
 
     pipelineLayoutData_ = utility::createPipelineLayout(vulkanState_, shaderReflection_);
 }
@@ -76,6 +76,7 @@ void VulkanTutorialPort::updateUniformBuffers() {
   ubo_.modelView = glm::rotate(ubo_.modelView, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
   ubo_.modelView = glm::rotate(ubo_.modelView, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
   ubo_.modelView = glm::rotate(ubo_.modelView, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+
 
   for (const auto& buffer : matrixUniformBuffers_) {
     buffer.writeToBuffer(&ubo_, sizeof(ubo_));

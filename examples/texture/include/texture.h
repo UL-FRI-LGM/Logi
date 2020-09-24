@@ -1,7 +1,7 @@
 #ifndef EXAMPLE_TEXTURE_H
 #define EXAMPLE_TEXTURE_H
 #include <glm/glm.hpp>
-#include "base/example_base.h"
+#include "example_base.h"
 #include "stb_image.h"
 
 struct Vertex {

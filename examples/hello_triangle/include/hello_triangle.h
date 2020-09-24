@@ -1,8 +1,8 @@
 #ifndef EXAMPLE_HELLO_TRIANGLE_H
 #define EXAMPLE_HELLO_TRIANGLE_H
 #include <glm/glm.hpp>
-#include "base/example_base.h"
-#include "base/utility.h"
+#include "example_base.h"
+#include "utility.h"
 
 struct Vertex {
   glm::vec3 position;

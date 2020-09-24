@@ -5,8 +5,8 @@
 
 void HelloTriangle::loadShaders() {
   shaderReflection_ = utility::loadShaders(vulkanState_,
-                                           "./build/examples/hello_triangle/shaders/triangle.vert.spv",
-                                           "./build/examples/hello_triangle/shaders/triangle.frag.spv");
+                                           "./shaders/triangle.vert.spv",
+                                           "./shaders/triangle.frag.spv");
 
   pipelineLayoutData_ = utility::createPipelineLayout(vulkanState_, shaderReflection_);
 }

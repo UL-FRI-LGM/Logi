@@ -61,8 +61,9 @@ void ExampleBase::initInput() {
 
     // Rotate object
     if (mouseButtons.right) {
-      rotation.y -= dPos.x * 0.2f;
+      rotation.y += dPos.x * 0.2f;
       rotation.x -= dPos.y * 0.25f;
+      rotation.x = std::max(-75.0f, std::min(75.0f, rotation.x));
       viewChanged = true;
     }
 
@@ -203,12 +204,11 @@ void ExampleBase::initializeDevice() {
 }
 
 ExampleBase::~ExampleBase() {
-  // if (vulkanState_.instance_) {
+  if (vulkanState_.instance_) {
     vulkanState_.instance_.destroy();
-  // }
+  }
 }
 
-// Move to utility
 vk::SurfaceFormatKHR ExampleBase::chooseSwapSurfaceFormat() {
   const std::vector<vk::SurfaceFormatKHR>& availableFormats = vulkanState_.physicalDevice_.getSurfaceFormatsKHR(surface_);
 

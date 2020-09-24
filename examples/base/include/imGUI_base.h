@@ -20,6 +20,11 @@ class ImGUIBase : public ExampleBase {
  protected:
   void imGUI_initOverlay();
 
+  void imGUI_createUI() override;
+
+  ~ImGUIBase();
+  
+ private:
   void imGUI_createDescriptorPool();
 
   void imGUI_createRenderPass();
@@ -28,15 +33,12 @@ class ImGUIBase : public ExampleBase {
 
   void imGUI_createFrameBuffers();
 
-  void imGUI_createUI() override;
-
   void recreateSwapChain() override;
 
   logi::CommandBuffer* imGUI_createOverlay(const uint32_t& i) override;
 
   void mainLoop() override;
 
-  // ~ImGUIBase();
 
   ImGuiIO io_;
 

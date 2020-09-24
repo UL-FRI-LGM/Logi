@@ -182,7 +182,9 @@ logi::CommandBuffer* ImGUIBase::imGUI_createOverlay(const uint32_t& i) {
 }
 
 void ImGUIBase::mainLoop() {
+
   while (!window_.shouldClose()) {
+      
     glfwPollEvents();
 
     ImGui_ImplVulkan_NewFrame();
@@ -197,8 +199,8 @@ void ImGUIBase::mainLoop() {
   vulkanState_.defaultLogicalDevice_->waitIdle();    
 }
 
-// ImGUIBase::~ImGUIBase() {
-//   if (vulkanState_.instance_) {
-//     vulkanState_.instance_.destroy();
-//   }
-// }
+ImGUIBase::~ImGUIBase() {
+    ImGui_ImplVulkan_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+}

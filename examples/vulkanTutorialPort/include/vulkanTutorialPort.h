@@ -1,18 +1,18 @@
 #ifndef EXAMPLE_VULKAN_TUTORIAL_PORT_H
 #define EXAMPLE_VULKAN_TUTORIAL_PORT_H
 
-#include "base/utility.h"
-#include "base/example_base.h"
+#include "utility.h"
+#include "example_base.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
 
-struct StagingInfo {
-    logi::VMABuffer* stagingBuffer;
-    logi::VMABuffer* dstBuffer;
-    vk::BufferUsageFlags dstUsage;
-    vk::DeviceSize bufferSize;
-};
+// struct StagingInfo {
+//     logi::VMABuffer* stagingBuffer;
+//     logi::VMABuffer* dstBuffer;
+//     vk::BufferUsageFlags dstUsage;
+//     vk::DeviceSize bufferSize;
+// };
 
 struct Texture {
   logi::VMAImage image;
@@ -60,8 +60,9 @@ class VulkanTutorialPort : public ExampleBase
      void draw() override;
 
     private:
-     const std::string TEXTURE_PATH = "./build/examples/vulkanTutorialPort/resources/images/viking_room.png";
-     const std::string MODEL_PATH = "./build/examples/vulkanTutorialPort/resources/models/viking_room.obj";
+     // TODO: path error in non-debug mode
+     const std::string TEXTURE_PATH = "../resources/images/viking_room.png";
+     const std::string MODEL_PATH = "../resources/models/viking_room.obj";
 
      struct {
          glm::mat4 modelView = glm::mat4(1);
