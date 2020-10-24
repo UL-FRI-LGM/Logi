@@ -10,8 +10,8 @@ void ImGUIBase::imGUI_initOverlay() {
     // io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
     // Setup ImGui style
-    ImGui::StyleColorsDark();
-    // ImGui::StyleColorsClassic();
+    // ImGui::StyleColorsDark();
+    ImGui::StyleColorsClassic();
 
     // Setup GLFW binding
     ImGui_ImplGlfw_InitForVulkan(window_.glfwHandle(), true);
@@ -173,7 +173,10 @@ logi::CommandBuffer* ImGUIBase::imGUI_createOverlay(const uint32_t& i) {
 
     imGUI_commandBuffers_[i].beginRenderPass(renderPassInfo, vk::SubpassContents::eInline);
 
-    ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), static_cast<vk::CommandBuffer>(imGUI_commandBuffers_[i]));
+    ImDrawData* drawData = ImGui::GetDrawData();
+    // if (drawData->DisplaySize.x <= 0.0f || drawData->DisplaySize.y <= 0.0f) return nullptr; // Minimized window
+
+    ImGui_ImplVulkan_RenderDrawData(drawData, static_cast<vk::CommandBuffer>(imGUI_commandBuffers_[i]));
     
     imGUI_commandBuffers_[i].endRenderPass();
     imGUI_commandBuffers_[i].end();
