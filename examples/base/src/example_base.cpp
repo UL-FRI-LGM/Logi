@@ -35,7 +35,7 @@ void ExampleBase::initWindow() {
 
 void ExampleBase::initInput() {
   window_.setOnScrollCallback("onScroll", [this](const cppglfw::Window&, double, double yOffset) {
-    zoom += (double) (0.5 * yOffset);
+    zoom += (double) (0.1 * yOffset);
     viewChanged = true;
   });
 
@@ -360,7 +360,7 @@ void ExampleBase::drawFrame() {
 
     draw(); // Example draw.
     logi::CommandBuffer* overlayCommandBuffer = imGUI_createOverlay(imageIndex); // Overlay command buffer - ImGUI
-
+    
     // Command buffers to submit
     std::vector<vk::CommandBuffer> submitCommandBuffers = {primaryGraphicsCmdBuffers_[imageIndex]};
     if(overlayCommandBuffer) {
