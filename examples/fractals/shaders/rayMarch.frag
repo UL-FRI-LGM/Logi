@@ -1,4 +1,5 @@
 #version 450
+precision highp float;
 
 layout(binding = 0) uniform UBO {
   // Ray marching
@@ -75,12 +76,13 @@ vec3 RotateZ(vec3 p, float a)
 //------------------------------------------
 // Ray marching settings
 //------------------------------------------
-const float ANTIALISING_SAMPLES = 1.0;
-const float MAX_STEPS = 256.0;
-float MIN_DIST = settings.minDist;
-const float MAX_DIST = 100.0;
-const float EPSILON = 0.0001;
-const float IMAGE_PLANE = 1.0;
+const highp float ANTIALISING_SAMPLES = 1.0;
+const highp float MAX_STEPS = 256.0;
+highp float MIN_DIST = settings.minDist;
+const highp float MAX_DIST = 100.0;
+// const float EPSILON = 0.0001;
+highp float EPSILON = MIN_DIST;
+const highp float IMAGE_PLANE = 1.0;
 
 vec3 dirLight1 = vec3(1.0, -1.0, -1.0);
 vec3 dirLight2 = vec3(-1.0, -1.0, -1.0);
@@ -516,6 +518,7 @@ vec3 scene(Ray ray) {
 
     // Fog
     col = mix(col, settings.backgroundColor, fogAmount);
+    
 
   } else { // Miss or run out of ray march steps
     
