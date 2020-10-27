@@ -8,69 +8,42 @@
 #include "stb_image.h"
 
 void TextureExample::loadShaders() {
+  shaderReflection_ = utility::loadShaders(vulkanState_,
+                                          "./shaders/texture.vert.spv",
+                                          "./shaders/texture.frag.spv");
 
-  vertexShader_ = createShaderModule("./build/examples/texture/shaders/texture.vert.spv");
-  fragmentShader_ = createShaderModule("./build/examples/texture/shaders/texture.frag.spv");
-
-  // Generate descriptor set layouts.
-  std::vector<logi::DescriptorSetReflectionInfo> descriptorSetInfo =
-    logi::reflectDescriptorSets({{vertexShader_, "main"}, {fragmentShader_, "main"}});
-
-  pipelineLayoutData_.descriptorSetLayouts.reserve(descriptorSetInfo.size());
-
-  for (const auto& info : descriptorSetInfo) {
-    // Generate binding infos.
-    std::vector<vk::DescriptorSetLayoutBinding> bindings(info.bindings.begin(), info.bindings.end());
-
-    vk::DescriptorSetLayoutCreateInfo descriptorSetLayoutInfo;
-    descriptorSetLayoutInfo.bindingCount = bindings.size();
-    descriptorSetLayoutInfo.pBindings = bindings.data();
-
-    pipelineLayoutData_.descriptorSetLayouts.emplace_back(
-      logicalDevice_.createDescriptorSetLayout(descriptorSetLayoutInfo));
-  }
-
-  // Generate push constant ranges.
-  std::vector<logi::PushConstantReflectionInfo> pushConstants =
-    logi::reflectPushConstants({{vertexShader_, "main"}, {fragmentShader_, "main"}});
-
-  std::vector<vk::PushConstantRange> pushConstantRanges(pushConstants.begin(), pushConstants.end());
-
-  // Pipeline layout
-  std::vector<vk::DescriptorSetLayout> descriptorSetLayouts(pipelineLayoutData_.descriptorSetLayouts.begin(),
-                                                            pipelineLayoutData_.descriptorSetLayouts.end());
-  vk::PipelineLayoutCreateInfo pipelineLayoutInfo;
-  pipelineLayoutInfo.setLayoutCount = pipelineLayoutData_.descriptorSetLayouts.size();
-  pipelineLayoutInfo.pSetLayouts = descriptorSetLayouts.data();
-  pipelineLayoutInfo.pushConstantRangeCount = pushConstantRanges.size();
-  pipelineLayoutInfo.pPushConstantRanges = pushConstantRanges.data();
-
-  pipelineLayoutData_.layout = logicalDevice_.createPipelineLayout(pipelineLayoutInfo);
+  pipelineLayoutData_ = utility::createPipelineLayout(vulkanState_, shaderReflection_);
 }
 
 void TextureExample::allocateBuffers() {
-  allocator_ = logicalDevice_.createMemoryAllocator();
+  // Set allocator
+  logi::MemoryAllocator allocator = vulkanState_.defaultLogicalDevice_->createMemoryAllocator();
+  vulkanState_.addAllocator("MainAlloc", allocator);
+  vulkanState_.setDefaultAllocator("MainAlloc");
+  // allocator_ = logicalDevice_.createMemoryAllocator();
 
   VmaAllocationCreateInfo allocationInfo = {};
   allocationInfo.usage = VmaMemoryUsage::VMA_MEMORY_USAGE_CPU_TO_GPU;
 
-  // Create and fill vertex buffer.
-  vk::BufferCreateInfo vertexBufferInfo;
-  vertexBufferInfo.usage = vk::BufferUsageFlagBits::eVertexBuffer | vk::BufferUsageFlagBits::eTransferDst;
-  vertexBufferInfo.size = vertices_.size() * sizeof(Vertex);
-  vertexBufferInfo.sharingMode = vk::SharingMode::eExclusive;
+  // Create vertex and index buffer
+  utility::BufferAllocateInfo vertexBufferAllocateInfo = {};
+  vertexBufferAllocateInfo.data = vertices_.data();
+  vertexBufferAllocateInfo.size = vertices_.size() * sizeof(Vertex);
+  vertexBufferAllocateInfo.usage = vk::BufferUsageFlagBits::eVertexBuffer | vk::BufferUsageFlagBits::eTransferDst;
+  vertexBufferAllocateInfo.sharingMode = vk::SharingMode::eExclusive;
 
-  vertexBuffer_ = allocator_.createBuffer(vertexBufferInfo, allocationInfo);
-  vertexBuffer_.writeToBuffer(vertices_.data(), vertices_.size() * sizeof(Vertex));
+  utility::BufferAllocateInfo indexBufferAllocateInfo = {};
+  indexBufferAllocateInfo.data = indices_.data();
+  indexBufferAllocateInfo.size = indices_.size() * sizeof(uint32_t);
+  indexBufferAllocateInfo.usage = vk::BufferUsageFlagBits::eIndexBuffer | vk::BufferUsageFlagBits::eTransferDst;
+  indexBufferAllocateInfo.sharingMode = vk::SharingMode::eExclusive;
 
-  // Create and fill index buffer.
-  vk::BufferCreateInfo indexBufferInfo;
-  indexBufferInfo.usage = vk::BufferUsageFlagBits::eIndexBuffer | vk::BufferUsageFlagBits::eTransferDst;
-  indexBufferInfo.size = indices_.size() * sizeof(uint32_t);
-  indexBufferInfo.sharingMode = vk::SharingMode::eExclusive;
+  std::vector<utility::BufferAllocateInfo> bufferAllocateInfos = {vertexBufferAllocateInfo, indexBufferAllocateInfo};
+  std::vector<logi::VMABuffer> buffers;
 
-  indexBuffer_ = allocator_.createBuffer(indexBufferInfo, allocationInfo);
-  indexBuffer_.writeToBuffer(indices_.data(), indices_.size() * sizeof(uint32_t));
+  utility::allocateBuffer(vulkanState_, VMA_MEMORY_USAGE_CPU_TO_GPU, bufferAllocateInfos, buffers);
+  vertexBuffer_ = buffers[0];
+  indexBuffer_ = buffers[1];
 
   // Create and init matrices UBO buffer.
   vk::BufferCreateInfo matricesBufferInfo;
@@ -79,7 +52,7 @@ void TextureExample::allocateBuffers() {
   matricesBufferInfo.sharingMode = vk::SharingMode::eExclusive;
 
   for (size_t i = 0; i < swapchainImages_.size(); i++) {
-    matricesUBOBuffers_.emplace_back(allocator_.createBuffer(matricesBufferInfo, allocationInfo));
+    matricesUBOBuffers_.emplace_back(vulkanState_.defaultAllocator_->createBuffer(matricesBufferInfo, allocationInfo));
   }
 
   updateUniformBuffers();
@@ -90,7 +63,7 @@ void TextureExample::allocateBuffers() {
 
 void TextureExample::loadTextureImage() {
   int32_t texWidth, texHeight, texChannels;
-  stbi_uc* pixels = stbi_load("./build/examples/texture/resources/images/zebra.jpg", &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+  stbi_uc* pixels = stbi_load("../resources/images/zebra.jpg", &texWidth, &texHeight, &texChannels, STBI_rgb_alpha); // Path can cause poroblems!
   VkDeviceSize imageSize = texWidth * texHeight * 4;
 
   if (!pixels) {
@@ -113,10 +86,10 @@ void TextureExample::loadTextureImage() {
   imageInfo.extent = vk::Extent3D(texWidth, texHeight, 1);
   imageInfo.usage = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled;
 
-  texture_.image = allocator_.createImage(imageInfo, allocationInfo);
+  texture_.image = vulkanState_.defaultAllocator_->createImage(imageInfo, allocationInfo);
   texture_.image.writeToImage(pixels, imageSize);
 
-  logi::CommandBuffer cpyCmdBuffer = graphicsFamilyCmdPool_.allocateCommandBuffer(vk::CommandBufferLevel::ePrimary);
+  logi::CommandBuffer cpyCmdBuffer = vulkanState_.defaultGraphicsCommandPool_->allocateCommandBuffer(vk::CommandBufferLevel::ePrimary);
   cpyCmdBuffer.begin({});
 
   // Transition the texture image layout to shader read, so it can be sampled from
@@ -138,8 +111,8 @@ void TextureExample::loadTextureImage() {
   vk::SubmitInfo submitInfo;
   submitInfo.commandBufferCount = 1;
   submitInfo.pCommandBuffers = &static_cast<const vk::CommandBuffer&>(cpyCmdBuffer);
-  graphicsQueue_.submit(submitInfo);
-  graphicsQueue_.waitIdle();
+  vulkanState_.defaultGraphicsQueue_->submit(submitInfo);
+  vulkanState_.defaultGraphicsQueue_->waitIdle();
 
   // Create image view.
   texture_.imageView =
@@ -162,7 +135,7 @@ void TextureExample::loadTextureImage() {
   samplerInfo.anisotropyEnable = VK_FALSE;
   samplerInfo.borderColor = vk::BorderColor::eFloatOpaqueWhite;
 
-  texture_.sampler = logicalDevice_.createSampler(samplerInfo);
+  texture_.sampler = vulkanState_.defaultLogicalDevice_->createSampler(samplerInfo);
 }
 
 void TextureExample::updateUniformBuffers() {
@@ -200,7 +173,7 @@ void TextureExample::initializeDescriptorSets() {
   poolInfo.poolSizeCount = poolSizes.size();
   poolInfo.maxSets = static_cast<uint32_t>(swapchainImages_.size() * 2);
 
-  descriptorPool_ = logicalDevice_.createDescriptorPool(poolInfo);
+  descriptorPool_ = vulkanState_.defaultLogicalDevice_->createDescriptorPool(poolInfo);
 
   // Create descriptor sets.
   std::vector<vk::DescriptorSetLayout> layouts(swapchainImages_.size(), pipelineLayoutData_.descriptorSetLayouts[0]);
@@ -233,7 +206,7 @@ void TextureExample::initializeDescriptorSets() {
     descriptorWrites[1].descriptorCount = 1;
     descriptorWrites[1].pImageInfo = &textureDescriptor;
 
-    logicalDevice_.updateDescriptorSets(descriptorWrites);
+    vulkanState_.defaultLogicalDevice_->updateDescriptorSets(descriptorWrites);
   }
 }
 
@@ -273,7 +246,7 @@ void TextureExample::createRenderPass() {
   renderPassCreateInfo.dependencyCount = 1;
   renderPassCreateInfo.pDependencies = &dependency;
 
-  renderPass_ = logicalDevice_.createRenderPass(renderPassCreateInfo);
+  renderPass_ = vulkanState_.defaultLogicalDevice_->createRenderPass(renderPassCreateInfo);
 }
 
 void TextureExample::createGraphicalPipeline() {
@@ -285,18 +258,18 @@ void TextureExample::createGraphicalPipeline() {
   // Pipeline
   vk::PipelineShaderStageCreateInfo vertShaderStageInfo;
   vertShaderStageInfo.stage = vk::ShaderStageFlagBits::eVertex;
-  vertShaderStageInfo.module = vertexShader_;
+  vertShaderStageInfo.module = shaderReflection_.vertexShader;
   vertShaderStageInfo.pName = "main";
 
   vk::PipelineShaderStageCreateInfo fragShaderStageInfo;
   fragShaderStageInfo.stage = vk::ShaderStageFlagBits::eFragment;
-  fragShaderStageInfo.module = fragmentShader_;
+  fragShaderStageInfo.module = shaderReflection_.fragmentShader;
   fragShaderStageInfo.pName = "main";
 
   vk::PipelineShaderStageCreateInfo shaderStages[] = {vertShaderStageInfo, fragShaderStageInfo};
 
   std::vector<logi::VertexAttributeReflectionInfo> vtxAttributeInfo =
-    vertexShader_.getVertexAttributeReflectionInfo("main");
+    shaderReflection_.vertexShader.getVertexAttributeReflectionInfo("main");
 
   std::vector<vk::VertexInputAttributeDescription> vtxAttributeDescriptions;
   vtxAttributeDescriptions.reserve(vtxAttributeInfo.size());
@@ -379,7 +352,7 @@ void TextureExample::createGraphicalPipeline() {
   pipelineInfo.renderPass = renderPass_;
   pipelineInfo.subpass = 0;
 
-  pipeline_ = logicalDevice_.createGraphicsPipeline(pipelineInfo);
+  pipeline_ = vulkanState_.defaultLogicalDevice_->createGraphicsPipeline(pipelineInfo);
 }
 
 void TextureExample::createFrameBuffers() {
@@ -399,7 +372,7 @@ void TextureExample::createFrameBuffers() {
     createInfo.height = swapchainImageExtent_.height;
     createInfo.layers = 1;
 
-    framebuffers_.emplace_back(logicalDevice_.createFramebuffer(createInfo));
+    framebuffers_.emplace_back(vulkanState_.defaultLogicalDevice_->createFramebuffer(createInfo));
   }
 }
 

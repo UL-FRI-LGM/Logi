@@ -60,11 +60,9 @@ class TextureExample : public ExampleBase {
   std::vector<uint32_t> indices_ = {0, 1, 2, 2, 3, 0};
 
   logi::RenderPass renderPass_;
-  logi::ShaderModule vertexShader_;
-  logi::ShaderModule fragmentShader_;
 
-  logi::MemoryAllocator allocator_;
-  logi::DescriptorPool descriptorPool_;
+  utility::ShaderReflection shaderReflection_;
+  utility::PipelineLayoutData pipelineLayoutData_;
 
   logi::VMABuffer vertexBuffer_;
   logi::VMABuffer indexBuffer_;
@@ -72,7 +70,7 @@ class TextureExample : public ExampleBase {
 
   Texture texture_;
 
-  PipelineLayoutData pipelineLayoutData_;
+  logi::DescriptorPool descriptorPool_;
   std::vector<logi::DescriptorSet> descriptorSets_;
 
   logi::Pipeline pipeline_;
