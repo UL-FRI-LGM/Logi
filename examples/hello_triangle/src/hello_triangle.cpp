@@ -18,13 +18,13 @@ void HelloTriangle::allocateBuffers() {
   vulkanState_.setDefaultAllocator("MainAlloc");
 
   // Create vertex buffer
-  utility::BufferAllocateInfo vertexBufferAllocate = {};
-  vertexBufferAllocate.data = vertices.data();
-  vertexBufferAllocate.size = vertices.size() * sizeof(Vertex);
-  vertexBufferAllocate.usage = vk::BufferUsageFlagBits::eVertexBuffer;
-  vertexBufferAllocate.sharingMode = vk::SharingMode::eExclusive;
+  utility::BufferAllocateInfo vertexBufferAllocateInfo = {};
+  vertexBufferAllocateInfo.data = vertices.data();
+  vertexBufferAllocateInfo.size = vertices.size() * sizeof(Vertex);
+  vertexBufferAllocateInfo.usage = vk::BufferUsageFlagBits::eVertexBuffer;
+  vertexBufferAllocateInfo.sharingMode = vk::SharingMode::eExclusive;
 
-  std::vector<utility::BufferAllocateInfo> bufferAllocateInfo = {vertexBufferAllocate};
+  std::vector<utility::BufferAllocateInfo> bufferAllocateInfo = {vertexBufferAllocateInfo};
   std::vector<logi::VMABuffer> buffers;
 
   utility::allocateBuffer(vulkanState_, VMA_MEMORY_USAGE_CPU_TO_GPU, bufferAllocateInfo, buffers);

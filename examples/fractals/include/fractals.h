@@ -53,7 +53,7 @@ class Fractals : public ImGUIBase {
     alignas(4) float aspectRatio = 0.0f;
     alignas(4) float viewportWidth = 0.0f;
     alignas(4) float viewportHeight = 0.0f;
-    
+
     // Shading
     alignas(4) float dirLightShading = 1.0f;
     alignas(16) glm::vec3 dirLightColor = glm::vec3(233.0f, 184.0f, 25.0f) / 255.0f;
@@ -86,7 +86,7 @@ class Fractals : public ImGUIBase {
                                   {{1.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
                                   {{-1.0f, -1.0f, 0.0f}, {0.0f, 1.0f}},
                                   {{1.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
-                                  {{-1.0f, 1.0f, 0.0f}, {0.0f, 0.0f}}};                                
+                                  {{-1.0f, 1.0f, 0.0f}, {0.0f, 0.0f}}};
 
   logi::RenderPass renderPass_;
 

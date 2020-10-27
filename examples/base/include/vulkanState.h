@@ -5,13 +5,13 @@
 
 enum PipelineType {Graphics, Compute, Present};
 
-class VulkanState 
+class VulkanState
 {
 
  public:
     VulkanState() {}
     VulkanState(const logi::VulkanInstance& vulkanInstance) : instance_(vulkanInstance), physicalDevice_(nullptr), defaultLogicalDevice_(nullptr),
-                                          defaultAllocator_(nullptr), defaultGraphicsCommandPool_(nullptr), defaultComputeCommandPool_(nullptr), 
+                                          defaultAllocator_(nullptr), defaultGraphicsCommandPool_(nullptr), defaultComputeCommandPool_(nullptr),
                                              defaultPresentCommandPool_(nullptr), defaultGraphicsQueue_(nullptr), defaultComputeQueue_(nullptr),
                                                 defaultPresentQueue_(nullptr) {}
 
@@ -22,37 +22,37 @@ class VulkanState
        auto const result = logicalDevices_.insert(std::pair<std::string, logi::LogicalDevice>(key, logicalDevice));
        if(!result.second) {result.first->second = logicalDevice;} // Update if key already exists
     }
- 
+
     void addAllocator(const std::string& key, logi::MemoryAllocator& allocator)
     {
        auto const result = allocators_.insert(std::pair<std::string, logi::MemoryAllocator>(key, allocator));
        if(!result.second) {result.first->second = allocator;}
     }
-   
-    void addQueueFamiliy(const std::string& key, logi::QueueFamily& queueFamiliy) 
+
+    void addQueueFamiliy(const std::string& key, logi::QueueFamily& queueFamiliy)
     {
        auto const result = queueFamilies_.insert(std::pair<std::string, logi::QueueFamily>(key, queueFamiliy));
        if(!result.second) {result.first->second = queueFamiliy;}
     }
 
-    void addQueue(const std::string& key, logi::Queue& queue) 
+    void addQueue(const std::string& key, logi::Queue& queue)
     {
        auto const result = queues_.insert(std::pair<std::string, logi::Queue>(key, queue));
        if(!result.second) {result.first->second = queue;}
     }
- 
-    void addCommandPool(const std::string& key, logi::CommandPool& commandPool) 
+
+    void addCommandPool(const std::string& key, logi::CommandPool& commandPool)
     {
        auto const result = commandPools_.insert(std::pair<std::string, logi::CommandPool>(key, commandPool));
        if(!result.second) {result.first->second = commandPool;}
     }
-   
+
     void setInstance(const logi::VulkanInstance& instance) {instance_ = instance;}
     void setPhysicalDevice(const logi::PhysicalDevice& physicalDevice) {physicalDevice_ = physicalDevice;}
     void setDefaultLogicalDevice(const std::string& key) {defaultLogicalDevice_ = &logicalDevices_.at(key);}
     void setDefaultAllocator(const std::string& key) {defaultAllocator_ = &allocators_.at(key);}
 
-    void setDefaultQueue(const std::string& key, const PipelineType& pipelineType) 
+    void setDefaultQueue(const std::string& key, const PipelineType& pipelineType)
     {
        if(pipelineType == Graphics) {setDefaultGraphicsQueue(key);}
        else if(pipelineType == Compute) {setDefaultComputeQueue(key);}
@@ -60,10 +60,10 @@ class VulkanState
     }
     void setDefaultGraphicsQueue(const std::string& key) {defaultGraphicsQueue_ = &queues_.at(key);}
     void setDefaultComputeQueue(const std::string& key) {defaultComputeQueue_ = &queues_.at(key);}
-    void setDefaultPresentQueue(const std::string& key) {defaultPresentQueue_ = &queues_.at(key);}    
+    void setDefaultPresentQueue(const std::string& key) {defaultPresentQueue_ = &queues_.at(key);}
 
-   
-    void setDefaultCommandPool(const std::string& key, const PipelineType& pipelineType) 
+
+    void setDefaultCommandPool(const std::string& key, const PipelineType& pipelineType)
     {
        if(pipelineType == Graphics) {setDefaultGraphicsCommandPool(key);}
        else if(pipelineType == Compute) {setDefaultComputeCommandPool(key);}
@@ -85,7 +85,7 @@ class VulkanState
     logi::QueueFamily graphicsFamily_;
     logi::QueueFamily computeFamily_;
     logi::QueueFamily presentFamily_;
-    
+
     logi::LogicalDevice* defaultLogicalDevice_;
     logi::MemoryAllocator* defaultAllocator_;
     logi::CommandPool* defaultGraphicsCommandPool_;

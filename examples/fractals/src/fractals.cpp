@@ -49,7 +49,7 @@ void Fractals::allocateBuffers() {
 void Fractals::updateMatrixBuffers() {
   shaderSettings.view = glm::rotate(glm::mat4(1.0), glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
   shaderSettings.view = glm::rotate(shaderSettings.view, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-  
+
   shaderSettings.zoom = zoom;
 
   for (const auto& buffer : matricesUBOBuffers_) {
@@ -287,7 +287,7 @@ void Fractals::recordCommandBuffers() {
 
     primaryGraphicsCmdBuffers_[i].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, pipelineLayoutData_.layout, 0,
                                                      static_cast<vk::DescriptorSet>(descriptorSets_[i]));
-                                                
+
     // primaryGraphicsCmdBuffers_[i].pushConstants(pipelineLayoutData_.layout, vk::ShaderStageFlagBits::eFragment,
     //                                             0, static_cast<vk::ArrayProxy<const Settings>>(shader_settings));
 
@@ -299,11 +299,11 @@ void Fractals::recordCommandBuffers() {
 }
 
 void Fractals::imGUI_createUI() {
-  ImGuiWindowFlags fpsWindowFlags = ImGuiWindowFlags_NoTitleBar | 
-                                    ImGuiWindowFlags_NoBackground | 
+  ImGuiWindowFlags fpsWindowFlags = ImGuiWindowFlags_NoTitleBar |
+                                    ImGuiWindowFlags_NoBackground |
                                     ImGuiWindowFlags_NoResize;
-  
-  ImGui::Begin("FPS", NULL, fpsWindowFlags); 
+
+  ImGui::Begin("FPS", NULL, fpsWindowFlags);
   ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
   ImGui::End();
 
@@ -350,7 +350,7 @@ void Fractals::imGUI_createUI() {
     ImGui::InputInt("Iterations", &shaderSettings.iterations);
     ImGui::InputFloat("Power(mandel bulb)", &shaderSettings.fractalPower, 0.01f, 0.01f, "%.3f");
     ImGui::Combo("Fractal type", &shaderSettings.fractalType, "Meneger box\0Mandel box\0Mandel bulb\0Meneger sponge\0Serpinski triangle\0\0");
-    
+
     if (ImGui::Button("Reset to default") || (shaderSettings.fractalType != previousFractalType)) {
       zoom = 0.0f;
       previousFractalType = shaderSettings.fractalType;
@@ -376,7 +376,7 @@ void Fractals::imGUI_createUI() {
         case 4:
           shaderSettings.iterations = 14;
           shaderSettings.cameraOrigin.z = 10.0f;
-          break;      
+          break;
       }
     }
   }

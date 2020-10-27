@@ -25,7 +25,7 @@ layout(binding = 0) uniform UBO {
   float shadowSharpness;
 
   // Fractals
-  int fractalType; 
+  int fractalType;
   int iterations;
   float fractalPower;
 
@@ -99,7 +99,7 @@ vec3 boxFold(vec3 z, vec3 r) {
 
 // http://www.fractalforums.com/fragmentarium/fragmentarium-an-ide-for-exploring-3d-fractals-and-other-systems-on-the-gpu/15/
 void sphereFold(inout vec3 z, inout float dz) {
-    
+
     float fixedRadius2 = .6 + 4.* cos(20./8.) + 4.;
     float minRadius2 = 0.3;
 	float r2 = dot(z,z);
@@ -107,7 +107,7 @@ void sphereFold(inout vec3 z, inout float dz) {
 		float temp = (fixedRadius2/minRadius2);
 		z*= temp;
 		dz*=temp;
-	} 
+	}
     else if (r2<fixedRadius2) {
 		float temp =(fixedRadius2/r2);
 		z*=temp;
@@ -154,7 +154,7 @@ float deSerpinski(vec3 p)
   // const int Iterations = 14;
   const float Scale = 1.85;
   const float Offset = 2.0;
-  
+
   vec3 a1 = vec3(1,1,1);
 	vec3 a2 = vec3(-1,-1,1);
 	vec3 a3 = vec3(1,-1,-1);
@@ -165,7 +165,7 @@ float deSerpinski(vec3 p)
 	{
       if(p.x+p.y<0.) p.xy = -p.yx; // fold 1
       if(p.x+p.z<0.) p.xz = -p.zx; // fold 2
-      if(p.y+p.z<0.) p.zy = -p.yz; // fold 3	
+      if(p.y+p.z<0.) p.zy = -p.yz; // fold 3
       p = p*Scale - Offset*(Scale-1.0);
 	}
 	return length(p) * pow(Scale, -float(settings.iterations));
@@ -200,13 +200,13 @@ float deMandelBox(vec3 z)
   float Scale = 4.0;
 	vec3 offset = z;
 	float dr = 1.0;
-	for (float n = 0.; n < settings.iterations; n++) {   
+	for (float n = 0.; n < settings.iterations; n++) {
     z = mengerFold(z);
     z = boxFold(z, vec3(2.));       // Reflect
     sphereFold(z, dr);    // Sphere Inversion
     z.xz = -z.zx;
 		z = boxFold(z, vec3(1.));       // Reflect
-        
+
 		sphereFold(z, dr);    // Sphere Inversion
     z=Scale*z + offset;  // Scale & Translate
     dr = dr*abs(Scale)+1.0;
@@ -222,7 +222,7 @@ float deMandleBulb(vec3 pos)
   //  const int Iterations = 12;
    const float Bailout = 8.0;
   //  float Power = 8.0;
-   
+
 	vec3 z = pos;
 	float dr = 1.0;
 	float r = 0.0;
@@ -230,17 +230,17 @@ float deMandleBulb(vec3 pos)
 	{
 		r = length(z);
 		if (r > Bailout) break;   // TODO: test if better to continue loop and if() rather than break?
-		
+
 		// convert to polar coordinates
 		float theta = acos(z.z/r);
 		float phi = atan(z.y,z.x);
 		dr = pow(r, settings.fractalPower-1.0)*settings.fractalPower*dr + 1.0;
-		
+
 		// scale and rotate the point
 		float zr = pow(r,settings.fractalPower);
 		theta = theta*settings.fractalPower;
 		phi = phi*settings.fractalPower;
-		
+
 		// convert back to cartesian coordinates
 		z = zr*vec3(sin(theta)*cos(phi), sin(phi)*sin(theta), cos(theta));
 		z += pos;
@@ -253,25 +253,25 @@ float deMenegerSponge(vec3 p)
 {
    float d = deBox(p, vec3(1.0));
   //  const int MENGER_ITERATIONS = 4;
-   
+
    float s = 1.0;
    for (int m=0; m<settings.iterations; m++)
    {
       p += 0.003;   // translate out slightly - makes more interesting....
       p = RotateZ(p, PI/4.0);
-      
+
       vec3 a = mod(p*s, 2.0) - 1.0;
       s *= float(settings.iterations);
       vec3 r = abs(1.0 - 3.0*abs(a));
-      
+
       float da = max(r.x,r.y);
       float db = max(r.y,r.z);
       float dc = max(r.z,r.x);
       float c = (min(da,min(db,dc)) - 1.0)/s;
-      
+
       d = max(d,c);
    }
-   
+
    return d;
 }
 
@@ -329,12 +329,12 @@ Ray generateViewRay(vec3 lookFrom, vec2 uv) {
   vec3 screenCenter = lookFrom + IMAGE_PLANE * forward;
   vec3 pixelPos = screenCenter + uv.x * right * viewportWidth + uv.y * up * viewportHeight;
 
-  return Ray(lookFrom, normalize(pixelPos - lookFrom));  
+  return Ray(lookFrom, normalize(pixelPos - lookFrom));
 }
 
 // Other simpler techniques:
-// col *= (1.0 - (1.0 / (1.0 + rayMarchSteps)));    
-// col *= (1.0 - rayMarchSteps/MAX_STEPS); 
+// col *= (1.0 - (1.0 / (1.0 + rayMarchSteps)));
+// col *= (1.0 - rayMarchSteps/MAX_STEPS);
 float CalcAO(vec3 p, vec3 n)
 {
    int AO_SAMPLES = 5;
@@ -356,12 +356,12 @@ vec3 getNormal(vec3 point) {
   vec3 normal = dist - vec3(sceneDE(point - eps.xyy),
                             sceneDE(point - eps.yxy),
                             sceneDE(point - eps.yyx));
-  return normalize(normal);                  
+  return normalize(normal);
 }
 
 // Return: vec4(last distance step, minimum distance step, total distance, ray marching steps)
 vec4 rayMarch(Ray ray) {
-  
+
   float rayMarchSteps = 0.0;
   float distStep = MIN_DIST;
   // float minDistStep = FLT_MAX;
@@ -373,7 +373,7 @@ vec4 rayMarch(Ray ray) {
     distStep = sceneDE(currPoint);
 
     totalDist += distStep;
-    minDistStep = min(minDistStep, distStep); 
+    minDistStep = min(minDistStep, distStep);
 
     if(totalDist > MAX_DIST || distStep < MIN_DIST) break;
 
@@ -400,7 +400,7 @@ float rayMarchDirLight(Ray shadowRay) {
 
     // Simple soft shadows
     shadowCoef = min(shadowCoef, settings.shadowSharpness * distStep / totalDist);
-    
+
     // Improved technique
     // float y = distStep * distStep / (2.0*previusDistStep);
     // float d = sqrt(distStep*distStep-y*y);
@@ -436,7 +436,7 @@ vec3 getShadingDirectional(vec3 point, vec3 normal, Ray viewRay, vec3 dirLight) 
 
 // Point light ray march
 // float rayMarchPointLight(Ray shadowRay, float lightDist) {
-  
+
 //   float shadowCoef = 1.0;
 //   float distStep = MIN_DIST;
 //   float totalDist = MAX_DIST;
@@ -447,7 +447,7 @@ vec3 getShadingDirectional(vec3 point, vec3 normal, Ray viewRay, vec3 dirLight) 
 //     distStep = sceneDE(currPoint);
 
 //     totalDist += distStep;
-    
+
 //     // Simple soft shadows
 //     shadowCoef = min(shadowCoef, settings.shadowSharpness * distStep / totalDist);
 
@@ -518,10 +518,10 @@ vec3 scene(Ray ray) {
 
     // Fog
     col = mix(col, settings.backgroundColor, fogAmount);
-    
+
 
   } else { // Miss or run out of ray march steps
-    
+
     // Background color
     col += settings.backgroundColor;
 
@@ -562,7 +562,7 @@ void main() {
   float VIGNETTE_STRENGTH = 0.5;
   float vignette = 1.0 - VIGNETTE_STRENGTH * length(uv);
   col *= vignette;
-  
+
   // col = smoothstep(0.0, 1.0, col); // contrast
   col = pow(col, vec3(.4545));	// gamma correction
   outFragColor = vec4(col, 1.0);

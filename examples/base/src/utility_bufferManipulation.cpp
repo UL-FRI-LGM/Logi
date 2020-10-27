@@ -20,18 +20,18 @@ namespace utility
             bufferHandles.emplace_back(vulkanState.defaultAllocator_->createBuffer(bufferInfo, allocatorInfo));
 
             if(bufferAllocateInfos[i].data) bufferHandles[i].writeToBuffer(bufferAllocateInfos[i].data, bufferAllocateInfos[i].size);
-        }    
+        }
     }
 
-    void allocateBufferStaged(const VulkanState& vulkanState, const VmaMemoryUsage& allocatorUsage, 
+    void allocateBufferStaged(const VulkanState& vulkanState, const VmaMemoryUsage& allocatorUsage,
                               std::vector<BufferAllocateInfo>& bufferAllocateInfos, std::vector<logi::VMABuffer>& bufferHandles)
-    {   
+    {
         assert(vulkanState.defaultAllocator_ != nullptr && "Default allocator not initialized!");
         assert(allocatorUsage == VMA_MEMORY_USAGE_GPU_ONLY && "To allocate host visible use allocateBuffers!");
-      
+
         VmaAllocationCreateInfo allocatorStagingInfo = {};
         allocatorStagingInfo.usage = VMA_MEMORY_USAGE_CPU_ONLY;
-            
+
         // Create staging buffers
         std::vector<logi::VMABuffer> stagingBuffers(bufferAllocateInfos.size());
 
@@ -45,7 +45,7 @@ namespace utility
             stagingBuffers[i].writeToBuffer(bufferAllocateInfos[i].data, bufferAllocateInfos[i].size);
         }
 
-        
+
         // Transfer to device
         logi::CommandBuffer commands = beginSingleTimeCommand(vulkanState, utility::Graphics);
 
@@ -68,6 +68,6 @@ namespace utility
             commands.copyBuffer(stagingBuffers[i], bufferHandles[i], region);
         }
 
-        endSingleTimeCommand(vulkanState, Graphics, commands);       
+        endSingleTimeCommand(vulkanState, Graphics, commands);
     }
 } // namespace utility
