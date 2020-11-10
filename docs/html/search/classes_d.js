@@ -1,6 +1,19 @@
 var searchData=
 [
-  ['reflectionerror_890',['ReflectionError',['../classlogi_1_1_reflection_error.html',1,'logi']]],
-  ['renderpass_891',['RenderPass',['../classlogi_1_1_render_pass.html',1,'logi']]],
-  ['renderpassimpl_892',['RenderPassImpl',['../classlogi_1_1_render_pass_impl.html',1,'logi']]]
+  ['sampler_879',['Sampler',['../classlogi_1_1_sampler.html',1,'logi']]],
+  ['samplerimpl_880',['SamplerImpl',['../classlogi_1_1_sampler_impl.html',1,'logi']]],
+  ['samplerycbcrconversion_881',['SamplerYcbcrConversion',['../classlogi_1_1_sampler_ycbcr_conversion.html',1,'logi']]],
+  ['samplerycbcrconversionimpl_882',['SamplerYcbcrConversionImpl',['../classlogi_1_1_sampler_ycbcr_conversion_impl.html',1,'logi']]],
+  ['semaphore_883',['Semaphore',['../classlogi_1_1_semaphore.html',1,'logi']]],
+  ['semaphoreimpl_884',['SemaphoreImpl',['../classlogi_1_1_semaphore_impl.html',1,'logi']]],
+  ['shadermodule_885',['ShaderModule',['../classlogi_1_1_shader_module.html',1,'logi']]],
+  ['shadermoduleimpl_886',['ShaderModuleImpl',['../classlogi_1_1_shader_module_impl.html',1,'logi']]],
+  ['shaderstage_887',['ShaderStage',['../structlogi_1_1_shader_stage.html',1,'logi']]],
+  ['specializationconstantreflectioninfo_888',['SpecializationConstantReflectionInfo',['../structlogi_1_1_specialization_constant_reflection_info.html',1,'logi']]],
+  ['surfacekhr_889',['SurfaceKHR',['../classlogi_1_1_surface_k_h_r.html',1,'logi']]],
+  ['surfacekhrimpl_890',['SurfaceKHRImpl',['../classlogi_1_1_surface_k_h_r_impl.html',1,'logi']]],
+  ['swapchainimage_891',['SwapchainImage',['../classlogi_1_1_swapchain_image.html',1,'logi']]],
+  ['swapchainimageimpl_892',['SwapchainImageImpl',['../classlogi_1_1_swapchain_image_impl.html',1,'logi']]],
+  ['swapchainkhr_893',['SwapchainKHR',['../classlogi_1_1_swapchain_k_h_r.html',1,'logi']]],
+  ['swapchainkhrimpl_894',['SwapchainKHRImpl',['../classlogi_1_1_swapchain_k_h_r_impl.html',1,'logi']]]
 ];

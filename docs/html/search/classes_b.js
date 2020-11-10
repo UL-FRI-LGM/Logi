@@ -1,12 +1,9 @@
 var searchData=
 [
-  ['physicaldevice_875',['PhysicalDevice',['../classlogi_1_1_physical_device.html',1,'logi']]],
-  ['physicaldeviceimpl_876',['PhysicalDeviceImpl',['../classlogi_1_1_physical_device_impl.html',1,'logi']]],
-  ['pipeline_877',['Pipeline',['../classlogi_1_1_pipeline.html',1,'logi']]],
-  ['pipelinecache_878',['PipelineCache',['../classlogi_1_1_pipeline_cache.html',1,'logi']]],
-  ['pipelinecacheimpl_879',['PipelineCacheImpl',['../classlogi_1_1_pipeline_cache_impl.html',1,'logi']]],
-  ['pipelineimpl_880',['PipelineImpl',['../classlogi_1_1_pipeline_impl.html',1,'logi']]],
-  ['pipelinelayout_881',['PipelineLayout',['../classlogi_1_1_pipeline_layout.html',1,'logi']]],
-  ['pipelinelayoutimpl_882',['PipelineLayoutImpl',['../classlogi_1_1_pipeline_layout_impl.html',1,'logi']]],
-  ['pushconstantreflectioninfo_883',['PushConstantReflectionInfo',['../structlogi_1_1_push_constant_reflection_info.html',1,'logi']]]
+  ['querypool_870',['QueryPool',['../classlogi_1_1_query_pool.html',1,'logi']]],
+  ['querypoolimpl_871',['QueryPoolImpl',['../classlogi_1_1_query_pool_impl.html',1,'logi']]],
+  ['queue_872',['Queue',['../classlogi_1_1_queue.html',1,'logi']]],
+  ['queuefamily_873',['QueueFamily',['../classlogi_1_1_queue_family.html',1,'logi']]],
+  ['queuefamilyimpl_874',['QueueFamilyImpl',['../classlogi_1_1_queue_family_impl.html',1,'logi']]],
+  ['queueimpl_875',['QueueImpl',['../classlogi_1_1_queue_impl.html',1,'logi']]]
 ];

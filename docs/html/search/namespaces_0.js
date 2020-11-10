@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['logi_964',['logi',['../namespacelogi.html',1,'']]]
+  ['logi_950',['logi',['../namespacelogi.html',1,'']]]
 ];

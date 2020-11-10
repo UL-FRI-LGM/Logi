@@ -1,5 +1,5 @@
 <map id="logi::VulkanObject" name="logi::VulkanObject">
-<area shape="rect" id="node1" title=" " alt="" coords="5,1022,133,1049"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,993,133,1019"/>
 <area shape="rect" id="node2" href="$classlogi_1_1_acceleration_structure_n_v_impl.html" title=" " alt="" coords="207,5,382,47"/>
 <area shape="rect" id="node4" href="$classlogi_1_1_buffer_impl.html" title=" " alt="" coords="241,71,348,98"/>
 <area shape="rect" id="node6" href="$classlogi_1_1_buffer_view_impl.html" title=" " alt="" coords="227,122,362,149"/>
@@ -19,26 +19,25 @@
 <area shape="rect" id="node20" href="$classlogi_1_1_framebuffer_impl.html" title=" " alt="" coords="223,862,366,889"/>
 <area shape="rect" id="node21" href="$classlogi_1_1_image_impl.html" title=" " alt="" coords="240,913,349,939"/>
 <area shape="rect" id="node24" href="$classlogi_1_1_image_view_impl.html" title=" " alt="" coords="226,963,363,990"/>
-<area shape="rect" id="node25" href="$classlogi_1_1_indirect_commands_layout_n_v_x_impl.html" title=" " alt="" coords="196,1015,393,1056"/>
+<area shape="rect" id="node25" href="$classlogi_1_1_indirect_commands_layout_n_v_impl.html" title=" " alt="" coords="196,1015,393,1056"/>
 <area shape="rect" id="node26" href="$classlogi_1_1_logical_device_impl.html" title=" " alt="" coords="218,1081,371,1107"/>
 <area shape="rect" id="node27" href="$classlogi_1_1_memory_allocator_impl.html" title=" " alt="" coords="209,1131,381,1158"/>
-<area shape="rect" id="node28" href="$classlogi_1_1_object_table_n_v_x_impl.html" title=" " alt="" coords="211,1182,379,1209"/>
-<area shape="rect" id="node29" href="$classlogi_1_1_physical_device_impl.html" title=" " alt="" coords="213,1233,376,1259"/>
-<area shape="rect" id="node30" href="$classlogi_1_1_pipeline_cache_impl.html" title=" " alt="" coords="216,1283,373,1310"/>
-<area shape="rect" id="node31" href="$classlogi_1_1_pipeline_impl.html" title=" " alt="" coords="235,1334,355,1361"/>
-<area shape="rect" id="node32" href="$classlogi_1_1_pipeline_layout_impl.html" title=" " alt="" coords="215,1385,374,1411"/>
-<area shape="rect" id="node33" href="$classlogi_1_1_query_pool_impl.html" title=" " alt="" coords="227,1435,362,1462"/>
-<area shape="rect" id="node34" href="$classlogi_1_1_queue_family_impl.html" title=" " alt="" coords="219,1486,370,1513"/>
-<area shape="rect" id="node35" href="$classlogi_1_1_queue_impl.html" title=" " alt="" coords="239,1537,351,1563"/>
-<area shape="rect" id="node36" href="$classlogi_1_1_render_pass_impl.html" title=" " alt="" coords="222,1587,367,1614"/>
-<area shape="rect" id="node37" href="$classlogi_1_1_sampler_impl.html" title=" " alt="" coords="233,1638,356,1665"/>
-<area shape="rect" id="node38" href="$classlogi_1_1_sampler_ycbcr_conversion_impl.html" title=" " alt="" coords="185,1689,404,1715"/>
-<area shape="rect" id="node39" href="$classlogi_1_1_semaphore_impl.html" title=" " alt="" coords="225,1739,365,1766"/>
-<area shape="rect" id="node40" href="$classlogi_1_1_shader_module_impl.html" title=" " alt="" coords="216,1790,373,1817"/>
-<area shape="rect" id="node41" href="$classlogi_1_1_surface_k_h_r_impl.html" title=" " alt="" coords="222,1841,367,1867"/>
-<area shape="rect" id="node42" href="$classlogi_1_1_swapchain_k_h_r_impl.html" title=" " alt="" coords="213,1891,377,1918"/>
-<area shape="rect" id="node43" href="$classlogi_1_1_validation_cache_e_x_t_impl.html" title=" " alt="" coords="199,1942,390,1969"/>
-<area shape="rect" id="node44" href="$classlogi_1_1_vulkan_instance_impl.html" title="Vulkan instance handle." alt="" coords="213,1993,376,2019"/>
+<area shape="rect" id="node28" href="$classlogi_1_1_physical_device_impl.html" title=" " alt="" coords="213,1182,376,1209"/>
+<area shape="rect" id="node29" href="$classlogi_1_1_pipeline_cache_impl.html" title=" " alt="" coords="216,1233,373,1259"/>
+<area shape="rect" id="node30" href="$classlogi_1_1_pipeline_impl.html" title=" " alt="" coords="235,1283,355,1310"/>
+<area shape="rect" id="node31" href="$classlogi_1_1_pipeline_layout_impl.html" title=" " alt="" coords="215,1334,374,1361"/>
+<area shape="rect" id="node32" href="$classlogi_1_1_query_pool_impl.html" title=" " alt="" coords="227,1385,362,1411"/>
+<area shape="rect" id="node33" href="$classlogi_1_1_queue_family_impl.html" title=" " alt="" coords="219,1435,370,1462"/>
+<area shape="rect" id="node34" href="$classlogi_1_1_queue_impl.html" title=" " alt="" coords="239,1486,351,1513"/>
+<area shape="rect" id="node35" href="$classlogi_1_1_render_pass_impl.html" title=" " alt="" coords="222,1537,367,1563"/>
+<area shape="rect" id="node36" href="$classlogi_1_1_sampler_impl.html" title=" " alt="" coords="233,1587,356,1614"/>
+<area shape="rect" id="node37" href="$classlogi_1_1_sampler_ycbcr_conversion_impl.html" title=" " alt="" coords="185,1638,404,1665"/>
+<area shape="rect" id="node38" href="$classlogi_1_1_semaphore_impl.html" title=" " alt="" coords="225,1689,365,1715"/>
+<area shape="rect" id="node39" href="$classlogi_1_1_shader_module_impl.html" title=" " alt="" coords="216,1739,373,1766"/>
+<area shape="rect" id="node40" href="$classlogi_1_1_surface_k_h_r_impl.html" title=" " alt="" coords="222,1790,367,1817"/>
+<area shape="rect" id="node41" href="$classlogi_1_1_swapchain_k_h_r_impl.html" title=" " alt="" coords="213,1841,377,1867"/>
+<area shape="rect" id="node42" href="$classlogi_1_1_validation_cache_e_x_t_impl.html" title=" " alt="" coords="199,1891,390,1918"/>
+<area shape="rect" id="node43" href="$classlogi_1_1_vulkan_instance_impl.html" title="Vulkan instance handle." alt="" coords="213,1942,376,1969"/>
 <area shape="rect" id="node3" href="$classlogi_1_1_v_m_a_acceleration_structure_n_v_impl.html" title=" " alt="" coords="456,5,660,47"/>
 <area shape="rect" id="node5" href="$classlogi_1_1_v_m_a_buffer_impl.html" title=" " alt="" coords="490,71,626,98"/>
 <area shape="rect" id="node22" href="$classlogi_1_1_swapchain_image_impl.html" title=" " alt="" coords="472,887,644,914"/>

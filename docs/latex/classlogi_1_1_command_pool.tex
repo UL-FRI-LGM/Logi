@@ -26,17 +26,17 @@ Collaboration diagram for logi\+::Command\+Pool\+:\nopagebreak
 \begin{DoxyCompactItemize}
 \item 
 std\+::vector$<$ \mbox{\hyperlink{classlogi_1_1_command_buffer}{Command\+Buffer}} $>$ \mbox{\hyperlink{classlogi_1_1_command_pool_a3dbe009b5d13ea527e29ebc2f9a9e015}{allocate\+Command\+Buffers}} (vk\+::\+Command\+Buffer\+Level level, uint32\+\_\+t command\+Buffer\+Count, const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Command\+Buffer\+Allocate\+Info $>$ \&next=\{\}) const
-\item 
+\begin{DoxyCompactList}\small\item\em Allocate multiple command buffers. Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkAllocateCommandBuffers.html}{\texttt{ vk\+Allocate\+Command\+Buffers}} \end{DoxyCompactList}\item 
 \mbox{\hyperlink{classlogi_1_1_command_buffer}{Command\+Buffer}} \mbox{\hyperlink{classlogi_1_1_command_pool_a069fb39c15dde13919c639858d97624c}{allocate\+Command\+Buffer}} (vk\+::\+Command\+Buffer\+Level level, const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Command\+Buffer\+Allocate\+Info $>$ \&next=\{\}) const
-\item 
+\begin{DoxyCompactList}\small\item\em Allocate one command buffers. Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkAllocateCommandBuffers.html}{\texttt{ vk\+Allocate\+Command\+Buffers}} \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classlogi_1_1_command_pool_ab89144f2877e8a4e58ddc956c0a7961f}{free\+Command\+Buffers}} (const std\+::vector$<$ \mbox{\hyperlink{classlogi_1_1_command_buffer}{Command\+Buffer}} $>$ \&command\+Buffers) const
-\item 
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkFreeCommandBuffers.html}{\texttt{ vk\+Free\+Command\+Buffers}} \end{DoxyCompactList}\item 
 vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_command_pool_a1a2a30136f8c62cce431c7e77b8db3c7}{reset}} (const vk\+::\+Command\+Pool\+Reset\+Flags \&flags=vk\+::\+Command\+Pool\+Reset\+Flags()) const
-\item 
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkResetCommandPool.html}{\texttt{ vk\+Reset\+Command\+Pool}} \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classlogi_1_1_command_pool_ab77fb7cc577b4dad04597ba4be85b92d}{trim}} (const vk\+::\+Command\+Pool\+Trim\+Flags \&flags=vk\+::\+Command\+Pool\+Trim\+Flags()) const
-\item 
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkTrimCommandPool.html}{\texttt{ vk\+Trim\+Command\+Pool}} \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classlogi_1_1_command_pool_adf2b0f5526d1608f8965bc76dd29b3e7}{trim\+K\+HR}} (const vk\+::\+Command\+Pool\+Trim\+Flags \&flags=vk\+::\+Command\+Pool\+Trim\+Flags()) const
-\item 
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkTrimCommandPoolKHR.html}{\texttt{ vk\+Trim\+Command\+Pool\+K\+HR}} \end{DoxyCompactList}\item 
 \mbox{\hyperlink{classlogi_1_1_vulkan_instance}{Vulkan\+Instance}} \mbox{\hyperlink{classlogi_1_1_command_pool_a85580178300ab72f0e42caacbea1e955}{get\+Instance}} () const
 \item 
 \mbox{\hyperlink{classlogi_1_1_physical_device}{Physical\+Device}} \mbox{\hyperlink{classlogi_1_1_command_pool_a7dde0668e14a820ee6baf255a578a769}{get\+Physical\+Device}} () const
@@ -65,11 +65,19 @@ void \mbox{\hyperlink{classlogi_1_1_command_pool_abcb2cc6634c85b0a72be407a6e5159
 \doxysubsubsection{\texorpdfstring{allocateCommandBuffer()}{allocateCommandBuffer()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_command_buffer}{Command\+Buffer}} logi\+::\+Command\+Pool\+::allocate\+Command\+Buffer (\begin{DoxyParamCaption}\item[{vk\+::\+Command\+Buffer\+Level}]{level,  }\item[{const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Command\+Buffer\+Allocate\+Info $>$ \&}]{next = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
 
+
+
+Allocate one command buffers. Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkAllocateCommandBuffers.html}{\texttt{ vk\+Allocate\+Command\+Buffers}} 
+
 \mbox{\Hypertarget{classlogi_1_1_command_pool_a3dbe009b5d13ea527e29ebc2f9a9e015}\label{classlogi_1_1_command_pool_a3dbe009b5d13ea527e29ebc2f9a9e015}} 
 \index{logi::CommandPool@{logi::CommandPool}!allocateCommandBuffers@{allocateCommandBuffers}}
 \index{allocateCommandBuffers@{allocateCommandBuffers}!logi::CommandPool@{logi::CommandPool}}
 \doxysubsubsection{\texorpdfstring{allocateCommandBuffers()}{allocateCommandBuffers()}}
 {\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{classlogi_1_1_command_buffer}{Command\+Buffer}} $>$ logi\+::\+Command\+Pool\+::allocate\+Command\+Buffers (\begin{DoxyParamCaption}\item[{vk\+::\+Command\+Buffer\+Level}]{level,  }\item[{uint32\+\_\+t}]{command\+Buffer\+Count,  }\item[{const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Command\+Buffer\+Allocate\+Info $>$ \&}]{next = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+
+
+Allocate multiple command buffers. Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkAllocateCommandBuffers.html}{\texttt{ vk\+Allocate\+Command\+Buffers}} 
 
 \mbox{\Hypertarget{classlogi_1_1_command_pool_abcb2cc6634c85b0a72be407a6e51590d}\label{classlogi_1_1_command_pool_abcb2cc6634c85b0a72be407a6e51590d}} 
 \index{logi::CommandPool@{logi::CommandPool}!destroy@{destroy}}
@@ -82,6 +90,10 @@ void \mbox{\hyperlink{classlogi_1_1_command_pool_abcb2cc6634c85b0a72be407a6e5159
 \index{freeCommandBuffers@{freeCommandBuffers}!logi::CommandPool@{logi::CommandPool}}
 \doxysubsubsection{\texorpdfstring{freeCommandBuffers()}{freeCommandBuffers()}}
 {\footnotesize\ttfamily void logi\+::\+Command\+Pool\+::free\+Command\+Buffers (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classlogi_1_1_command_buffer}{Command\+Buffer}} $>$ \&}]{command\+Buffers }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkFreeCommandBuffers.html}{\texttt{ vk\+Free\+Command\+Buffers}} 
 
 \mbox{\Hypertarget{classlogi_1_1_command_pool_ad450c01aadfeb361f8bd89f0a353c08b}\label{classlogi_1_1_command_pool_ad450c01aadfeb361f8bd89f0a353c08b}} 
 \index{logi::CommandPool@{logi::CommandPool}!getDispatcher@{getDispatcher}}
@@ -150,17 +162,29 @@ Initialize the referred object.
 \doxysubsubsection{\texorpdfstring{reset()}{reset()}}
 {\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Command\+Pool\+::reset (\begin{DoxyParamCaption}\item[{const vk\+::\+Command\+Pool\+Reset\+Flags \&}]{flags = {\ttfamily vk\+:\+:CommandPoolResetFlags()} }\end{DoxyParamCaption}) const}
 
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkResetCommandPool.html}{\texttt{ vk\+Reset\+Command\+Pool}} 
+
 \mbox{\Hypertarget{classlogi_1_1_command_pool_ab77fb7cc577b4dad04597ba4be85b92d}\label{classlogi_1_1_command_pool_ab77fb7cc577b4dad04597ba4be85b92d}} 
 \index{logi::CommandPool@{logi::CommandPool}!trim@{trim}}
 \index{trim@{trim}!logi::CommandPool@{logi::CommandPool}}
 \doxysubsubsection{\texorpdfstring{trim()}{trim()}}
 {\footnotesize\ttfamily void logi\+::\+Command\+Pool\+::trim (\begin{DoxyParamCaption}\item[{const vk\+::\+Command\+Pool\+Trim\+Flags \&}]{flags = {\ttfamily vk\+:\+:CommandPoolTrimFlags()} }\end{DoxyParamCaption}) const}
 
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkTrimCommandPool.html}{\texttt{ vk\+Trim\+Command\+Pool}} 
+
 \mbox{\Hypertarget{classlogi_1_1_command_pool_adf2b0f5526d1608f8965bc76dd29b3e7}\label{classlogi_1_1_command_pool_adf2b0f5526d1608f8965bc76dd29b3e7}} 
 \index{logi::CommandPool@{logi::CommandPool}!trimKHR@{trimKHR}}
 \index{trimKHR@{trimKHR}!logi::CommandPool@{logi::CommandPool}}
 \doxysubsubsection{\texorpdfstring{trimKHR()}{trimKHR()}}
 {\footnotesize\ttfamily void logi\+::\+Command\+Pool\+::trim\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Command\+Pool\+Trim\+Flags \&}]{flags = {\ttfamily vk\+:\+:CommandPoolTrimFlags()} }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkTrimCommandPoolKHR.html}{\texttt{ vk\+Trim\+Command\+Pool\+K\+HR}} 
 
 
 
