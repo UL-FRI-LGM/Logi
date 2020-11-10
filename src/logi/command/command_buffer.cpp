@@ -471,13 +471,13 @@ void CommandBuffer::writeAccelerationStructuresPropertiesNV(
   object_->writeAccelerationStructuresPropertiesNV(accelerationStructures, queryType, queryPool, firstQuery);
 }
 
-void CommandBuffer::processCommandsNVX(const vk::CmdProcessCommandsInfoNVX& processCommandsInfo) const {
-  object_->processCommandsNVX(processCommandsInfo);
-}
+// void CommandBuffer::processCommandsNVX(const vk::CmdProcessCommandsInfoNVX& processCommandsInfo) const {
+//   object_->processCommandsNVX(processCommandsInfo);
+// }
 
-void CommandBuffer::reserveSpaceForCommandsNVX(const vk::CmdReserveSpaceForCommandsInfoNVX& reserveSpaceInfo) const {
-  object_->reserveSpaceForCommandsNVX(reserveSpaceInfo);
-}
+// void CommandBuffer::reserveSpaceForCommandsNVX(const vk::CmdReserveSpaceForCommandsInfoNVX& reserveSpaceInfo) const {
+//   object_->reserveSpaceForCommandsNVX(reserveSpaceInfo);
+// }
 
 void CommandBuffer::drawIndexedIndirectCountAMD(vk::Buffer buffer, vk::DeviceSize offset, vk::Buffer countBuffer,
                                                 vk::DeviceSize countBufferOffset, uint32_t maxDrawCount,

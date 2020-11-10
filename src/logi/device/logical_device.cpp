@@ -31,8 +31,8 @@
 #include "logi/memory/image_impl.hpp"
 #include "logi/memory/memory_allocator_impl.hpp"
 #include "logi/memory/sampler_impl.hpp"
-#include "logi/nvidia/indirect_commands_layout_nvx_impl.hpp"
-#include "logi/nvidia/object_table_nvx_impl.hpp"
+#include "logi/nvidia/indirect_commands_layout_nv_impl.hpp"
+// #include "logi/nvidia/object_table_nvx_impl.hpp"
 #include "logi/program/descriptor_set_layout_impl.hpp"
 #include "logi/program/pipeline_cache_impl.hpp"
 #include "logi/program/pipeline_impl.hpp"
@@ -328,25 +328,25 @@ void LogicalDevice::destroyAccelerationStructureNV(const AccelerationStructureNV
   object_->destroyAccelerationStructureNV(accelerationStructure.id());
 }
 
-IndirectCommandsLayoutNVX LogicalDevice::createIndirectCommandsLayoutNVX(
-  const vk::IndirectCommandsLayoutCreateInfoNVX& createInfo,
+IndirectCommandsLayoutNV LogicalDevice::createIndirectCommandsLayoutNV(
+  const vk::IndirectCommandsLayoutCreateInfoNV& createInfo,
   const std::optional<vk::AllocationCallbacks>& allocator) const {
-  return IndirectCommandsLayoutNVX(
-    object_->createIndirectCommandsLayoutNVX(createInfo, allocator));
+  return IndirectCommandsLayoutNV(
+    object_->createIndirectCommandsLayoutNV(createInfo, allocator));
 }
 
-void LogicalDevice::destroyIndirectCommandsLayoutNVX(const IndirectCommandsLayoutNVX& indirectCommandsLayout) const {
-  object_->destroyIndirectCommandsLayoutNVX(indirectCommandsLayout.id());
+void LogicalDevice::destroyIndirectCommandsLayoutNV(const IndirectCommandsLayoutNV& indirectCommandsLayout) const {
+  object_->destroyIndirectCommandsLayoutNV(indirectCommandsLayout.id());
 }
 
-ObjectTableNVX LogicalDevice::createObjectTableNVX(const vk::ObjectTableCreateInfoNVX& createInfo,
-                                                   const std::optional<vk::AllocationCallbacks>& allocator) const {
-  return ObjectTableNVX(object_->createObjectTableNVX(createInfo, allocator));
-}
+// ObjectTableNVX LogicalDevice::createObjectTableNVX(const vk::ObjectTableCreateInfoNVX& createInfo,
+//                                                    const std::optional<vk::AllocationCallbacks>& allocator) const {
+//   return ObjectTableNVX(object_->createObjectTableNVX(createInfo, allocator));
+// }
 
-void LogicalDevice::destroyObjectTableNVX(const ObjectTableNVX& objectTable) const {
-  object_->destroyObjectTableNVX(objectTable.id());
-}
+// void LogicalDevice::destroyObjectTableNVX(const ObjectTableNVX& objectTable) const {
+//   object_->destroyObjectTableNVX(objectTable.id());
+// }
 
 std::vector<QueueFamily> LogicalDevice::enumerateQueueFamilies() const {
   std::vector<std::shared_ptr<QueueFamilyImpl>> queueFamilyImpls = object_->enumerateQueueFamilies();

@@ -487,14 +487,14 @@ void CommandBufferImpl::writeAccelerationStructuresPropertiesNV(
                                                            getDispatcher());
 }
 
-void CommandBufferImpl::processCommandsNVX(const vk::CmdProcessCommandsInfoNVX& processCommandsInfo) const {
-  vkCommandBuffer_.processCommandsNVX(processCommandsInfo, getDispatcher());
-}
+// void CommandBufferImpl::processCommandsNVX(const vk::CmdProcessCommandsInfoNVX& processCommandsInfo) const {
+//   vkCommandBuffer_.processCommandsNVX(processCommandsInfo, getDispatcher());
+// }
 
-void CommandBufferImpl::reserveSpaceForCommandsNVX(
-  const vk::CmdReserveSpaceForCommandsInfoNVX& reserveSpaceInfo) const {
-  vkCommandBuffer_.reserveSpaceForCommandsNVX(reserveSpaceInfo, getDispatcher());
-}
+// void CommandBufferImpl::reserveSpaceForCommandsNVX(
+//   const vk::CmdReserveSpaceForCommandsInfoNVX& reserveSpaceInfo) const {
+//   vkCommandBuffer_.reserveSpaceForCommandsNVX(reserveSpaceInfo, getDispatcher());
+// }
 
 void CommandBufferImpl::drawIndexedIndirectCountAMD(vk::Buffer buffer, vk::DeviceSize offset, vk::Buffer countBuffer,
                                                     vk::DeviceSize countBufferOffset, uint32_t maxDrawCount,

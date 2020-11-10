@@ -33,7 +33,7 @@
 #include "logi/memory/sampler.hpp"
 #include "logi/memory/sampler_ycbcr_conversion.hpp"
 #include "logi/nvidia/indirect_commands_layout_nv.hpp"
-#include "logi/nvidia/object_table_nvx.hpp"
+// #include "logi/nvidia/object_table_nvx.hpp"
 #include "logi/program/descriptor_set_layout.hpp"
 #include "logi/program/pipeline.hpp"
 #include "logi/program/pipeline_cache.hpp"
@@ -370,13 +370,13 @@ class LogicalDevice : public Handle<LogicalDeviceImpl> {
   void destroyAccelerationStructureNV(const AccelerationStructureNV& accelerationStructure) const;
 
   /**
-   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateIndirectCommandsLayoutNV.html">vkCreateIndirectCommandsLayoutNVXIndirectCommandsLayoutNVX</a>
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateIndirectCommandsLayoutNV.html">vkCreateIndirectCommandsLayoutNV</a>
    */
-  IndirectCommandsLayoutNV createIndirectCommandsLayoutNVX(
-    const vk::IndirectCommandsLayoutCreateInfoNVX& createInfo,
+  IndirectCommandsLayoutNV createIndirectCommandsLayoutNV(
+    const vk::IndirectCommandsLayoutCreateInfoNV& createInfo,
     const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
-  void destroyIndirectCommandsLayoutNVX(const IndirectCommandsLayoutNV& indirectCommandsLayout) const;
+  void destroyIndirectCommandsLayoutNV(const IndirectCommandsLayoutNV& indirectCommandsLayout) const;
 
   // ObjectTableNVX createObjectTableNVX(const vk::ObjectTableCreateInfoNV& createInfo,
   //                                     const std::optional<vk::AllocationCallbacks>& allocator = {}) const;

@@ -47,7 +47,7 @@ class RenderPassImpl;
 class FramebufferImpl;
 class ValidationCacheEXTImpl;
 class AccelerationStructureNVImpl;
-class IndirectCommandsLayoutNVXImpl;
+class IndirectCommandsLayoutNVImpl;
 class ObjectTableNVXImpl;
 class DescriptorUpdateTemplateImpl;
 class BufferImpl;
@@ -78,7 +78,7 @@ class LogicalDeviceImpl : public VulkanObject,
                           public VulkanObjectComposite<FramebufferImpl>,
                           public VulkanObjectComposite<ValidationCacheEXTImpl>,
                           public VulkanObjectComposite<AccelerationStructureNVImpl>,
-                          public VulkanObjectComposite<IndirectCommandsLayoutNVXImpl>,
+                          public VulkanObjectComposite<IndirectCommandsLayoutNVImpl>,
                           public VulkanObjectComposite<ObjectTableNVXImpl> {
  public:
   LogicalDeviceImpl(PhysicalDeviceImpl& physicalDevice, const vk::DeviceCreateInfo& createInfo,
@@ -253,11 +253,11 @@ class LogicalDeviceImpl : public VulkanObject,
 
   void destroyAccelerationStructureNV(size_t id);
 
-  const std::shared_ptr<IndirectCommandsLayoutNVXImpl>& createIndirectCommandsLayoutNVX(
-    const vk::IndirectCommandsLayoutCreateInfoNVX& createInfo,
+  const std::shared_ptr<IndirectCommandsLayoutNVImpl>& createIndirectCommandsLayoutNV(
+    const vk::IndirectCommandsLayoutCreateInfoNV& createInfo,
     const std::optional<vk::AllocationCallbacks>& allocator = {});
 
-  void destroyIndirectCommandsLayoutNVX(size_t id);
+  void destroyIndirectCommandsLayoutNV(size_t id);
 
   // const std::shared_ptr<ObjectTableNVXImpl>&
   //   createObjectTableNVX(const vk::ObjectTableCreateInfoNVX& createInfo,

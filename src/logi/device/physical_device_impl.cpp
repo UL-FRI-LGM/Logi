@@ -196,10 +196,10 @@ vk::ExternalImageFormatPropertiesNV PhysicalDeviceImpl::getExternalImageFormatPr
                                                               getDispatcher());
 }
 
-vk::DeviceGeneratedCommandsLimitsNVX
-  PhysicalDeviceImpl::getGeneratedCommandsPropertiesNVX(vk::DeviceGeneratedCommandsFeaturesNVX& features) const {
-  return vkPhysicalDevice_.getGeneratedCommandsPropertiesNVX(features, getDispatcher());
-}
+// vk::DeviceGeneratedCommandsLimitsNVX
+//   PhysicalDeviceImpl::getGeneratedCommandsPropertiesNVX(vk::DeviceGeneratedCommandsFeaturesNVX& features) const {
+//   return vkPhysicalDevice_.getGeneratedCommandsPropertiesNVX(features, getDispatcher());
+// }
 
 vk::ResultValueType<std::vector<vk::TimeDomainEXT>>::type PhysicalDeviceImpl::getCalibrateableTimeDomainsEXT() const {
   return vkPhysicalDevice_.getCalibrateableTimeDomainsEXT(getDispatcher());

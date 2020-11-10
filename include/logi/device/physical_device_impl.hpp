@@ -216,12 +216,12 @@ class PhysicalDeviceImpl : public VulkanObject,
                                        const vk::ImageUsageFlags& usage, const vk::ImageCreateFlags& flags,
                                        const vk::ExternalMemoryHandleTypeFlagsNV& externalHandleType) const;
 
-  vk::DeviceGeneratedCommandsLimitsNVX
-    getGeneratedCommandsPropertiesNVX(vk::DeviceGeneratedCommandsFeaturesNVX& features) const;
+  // vk::DeviceGeneratedCommandsLimitsNVX
+  //   getGeneratedCommandsPropertiesNVX(vk::DeviceGeneratedCommandsFeaturesNVX& features) const;
 
-  template <typename X, typename Y, typename... Z>
-  vk::StructureChain<X, Y, Z...>
-    getGeneratedCommandsPropertiesNVX(vk::DeviceGeneratedCommandsFeaturesNVX& features) const;
+  // template <typename X, typename Y, typename... Z>
+  // vk::StructureChain<X, Y, Z...>
+  //   getGeneratedCommandsPropertiesNVX(vk::DeviceGeneratedCommandsFeaturesNVX& features) const;
 
   vk::ResultValueType<std::vector<vk::TimeDomainEXT>>::type getCalibrateableTimeDomainsEXT() const;
 
@@ -406,11 +406,11 @@ std::vector<vk::StructureChain<X, Y, Z...>> PhysicalDeviceImpl::getSparseImageFo
     pSparseImageFormatProperties, getDispatcher());
 }
 
-template <typename X, typename Y, typename... Z>
-vk::StructureChain<X, Y, Z...>
-  PhysicalDeviceImpl::getGeneratedCommandsPropertiesNVX(vk::DeviceGeneratedCommandsFeaturesNVX& features) const {
-  return vkPhysicalDevice_.getGeneratedCommandsPropertiesNVX<X, Y, Z...>(features, getDispatcher());
-}
+// template <typename X, typename Y, typename... Z>
+// vk::StructureChain<X, Y, Z...>
+//   PhysicalDeviceImpl::getGeneratedCommandsPropertiesNVX(vk::DeviceGeneratedCommandsFeaturesNVX& features) const {
+//   return vkPhysicalDevice_.getGeneratedCommandsPropertiesNVX<X, Y, Z...>(features, getDispatcher());
+// }
 
 template <typename X, typename Y, typename... Z>
 typename vk::ResultValueType<vk::StructureChain<X, Y, Z...>>::type

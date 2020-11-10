@@ -202,12 +202,12 @@ class PhysicalDevice : public Handle<PhysicalDeviceImpl> {
                                        const vk::ImageUsageFlags& usage, const vk::ImageCreateFlags& flags,
                                        const vk::ExternalMemoryHandleTypeFlagsNV& externalHandleType) const;
 
-  vk::DeviceGeneratedCommandsLimitsNVX
-    getGeneratedCommandsPropertiesNVX(vk::DeviceGeneratedCommandsFeaturesNVX& features) const;
+  // vk::DeviceGeneratedCommandsLimitsNVX
+  //   getGeneratedCommandsPropertiesNVX(vk::DeviceGeneratedCommandsFeaturesNVX& features) const;
 
-  template <typename X, typename Y, typename... Z>
-  vk::StructureChain<X, Y, Z...>
-    getGeneratedCommandsPropertiesNVX(vk::DeviceGeneratedCommandsFeaturesNVX& features) const;
+  // template <typename X, typename Y, typename... Z>
+  // vk::StructureChain<X, Y, Z...>
+  //   getGeneratedCommandsPropertiesNVX(vk::DeviceGeneratedCommandsFeaturesNVX& features) const;
 
   vk::ResultValueType<std::vector<vk::TimeDomainEXT>>::type getCalibrateableTimeDomainsEXT() const;
 
@@ -384,11 +384,11 @@ typename vk::ResultValueType<vk::StructureChain<X, Y, Z...>>::type
   return object_->getSurfaceFormats2KHR(surfaceInfo);
 }
 
-template <typename X, typename Y, typename... Z>
-vk::StructureChain<X, Y, Z...>
-  PhysicalDevice::getGeneratedCommandsPropertiesNVX(vk::DeviceGeneratedCommandsFeaturesNVX& features) const {
-  return object_->getGeneratedCommandsPropertiesNVX<X, Y, Z...>(features);
-}
+// template <typename X, typename Y, typename... Z>
+// vk::StructureChain<X, Y, Z...>
+//   PhysicalDevice::getGeneratedCommandsPropertiesNVX(vk::DeviceGeneratedCommandsFeaturesNVX& features) const {
+//   return object_->getGeneratedCommandsPropertiesNVX<X, Y, Z...>(features);
+// }
 
 // endregion
 

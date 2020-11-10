@@ -562,12 +562,12 @@ class CommandBuffer : public Handle<CommandBufferImpl> {
   /**
    * @brief Not supported anymore!
    */
-  void processCommandsNVX(const vk::CmdProcessCommandsInfoNVX& processCommandsInfo) const;
+  // void processCommandsNVX(const vk::CmdProcessCommandsInfoNVX& processCommandsInfo) const;
 
   /**
    * @brief Not supported anymore!
    */
-  void reserveSpaceForCommandsNVX(const vk::CmdReserveSpaceForCommandsInfoNVX& reserveSpaceInfo) const;
+  // void reserveSpaceForCommandsNVX(const vk::CmdReserveSpaceForCommandsInfoNVX& reserveSpaceInfo) const;
 
   /**
    * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawIndexedIndirectCountAMD.html">vkCmdDrawIndexedIndirectCountAMD</a>

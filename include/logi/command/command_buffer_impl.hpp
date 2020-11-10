@@ -280,9 +280,9 @@ class CommandBufferImpl : public VulkanObject, public std::enable_shared_from_th
                                                vk::QueryType queryType, vk::QueryPool queryPool,
                                                uint32_t firstQuery) const;
 
-  void processCommandsNVX(const vk::CmdProcessCommandsInfoNVX& processCommandsInfo) const;
+  // void processCommandsNVX(const vk::CmdProcessCommandsInfoNVX& processCommandsInfo) const;
 
-  void reserveSpaceForCommandsNVX(const vk::CmdReserveSpaceForCommandsInfoNVX& reserveSpaceInfo) const;
+  // void reserveSpaceForCommandsNVX(const vk::CmdReserveSpaceForCommandsInfoNVX& reserveSpaceInfo) const;
 
   void drawIndexedIndirectCountAMD(vk::Buffer buffer, vk::DeviceSize offset, vk::Buffer countBuffer,
                                    vk::DeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride) const;

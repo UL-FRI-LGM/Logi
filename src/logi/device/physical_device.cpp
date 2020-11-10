@@ -192,10 +192,10 @@ vk::ExternalImageFormatPropertiesNV PhysicalDevice::getExternalImageFormatProper
   return object_->getExternalImageFormatPropertiesNV(format, type, tiling, usage, flags, externalHandleType);
 }
 
-vk::DeviceGeneratedCommandsLimitsNVX
-  PhysicalDevice::getGeneratedCommandsPropertiesNVX(vk::DeviceGeneratedCommandsFeaturesNVX& features) const {
-  return object_->getGeneratedCommandsPropertiesNVX(features);
-}
+// vk::DeviceGeneratedCommandsLimitsNVX
+//   PhysicalDevice::getGeneratedCommandsPropertiesNVX(vk::DeviceGeneratedCommandsFeaturesNVX& features) const {
+//   return object_->getGeneratedCommandsPropertiesNVX(features);
+// }
 
 vk::ResultValueType<std::vector<vk::TimeDomainEXT>>::type PhysicalDevice::getCalibrateableTimeDomainsEXT() const {
   return object_->getCalibrateableTimeDomainsEXT();
