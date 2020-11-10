@@ -1,0 +1,684 @@
+\hypertarget{classlogi_1_1_physical_device_impl}{}\doxysection{logi\+::Physical\+Device\+Impl Class Reference}
+\label{classlogi_1_1_physical_device_impl}\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+
+
+{\ttfamily \#include $<$physical\+\_\+device\+\_\+impl.\+hpp$>$}
+
+
+
+Inheritance diagram for logi\+::Physical\+Device\+Impl\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogi_1_1_physical_device_impl__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for logi\+::Physical\+Device\+Impl\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogi_1_1_physical_device_impl__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlogi_1_1_physical_device_impl_a188456a004f600c2c5336a64c77c8555}{Physical\+Device\+Impl}} (\mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl}{Vulkan\+Instance\+Impl}} \&instance, const vk\+::\+Physical\+Device \&vk\+Physical\+Device)
+\begin{DoxyCompactList}\small\item\em Vulkan physical device. \end{DoxyCompactList}\item 
+vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Extension\+Properties $>$ $>$\+::type \mbox{\hyperlink{classlogi_1_1_physical_device_impl_ad46dcbba9b5fba8251a8a26736277ccb}{enumerate\+Device\+Extension\+Properties}} (const std\+::string $\ast$layer\+Name=nullptr) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Layer\+Properties $>$ $>$\+::type \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a6192ac65e33b872ff28b51c492408cf4}{enumerate\+Device\+Layer\+Properties}} () const
+\item 
+vk\+::\+External\+Buffer\+Properties \mbox{\hyperlink{classlogi_1_1_physical_device_impl_af7051d08b9aec0394a24aa0f6366f4f6}{get\+External\+Buffer\+Properties}} (const vk\+::\+Physical\+Device\+External\+Buffer\+Info \&external\+Buffer\+Info) const
+\item 
+{\footnotesize template$<$typename X , typename Y , typename... Z$>$ }\\vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a504c689d11b43b5aa1b4a570a0adf859}{get\+External\+Buffer\+Properties}} (const vk\+::\+Physical\+Device\+External\+Buffer\+Info \&external\+Buffer\+Info) const
+\item 
+vk\+::\+External\+Buffer\+Properties\+K\+HR \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a7dea736428511d638d9013726079195b}{get\+External\+Buffer\+Properties\+K\+HR}} (const vk\+::\+Physical\+Device\+External\+Buffer\+Info\+K\+HR \&external\+Buffer\+Info) const
+\item 
+{\footnotesize template$<$typename X , typename Y , typename... Z$>$ }\\vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a4b38c11c934e46966f13f3083169eb70}{get\+External\+Buffer\+Properties\+K\+HR}} (const vk\+::\+Physical\+Device\+External\+Buffer\+Info\+K\+HR \&external\+Buffer\+Info) const
+\item 
+vk\+::\+External\+Fence\+Properties \mbox{\hyperlink{classlogi_1_1_physical_device_impl_aa77f1c22a277ec0557b043c7a661f3c1}{get\+External\+Fence\+Properties}} (const vk\+::\+Physical\+Device\+External\+Fence\+Info \&external\+Fence\+Info) const
+\item 
+{\footnotesize template$<$typename X , typename Y , typename... Z$>$ }\\vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a1ab8c7c6512b270d5e5c96cb55906116}{get\+External\+Fence\+Properties}} (const vk\+::\+Physical\+Device\+External\+Fence\+Info \&external\+Fence\+Info) const
+\item 
+vk\+::\+External\+Fence\+Properties\+K\+HR \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a068aad729fce035a99027b4b5d31d5f2}{get\+External\+Fence\+Properties\+K\+HR}} (const vk\+::\+Physical\+Device\+External\+Fence\+Info\+K\+HR \&external\+Fence\+Info) const
+\item 
+{\footnotesize template$<$typename X , typename Y , typename... Z$>$ }\\vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_aa555a2795b59f3fd801557b98a144908}{get\+External\+Fence\+Properties\+K\+HR}} (const vk\+::\+Physical\+Device\+External\+Fence\+Info\+K\+HR \&external\+Fence\+Info) const
+\item 
+vk\+::\+External\+Semaphore\+Properties \mbox{\hyperlink{classlogi_1_1_physical_device_impl_abedcb34d668c69ddd503fc55c225ff87}{get\+External\+Semaphore\+Properties}} (const vk\+::\+Physical\+Device\+External\+Semaphore\+Info \&external\+Semaphore\+Info) const
+\item 
+{\footnotesize template$<$typename X , typename Y , typename... Z$>$ }\\vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_aeae46cd3619cdb066997d455e128ebec}{get\+External\+Semaphore\+Properties}} (const vk\+::\+Physical\+Device\+External\+Semaphore\+Info \&external\+Semaphore\+Info) const
+\item 
+vk\+::\+External\+Semaphore\+Properties\+K\+HR \mbox{\hyperlink{classlogi_1_1_physical_device_impl_af948b3582214fe4ebca852bc50fb5716}{get\+External\+Semaphore\+Properties\+K\+HR}} (const vk\+::\+Physical\+Device\+External\+Semaphore\+Info\+K\+HR \&external\+Semaphore\+Info) const
+\item 
+{\footnotesize template$<$typename X , typename Y , typename... Z$>$ }\\vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a44d428735aca4b695c22668644249b46}{get\+External\+Semaphore\+Properties\+K\+HR}} (const vk\+::\+Physical\+Device\+External\+Semaphore\+Info\+K\+HR \&external\+Semaphore\+Info) const
+\item 
+vk\+::\+Physical\+Device\+Features \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a5955bf2b7b50af00aecc21d9608baafd}{get\+Features}} () const
+\item 
+vk\+::\+Physical\+Device\+Features2 \mbox{\hyperlink{classlogi_1_1_physical_device_impl_ad5b4c13663bd8a3d041bc2ce6a14556f}{get\+Features2}} () const
+\item 
+{\footnotesize template$<$typename X , typename Y , typename... Z$>$ }\\vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_abaf25145c8fd2c25c409920ec3c74db0}{get\+Features2}} () const
+\item 
+vk\+::\+Physical\+Device\+Features2\+K\+HR \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a2d32647cc6296042603367637491e845}{get\+Features2\+K\+HR}} () const
+\item 
+{\footnotesize template$<$typename X , typename Y , typename... Z$>$ }\\vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a438f9a8f2caf9486d71a42a6f248c2f3}{get\+Features2\+K\+HR}} () const
+\item 
+vk\+::\+Format\+Properties \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a3c7cd5984aa8779004307d2ccb2307f4}{get\+Format\+Properties}} (vk\+::\+Format format) const
+\item 
+vk\+::\+Format\+Properties2 \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a1cd79d26813f7ecd474805783fa7c086}{get\+Format\+Properties2}} (vk\+::\+Format format) const
+\item 
+{\footnotesize template$<$typename X , typename Y , typename... Z$>$ }\\vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a7c0f9328b54c57a0ab141481004ad6ec}{get\+Format\+Properties2}} (vk\+::\+Format format) const
+\item 
+vk\+::\+Format\+Properties2\+K\+HR \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a695acc41ed37ef100c6ed3319a9698d6}{get\+Format\+Properties2\+K\+HR}} (vk\+::\+Format format) const
+\item 
+{\footnotesize template$<$typename X , typename Y , typename... Z$>$ }\\vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a35a0eb5ce6946bb3bf1c7f1fdc22150e}{get\+Format\+Properties2\+K\+HR}} (vk\+::\+Format format) const
+\item 
+vk\+::\+Image\+Format\+Properties \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a07501ca12c0040526f35333ff6fdee82}{get\+Image\+Format\+Properties}} (vk\+::\+Format format, vk\+::\+Image\+Type type, vk\+::\+Image\+Tiling tiling, const vk\+::\+Image\+Usage\+Flags \&usage, const vk\+::\+Image\+Create\+Flags \&flags) const
+\item 
+vk\+::\+Image\+Format\+Properties2 \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a9039ce9b316bb57b1be9b123af2f3575}{get\+Image\+Format\+Properties2}} (const vk\+::\+Physical\+Device\+Image\+Format\+Info2 \&format\+Info) const
+\item 
+{\footnotesize template$<$typename X , typename Y , typename... Z$>$ }\\vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_ab5901c446d3b6034b9be3505f9f25f82}{get\+Image\+Format\+Properties2}} (const vk\+::\+Physical\+Device\+Image\+Format\+Info2 \&format\+Info) const
+\item 
+vk\+::\+Image\+Format\+Properties2\+K\+HR \mbox{\hyperlink{classlogi_1_1_physical_device_impl_aa6b028883ee4b62897df2e7ba581b2c2}{get\+Image\+Format\+Properties2\+K\+HR}} (const vk\+::\+Physical\+Device\+Image\+Format\+Info2 \&format\+Info) const
+\item 
+{\footnotesize template$<$typename X , typename Y , typename... Z$>$ }\\vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_ad1fe6bbd4261976435363ee7317f7e8f}{get\+Image\+Format\+Properties2\+K\+HR}} (const vk\+::\+Physical\+Device\+Image\+Format\+Info2\+K\+HR \&format\+Info) const
+\item 
+vk\+::\+Physical\+Device\+Memory\+Properties \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a47e50b74c3550ed051380a810336336c}{get\+Memory\+Properties}} () const
+\item 
+vk\+::\+Physical\+Device\+Memory\+Properties2 \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a4b6e3a236068bdaf276d7214e8fbc20a}{get\+Memory\+Properties2}} () const
+\item 
+{\footnotesize template$<$typename X , typename Y , typename... Z$>$ }\\vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a6c5bc586bb8b45e6dad55b82e543aeee}{get\+Memory\+Properties2}} () const
+\item 
+vk\+::\+Physical\+Device\+Memory\+Properties2\+K\+HR \mbox{\hyperlink{classlogi_1_1_physical_device_impl_ae3d85874bfd05b2becadd1fa13464076}{get\+Memory\+Properties2\+K\+HR}} () const
+\item 
+{\footnotesize template$<$typename X , typename Y , typename... Z$>$ }\\vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a68892b6dc1f3e1bed37760a49738b0f2}{get\+Memory\+Properties2\+K\+HR}} () const
+\item 
+vk\+::\+Physical\+Device\+Properties \mbox{\hyperlink{classlogi_1_1_physical_device_impl_ab70883091559941b00ab81b460b2d6c2}{get\+Properties}} () const
+\item 
+vk\+::\+Physical\+Device\+Properties2 \mbox{\hyperlink{classlogi_1_1_physical_device_impl_ad0a876b53ee249f57d48e08a32c7a711}{get\+Properties2}} () const
+\item 
+{\footnotesize template$<$typename X , typename Y , typename... Z$>$ }\\vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a77fc454af33103a9914a22e529d543a2}{get\+Properties2}} () const
+\item 
+vk\+::\+Physical\+Device\+Properties2\+K\+HR \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a9f7dbecd7673890a6094a4fbd6bc5524}{get\+Properties2\+K\+HR}} () const
+\item 
+{\footnotesize template$<$typename X , typename Y , typename... Z$>$ }\\vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_aab34fcbaf6557af89581b4a089e66a76}{get\+Properties2\+K\+HR}} () const
+\item 
+std\+::vector$<$ vk\+::\+Queue\+Family\+Properties $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a0f15be1370a9d1ee3716984a533d8a86}{get\+Queue\+Family\+Properties}} () const
+\item 
+std\+::vector$<$ vk\+::\+Queue\+Family\+Properties2 $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_ae2049ef00ec6b9b40188d23ba38ee6ac}{get\+Queue\+Family\+Properties2}} () const
+\item 
+{\footnotesize template$<$typename X , typename Y , typename... Z$>$ }\\std\+::vector$<$ vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a8c76ebb7ce87f3b049c17c54e8dfe94c}{get\+Queue\+Family\+Properties2}} () const
+\item 
+std\+::vector$<$ vk\+::\+Queue\+Family\+Properties2\+K\+HR $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a6836426bcfefefb5a05ca6907b1fe808}{get\+Queue\+Family\+Properties2\+K\+HR}} () const
+\item 
+{\footnotesize template$<$typename X , typename Y , typename... Z$>$ }\\std\+::vector$<$ vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a966c21545cffc7edce5fde1ab73cb1bf}{get\+Queue\+Family\+Properties2\+K\+HR}} () const
+\item 
+std\+::vector$<$ vk\+::\+Sparse\+Image\+Format\+Properties $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a41ad4018402776ebe6f0689c12486beb}{get\+Sparse\+Image\+Format\+Properties}} (vk\+::\+Format format, vk\+::\+Image\+Type type, vk\+::\+Sample\+Count\+Flag\+Bits samples, const vk\+::\+Image\+Usage\+Flags \&usage, vk\+::\+Image\+Tiling tiling) const
+\item 
+std\+::vector$<$ vk\+::\+Sparse\+Image\+Format\+Properties2 $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a555d1403a7c4b0776955d6bec3af5f1e}{get\+Sparse\+Image\+Format\+Properties2}} (const vk\+::\+Physical\+Device\+Sparse\+Image\+Format\+Info2 \&p\+Sparse\+Image\+Format\+Properties) const
+\item 
+{\footnotesize template$<$typename X , typename Y , typename... Z$>$ }\\std\+::vector$<$ vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a4577532ea5231e5b2b1b2a28e20c53e9}{get\+Sparse\+Image\+Format\+Properties2}} (const vk\+::\+Physical\+Device\+Sparse\+Image\+Format\+Info2 \&p\+Sparse\+Image\+Format\+Properties) const
+\item 
+std\+::vector$<$ vk\+::\+Sparse\+Image\+Format\+Properties2\+K\+HR $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a85c8f7c898b56a6a87657d1bad7c4aff}{get\+Sparse\+Image\+Format\+Properties2\+K\+HR}} (const vk\+::\+Physical\+Device\+Sparse\+Image\+Format\+Info2\+K\+HR \&p\+Sparse\+Image\+Format\+Properties) const
+\item 
+{\footnotesize template$<$typename X , typename Y , typename... Z$>$ }\\std\+::vector$<$ vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a5e254fcfc71d2fc9af2f8e3e6ae727e9}{get\+Sparse\+Image\+Format\+Properties2\+K\+HR}} (const vk\+::\+Physical\+Device\+Sparse\+Image\+Format\+Info2\+K\+HR \&p\+Sparse\+Image\+Format\+Properties) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ vk\+::\+Surface\+Capabilities\+K\+HR $>$\+::type \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a6739124d4a85c1790325e66ecaa5a015}{get\+Surface\+Capabilities\+K\+HR}} (vk\+::\+Surface\+K\+HR surface) const
+\item 
+{\footnotesize template$<$typename X , typename Y , typename... Z$>$ }\\vk\+::\+Result\+Value\+Type$<$ vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ $>$\+::type \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a8dbfe4706e62552e3fd56bee6caf17b7}{get\+Surface\+Capabilities2\+K\+HR}} (const vk\+::\+Physical\+Device\+Surface\+Info2\+K\+HR \&surface\+Info) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ vk\+::\+Surface\+Capabilities2\+K\+HR $>$\+::type \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a2ab52eb46b1bceea0513ad02980d833a}{get\+Surface\+Capabilities2\+K\+HR}} (const vk\+::\+Physical\+Device\+Surface\+Info2\+K\+HR \&surface\+Info) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Surface\+Format\+K\+HR $>$ $>$\+::type \mbox{\hyperlink{classlogi_1_1_physical_device_impl_ab21d2c332dfc71f39434bf3fa03c9072}{get\+Surface\+Formats\+K\+HR}} (vk\+::\+Surface\+K\+HR surface) const
+\item 
+{\footnotesize template$<$typename X , typename Y , typename... Z$>$ }\\vk\+::\+Result\+Value\+Type$<$ vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ $>$\+::type \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a07aa1aef3301af4bc0ec869fd27a7a30}{get\+Surface\+Formats2\+K\+HR}} (const vk\+::\+Physical\+Device\+Surface\+Info2\+K\+HR \&surface\+Info) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Surface\+Format2\+K\+HR $>$ $>$\+::type \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a064784f9b72796ed0afdfa372ad3c258}{get\+Surface\+Formats2\+K\+HR}} (const vk\+::\+Physical\+Device\+Surface\+Info2\+K\+HR \&surface\+Info) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Present\+Mode\+K\+HR $>$ $>$\+::type \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a156c302fc5f30f4393b4de32ce57c437}{get\+Surface\+Present\+Modes\+K\+HR}} (vk\+::\+Surface\+K\+HR surface) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ vk\+::\+Bool32 $>$\+::type \mbox{\hyperlink{classlogi_1_1_physical_device_impl_ab79962c2d513163337bbc25baf32eb7f}{get\+Surface\+Support\+K\+HR}} (uint32\+\_\+t queue\+Family\+Index, vk\+::\+Surface\+K\+HR surface) const
+\item 
+vk\+::\+External\+Image\+Format\+Properties\+NV \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a5a334889d035d4b77856051487385197}{get\+External\+Image\+Format\+Properties\+NV}} (vk\+::\+Format format, vk\+::\+Image\+Type type, vk\+::\+Image\+Tiling tiling, const vk\+::\+Image\+Usage\+Flags \&usage, const vk\+::\+Image\+Create\+Flags \&flags, const vk\+::\+External\+Memory\+Handle\+Type\+Flags\+NV \&external\+Handle\+Type) const
+\item 
+vk\+::\+Device\+Generated\+Commands\+Limits\+N\+VX \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a907c50de62a3fe28254dd675b6b03af1}{get\+Generated\+Commands\+Properties\+N\+VX}} (vk\+::\+Device\+Generated\+Commands\+Features\+N\+VX \&features) const
+\item 
+{\footnotesize template$<$typename X , typename Y , typename... Z$>$ }\\vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a6019157d1e65defb00caa3fc73498d0a}{get\+Generated\+Commands\+Properties\+N\+VX}} (vk\+::\+Device\+Generated\+Commands\+Features\+N\+VX \&features) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Time\+Domain\+E\+XT $>$ $>$\+::type \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a4b95b20157177f0a8a85eeb840a0e458}{get\+Calibrateable\+Time\+Domains\+E\+XT}} () const
+\item 
+vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Cooperative\+Matrix\+Properties\+NV $>$ $>$\+::type \mbox{\hyperlink{classlogi_1_1_physical_device_impl_ab432c2dbcb70bb727df7cc232ab8d5b9}{get\+Cooperative\+Matrix\+Properties\+NV}} () const
+\item 
+vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Display\+Plane\+Properties\+K\+HR $>$ $>$\+::type \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a991aec0a87028467a9dfce82d1e3fdd8}{get\+Display\+Plane\+Properties\+K\+HR}} () const
+\item 
+vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Display\+Plane\+Properties2\+K\+HR $>$ $>$\+::type \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a3da1fbeaad9f8e8aa6e0eeac504c94bc}{get\+Display\+Plane\+Properties2\+K\+HR}} () const
+\item 
+vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Display\+Properties\+K\+HR $>$ $>$\+::type \mbox{\hyperlink{classlogi_1_1_physical_device_impl_acf6a87a565f29d0157efc5d474699a65}{get\+Display\+Properties\+K\+HR}} () const
+\item 
+vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Display\+Properties2\+K\+HR $>$ $>$\+::type \mbox{\hyperlink{classlogi_1_1_physical_device_impl_ac5f88bc90f699b4790b9bb32f68aa0c6}{get\+Display\+Properties2\+K\+HR}} () const
+\item 
+vk\+::\+Multisample\+Properties\+E\+XT \mbox{\hyperlink{classlogi_1_1_physical_device_impl_af555b8a44b584e177f17cf09fee05935}{get\+Multisample\+Properties\+E\+XT}} (vk\+::\+Sample\+Count\+Flag\+Bits samples) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Rect2D $>$ $>$\+::type \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a1340106fbb31f79a31f4cacc55c92646}{get\+Present\+Rectangles\+K\+HR}} (const vk\+::\+Surface\+K\+HR \&surface) const
+\item 
+const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} $>$ \& \mbox{\hyperlink{classlogi_1_1_physical_device_impl_adc731a2ebaf99815102532b5904c3880}{create\+Logical\+Device}} (const vk\+::\+Device\+Create\+Info \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\})
+\item 
+void \mbox{\hyperlink{classlogi_1_1_physical_device_impl_acb0bd5934eab38b5a29c1f76346347f0}{destroy\+Logical\+Device}} (size\+\_\+t \mbox{\hyperlink{classlogi_1_1_vulkan_object_a228d983c6b7d202aa7e1f372856cc707}{id}})
+\item 
+\mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl}{Vulkan\+Instance\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_physical_device_impl_aae38e1aee2f33ca078fce6bc9962d519}{get\+Instance}} () const
+\item 
+const vk\+::\+Dispatch\+Loader\+Dynamic \& \mbox{\hyperlink{classlogi_1_1_physical_device_impl_afcd9961087f9cafa267b912f873eb7da}{get\+Dispatcher}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_physical_device_impl_a50a75f920b8497b8cb2cb28613e70561}{operator const vk\+::\+Physical\+Device \&}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a221e6ff4b3a45c66cd71492120f1455c}{free}} () override
+\begin{DoxyCompactList}\small\item\em Destroys all \mbox{\hyperlink{classlogi_1_1_logical_device}{Logical\+Device}} handles. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a188456a004f600c2c5336a64c77c8555}\label{classlogi_1_1_physical_device_impl_a188456a004f600c2c5336a64c77c8555}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!PhysicalDeviceImpl@{PhysicalDeviceImpl}}
+\index{PhysicalDeviceImpl@{PhysicalDeviceImpl}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{PhysicalDeviceImpl()}{PhysicalDeviceImpl()}}
+{\footnotesize\ttfamily logi\+::\+Physical\+Device\+Impl\+::\+Physical\+Device\+Impl (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl}{Vulkan\+Instance\+Impl}} \&}]{instance,  }\item[{const vk\+::\+Physical\+Device \&}]{vk\+Physical\+Device }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Vulkan physical device. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em instance} & Instance handle \\
+\hline
+{\em vk\+Physical\+Device} & Vulkan physical device handle. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_adc731a2ebaf99815102532b5904c3880}\label{classlogi_1_1_physical_device_impl_adc731a2ebaf99815102532b5904c3880}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!createLogicalDevice@{createLogicalDevice}}
+\index{createLogicalDevice@{createLogicalDevice}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{createLogicalDevice()}{createLogicalDevice()}}
+{\footnotesize\ttfamily const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} $>$ \& logi\+::\+Physical\+Device\+Impl\+::create\+Logical\+Device (\begin{DoxyParamCaption}\item[{const vk\+::\+Device\+Create\+Info \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_acb0bd5934eab38b5a29c1f76346347f0}\label{classlogi_1_1_physical_device_impl_acb0bd5934eab38b5a29c1f76346347f0}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!destroyLogicalDevice@{destroyLogicalDevice}}
+\index{destroyLogicalDevice@{destroyLogicalDevice}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{destroyLogicalDevice()}{destroyLogicalDevice()}}
+{\footnotesize\ttfamily void logi\+::\+Physical\+Device\+Impl\+::destroy\+Logical\+Device (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{id }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_ad46dcbba9b5fba8251a8a26736277ccb}\label{classlogi_1_1_physical_device_impl_ad46dcbba9b5fba8251a8a26736277ccb}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!enumerateDeviceExtensionProperties@{enumerateDeviceExtensionProperties}}
+\index{enumerateDeviceExtensionProperties@{enumerateDeviceExtensionProperties}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{enumerateDeviceExtensionProperties()}{enumerateDeviceExtensionProperties()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Extension\+Properties $>$ $>$\+::type logi\+::\+Physical\+Device\+Impl\+::enumerate\+Device\+Extension\+Properties (\begin{DoxyParamCaption}\item[{const std\+::string $\ast$}]{layer\+Name = {\ttfamily nullptr} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a6192ac65e33b872ff28b51c492408cf4}\label{classlogi_1_1_physical_device_impl_a6192ac65e33b872ff28b51c492408cf4}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!enumerateDeviceLayerProperties@{enumerateDeviceLayerProperties}}
+\index{enumerateDeviceLayerProperties@{enumerateDeviceLayerProperties}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{enumerateDeviceLayerProperties()}{enumerateDeviceLayerProperties()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Layer\+Properties $>$ $>$\+::type logi\+::\+Physical\+Device\+Impl\+::enumerate\+Device\+Layer\+Properties (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a221e6ff4b3a45c66cd71492120f1455c}\label{classlogi_1_1_physical_device_impl_a221e6ff4b3a45c66cd71492120f1455c}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!free@{free}}
+\index{free@{free}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{free()}{free()}}
+{\footnotesize\ttfamily void logi\+::\+Physical\+Device\+Impl\+::free (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Destroys all \mbox{\hyperlink{classlogi_1_1_logical_device}{Logical\+Device}} handles. 
+
+
+
+Reimplemented from \mbox{\hyperlink{classlogi_1_1_vulkan_object_a7a5cafb30933f8bbd0d4e89e14477f4a}{logi\+::\+Vulkan\+Object}}.
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a4b95b20157177f0a8a85eeb840a0e458}\label{classlogi_1_1_physical_device_impl_a4b95b20157177f0a8a85eeb840a0e458}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getCalibrateableTimeDomainsEXT@{getCalibrateableTimeDomainsEXT}}
+\index{getCalibrateableTimeDomainsEXT@{getCalibrateableTimeDomainsEXT}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getCalibrateableTimeDomainsEXT()}{getCalibrateableTimeDomainsEXT()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Time\+Domain\+E\+XT $>$ $>$\+::type logi\+::\+Physical\+Device\+Impl\+::get\+Calibrateable\+Time\+Domains\+E\+XT (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_ab432c2dbcb70bb727df7cc232ab8d5b9}\label{classlogi_1_1_physical_device_impl_ab432c2dbcb70bb727df7cc232ab8d5b9}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getCooperativeMatrixPropertiesNV@{getCooperativeMatrixPropertiesNV}}
+\index{getCooperativeMatrixPropertiesNV@{getCooperativeMatrixPropertiesNV}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getCooperativeMatrixPropertiesNV()}{getCooperativeMatrixPropertiesNV()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Cooperative\+Matrix\+Properties\+NV $>$ $>$\+::type logi\+::\+Physical\+Device\+Impl\+::get\+Cooperative\+Matrix\+Properties\+NV (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_afcd9961087f9cafa267b912f873eb7da}\label{classlogi_1_1_physical_device_impl_afcd9961087f9cafa267b912f873eb7da}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getDispatcher@{getDispatcher}}
+\index{getDispatcher@{getDispatcher}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getDispatcher()}{getDispatcher()}}
+{\footnotesize\ttfamily const vk\+::\+Dispatch\+Loader\+Dynamic \& logi\+::\+Physical\+Device\+Impl\+::get\+Dispatcher (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a3da1fbeaad9f8e8aa6e0eeac504c94bc}\label{classlogi_1_1_physical_device_impl_a3da1fbeaad9f8e8aa6e0eeac504c94bc}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getDisplayPlaneProperties2KHR@{getDisplayPlaneProperties2KHR}}
+\index{getDisplayPlaneProperties2KHR@{getDisplayPlaneProperties2KHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getDisplayPlaneProperties2KHR()}{getDisplayPlaneProperties2KHR()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Display\+Plane\+Properties2\+K\+HR $>$ $>$\+::type logi\+::\+Physical\+Device\+Impl\+::get\+Display\+Plane\+Properties2\+K\+HR (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a991aec0a87028467a9dfce82d1e3fdd8}\label{classlogi_1_1_physical_device_impl_a991aec0a87028467a9dfce82d1e3fdd8}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getDisplayPlanePropertiesKHR@{getDisplayPlanePropertiesKHR}}
+\index{getDisplayPlanePropertiesKHR@{getDisplayPlanePropertiesKHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getDisplayPlanePropertiesKHR()}{getDisplayPlanePropertiesKHR()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Display\+Plane\+Properties\+K\+HR $>$ $>$\+::type logi\+::\+Physical\+Device\+Impl\+::get\+Display\+Plane\+Properties\+K\+HR (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_ac5f88bc90f699b4790b9bb32f68aa0c6}\label{classlogi_1_1_physical_device_impl_ac5f88bc90f699b4790b9bb32f68aa0c6}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getDisplayProperties2KHR@{getDisplayProperties2KHR}}
+\index{getDisplayProperties2KHR@{getDisplayProperties2KHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getDisplayProperties2KHR()}{getDisplayProperties2KHR()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Display\+Properties2\+K\+HR $>$ $>$\+::type logi\+::\+Physical\+Device\+Impl\+::get\+Display\+Properties2\+K\+HR (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_acf6a87a565f29d0157efc5d474699a65}\label{classlogi_1_1_physical_device_impl_acf6a87a565f29d0157efc5d474699a65}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getDisplayPropertiesKHR@{getDisplayPropertiesKHR}}
+\index{getDisplayPropertiesKHR@{getDisplayPropertiesKHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getDisplayPropertiesKHR()}{getDisplayPropertiesKHR()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Display\+Properties\+K\+HR $>$ $>$\+::type logi\+::\+Physical\+Device\+Impl\+::get\+Display\+Properties\+K\+HR (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_af7051d08b9aec0394a24aa0f6366f4f6}\label{classlogi_1_1_physical_device_impl_af7051d08b9aec0394a24aa0f6366f4f6}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getExternalBufferProperties@{getExternalBufferProperties}}
+\index{getExternalBufferProperties@{getExternalBufferProperties}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getExternalBufferProperties()}{getExternalBufferProperties()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily vk\+::\+External\+Buffer\+Properties logi\+::\+Physical\+Device\+Impl\+::get\+External\+Buffer\+Properties (\begin{DoxyParamCaption}\item[{const vk\+::\+Physical\+Device\+External\+Buffer\+Info \&}]{external\+Buffer\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a504c689d11b43b5aa1b4a570a0adf859}\label{classlogi_1_1_physical_device_impl_a504c689d11b43b5aa1b4a570a0adf859}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getExternalBufferProperties@{getExternalBufferProperties}}
+\index{getExternalBufferProperties@{getExternalBufferProperties}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getExternalBufferProperties()}{getExternalBufferProperties()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename X , typename Y , typename... Z$>$ \\
+vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ logi\+::\+Physical\+Device\+Impl\+::get\+External\+Buffer\+Properties (\begin{DoxyParamCaption}\item[{const vk\+::\+Physical\+Device\+External\+Buffer\+Info \&}]{external\+Buffer\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a7dea736428511d638d9013726079195b}\label{classlogi_1_1_physical_device_impl_a7dea736428511d638d9013726079195b}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getExternalBufferPropertiesKHR@{getExternalBufferPropertiesKHR}}
+\index{getExternalBufferPropertiesKHR@{getExternalBufferPropertiesKHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getExternalBufferPropertiesKHR()}{getExternalBufferPropertiesKHR()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily vk\+::\+External\+Buffer\+Properties\+K\+HR logi\+::\+Physical\+Device\+Impl\+::get\+External\+Buffer\+Properties\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Physical\+Device\+External\+Buffer\+Info\+K\+HR \&}]{external\+Buffer\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a4b38c11c934e46966f13f3083169eb70}\label{classlogi_1_1_physical_device_impl_a4b38c11c934e46966f13f3083169eb70}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getExternalBufferPropertiesKHR@{getExternalBufferPropertiesKHR}}
+\index{getExternalBufferPropertiesKHR@{getExternalBufferPropertiesKHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getExternalBufferPropertiesKHR()}{getExternalBufferPropertiesKHR()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename X , typename Y , typename... Z$>$ \\
+vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ logi\+::\+Physical\+Device\+Impl\+::get\+External\+Buffer\+Properties\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Physical\+Device\+External\+Buffer\+Info\+K\+HR \&}]{external\+Buffer\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_aa77f1c22a277ec0557b043c7a661f3c1}\label{classlogi_1_1_physical_device_impl_aa77f1c22a277ec0557b043c7a661f3c1}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getExternalFenceProperties@{getExternalFenceProperties}}
+\index{getExternalFenceProperties@{getExternalFenceProperties}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getExternalFenceProperties()}{getExternalFenceProperties()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily vk\+::\+External\+Fence\+Properties logi\+::\+Physical\+Device\+Impl\+::get\+External\+Fence\+Properties (\begin{DoxyParamCaption}\item[{const vk\+::\+Physical\+Device\+External\+Fence\+Info \&}]{external\+Fence\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a1ab8c7c6512b270d5e5c96cb55906116}\label{classlogi_1_1_physical_device_impl_a1ab8c7c6512b270d5e5c96cb55906116}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getExternalFenceProperties@{getExternalFenceProperties}}
+\index{getExternalFenceProperties@{getExternalFenceProperties}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getExternalFenceProperties()}{getExternalFenceProperties()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename X , typename Y , typename... Z$>$ \\
+vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ logi\+::\+Physical\+Device\+Impl\+::get\+External\+Fence\+Properties (\begin{DoxyParamCaption}\item[{const vk\+::\+Physical\+Device\+External\+Fence\+Info \&}]{external\+Fence\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a068aad729fce035a99027b4b5d31d5f2}\label{classlogi_1_1_physical_device_impl_a068aad729fce035a99027b4b5d31d5f2}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getExternalFencePropertiesKHR@{getExternalFencePropertiesKHR}}
+\index{getExternalFencePropertiesKHR@{getExternalFencePropertiesKHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getExternalFencePropertiesKHR()}{getExternalFencePropertiesKHR()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily vk\+::\+External\+Fence\+Properties\+K\+HR logi\+::\+Physical\+Device\+Impl\+::get\+External\+Fence\+Properties\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Physical\+Device\+External\+Fence\+Info\+K\+HR \&}]{external\+Fence\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_aa555a2795b59f3fd801557b98a144908}\label{classlogi_1_1_physical_device_impl_aa555a2795b59f3fd801557b98a144908}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getExternalFencePropertiesKHR@{getExternalFencePropertiesKHR}}
+\index{getExternalFencePropertiesKHR@{getExternalFencePropertiesKHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getExternalFencePropertiesKHR()}{getExternalFencePropertiesKHR()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename X , typename Y , typename... Z$>$ \\
+vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ logi\+::\+Physical\+Device\+Impl\+::get\+External\+Fence\+Properties\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Physical\+Device\+External\+Fence\+Info\+K\+HR \&}]{external\+Fence\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a5a334889d035d4b77856051487385197}\label{classlogi_1_1_physical_device_impl_a5a334889d035d4b77856051487385197}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getExternalImageFormatPropertiesNV@{getExternalImageFormatPropertiesNV}}
+\index{getExternalImageFormatPropertiesNV@{getExternalImageFormatPropertiesNV}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getExternalImageFormatPropertiesNV()}{getExternalImageFormatPropertiesNV()}}
+{\footnotesize\ttfamily vk\+::\+External\+Image\+Format\+Properties\+NV logi\+::\+Physical\+Device\+Impl\+::get\+External\+Image\+Format\+Properties\+NV (\begin{DoxyParamCaption}\item[{vk\+::\+Format}]{format,  }\item[{vk\+::\+Image\+Type}]{type,  }\item[{vk\+::\+Image\+Tiling}]{tiling,  }\item[{const vk\+::\+Image\+Usage\+Flags \&}]{usage,  }\item[{const vk\+::\+Image\+Create\+Flags \&}]{flags,  }\item[{const vk\+::\+External\+Memory\+Handle\+Type\+Flags\+NV \&}]{external\+Handle\+Type }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_abedcb34d668c69ddd503fc55c225ff87}\label{classlogi_1_1_physical_device_impl_abedcb34d668c69ddd503fc55c225ff87}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getExternalSemaphoreProperties@{getExternalSemaphoreProperties}}
+\index{getExternalSemaphoreProperties@{getExternalSemaphoreProperties}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getExternalSemaphoreProperties()}{getExternalSemaphoreProperties()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily vk\+::\+External\+Semaphore\+Properties logi\+::\+Physical\+Device\+Impl\+::get\+External\+Semaphore\+Properties (\begin{DoxyParamCaption}\item[{const vk\+::\+Physical\+Device\+External\+Semaphore\+Info \&}]{external\+Semaphore\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_aeae46cd3619cdb066997d455e128ebec}\label{classlogi_1_1_physical_device_impl_aeae46cd3619cdb066997d455e128ebec}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getExternalSemaphoreProperties@{getExternalSemaphoreProperties}}
+\index{getExternalSemaphoreProperties@{getExternalSemaphoreProperties}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getExternalSemaphoreProperties()}{getExternalSemaphoreProperties()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename X , typename Y , typename... Z$>$ \\
+vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ logi\+::\+Physical\+Device\+Impl\+::get\+External\+Semaphore\+Properties (\begin{DoxyParamCaption}\item[{const vk\+::\+Physical\+Device\+External\+Semaphore\+Info \&}]{external\+Semaphore\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_af948b3582214fe4ebca852bc50fb5716}\label{classlogi_1_1_physical_device_impl_af948b3582214fe4ebca852bc50fb5716}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getExternalSemaphorePropertiesKHR@{getExternalSemaphorePropertiesKHR}}
+\index{getExternalSemaphorePropertiesKHR@{getExternalSemaphorePropertiesKHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getExternalSemaphorePropertiesKHR()}{getExternalSemaphorePropertiesKHR()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily vk\+::\+External\+Semaphore\+Properties\+K\+HR logi\+::\+Physical\+Device\+Impl\+::get\+External\+Semaphore\+Properties\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Physical\+Device\+External\+Semaphore\+Info\+K\+HR \&}]{external\+Semaphore\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a44d428735aca4b695c22668644249b46}\label{classlogi_1_1_physical_device_impl_a44d428735aca4b695c22668644249b46}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getExternalSemaphorePropertiesKHR@{getExternalSemaphorePropertiesKHR}}
+\index{getExternalSemaphorePropertiesKHR@{getExternalSemaphorePropertiesKHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getExternalSemaphorePropertiesKHR()}{getExternalSemaphorePropertiesKHR()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename X , typename Y , typename... Z$>$ \\
+vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ logi\+::\+Physical\+Device\+Impl\+::get\+External\+Semaphore\+Properties\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Physical\+Device\+External\+Semaphore\+Info\+K\+HR \&}]{external\+Semaphore\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a5955bf2b7b50af00aecc21d9608baafd}\label{classlogi_1_1_physical_device_impl_a5955bf2b7b50af00aecc21d9608baafd}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getFeatures@{getFeatures}}
+\index{getFeatures@{getFeatures}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getFeatures()}{getFeatures()}}
+{\footnotesize\ttfamily vk\+::\+Physical\+Device\+Features logi\+::\+Physical\+Device\+Impl\+::get\+Features (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_ad5b4c13663bd8a3d041bc2ce6a14556f}\label{classlogi_1_1_physical_device_impl_ad5b4c13663bd8a3d041bc2ce6a14556f}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getFeatures2@{getFeatures2}}
+\index{getFeatures2@{getFeatures2}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getFeatures2()}{getFeatures2()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily vk\+::\+Physical\+Device\+Features2 logi\+::\+Physical\+Device\+Impl\+::get\+Features2 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_abaf25145c8fd2c25c409920ec3c74db0}\label{classlogi_1_1_physical_device_impl_abaf25145c8fd2c25c409920ec3c74db0}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getFeatures2@{getFeatures2}}
+\index{getFeatures2@{getFeatures2}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getFeatures2()}{getFeatures2()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename X , typename Y , typename... Z$>$ \\
+vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ logi\+::\+Physical\+Device\+Impl\+::get\+Features2}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a2d32647cc6296042603367637491e845}\label{classlogi_1_1_physical_device_impl_a2d32647cc6296042603367637491e845}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getFeatures2KHR@{getFeatures2KHR}}
+\index{getFeatures2KHR@{getFeatures2KHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getFeatures2KHR()}{getFeatures2KHR()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily vk\+::\+Physical\+Device\+Features2\+K\+HR logi\+::\+Physical\+Device\+Impl\+::get\+Features2\+K\+HR (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a438f9a8f2caf9486d71a42a6f248c2f3}\label{classlogi_1_1_physical_device_impl_a438f9a8f2caf9486d71a42a6f248c2f3}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getFeatures2KHR@{getFeatures2KHR}}
+\index{getFeatures2KHR@{getFeatures2KHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getFeatures2KHR()}{getFeatures2KHR()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename X , typename Y , typename... Z$>$ \\
+vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ logi\+::\+Physical\+Device\+Impl\+::get\+Features2\+K\+HR}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a3c7cd5984aa8779004307d2ccb2307f4}\label{classlogi_1_1_physical_device_impl_a3c7cd5984aa8779004307d2ccb2307f4}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getFormatProperties@{getFormatProperties}}
+\index{getFormatProperties@{getFormatProperties}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getFormatProperties()}{getFormatProperties()}}
+{\footnotesize\ttfamily vk\+::\+Format\+Properties logi\+::\+Physical\+Device\+Impl\+::get\+Format\+Properties (\begin{DoxyParamCaption}\item[{vk\+::\+Format}]{format }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a1cd79d26813f7ecd474805783fa7c086}\label{classlogi_1_1_physical_device_impl_a1cd79d26813f7ecd474805783fa7c086}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getFormatProperties2@{getFormatProperties2}}
+\index{getFormatProperties2@{getFormatProperties2}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getFormatProperties2()}{getFormatProperties2()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily vk\+::\+Format\+Properties2 logi\+::\+Physical\+Device\+Impl\+::get\+Format\+Properties2 (\begin{DoxyParamCaption}\item[{vk\+::\+Format}]{format }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a7c0f9328b54c57a0ab141481004ad6ec}\label{classlogi_1_1_physical_device_impl_a7c0f9328b54c57a0ab141481004ad6ec}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getFormatProperties2@{getFormatProperties2}}
+\index{getFormatProperties2@{getFormatProperties2}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getFormatProperties2()}{getFormatProperties2()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename X , typename Y , typename... Z$>$ \\
+vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ logi\+::\+Physical\+Device\+Impl\+::get\+Format\+Properties2 (\begin{DoxyParamCaption}\item[{vk\+::\+Format}]{format }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a695acc41ed37ef100c6ed3319a9698d6}\label{classlogi_1_1_physical_device_impl_a695acc41ed37ef100c6ed3319a9698d6}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getFormatProperties2KHR@{getFormatProperties2KHR}}
+\index{getFormatProperties2KHR@{getFormatProperties2KHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getFormatProperties2KHR()}{getFormatProperties2KHR()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily vk\+::\+Format\+Properties2\+K\+HR logi\+::\+Physical\+Device\+Impl\+::get\+Format\+Properties2\+K\+HR (\begin{DoxyParamCaption}\item[{vk\+::\+Format}]{format }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a35a0eb5ce6946bb3bf1c7f1fdc22150e}\label{classlogi_1_1_physical_device_impl_a35a0eb5ce6946bb3bf1c7f1fdc22150e}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getFormatProperties2KHR@{getFormatProperties2KHR}}
+\index{getFormatProperties2KHR@{getFormatProperties2KHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getFormatProperties2KHR()}{getFormatProperties2KHR()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename X , typename Y , typename... Z$>$ \\
+vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ logi\+::\+Physical\+Device\+Impl\+::get\+Format\+Properties2\+K\+HR (\begin{DoxyParamCaption}\item[{vk\+::\+Format}]{format }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a907c50de62a3fe28254dd675b6b03af1}\label{classlogi_1_1_physical_device_impl_a907c50de62a3fe28254dd675b6b03af1}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getGeneratedCommandsPropertiesNVX@{getGeneratedCommandsPropertiesNVX}}
+\index{getGeneratedCommandsPropertiesNVX@{getGeneratedCommandsPropertiesNVX}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getGeneratedCommandsPropertiesNVX()}{getGeneratedCommandsPropertiesNVX()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily vk\+::\+Device\+Generated\+Commands\+Limits\+N\+VX logi\+::\+Physical\+Device\+Impl\+::get\+Generated\+Commands\+Properties\+N\+VX (\begin{DoxyParamCaption}\item[{vk\+::\+Device\+Generated\+Commands\+Features\+N\+VX \&}]{features }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a6019157d1e65defb00caa3fc73498d0a}\label{classlogi_1_1_physical_device_impl_a6019157d1e65defb00caa3fc73498d0a}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getGeneratedCommandsPropertiesNVX@{getGeneratedCommandsPropertiesNVX}}
+\index{getGeneratedCommandsPropertiesNVX@{getGeneratedCommandsPropertiesNVX}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getGeneratedCommandsPropertiesNVX()}{getGeneratedCommandsPropertiesNVX()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename X , typename Y , typename... Z$>$ \\
+vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ logi\+::\+Physical\+Device\+Impl\+::get\+Generated\+Commands\+Properties\+N\+VX (\begin{DoxyParamCaption}\item[{vk\+::\+Device\+Generated\+Commands\+Features\+N\+VX \&}]{features }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a07501ca12c0040526f35333ff6fdee82}\label{classlogi_1_1_physical_device_impl_a07501ca12c0040526f35333ff6fdee82}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getImageFormatProperties@{getImageFormatProperties}}
+\index{getImageFormatProperties@{getImageFormatProperties}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getImageFormatProperties()}{getImageFormatProperties()}}
+{\footnotesize\ttfamily vk\+::\+Image\+Format\+Properties logi\+::\+Physical\+Device\+Impl\+::get\+Image\+Format\+Properties (\begin{DoxyParamCaption}\item[{vk\+::\+Format}]{format,  }\item[{vk\+::\+Image\+Type}]{type,  }\item[{vk\+::\+Image\+Tiling}]{tiling,  }\item[{const vk\+::\+Image\+Usage\+Flags \&}]{usage,  }\item[{const vk\+::\+Image\+Create\+Flags \&}]{flags }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a9039ce9b316bb57b1be9b123af2f3575}\label{classlogi_1_1_physical_device_impl_a9039ce9b316bb57b1be9b123af2f3575}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getImageFormatProperties2@{getImageFormatProperties2}}
+\index{getImageFormatProperties2@{getImageFormatProperties2}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getImageFormatProperties2()}{getImageFormatProperties2()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily vk\+::\+Image\+Format\+Properties2 logi\+::\+Physical\+Device\+Impl\+::get\+Image\+Format\+Properties2 (\begin{DoxyParamCaption}\item[{const vk\+::\+Physical\+Device\+Image\+Format\+Info2 \&}]{format\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_ab5901c446d3b6034b9be3505f9f25f82}\label{classlogi_1_1_physical_device_impl_ab5901c446d3b6034b9be3505f9f25f82}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getImageFormatProperties2@{getImageFormatProperties2}}
+\index{getImageFormatProperties2@{getImageFormatProperties2}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getImageFormatProperties2()}{getImageFormatProperties2()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename X , typename Y , typename... Z$>$ \\
+vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ logi\+::\+Physical\+Device\+Impl\+::get\+Image\+Format\+Properties2 (\begin{DoxyParamCaption}\item[{const vk\+::\+Physical\+Device\+Image\+Format\+Info2 \&}]{format\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_aa6b028883ee4b62897df2e7ba581b2c2}\label{classlogi_1_1_physical_device_impl_aa6b028883ee4b62897df2e7ba581b2c2}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getImageFormatProperties2KHR@{getImageFormatProperties2KHR}}
+\index{getImageFormatProperties2KHR@{getImageFormatProperties2KHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getImageFormatProperties2KHR()}{getImageFormatProperties2KHR()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily vk\+::\+Image\+Format\+Properties2\+K\+HR logi\+::\+Physical\+Device\+Impl\+::get\+Image\+Format\+Properties2\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Physical\+Device\+Image\+Format\+Info2 \&}]{format\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_ad1fe6bbd4261976435363ee7317f7e8f}\label{classlogi_1_1_physical_device_impl_ad1fe6bbd4261976435363ee7317f7e8f}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getImageFormatProperties2KHR@{getImageFormatProperties2KHR}}
+\index{getImageFormatProperties2KHR@{getImageFormatProperties2KHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getImageFormatProperties2KHR()}{getImageFormatProperties2KHR()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename X , typename Y , typename... Z$>$ \\
+vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ logi\+::\+Physical\+Device\+Impl\+::get\+Image\+Format\+Properties2\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Physical\+Device\+Image\+Format\+Info2\+K\+HR \&}]{format\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_aae38e1aee2f33ca078fce6bc9962d519}\label{classlogi_1_1_physical_device_impl_aae38e1aee2f33ca078fce6bc9962d519}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl}{Vulkan\+Instance\+Impl}} \& logi\+::\+Physical\+Device\+Impl\+::get\+Instance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a47e50b74c3550ed051380a810336336c}\label{classlogi_1_1_physical_device_impl_a47e50b74c3550ed051380a810336336c}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getMemoryProperties@{getMemoryProperties}}
+\index{getMemoryProperties@{getMemoryProperties}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getMemoryProperties()}{getMemoryProperties()}}
+{\footnotesize\ttfamily vk\+::\+Physical\+Device\+Memory\+Properties logi\+::\+Physical\+Device\+Impl\+::get\+Memory\+Properties (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a4b6e3a236068bdaf276d7214e8fbc20a}\label{classlogi_1_1_physical_device_impl_a4b6e3a236068bdaf276d7214e8fbc20a}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getMemoryProperties2@{getMemoryProperties2}}
+\index{getMemoryProperties2@{getMemoryProperties2}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getMemoryProperties2()}{getMemoryProperties2()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily vk\+::\+Physical\+Device\+Memory\+Properties2 logi\+::\+Physical\+Device\+Impl\+::get\+Memory\+Properties2 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a6c5bc586bb8b45e6dad55b82e543aeee}\label{classlogi_1_1_physical_device_impl_a6c5bc586bb8b45e6dad55b82e543aeee}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getMemoryProperties2@{getMemoryProperties2}}
+\index{getMemoryProperties2@{getMemoryProperties2}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getMemoryProperties2()}{getMemoryProperties2()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename X , typename Y , typename... Z$>$ \\
+vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ logi\+::\+Physical\+Device\+Impl\+::get\+Memory\+Properties2}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_ae3d85874bfd05b2becadd1fa13464076}\label{classlogi_1_1_physical_device_impl_ae3d85874bfd05b2becadd1fa13464076}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getMemoryProperties2KHR@{getMemoryProperties2KHR}}
+\index{getMemoryProperties2KHR@{getMemoryProperties2KHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getMemoryProperties2KHR()}{getMemoryProperties2KHR()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily vk\+::\+Physical\+Device\+Memory\+Properties2\+K\+HR logi\+::\+Physical\+Device\+Impl\+::get\+Memory\+Properties2\+K\+HR (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a68892b6dc1f3e1bed37760a49738b0f2}\label{classlogi_1_1_physical_device_impl_a68892b6dc1f3e1bed37760a49738b0f2}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getMemoryProperties2KHR@{getMemoryProperties2KHR}}
+\index{getMemoryProperties2KHR@{getMemoryProperties2KHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getMemoryProperties2KHR()}{getMemoryProperties2KHR()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename X , typename Y , typename... Z$>$ \\
+vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ logi\+::\+Physical\+Device\+Impl\+::get\+Memory\+Properties2\+K\+HR}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_af555b8a44b584e177f17cf09fee05935}\label{classlogi_1_1_physical_device_impl_af555b8a44b584e177f17cf09fee05935}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getMultisamplePropertiesEXT@{getMultisamplePropertiesEXT}}
+\index{getMultisamplePropertiesEXT@{getMultisamplePropertiesEXT}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getMultisamplePropertiesEXT()}{getMultisamplePropertiesEXT()}}
+{\footnotesize\ttfamily vk\+::\+Multisample\+Properties\+E\+XT logi\+::\+Physical\+Device\+Impl\+::get\+Multisample\+Properties\+E\+XT (\begin{DoxyParamCaption}\item[{vk\+::\+Sample\+Count\+Flag\+Bits}]{samples }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a1340106fbb31f79a31f4cacc55c92646}\label{classlogi_1_1_physical_device_impl_a1340106fbb31f79a31f4cacc55c92646}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getPresentRectanglesKHR@{getPresentRectanglesKHR}}
+\index{getPresentRectanglesKHR@{getPresentRectanglesKHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getPresentRectanglesKHR()}{getPresentRectanglesKHR()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Rect2D $>$ $>$\+::type logi\+::\+Physical\+Device\+Impl\+::get\+Present\+Rectangles\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Surface\+K\+HR \&}]{surface }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_ab70883091559941b00ab81b460b2d6c2}\label{classlogi_1_1_physical_device_impl_ab70883091559941b00ab81b460b2d6c2}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getProperties@{getProperties}}
+\index{getProperties@{getProperties}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getProperties()}{getProperties()}}
+{\footnotesize\ttfamily vk\+::\+Physical\+Device\+Properties logi\+::\+Physical\+Device\+Impl\+::get\+Properties (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_ad0a876b53ee249f57d48e08a32c7a711}\label{classlogi_1_1_physical_device_impl_ad0a876b53ee249f57d48e08a32c7a711}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getProperties2@{getProperties2}}
+\index{getProperties2@{getProperties2}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getProperties2()}{getProperties2()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily vk\+::\+Physical\+Device\+Properties2 logi\+::\+Physical\+Device\+Impl\+::get\+Properties2 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a77fc454af33103a9914a22e529d543a2}\label{classlogi_1_1_physical_device_impl_a77fc454af33103a9914a22e529d543a2}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getProperties2@{getProperties2}}
+\index{getProperties2@{getProperties2}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getProperties2()}{getProperties2()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename X , typename Y , typename... Z$>$ \\
+vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ logi\+::\+Physical\+Device\+Impl\+::get\+Properties2}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a9f7dbecd7673890a6094a4fbd6bc5524}\label{classlogi_1_1_physical_device_impl_a9f7dbecd7673890a6094a4fbd6bc5524}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getProperties2KHR@{getProperties2KHR}}
+\index{getProperties2KHR@{getProperties2KHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getProperties2KHR()}{getProperties2KHR()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily vk\+::\+Physical\+Device\+Properties2\+K\+HR logi\+::\+Physical\+Device\+Impl\+::get\+Properties2\+K\+HR (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_aab34fcbaf6557af89581b4a089e66a76}\label{classlogi_1_1_physical_device_impl_aab34fcbaf6557af89581b4a089e66a76}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getProperties2KHR@{getProperties2KHR}}
+\index{getProperties2KHR@{getProperties2KHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getProperties2KHR()}{getProperties2KHR()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename X , typename Y , typename... Z$>$ \\
+vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ logi\+::\+Physical\+Device\+Impl\+::get\+Properties2\+K\+HR}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a0f15be1370a9d1ee3716984a533d8a86}\label{classlogi_1_1_physical_device_impl_a0f15be1370a9d1ee3716984a533d8a86}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getQueueFamilyProperties@{getQueueFamilyProperties}}
+\index{getQueueFamilyProperties@{getQueueFamilyProperties}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getQueueFamilyProperties()}{getQueueFamilyProperties()}}
+{\footnotesize\ttfamily std\+::vector$<$ vk\+::\+Queue\+Family\+Properties $>$ logi\+::\+Physical\+Device\+Impl\+::get\+Queue\+Family\+Properties (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_ae2049ef00ec6b9b40188d23ba38ee6ac}\label{classlogi_1_1_physical_device_impl_ae2049ef00ec6b9b40188d23ba38ee6ac}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getQueueFamilyProperties2@{getQueueFamilyProperties2}}
+\index{getQueueFamilyProperties2@{getQueueFamilyProperties2}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getQueueFamilyProperties2()}{getQueueFamilyProperties2()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::vector$<$ vk\+::\+Queue\+Family\+Properties2 $>$ logi\+::\+Physical\+Device\+Impl\+::get\+Queue\+Family\+Properties2 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a8c76ebb7ce87f3b049c17c54e8dfe94c}\label{classlogi_1_1_physical_device_impl_a8c76ebb7ce87f3b049c17c54e8dfe94c}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getQueueFamilyProperties2@{getQueueFamilyProperties2}}
+\index{getQueueFamilyProperties2@{getQueueFamilyProperties2}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getQueueFamilyProperties2()}{getQueueFamilyProperties2()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename X , typename Y , typename... Z$>$ \\
+std\+::vector$<$ vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ $>$ logi\+::\+Physical\+Device\+Impl\+::get\+Queue\+Family\+Properties2}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a6836426bcfefefb5a05ca6907b1fe808}\label{classlogi_1_1_physical_device_impl_a6836426bcfefefb5a05ca6907b1fe808}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getQueueFamilyProperties2KHR@{getQueueFamilyProperties2KHR}}
+\index{getQueueFamilyProperties2KHR@{getQueueFamilyProperties2KHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getQueueFamilyProperties2KHR()}{getQueueFamilyProperties2KHR()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::vector$<$ vk\+::\+Queue\+Family\+Properties2\+K\+HR $>$ logi\+::\+Physical\+Device\+Impl\+::get\+Queue\+Family\+Properties2\+K\+HR (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a966c21545cffc7edce5fde1ab73cb1bf}\label{classlogi_1_1_physical_device_impl_a966c21545cffc7edce5fde1ab73cb1bf}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getQueueFamilyProperties2KHR@{getQueueFamilyProperties2KHR}}
+\index{getQueueFamilyProperties2KHR@{getQueueFamilyProperties2KHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getQueueFamilyProperties2KHR()}{getQueueFamilyProperties2KHR()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename X , typename Y , typename... Z$>$ \\
+std\+::vector$<$ vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ $>$ logi\+::\+Physical\+Device\+Impl\+::get\+Queue\+Family\+Properties2\+K\+HR}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a41ad4018402776ebe6f0689c12486beb}\label{classlogi_1_1_physical_device_impl_a41ad4018402776ebe6f0689c12486beb}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getSparseImageFormatProperties@{getSparseImageFormatProperties}}
+\index{getSparseImageFormatProperties@{getSparseImageFormatProperties}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getSparseImageFormatProperties()}{getSparseImageFormatProperties()}}
+{\footnotesize\ttfamily std\+::vector$<$ vk\+::\+Sparse\+Image\+Format\+Properties $>$ logi\+::\+Physical\+Device\+Impl\+::get\+Sparse\+Image\+Format\+Properties (\begin{DoxyParamCaption}\item[{vk\+::\+Format}]{format,  }\item[{vk\+::\+Image\+Type}]{type,  }\item[{vk\+::\+Sample\+Count\+Flag\+Bits}]{samples,  }\item[{const vk\+::\+Image\+Usage\+Flags \&}]{usage,  }\item[{vk\+::\+Image\+Tiling}]{tiling }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a555d1403a7c4b0776955d6bec3af5f1e}\label{classlogi_1_1_physical_device_impl_a555d1403a7c4b0776955d6bec3af5f1e}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getSparseImageFormatProperties2@{getSparseImageFormatProperties2}}
+\index{getSparseImageFormatProperties2@{getSparseImageFormatProperties2}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getSparseImageFormatProperties2()}{getSparseImageFormatProperties2()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::vector$<$ vk\+::\+Sparse\+Image\+Format\+Properties2 $>$ logi\+::\+Physical\+Device\+Impl\+::get\+Sparse\+Image\+Format\+Properties2 (\begin{DoxyParamCaption}\item[{const vk\+::\+Physical\+Device\+Sparse\+Image\+Format\+Info2 \&}]{p\+Sparse\+Image\+Format\+Properties }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a4577532ea5231e5b2b1b2a28e20c53e9}\label{classlogi_1_1_physical_device_impl_a4577532ea5231e5b2b1b2a28e20c53e9}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getSparseImageFormatProperties2@{getSparseImageFormatProperties2}}
+\index{getSparseImageFormatProperties2@{getSparseImageFormatProperties2}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getSparseImageFormatProperties2()}{getSparseImageFormatProperties2()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename X , typename Y , typename... Z$>$ \\
+std\+::vector$<$ vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ $>$ logi\+::\+Physical\+Device\+Impl\+::get\+Sparse\+Image\+Format\+Properties2 (\begin{DoxyParamCaption}\item[{const vk\+::\+Physical\+Device\+Sparse\+Image\+Format\+Info2 \&}]{p\+Sparse\+Image\+Format\+Properties }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a85c8f7c898b56a6a87657d1bad7c4aff}\label{classlogi_1_1_physical_device_impl_a85c8f7c898b56a6a87657d1bad7c4aff}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getSparseImageFormatProperties2KHR@{getSparseImageFormatProperties2KHR}}
+\index{getSparseImageFormatProperties2KHR@{getSparseImageFormatProperties2KHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getSparseImageFormatProperties2KHR()}{getSparseImageFormatProperties2KHR()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::vector$<$ vk\+::\+Sparse\+Image\+Format\+Properties2\+K\+HR $>$ logi\+::\+Physical\+Device\+Impl\+::get\+Sparse\+Image\+Format\+Properties2\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Physical\+Device\+Sparse\+Image\+Format\+Info2\+K\+HR \&}]{p\+Sparse\+Image\+Format\+Properties }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a5e254fcfc71d2fc9af2f8e3e6ae727e9}\label{classlogi_1_1_physical_device_impl_a5e254fcfc71d2fc9af2f8e3e6ae727e9}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getSparseImageFormatProperties2KHR@{getSparseImageFormatProperties2KHR}}
+\index{getSparseImageFormatProperties2KHR@{getSparseImageFormatProperties2KHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getSparseImageFormatProperties2KHR()}{getSparseImageFormatProperties2KHR()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename X , typename Y , typename... Z$>$ \\
+std\+::vector$<$ vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ $>$ logi\+::\+Physical\+Device\+Impl\+::get\+Sparse\+Image\+Format\+Properties2\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Physical\+Device\+Sparse\+Image\+Format\+Info2\+K\+HR \&}]{p\+Sparse\+Image\+Format\+Properties }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a8dbfe4706e62552e3fd56bee6caf17b7}\label{classlogi_1_1_physical_device_impl_a8dbfe4706e62552e3fd56bee6caf17b7}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getSurfaceCapabilities2KHR@{getSurfaceCapabilities2KHR}}
+\index{getSurfaceCapabilities2KHR@{getSurfaceCapabilities2KHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getSurfaceCapabilities2KHR()}{getSurfaceCapabilities2KHR()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename X , typename Y , typename... Z$>$ \\
+vk\+::\+Result\+Value\+Type$<$ vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ $>$\+::type logi\+::\+Physical\+Device\+Impl\+::get\+Surface\+Capabilities2\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Physical\+Device\+Surface\+Info2\+K\+HR \&}]{surface\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a2ab52eb46b1bceea0513ad02980d833a}\label{classlogi_1_1_physical_device_impl_a2ab52eb46b1bceea0513ad02980d833a}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getSurfaceCapabilities2KHR@{getSurfaceCapabilities2KHR}}
+\index{getSurfaceCapabilities2KHR@{getSurfaceCapabilities2KHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getSurfaceCapabilities2KHR()}{getSurfaceCapabilities2KHR()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ vk\+::\+Surface\+Capabilities2\+K\+HR $>$\+::type logi\+::\+Physical\+Device\+Impl\+::get\+Surface\+Capabilities2\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Physical\+Device\+Surface\+Info2\+K\+HR \&}]{surface\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a6739124d4a85c1790325e66ecaa5a015}\label{classlogi_1_1_physical_device_impl_a6739124d4a85c1790325e66ecaa5a015}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getSurfaceCapabilitiesKHR@{getSurfaceCapabilitiesKHR}}
+\index{getSurfaceCapabilitiesKHR@{getSurfaceCapabilitiesKHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getSurfaceCapabilitiesKHR()}{getSurfaceCapabilitiesKHR()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ vk\+::\+Surface\+Capabilities\+K\+HR $>$\+::type logi\+::\+Physical\+Device\+Impl\+::get\+Surface\+Capabilities\+K\+HR (\begin{DoxyParamCaption}\item[{vk\+::\+Surface\+K\+HR}]{surface }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a07aa1aef3301af4bc0ec869fd27a7a30}\label{classlogi_1_1_physical_device_impl_a07aa1aef3301af4bc0ec869fd27a7a30}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getSurfaceFormats2KHR@{getSurfaceFormats2KHR}}
+\index{getSurfaceFormats2KHR@{getSurfaceFormats2KHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getSurfaceFormats2KHR()}{getSurfaceFormats2KHR()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename X , typename Y , typename... Z$>$ \\
+vk\+::\+Result\+Value\+Type$<$ vk\+::\+Structure\+Chain$<$ X, Y, Z... $>$ $>$\+::type logi\+::\+Physical\+Device\+Impl\+::get\+Surface\+Formats2\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Physical\+Device\+Surface\+Info2\+K\+HR \&}]{surface\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a064784f9b72796ed0afdfa372ad3c258}\label{classlogi_1_1_physical_device_impl_a064784f9b72796ed0afdfa372ad3c258}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getSurfaceFormats2KHR@{getSurfaceFormats2KHR}}
+\index{getSurfaceFormats2KHR@{getSurfaceFormats2KHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getSurfaceFormats2KHR()}{getSurfaceFormats2KHR()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Surface\+Format2\+K\+HR $>$ $>$\+::type logi\+::\+Physical\+Device\+Impl\+::get\+Surface\+Formats2\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Physical\+Device\+Surface\+Info2\+K\+HR \&}]{surface\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_ab21d2c332dfc71f39434bf3fa03c9072}\label{classlogi_1_1_physical_device_impl_ab21d2c332dfc71f39434bf3fa03c9072}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getSurfaceFormatsKHR@{getSurfaceFormatsKHR}}
+\index{getSurfaceFormatsKHR@{getSurfaceFormatsKHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getSurfaceFormatsKHR()}{getSurfaceFormatsKHR()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Surface\+Format\+K\+HR $>$ $>$\+::type logi\+::\+Physical\+Device\+Impl\+::get\+Surface\+Formats\+K\+HR (\begin{DoxyParamCaption}\item[{vk\+::\+Surface\+K\+HR}]{surface }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a156c302fc5f30f4393b4de32ce57c437}\label{classlogi_1_1_physical_device_impl_a156c302fc5f30f4393b4de32ce57c437}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getSurfacePresentModesKHR@{getSurfacePresentModesKHR}}
+\index{getSurfacePresentModesKHR@{getSurfacePresentModesKHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getSurfacePresentModesKHR()}{getSurfacePresentModesKHR()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Present\+Mode\+K\+HR $>$ $>$\+::type logi\+::\+Physical\+Device\+Impl\+::get\+Surface\+Present\+Modes\+K\+HR (\begin{DoxyParamCaption}\item[{vk\+::\+Surface\+K\+HR}]{surface }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_ab79962c2d513163337bbc25baf32eb7f}\label{classlogi_1_1_physical_device_impl_ab79962c2d513163337bbc25baf32eb7f}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!getSurfaceSupportKHR@{getSurfaceSupportKHR}}
+\index{getSurfaceSupportKHR@{getSurfaceSupportKHR}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{getSurfaceSupportKHR()}{getSurfaceSupportKHR()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ vk\+::\+Bool32 $>$\+::type logi\+::\+Physical\+Device\+Impl\+::get\+Surface\+Support\+K\+HR (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{queue\+Family\+Index,  }\item[{vk\+::\+Surface\+K\+HR}]{surface }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_physical_device_impl_a50a75f920b8497b8cb2cb28613e70561}\label{classlogi_1_1_physical_device_impl_a50a75f920b8497b8cb2cb28613e70561}} 
+\index{logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}!operator const vk::PhysicalDevice \&@{operator const vk::PhysicalDevice \&}}
+\index{operator const vk::PhysicalDevice \&@{operator const vk::PhysicalDevice \&}!logi::PhysicalDeviceImpl@{logi::PhysicalDeviceImpl}}
+\doxysubsubsection{\texorpdfstring{operator const vk::PhysicalDevice \&()}{operator const vk::PhysicalDevice \&()}}
+{\footnotesize\ttfamily logi\+::\+Physical\+Device\+Impl\+::operator const vk\+::\+Physical\+Device \& (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+logi/device/\mbox{\hyperlink{physical__device__impl_8hpp}{physical\+\_\+device\+\_\+impl.\+hpp}}\item 
+C\+:/\+Users/aljaz/\+Documents/\+Visual\+Studio\+Code\+Projects/\+Logi/src/logi/device/\mbox{\hyperlink{physical__device__impl_8cpp}{physical\+\_\+device\+\_\+impl.\+cpp}}\end{DoxyCompactItemize}

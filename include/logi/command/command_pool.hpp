@@ -39,11 +39,17 @@ class CommandPool : public Handle<CommandPoolImpl> {
   using Handle::Handle;
 
   // region Sub-Handles
-
+  
+  /**
+   * @brief Allocate multiple command buffers. Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkAllocateCommandBuffers.html">vkAllocateCommandBuffers</a>
+   */
   std::vector<CommandBuffer>
     allocateCommandBuffers(vk::CommandBufferLevel level, uint32_t commandBufferCount,
                            const ConstVkNextProxy<vk::CommandBufferAllocateInfo>& next = {}) const;
 
+  /**
+   * @brief Allocate one command buffers. Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkAllocateCommandBuffers.html">vkAllocateCommandBuffers</a>
+   */
   CommandBuffer allocateCommandBuffer(vk::CommandBufferLevel level,
                                       const ConstVkNextProxy<vk::CommandBufferAllocateInfo>& next = {}) const;
 
@@ -51,12 +57,24 @@ class CommandPool : public Handle<CommandPoolImpl> {
 
   // region Vulkan Declarations
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkFreeCommandBuffers.html">vkFreeCommandBuffers</a>
+   */
   void freeCommandBuffers(const std::vector<CommandBuffer>& commandBuffers) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkResetCommandPool.html">vkResetCommandPool</a>
+   */
   vk::ResultValueType<void>::type reset(const vk::CommandPoolResetFlags& flags = vk::CommandPoolResetFlags()) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkTrimCommandPool.html">vkTrimCommandPool</a>
+   */
   void trim(const vk::CommandPoolTrimFlags& flags = vk::CommandPoolTrimFlags()) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkTrimCommandPoolKHR.html">vkTrimCommandPoolKHR</a>
+   */
   void trimKHR(const vk::CommandPoolTrimFlags& flags = vk::CommandPoolTrimFlags()) const;
 
   // end region

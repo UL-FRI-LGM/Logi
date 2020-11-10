@@ -1,0 +1,130 @@
+\hypertarget{classlogi_1_1_validation_cache_e_x_t_impl}{}\doxysection{logi\+::Validation\+Cache\+E\+X\+T\+Impl Class Reference}
+\label{classlogi_1_1_validation_cache_e_x_t_impl}\index{logi::ValidationCacheEXTImpl@{logi::ValidationCacheEXTImpl}}
+
+
+{\ttfamily \#include $<$validation\+\_\+cache\+\_\+ext\+\_\+impl.\+hpp$>$}
+
+
+
+Inheritance diagram for logi\+::Validation\+Cache\+E\+X\+T\+Impl\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=336pt]{classlogi_1_1_validation_cache_e_x_t_impl__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for logi\+::Validation\+Cache\+E\+X\+T\+Impl\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=336pt]{classlogi_1_1_validation_cache_e_x_t_impl__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlogi_1_1_validation_cache_e_x_t_impl_a8873ecabeda2e512889e7b7b15eeb0a1}{Validation\+Cache\+E\+X\+T\+Impl}} (\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \&logical\+Device, const vk\+::\+Validation\+Cache\+Create\+Info\+E\+XT \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\})
+\item 
+vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_validation_cache_e_x_t_impl_aa15c0c376388b63033729370e995950f}{merge\+Validation\+Caches\+E\+XT}} (vk\+::\+Array\+Proxy$<$ const vk\+::\+Validation\+Cache\+E\+XT $>$ src\+Caches) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ uint8\+\_\+t $>$ $>$\+::type \mbox{\hyperlink{classlogi_1_1_validation_cache_e_x_t_impl_adf64b7eb484a88620defd1f884e0ef5e}{get\+Validation\+Cache\+Data\+E\+XT}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl}{Vulkan\+Instance\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_validation_cache_e_x_t_impl_a81a93bd4826548d0e81fd6dca8a0720c}{get\+Instance}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_physical_device_impl}{Physical\+Device\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_validation_cache_e_x_t_impl_adf8aa25657f46f22e7982b2dd1527615}{get\+Physical\+Device}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_validation_cache_e_x_t_impl_a56db6971d1820dc85dff7b7ea2613335}{get\+Logical\+Device}} () const
+\item 
+const vk\+::\+Dispatch\+Loader\+Dynamic \& \mbox{\hyperlink{classlogi_1_1_validation_cache_e_x_t_impl_a85d053f4ae4d016d3914ac17fe3af338}{get\+Dispatcher}} () const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_validation_cache_e_x_t_impl_aa0c9a17157fee071870a5596fbf5c425}{destroy}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_validation_cache_e_x_t_impl_af6095b7c4f1737e4b2780f0df0bf93c1}{operator const vk\+::\+Validation\+Cache\+E\+X\+T \&}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classlogi_1_1_validation_cache_e_x_t_impl_a4a10bf4be78c488922d9572fab861f2b}{free}} () override
+\begin{DoxyCompactList}\small\item\em Invalidates \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. Overriding implementations should free the object\textquotesingle{}s resources and invoke \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}\textquotesingle{}s free. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlogi_1_1_validation_cache_e_x_t_impl_a8873ecabeda2e512889e7b7b15eeb0a1}\label{classlogi_1_1_validation_cache_e_x_t_impl_a8873ecabeda2e512889e7b7b15eeb0a1}} 
+\index{logi::ValidationCacheEXTImpl@{logi::ValidationCacheEXTImpl}!ValidationCacheEXTImpl@{ValidationCacheEXTImpl}}
+\index{ValidationCacheEXTImpl@{ValidationCacheEXTImpl}!logi::ValidationCacheEXTImpl@{logi::ValidationCacheEXTImpl}}
+\doxysubsubsection{\texorpdfstring{ValidationCacheEXTImpl()}{ValidationCacheEXTImpl()}}
+{\footnotesize\ttfamily logi\+::\+Validation\+Cache\+E\+X\+T\+Impl\+::\+Validation\+Cache\+E\+X\+T\+Impl (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \&}]{logical\+Device,  }\item[{const vk\+::\+Validation\+Cache\+Create\+Info\+E\+XT \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogi_1_1_validation_cache_e_x_t_impl_aa0c9a17157fee071870a5596fbf5c425}\label{classlogi_1_1_validation_cache_e_x_t_impl_aa0c9a17157fee071870a5596fbf5c425}} 
+\index{logi::ValidationCacheEXTImpl@{logi::ValidationCacheEXTImpl}!destroy@{destroy}}
+\index{destroy@{destroy}!logi::ValidationCacheEXTImpl@{logi::ValidationCacheEXTImpl}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily void logi\+::\+Validation\+Cache\+E\+X\+T\+Impl\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_validation_cache_e_x_t_impl_a4a10bf4be78c488922d9572fab861f2b}\label{classlogi_1_1_validation_cache_e_x_t_impl_a4a10bf4be78c488922d9572fab861f2b}} 
+\index{logi::ValidationCacheEXTImpl@{logi::ValidationCacheEXTImpl}!free@{free}}
+\index{free@{free}!logi::ValidationCacheEXTImpl@{logi::ValidationCacheEXTImpl}}
+\doxysubsubsection{\texorpdfstring{free()}{free()}}
+{\footnotesize\ttfamily void logi\+::\+Validation\+Cache\+E\+X\+T\+Impl\+::free (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Invalidates \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. Overriding implementations should free the object\textquotesingle{}s resources and invoke \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}\textquotesingle{}s free. 
+
+
+
+Reimplemented from \mbox{\hyperlink{classlogi_1_1_vulkan_object_a7a5cafb30933f8bbd0d4e89e14477f4a}{logi\+::\+Vulkan\+Object}}.
+
+\mbox{\Hypertarget{classlogi_1_1_validation_cache_e_x_t_impl_a85d053f4ae4d016d3914ac17fe3af338}\label{classlogi_1_1_validation_cache_e_x_t_impl_a85d053f4ae4d016d3914ac17fe3af338}} 
+\index{logi::ValidationCacheEXTImpl@{logi::ValidationCacheEXTImpl}!getDispatcher@{getDispatcher}}
+\index{getDispatcher@{getDispatcher}!logi::ValidationCacheEXTImpl@{logi::ValidationCacheEXTImpl}}
+\doxysubsubsection{\texorpdfstring{getDispatcher()}{getDispatcher()}}
+{\footnotesize\ttfamily const vk\+::\+Dispatch\+Loader\+Dynamic \& logi\+::\+Validation\+Cache\+E\+X\+T\+Impl\+::get\+Dispatcher (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_validation_cache_e_x_t_impl_a81a93bd4826548d0e81fd6dca8a0720c}\label{classlogi_1_1_validation_cache_e_x_t_impl_a81a93bd4826548d0e81fd6dca8a0720c}} 
+\index{logi::ValidationCacheEXTImpl@{logi::ValidationCacheEXTImpl}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!logi::ValidationCacheEXTImpl@{logi::ValidationCacheEXTImpl}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl}{Vulkan\+Instance\+Impl}} \& logi\+::\+Validation\+Cache\+E\+X\+T\+Impl\+::get\+Instance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_validation_cache_e_x_t_impl_a56db6971d1820dc85dff7b7ea2613335}\label{classlogi_1_1_validation_cache_e_x_t_impl_a56db6971d1820dc85dff7b7ea2613335}} 
+\index{logi::ValidationCacheEXTImpl@{logi::ValidationCacheEXTImpl}!getLogicalDevice@{getLogicalDevice}}
+\index{getLogicalDevice@{getLogicalDevice}!logi::ValidationCacheEXTImpl@{logi::ValidationCacheEXTImpl}}
+\doxysubsubsection{\texorpdfstring{getLogicalDevice()}{getLogicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \& logi\+::\+Validation\+Cache\+E\+X\+T\+Impl\+::get\+Logical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_validation_cache_e_x_t_impl_adf8aa25657f46f22e7982b2dd1527615}\label{classlogi_1_1_validation_cache_e_x_t_impl_adf8aa25657f46f22e7982b2dd1527615}} 
+\index{logi::ValidationCacheEXTImpl@{logi::ValidationCacheEXTImpl}!getPhysicalDevice@{getPhysicalDevice}}
+\index{getPhysicalDevice@{getPhysicalDevice}!logi::ValidationCacheEXTImpl@{logi::ValidationCacheEXTImpl}}
+\doxysubsubsection{\texorpdfstring{getPhysicalDevice()}{getPhysicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_physical_device_impl}{Physical\+Device\+Impl}} \& logi\+::\+Validation\+Cache\+E\+X\+T\+Impl\+::get\+Physical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_validation_cache_e_x_t_impl_adf64b7eb484a88620defd1f884e0ef5e}\label{classlogi_1_1_validation_cache_e_x_t_impl_adf64b7eb484a88620defd1f884e0ef5e}} 
+\index{logi::ValidationCacheEXTImpl@{logi::ValidationCacheEXTImpl}!getValidationCacheDataEXT@{getValidationCacheDataEXT}}
+\index{getValidationCacheDataEXT@{getValidationCacheDataEXT}!logi::ValidationCacheEXTImpl@{logi::ValidationCacheEXTImpl}}
+\doxysubsubsection{\texorpdfstring{getValidationCacheDataEXT()}{getValidationCacheDataEXT()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ uint8\+\_\+t $>$ $>$\+::type logi\+::\+Validation\+Cache\+E\+X\+T\+Impl\+::get\+Validation\+Cache\+Data\+E\+XT (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_validation_cache_e_x_t_impl_aa15c0c376388b63033729370e995950f}\label{classlogi_1_1_validation_cache_e_x_t_impl_aa15c0c376388b63033729370e995950f}} 
+\index{logi::ValidationCacheEXTImpl@{logi::ValidationCacheEXTImpl}!mergeValidationCachesEXT@{mergeValidationCachesEXT}}
+\index{mergeValidationCachesEXT@{mergeValidationCachesEXT}!logi::ValidationCacheEXTImpl@{logi::ValidationCacheEXTImpl}}
+\doxysubsubsection{\texorpdfstring{mergeValidationCachesEXT()}{mergeValidationCachesEXT()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Validation\+Cache\+E\+X\+T\+Impl\+::merge\+Validation\+Caches\+E\+XT (\begin{DoxyParamCaption}\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Validation\+Cache\+E\+XT $>$}]{src\+Caches }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_validation_cache_e_x_t_impl_af6095b7c4f1737e4b2780f0df0bf93c1}\label{classlogi_1_1_validation_cache_e_x_t_impl_af6095b7c4f1737e4b2780f0df0bf93c1}} 
+\index{logi::ValidationCacheEXTImpl@{logi::ValidationCacheEXTImpl}!operator const vk::ValidationCacheEXT \&@{operator const vk::ValidationCacheEXT \&}}
+\index{operator const vk::ValidationCacheEXT \&@{operator const vk::ValidationCacheEXT \&}!logi::ValidationCacheEXTImpl@{logi::ValidationCacheEXTImpl}}
+\doxysubsubsection{\texorpdfstring{operator const vk::ValidationCacheEXT \&()}{operator const vk::ValidationCacheEXT \&()}}
+{\footnotesize\ttfamily logi\+::\+Validation\+Cache\+E\+X\+T\+Impl\+::operator const vk\+::\+Validation\+Cache\+E\+XT \& (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+logi/program/\mbox{\hyperlink{validation__cache__ext__impl_8hpp}{validation\+\_\+cache\+\_\+ext\+\_\+impl.\+hpp}}\item 
+C\+:/\+Users/aljaz/\+Documents/\+Visual\+Studio\+Code\+Projects/\+Logi/src/logi/program/\mbox{\hyperlink{validation__cache__ext__impl_8cpp}{validation\+\_\+cache\+\_\+ext\+\_\+impl.\+cpp}}\end{DoxyCompactItemize}

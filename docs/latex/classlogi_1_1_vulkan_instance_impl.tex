@@ -1,0 +1,186 @@
+\hypertarget{classlogi_1_1_vulkan_instance_impl}{}\doxysection{logi\+::Vulkan\+Instance\+Impl Class Reference}
+\label{classlogi_1_1_vulkan_instance_impl}\index{logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}}
+
+
+Vulkan instance handle.  
+
+
+
+
+{\ttfamily \#include $<$vulkan\+\_\+instance\+\_\+impl.\+hpp$>$}
+
+
+
+Inheritance diagram for logi\+::Vulkan\+Instance\+Impl\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogi_1_1_vulkan_instance_impl__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for logi\+::Vulkan\+Instance\+Impl\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogi_1_1_vulkan_instance_impl__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl_aaeae61b229e9f1e02c196c9d0dc9530f}{Vulkan\+Instance\+Impl}} (const vk\+::\+Instance\+Create\+Info \&create\+Info, P\+F\+N\+\_\+vk\+Create\+Instance pfn\+Create\+Instance=\&vk\+Create\+Instance, P\+F\+N\+\_\+vk\+Get\+Instance\+Proc\+Addr pfn\+Get\+Proc\+Addr=\&vk\+Get\+Instance\+Proc\+Addr, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\})
+\item 
+std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl}{Physical\+Device\+Impl}} $>$ $>$ \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl_a7e495463bf90909d2c2f977e365d6134}{enumerate\+Physical\+Devices}} () const
+\item 
+const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlogi_1_1_debug_report_callback_e_x_t_impl}{Debug\+Report\+Callback\+E\+X\+T\+Impl}} $>$ \& \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl_a888be7ed539eb35fe6a3e1bf7be48ff6}{create\+Debug\+Report\+Callback\+E\+XT}} (const vk\+::\+Debug\+Report\+Callback\+Create\+Info\+E\+XT \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator)
+\item 
+void \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl_a06d942c09f06d3481adc6f3f97cc9556}{destroy\+Debug\+Report\+Callback\+E\+XT}} (size\+\_\+t \mbox{\hyperlink{classlogi_1_1_vulkan_object_a228d983c6b7d202aa7e1f372856cc707}{id}})
+\item 
+const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlogi_1_1_debug_utils_messenger_e_x_t_impl}{Debug\+Utils\+Messenger\+E\+X\+T\+Impl}} $>$ \& \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl_a1df3760275d00de586ea36cd2fa9471c}{create\+Debug\+Utils\+Messenger\+E\+XT}} (const vk\+::\+Debug\+Utils\+Messenger\+Create\+Info\+E\+XT \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator)
+\item 
+void \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl_ab471a2c18d368d33784b12945fe41bf4}{destroy\+Debug\+Utils\+Messenger\+E\+XT}} (size\+\_\+t \mbox{\hyperlink{classlogi_1_1_vulkan_object_a228d983c6b7d202aa7e1f372856cc707}{id}})
+\item 
+const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlogi_1_1_surface_k_h_r_impl}{Surface\+K\+H\+R\+Impl}} $>$ \& \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl_a83f5e3fde574e6bca36d6bb4422acd23}{register\+Surface\+K\+HR}} (const vk\+::\+Surface\+K\+HR \&vk\+Surface, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator)
+\item 
+const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlogi_1_1_surface_k_h_r_impl}{Surface\+K\+H\+R\+Impl}} $>$ \& \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl_a55643f69deabc98f0bb7a2b624f6cfbf}{create\+Display\+Plane\+Surface\+K\+HR}} (const vk\+::\+Display\+Surface\+Create\+Info\+K\+HR \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\})
+\item 
+void \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl_a6d4a10578935c347b5ea5c5b9c5b0c49}{destroy\+Surface\+K\+HR}} (size\+\_\+t \mbox{\hyperlink{classlogi_1_1_vulkan_object_a228d983c6b7d202aa7e1f372856cc707}{id}})
+\item 
+void \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl_a105dea70423a80502a0a76377bf84812}{debug\+Report\+Message\+E\+XT}} (const vk\+::\+Debug\+Report\+Flags\+E\+XT \&flags, vk\+::\+Debug\+Report\+Object\+Type\+E\+XT object\+Type, uint64\+\_\+t object, size\+\_\+t location, int32\+\_\+t message\+Code, const std\+::string \&layer\+Prefix, const std\+::string \&message) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl_a2e09abf1e84d0baed4190aa375f79af9}{submit\+Debug\+Utils\+Message\+E\+XT}} (vk\+::\+Debug\+Utils\+Message\+Severity\+Flag\+Bits\+E\+XT message\+Severity, const vk\+::\+Debug\+Utils\+Message\+Type\+Flags\+E\+XT \&message\+Types, const vk\+::\+Debug\+Utils\+Messenger\+Callback\+Data\+E\+XT \&callback\+Data) const
+\item 
+P\+F\+N\+\_\+vk\+Void\+Function \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl_a53d7f9b4dda43a35c7e279e6b24e0292}{get\+Proc\+Addr}} (const std\+::string \&name) const
+\item 
+const vk\+::\+Dispatch\+Loader\+Dynamic \& \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl_a9df6a5d5262bff7d80f2a72d18facf95}{get\+Dispatcher}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl_ae9a7536d41aba4d89a56e06e7a88b0a4}{operator const vk\+::\+Instance \&}} () const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl_aa8a4ac31be8cd8087923b2525a68dbf4}{destroy}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl_a9119da9f38157bd84022faa2c2e2af0c}{free}} () override
+\begin{DoxyCompactList}\small\item\em Invalidates \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. Overriding implementations should free the object\textquotesingle{}s resources and invoke \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}\textquotesingle{}s free. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Vulkan instance handle. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlogi_1_1_vulkan_instance_impl_aaeae61b229e9f1e02c196c9d0dc9530f}\label{classlogi_1_1_vulkan_instance_impl_aaeae61b229e9f1e02c196c9d0dc9530f}} 
+\index{logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}!VulkanInstanceImpl@{VulkanInstanceImpl}}
+\index{VulkanInstanceImpl@{VulkanInstanceImpl}!logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}}
+\doxysubsubsection{\texorpdfstring{VulkanInstanceImpl()}{VulkanInstanceImpl()}}
+{\footnotesize\ttfamily logi\+::\+Vulkan\+Instance\+Impl\+::\+Vulkan\+Instance\+Impl (\begin{DoxyParamCaption}\item[{const vk\+::\+Instance\+Create\+Info \&}]{create\+Info,  }\item[{P\+F\+N\+\_\+vk\+Create\+Instance}]{pfn\+Create\+Instance = {\ttfamily \&vkCreateInstance},  }\item[{P\+F\+N\+\_\+vk\+Get\+Instance\+Proc\+Addr}]{pfn\+Get\+Proc\+Addr = {\ttfamily \&vkGetInstanceProcAddr},  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogi_1_1_vulkan_instance_impl_a888be7ed539eb35fe6a3e1bf7be48ff6}\label{classlogi_1_1_vulkan_instance_impl_a888be7ed539eb35fe6a3e1bf7be48ff6}} 
+\index{logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}!createDebugReportCallbackEXT@{createDebugReportCallbackEXT}}
+\index{createDebugReportCallbackEXT@{createDebugReportCallbackEXT}!logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}}
+\doxysubsubsection{\texorpdfstring{createDebugReportCallbackEXT()}{createDebugReportCallbackEXT()}}
+{\footnotesize\ttfamily const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlogi_1_1_debug_report_callback_e_x_t_impl}{Debug\+Report\+Callback\+E\+X\+T\+Impl}} $>$ \& logi\+::\+Vulkan\+Instance\+Impl\+::create\+Debug\+Report\+Callback\+E\+XT (\begin{DoxyParamCaption}\item[{const vk\+::\+Debug\+Report\+Callback\+Create\+Info\+E\+XT \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_vulkan_instance_impl_a1df3760275d00de586ea36cd2fa9471c}\label{classlogi_1_1_vulkan_instance_impl_a1df3760275d00de586ea36cd2fa9471c}} 
+\index{logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}!createDebugUtilsMessengerEXT@{createDebugUtilsMessengerEXT}}
+\index{createDebugUtilsMessengerEXT@{createDebugUtilsMessengerEXT}!logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}}
+\doxysubsubsection{\texorpdfstring{createDebugUtilsMessengerEXT()}{createDebugUtilsMessengerEXT()}}
+{\footnotesize\ttfamily const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlogi_1_1_debug_utils_messenger_e_x_t_impl}{Debug\+Utils\+Messenger\+E\+X\+T\+Impl}} $>$ \& logi\+::\+Vulkan\+Instance\+Impl\+::create\+Debug\+Utils\+Messenger\+E\+XT (\begin{DoxyParamCaption}\item[{const vk\+::\+Debug\+Utils\+Messenger\+Create\+Info\+E\+XT \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_vulkan_instance_impl_a55643f69deabc98f0bb7a2b624f6cfbf}\label{classlogi_1_1_vulkan_instance_impl_a55643f69deabc98f0bb7a2b624f6cfbf}} 
+\index{logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}!createDisplayPlaneSurfaceKHR@{createDisplayPlaneSurfaceKHR}}
+\index{createDisplayPlaneSurfaceKHR@{createDisplayPlaneSurfaceKHR}!logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}}
+\doxysubsubsection{\texorpdfstring{createDisplayPlaneSurfaceKHR()}{createDisplayPlaneSurfaceKHR()}}
+{\footnotesize\ttfamily const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlogi_1_1_surface_k_h_r_impl}{Surface\+K\+H\+R\+Impl}} $>$ \& logi\+::\+Vulkan\+Instance\+Impl\+::create\+Display\+Plane\+Surface\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Display\+Surface\+Create\+Info\+K\+HR \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_vulkan_instance_impl_a105dea70423a80502a0a76377bf84812}\label{classlogi_1_1_vulkan_instance_impl_a105dea70423a80502a0a76377bf84812}} 
+\index{logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}!debugReportMessageEXT@{debugReportMessageEXT}}
+\index{debugReportMessageEXT@{debugReportMessageEXT}!logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}}
+\doxysubsubsection{\texorpdfstring{debugReportMessageEXT()}{debugReportMessageEXT()}}
+{\footnotesize\ttfamily void logi\+::\+Vulkan\+Instance\+Impl\+::debug\+Report\+Message\+E\+XT (\begin{DoxyParamCaption}\item[{const vk\+::\+Debug\+Report\+Flags\+E\+XT \&}]{flags,  }\item[{vk\+::\+Debug\+Report\+Object\+Type\+E\+XT}]{object\+Type,  }\item[{uint64\+\_\+t}]{object,  }\item[{size\+\_\+t}]{location,  }\item[{int32\+\_\+t}]{message\+Code,  }\item[{const std\+::string \&}]{layer\+Prefix,  }\item[{const std\+::string \&}]{message }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_vulkan_instance_impl_aa8a4ac31be8cd8087923b2525a68dbf4}\label{classlogi_1_1_vulkan_instance_impl_aa8a4ac31be8cd8087923b2525a68dbf4}} 
+\index{logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}!destroy@{destroy}}
+\index{destroy@{destroy}!logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily void logi\+::\+Vulkan\+Instance\+Impl\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_vulkan_instance_impl_a06d942c09f06d3481adc6f3f97cc9556}\label{classlogi_1_1_vulkan_instance_impl_a06d942c09f06d3481adc6f3f97cc9556}} 
+\index{logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}!destroyDebugReportCallbackEXT@{destroyDebugReportCallbackEXT}}
+\index{destroyDebugReportCallbackEXT@{destroyDebugReportCallbackEXT}!logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}}
+\doxysubsubsection{\texorpdfstring{destroyDebugReportCallbackEXT()}{destroyDebugReportCallbackEXT()}}
+{\footnotesize\ttfamily void logi\+::\+Vulkan\+Instance\+Impl\+::destroy\+Debug\+Report\+Callback\+E\+XT (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{id }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_vulkan_instance_impl_ab471a2c18d368d33784b12945fe41bf4}\label{classlogi_1_1_vulkan_instance_impl_ab471a2c18d368d33784b12945fe41bf4}} 
+\index{logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}!destroyDebugUtilsMessengerEXT@{destroyDebugUtilsMessengerEXT}}
+\index{destroyDebugUtilsMessengerEXT@{destroyDebugUtilsMessengerEXT}!logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}}
+\doxysubsubsection{\texorpdfstring{destroyDebugUtilsMessengerEXT()}{destroyDebugUtilsMessengerEXT()}}
+{\footnotesize\ttfamily void logi\+::\+Vulkan\+Instance\+Impl\+::destroy\+Debug\+Utils\+Messenger\+E\+XT (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{id }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_vulkan_instance_impl_a6d4a10578935c347b5ea5c5b9c5b0c49}\label{classlogi_1_1_vulkan_instance_impl_a6d4a10578935c347b5ea5c5b9c5b0c49}} 
+\index{logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}!destroySurfaceKHR@{destroySurfaceKHR}}
+\index{destroySurfaceKHR@{destroySurfaceKHR}!logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}}
+\doxysubsubsection{\texorpdfstring{destroySurfaceKHR()}{destroySurfaceKHR()}}
+{\footnotesize\ttfamily void logi\+::\+Vulkan\+Instance\+Impl\+::destroy\+Surface\+K\+HR (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{id }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_vulkan_instance_impl_a7e495463bf90909d2c2f977e365d6134}\label{classlogi_1_1_vulkan_instance_impl_a7e495463bf90909d2c2f977e365d6134}} 
+\index{logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}!enumeratePhysicalDevices@{enumeratePhysicalDevices}}
+\index{enumeratePhysicalDevices@{enumeratePhysicalDevices}!logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}}
+\doxysubsubsection{\texorpdfstring{enumeratePhysicalDevices()}{enumeratePhysicalDevices()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlogi_1_1_physical_device_impl}{Physical\+Device\+Impl}} $>$ $>$ logi\+::\+Vulkan\+Instance\+Impl\+::enumerate\+Physical\+Devices (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_vulkan_instance_impl_a9119da9f38157bd84022faa2c2e2af0c}\label{classlogi_1_1_vulkan_instance_impl_a9119da9f38157bd84022faa2c2e2af0c}} 
+\index{logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}!free@{free}}
+\index{free@{free}!logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}}
+\doxysubsubsection{\texorpdfstring{free()}{free()}}
+{\footnotesize\ttfamily void logi\+::\+Vulkan\+Instance\+Impl\+::free (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Invalidates \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. Overriding implementations should free the object\textquotesingle{}s resources and invoke \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}\textquotesingle{}s free. 
+
+
+
+Reimplemented from \mbox{\hyperlink{classlogi_1_1_vulkan_object_a7a5cafb30933f8bbd0d4e89e14477f4a}{logi\+::\+Vulkan\+Object}}.
+
+\mbox{\Hypertarget{classlogi_1_1_vulkan_instance_impl_a9df6a5d5262bff7d80f2a72d18facf95}\label{classlogi_1_1_vulkan_instance_impl_a9df6a5d5262bff7d80f2a72d18facf95}} 
+\index{logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}!getDispatcher@{getDispatcher}}
+\index{getDispatcher@{getDispatcher}!logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}}
+\doxysubsubsection{\texorpdfstring{getDispatcher()}{getDispatcher()}}
+{\footnotesize\ttfamily const vk\+::\+Dispatch\+Loader\+Dynamic \& logi\+::\+Vulkan\+Instance\+Impl\+::get\+Dispatcher (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_vulkan_instance_impl_a53d7f9b4dda43a35c7e279e6b24e0292}\label{classlogi_1_1_vulkan_instance_impl_a53d7f9b4dda43a35c7e279e6b24e0292}} 
+\index{logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}!getProcAddr@{getProcAddr}}
+\index{getProcAddr@{getProcAddr}!logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}}
+\doxysubsubsection{\texorpdfstring{getProcAddr()}{getProcAddr()}}
+{\footnotesize\ttfamily P\+F\+N\+\_\+vk\+Void\+Function logi\+::\+Vulkan\+Instance\+Impl\+::get\+Proc\+Addr (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_vulkan_instance_impl_ae9a7536d41aba4d89a56e06e7a88b0a4}\label{classlogi_1_1_vulkan_instance_impl_ae9a7536d41aba4d89a56e06e7a88b0a4}} 
+\index{logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}!operator const vk::Instance \&@{operator const vk::Instance \&}}
+\index{operator const vk::Instance \&@{operator const vk::Instance \&}!logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}}
+\doxysubsubsection{\texorpdfstring{operator const vk::Instance \&()}{operator const vk::Instance \&()}}
+{\footnotesize\ttfamily logi\+::\+Vulkan\+Instance\+Impl\+::operator const vk\+::\+Instance \& (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_vulkan_instance_impl_a83f5e3fde574e6bca36d6bb4422acd23}\label{classlogi_1_1_vulkan_instance_impl_a83f5e3fde574e6bca36d6bb4422acd23}} 
+\index{logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}!registerSurfaceKHR@{registerSurfaceKHR}}
+\index{registerSurfaceKHR@{registerSurfaceKHR}!logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}}
+\doxysubsubsection{\texorpdfstring{registerSurfaceKHR()}{registerSurfaceKHR()}}
+{\footnotesize\ttfamily const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlogi_1_1_surface_k_h_r_impl}{Surface\+K\+H\+R\+Impl}} $>$ \& logi\+::\+Vulkan\+Instance\+Impl\+::register\+Surface\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Surface\+K\+HR \&}]{vk\+Surface,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_vulkan_instance_impl_a2e09abf1e84d0baed4190aa375f79af9}\label{classlogi_1_1_vulkan_instance_impl_a2e09abf1e84d0baed4190aa375f79af9}} 
+\index{logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}!submitDebugUtilsMessageEXT@{submitDebugUtilsMessageEXT}}
+\index{submitDebugUtilsMessageEXT@{submitDebugUtilsMessageEXT}!logi::VulkanInstanceImpl@{logi::VulkanInstanceImpl}}
+\doxysubsubsection{\texorpdfstring{submitDebugUtilsMessageEXT()}{submitDebugUtilsMessageEXT()}}
+{\footnotesize\ttfamily void logi\+::\+Vulkan\+Instance\+Impl\+::submit\+Debug\+Utils\+Message\+E\+XT (\begin{DoxyParamCaption}\item[{vk\+::\+Debug\+Utils\+Message\+Severity\+Flag\+Bits\+E\+XT}]{message\+Severity,  }\item[{const vk\+::\+Debug\+Utils\+Message\+Type\+Flags\+E\+XT \&}]{message\+Types,  }\item[{const vk\+::\+Debug\+Utils\+Messenger\+Callback\+Data\+E\+XT \&}]{callback\+Data }\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+logi/instance/\mbox{\hyperlink{vulkan__instance__impl_8hpp}{vulkan\+\_\+instance\+\_\+impl.\+hpp}}\item 
+C\+:/\+Users/aljaz/\+Documents/\+Visual\+Studio\+Code\+Projects/\+Logi/src/logi/instance/\mbox{\hyperlink{vulkan__instance__impl_8cpp}{vulkan\+\_\+instance\+\_\+impl.\+cpp}}\end{DoxyCompactItemize}

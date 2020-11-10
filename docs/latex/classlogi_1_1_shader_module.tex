@@ -1,0 +1,154 @@
+\hypertarget{classlogi_1_1_shader_module}{}\doxysection{logi\+::Shader\+Module Class Reference}
+\label{classlogi_1_1_shader_module}\index{logi::ShaderModule@{logi::ShaderModule}}
+
+
+{\ttfamily \#include $<$shader\+\_\+module.\+hpp$>$}
+
+
+
+Inheritance diagram for logi\+::Shader\+Module\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=219pt]{classlogi_1_1_shader_module__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for logi\+::Shader\+Module\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=219pt]{classlogi_1_1_shader_module__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classlogi_1_1_shader_module_a4fa5b1a40bcfba320b1adb9bccfad894}{get\+Entry\+Point\+Names}} () const
+\item 
+const \mbox{\hyperlink{structlogi_1_1_entry_point_reflection_info}{Entry\+Point\+Reflection\+Info}} \& \mbox{\hyperlink{classlogi_1_1_shader_module_afc5473934af33c117402827b992f4053}{get\+Entry\+Point\+Reflection\+Info}} (const std\+::string \&entry\+Point\+Name) const
+\item 
+const std\+::vector$<$ \mbox{\hyperlink{structlogi_1_1_descriptor_set_reflection_info}{Descriptor\+Set\+Reflection\+Info}} $>$ \& \mbox{\hyperlink{classlogi_1_1_shader_module_aa6501fb2e64a316f51e147b892ff862f}{get\+Descriptor\+Set\+Reflection\+Info}} (const std\+::string \&entry\+Point\+Name) const
+\item 
+const std\+::optional$<$ \mbox{\hyperlink{structlogi_1_1_push_constant_reflection_info}{Push\+Constant\+Reflection\+Info}} $>$ \& \mbox{\hyperlink{classlogi_1_1_shader_module_a6b507f490882cf995886afe427a2dbcc}{get\+Push\+Constant\+Reflection\+Info}} (const std\+::string \&entry\+Point\+Name) const
+\item 
+const std\+::vector$<$ \mbox{\hyperlink{structlogi_1_1_vertex_attribute_reflection_info}{Vertex\+Attribute\+Reflection\+Info}} $>$ \& \mbox{\hyperlink{classlogi_1_1_shader_module_ab14696d6390a88e294ceff0191a09e59}{get\+Vertex\+Attribute\+Reflection\+Info}} (const std\+::string \&entry\+Point\+Name) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_vulkan_instance}{Vulkan\+Instance}} \mbox{\hyperlink{classlogi_1_1_shader_module_ab719bee2af64e31defcefd7dd8a67953}{get\+Instance}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_physical_device}{Physical\+Device}} \mbox{\hyperlink{classlogi_1_1_shader_module_a76befc54b554cbc83d4b7e83bc08635d}{get\+Physical\+Device}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_logical_device}{Logical\+Device}} \mbox{\hyperlink{classlogi_1_1_shader_module_a56d18c8eb24267d01b21750d5863443f}{get\+Logical\+Device}} () const
+\item 
+const vk\+::\+Dispatch\+Loader\+Dynamic \& \mbox{\hyperlink{classlogi_1_1_shader_module_a4d89b5d8acf96fc359aed8a54de8fa4f}{get\+Dispatcher}} () const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_shader_module_a262d43e7e92a04e0eb1bfcf4644b92cc}{destroy}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_shader_module_af57c432c6f717b69eb9b3e475e6d4870}{operator const vk\+::\+Shader\+Module \&}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_shader_module_a573850795cef46e5e0c9acc997cce250}{Handle}} ()=default
+\begin{DoxyCompactList}\small\item\em Default null handle constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classlogi_1_1_shader_module_afd9a0687dd950205ac03c19afca4c553}{Handle}} (std\+::shared\+\_\+ptr$<$ T $>$ object)
+\begin{DoxyCompactList}\small\item\em Initialize the referred object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogi_1_1_shader_module_a262d43e7e92a04e0eb1bfcf4644b92cc}\label{classlogi_1_1_shader_module_a262d43e7e92a04e0eb1bfcf4644b92cc}} 
+\index{logi::ShaderModule@{logi::ShaderModule}!destroy@{destroy}}
+\index{destroy@{destroy}!logi::ShaderModule@{logi::ShaderModule}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily void logi\+::\+Shader\+Module\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_shader_module_aa6501fb2e64a316f51e147b892ff862f}\label{classlogi_1_1_shader_module_aa6501fb2e64a316f51e147b892ff862f}} 
+\index{logi::ShaderModule@{logi::ShaderModule}!getDescriptorSetReflectionInfo@{getDescriptorSetReflectionInfo}}
+\index{getDescriptorSetReflectionInfo@{getDescriptorSetReflectionInfo}!logi::ShaderModule@{logi::ShaderModule}}
+\doxysubsubsection{\texorpdfstring{getDescriptorSetReflectionInfo()}{getDescriptorSetReflectionInfo()}}
+{\footnotesize\ttfamily const std\+::vector$<$ \mbox{\hyperlink{structlogi_1_1_descriptor_set_reflection_info}{Descriptor\+Set\+Reflection\+Info}} $>$ \& logi\+::\+Shader\+Module\+::get\+Descriptor\+Set\+Reflection\+Info (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{entry\+Point\+Name }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_shader_module_a4d89b5d8acf96fc359aed8a54de8fa4f}\label{classlogi_1_1_shader_module_a4d89b5d8acf96fc359aed8a54de8fa4f}} 
+\index{logi::ShaderModule@{logi::ShaderModule}!getDispatcher@{getDispatcher}}
+\index{getDispatcher@{getDispatcher}!logi::ShaderModule@{logi::ShaderModule}}
+\doxysubsubsection{\texorpdfstring{getDispatcher()}{getDispatcher()}}
+{\footnotesize\ttfamily const vk\+::\+Dispatch\+Loader\+Dynamic \& logi\+::\+Shader\+Module\+::get\+Dispatcher (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_shader_module_a4fa5b1a40bcfba320b1adb9bccfad894}\label{classlogi_1_1_shader_module_a4fa5b1a40bcfba320b1adb9bccfad894}} 
+\index{logi::ShaderModule@{logi::ShaderModule}!getEntryPointNames@{getEntryPointNames}}
+\index{getEntryPointNames@{getEntryPointNames}!logi::ShaderModule@{logi::ShaderModule}}
+\doxysubsubsection{\texorpdfstring{getEntryPointNames()}{getEntryPointNames()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::string $>$ logi\+::\+Shader\+Module\+::get\+Entry\+Point\+Names (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_shader_module_afc5473934af33c117402827b992f4053}\label{classlogi_1_1_shader_module_afc5473934af33c117402827b992f4053}} 
+\index{logi::ShaderModule@{logi::ShaderModule}!getEntryPointReflectionInfo@{getEntryPointReflectionInfo}}
+\index{getEntryPointReflectionInfo@{getEntryPointReflectionInfo}!logi::ShaderModule@{logi::ShaderModule}}
+\doxysubsubsection{\texorpdfstring{getEntryPointReflectionInfo()}{getEntryPointReflectionInfo()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{structlogi_1_1_entry_point_reflection_info}{Entry\+Point\+Reflection\+Info}} \& logi\+::\+Shader\+Module\+::get\+Entry\+Point\+Reflection\+Info (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{entry\+Point\+Name }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_shader_module_ab719bee2af64e31defcefd7dd8a67953}\label{classlogi_1_1_shader_module_ab719bee2af64e31defcefd7dd8a67953}} 
+\index{logi::ShaderModule@{logi::ShaderModule}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!logi::ShaderModule@{logi::ShaderModule}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_vulkan_instance}{Vulkan\+Instance}} logi\+::\+Shader\+Module\+::get\+Instance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_shader_module_a56d18c8eb24267d01b21750d5863443f}\label{classlogi_1_1_shader_module_a56d18c8eb24267d01b21750d5863443f}} 
+\index{logi::ShaderModule@{logi::ShaderModule}!getLogicalDevice@{getLogicalDevice}}
+\index{getLogicalDevice@{getLogicalDevice}!logi::ShaderModule@{logi::ShaderModule}}
+\doxysubsubsection{\texorpdfstring{getLogicalDevice()}{getLogicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_logical_device}{Logical\+Device}} logi\+::\+Shader\+Module\+::get\+Logical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_shader_module_a76befc54b554cbc83d4b7e83bc08635d}\label{classlogi_1_1_shader_module_a76befc54b554cbc83d4b7e83bc08635d}} 
+\index{logi::ShaderModule@{logi::ShaderModule}!getPhysicalDevice@{getPhysicalDevice}}
+\index{getPhysicalDevice@{getPhysicalDevice}!logi::ShaderModule@{logi::ShaderModule}}
+\doxysubsubsection{\texorpdfstring{getPhysicalDevice()}{getPhysicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_physical_device}{Physical\+Device}} logi\+::\+Shader\+Module\+::get\+Physical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_shader_module_a6b507f490882cf995886afe427a2dbcc}\label{classlogi_1_1_shader_module_a6b507f490882cf995886afe427a2dbcc}} 
+\index{logi::ShaderModule@{logi::ShaderModule}!getPushConstantReflectionInfo@{getPushConstantReflectionInfo}}
+\index{getPushConstantReflectionInfo@{getPushConstantReflectionInfo}!logi::ShaderModule@{logi::ShaderModule}}
+\doxysubsubsection{\texorpdfstring{getPushConstantReflectionInfo()}{getPushConstantReflectionInfo()}}
+{\footnotesize\ttfamily const std\+::optional$<$ \mbox{\hyperlink{structlogi_1_1_push_constant_reflection_info}{Push\+Constant\+Reflection\+Info}} $>$ \& logi\+::\+Shader\+Module\+::get\+Push\+Constant\+Reflection\+Info (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{entry\+Point\+Name }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_shader_module_ab14696d6390a88e294ceff0191a09e59}\label{classlogi_1_1_shader_module_ab14696d6390a88e294ceff0191a09e59}} 
+\index{logi::ShaderModule@{logi::ShaderModule}!getVertexAttributeReflectionInfo@{getVertexAttributeReflectionInfo}}
+\index{getVertexAttributeReflectionInfo@{getVertexAttributeReflectionInfo}!logi::ShaderModule@{logi::ShaderModule}}
+\doxysubsubsection{\texorpdfstring{getVertexAttributeReflectionInfo()}{getVertexAttributeReflectionInfo()}}
+{\footnotesize\ttfamily const std\+::vector$<$ \mbox{\hyperlink{structlogi_1_1_vertex_attribute_reflection_info}{Vertex\+Attribute\+Reflection\+Info}} $>$ \& logi\+::\+Shader\+Module\+::get\+Vertex\+Attribute\+Reflection\+Info (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{entry\+Point\+Name }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_shader_module_a573850795cef46e5e0c9acc997cce250}\label{classlogi_1_1_shader_module_a573850795cef46e5e0c9acc997cce250}} 
+\index{logi::ShaderModule@{logi::ShaderModule}!Handle@{Handle}}
+\index{Handle@{Handle}!logi::ShaderModule@{logi::ShaderModule}}
+\doxysubsubsection{\texorpdfstring{Handle()}{Handle()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_handle}{logi\+::\+Handle}}$<$ T $>$\+::\mbox{\hyperlink{classlogi_1_1_handle}{Handle}}\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+Default null handle constructor. 
+
+\mbox{\Hypertarget{classlogi_1_1_shader_module_afd9a0687dd950205ac03c19afca4c553}\label{classlogi_1_1_shader_module_afd9a0687dd950205ac03c19afca4c553}} 
+\index{logi::ShaderModule@{logi::ShaderModule}!Handle@{Handle}}
+\index{Handle@{Handle}!logi::ShaderModule@{logi::ShaderModule}}
+\doxysubsubsection{\texorpdfstring{Handle()}{Handle()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_handle}{logi\+::\+Handle}}$<$ T $>$\+::\mbox{\hyperlink{classlogi_1_1_handle}{Handle}}\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Initialize the referred object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & Referred object. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlogi_1_1_shader_module_af57c432c6f717b69eb9b3e475e6d4870}\label{classlogi_1_1_shader_module_af57c432c6f717b69eb9b3e475e6d4870}} 
+\index{logi::ShaderModule@{logi::ShaderModule}!operator const vk::ShaderModule \&@{operator const vk::ShaderModule \&}}
+\index{operator const vk::ShaderModule \&@{operator const vk::ShaderModule \&}!logi::ShaderModule@{logi::ShaderModule}}
+\doxysubsubsection{\texorpdfstring{operator const vk::ShaderModule \&()}{operator const vk::ShaderModule \&()}}
+{\footnotesize\ttfamily logi\+::\+Shader\+Module\+::operator const vk\+::\+Shader\+Module \& (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+logi/program/\mbox{\hyperlink{shader__module_8hpp}{shader\+\_\+module.\+hpp}}\item 
+C\+:/\+Users/aljaz/\+Documents/\+Visual\+Studio\+Code\+Projects/\+Logi/src/logi/program/\mbox{\hyperlink{shader__module_8cpp}{shader\+\_\+module.\+cpp}}\end{DoxyCompactItemize}

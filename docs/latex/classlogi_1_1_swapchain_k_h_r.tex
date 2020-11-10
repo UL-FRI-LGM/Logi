@@ -1,0 +1,178 @@
+\hypertarget{classlogi_1_1_swapchain_k_h_r}{}\doxysection{logi\+::Swapchain\+K\+HR Class Reference}
+\label{classlogi_1_1_swapchain_k_h_r}\index{logi::SwapchainKHR@{logi::SwapchainKHR}}
+
+
+{\ttfamily \#include $<$swapchain\+\_\+khr.\+hpp$>$}
+
+
+
+Inheritance diagram for logi\+::Swapchain\+K\+HR\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=251pt]{classlogi_1_1_swapchain_k_h_r__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for logi\+::Swapchain\+K\+HR\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=251pt]{classlogi_1_1_swapchain_k_h_r__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+vk\+::\+Result\+Value$<$ uint32\+\_\+t $>$ \mbox{\hyperlink{classlogi_1_1_swapchain_k_h_r_acc5b6bd06b6719ee78eead89184cbe44}{acquire\+Next\+Image\+K\+HR}} (uint64\+\_\+t timeout, const vk\+::\+Semaphore \&semaphore, const vk\+::\+Fence \&fence) const
+\item 
+vk\+::\+Result\+Value$<$ uint32\+\_\+t $>$ \mbox{\hyperlink{classlogi_1_1_swapchain_k_h_r_a8c3e364002575c124e9aef5b3b76b090}{acquire\+Next\+Image2\+K\+HR}} (uint64\+\_\+t timeout, const vk\+::\+Semaphore \&semaphore, const vk\+::\+Fence \&fence, uint32\+\_\+t device\+Mask, const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Acquire\+Next\+Image\+Info\+K\+HR $>$ \&next=\{\}) const
+\item 
+std\+::vector$<$ \mbox{\hyperlink{classlogi_1_1_swapchain_image}{Swapchain\+Image}} $>$ \mbox{\hyperlink{classlogi_1_1_swapchain_k_h_r_a0b93d722bf9da626f6cf01162af0a973}{get\+Images\+K\+HR}} () const
+\item 
+vk\+::\+Result\+Value\+Type$<$ uint64\+\_\+t $>$\+::type \mbox{\hyperlink{classlogi_1_1_swapchain_k_h_r_ae8977f168e1660cfc6bd39d728434419}{get\+Counter\+E\+XT}} (vk\+::\+Surface\+Counter\+Flag\+Bits\+E\+XT counter) const
+\item 
+vk\+::\+Result \mbox{\hyperlink{classlogi_1_1_swapchain_k_h_r_a979beecf2761f95cf2f321102f08211b}{get\+Status\+K\+HR}} () const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_swapchain_k_h_r_ae7679f5f6c4175ddfadbdfe8575dc44d}{set\+Local\+Dimming\+A\+MD}} (vk\+::\+Bool32 local\+Dimming\+Enable) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Past\+Presentation\+Timing\+G\+O\+O\+G\+LE $>$ $>$\+::type \mbox{\hyperlink{classlogi_1_1_swapchain_k_h_r_aadf3e4d57f5f3451ff3fffb68ecc60c0}{get\+Past\+Presentation\+Timing\+G\+O\+O\+G\+LE}} () const
+\item 
+vk\+::\+Result\+Value\+Type$<$ vk\+::\+Refresh\+Cycle\+Duration\+G\+O\+O\+G\+LE $>$\+::type \mbox{\hyperlink{classlogi_1_1_swapchain_k_h_r_a08d8846de14ae6c6625a5c532678a984}{get\+Refresh\+Cycle\+Duration\+G\+O\+O\+G\+LE}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_vulkan_instance}{Vulkan\+Instance}} \mbox{\hyperlink{classlogi_1_1_swapchain_k_h_r_a1dc36204b983ffb8cab129e5d5b222f1}{get\+Instance}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_physical_device}{Physical\+Device}} \mbox{\hyperlink{classlogi_1_1_swapchain_k_h_r_a58435a312ad9f3b39c8d1e0fc998b7e4}{get\+Physical\+Device}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_logical_device}{Logical\+Device}} \mbox{\hyperlink{classlogi_1_1_swapchain_k_h_r_a30ed020a9a3c27417584db96de5559a5}{get\+Logical\+Device}} () const
+\item 
+const vk\+::\+Dispatch\+Loader\+Dynamic \& \mbox{\hyperlink{classlogi_1_1_swapchain_k_h_r_a4b4204d2a9c201ca8674f45035fdfd6d}{get\+Dispatcher}} () const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_swapchain_k_h_r_a13f48b2b02551630456c837bd98b05b8}{destroy}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_swapchain_k_h_r_aa9c24dc4f61e059143c9c398dca61b00}{operator const vk\+::\+Swapchain\+K\+H\+R \&}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_swapchain_k_h_r_a573850795cef46e5e0c9acc997cce250}{Handle}} ()=default
+\begin{DoxyCompactList}\small\item\em Default null handle constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classlogi_1_1_swapchain_k_h_r_afd9a0687dd950205ac03c19afca4c553}{Handle}} (std\+::shared\+\_\+ptr$<$ T $>$ object)
+\begin{DoxyCompactList}\small\item\em Initialize the referred object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogi_1_1_swapchain_k_h_r_a8c3e364002575c124e9aef5b3b76b090}\label{classlogi_1_1_swapchain_k_h_r_a8c3e364002575c124e9aef5b3b76b090}} 
+\index{logi::SwapchainKHR@{logi::SwapchainKHR}!acquireNextImage2KHR@{acquireNextImage2KHR}}
+\index{acquireNextImage2KHR@{acquireNextImage2KHR}!logi::SwapchainKHR@{logi::SwapchainKHR}}
+\doxysubsubsection{\texorpdfstring{acquireNextImage2KHR()}{acquireNextImage2KHR()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value$<$ uint32\+\_\+t $>$ logi\+::\+Swapchain\+K\+H\+R\+::acquire\+Next\+Image2\+K\+HR (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{timeout,  }\item[{const vk\+::\+Semaphore \&}]{semaphore,  }\item[{const vk\+::\+Fence \&}]{fence,  }\item[{uint32\+\_\+t}]{device\+Mask,  }\item[{const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Acquire\+Next\+Image\+Info\+K\+HR $>$ \&}]{next = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_swapchain_k_h_r_acc5b6bd06b6719ee78eead89184cbe44}\label{classlogi_1_1_swapchain_k_h_r_acc5b6bd06b6719ee78eead89184cbe44}} 
+\index{logi::SwapchainKHR@{logi::SwapchainKHR}!acquireNextImageKHR@{acquireNextImageKHR}}
+\index{acquireNextImageKHR@{acquireNextImageKHR}!logi::SwapchainKHR@{logi::SwapchainKHR}}
+\doxysubsubsection{\texorpdfstring{acquireNextImageKHR()}{acquireNextImageKHR()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value$<$ uint32\+\_\+t $>$ logi\+::\+Swapchain\+K\+H\+R\+::acquire\+Next\+Image\+K\+HR (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{timeout,  }\item[{const vk\+::\+Semaphore \&}]{semaphore,  }\item[{const vk\+::\+Fence \&}]{fence }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_swapchain_k_h_r_a13f48b2b02551630456c837bd98b05b8}\label{classlogi_1_1_swapchain_k_h_r_a13f48b2b02551630456c837bd98b05b8}} 
+\index{logi::SwapchainKHR@{logi::SwapchainKHR}!destroy@{destroy}}
+\index{destroy@{destroy}!logi::SwapchainKHR@{logi::SwapchainKHR}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily void logi\+::\+Swapchain\+K\+H\+R\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_swapchain_k_h_r_ae8977f168e1660cfc6bd39d728434419}\label{classlogi_1_1_swapchain_k_h_r_ae8977f168e1660cfc6bd39d728434419}} 
+\index{logi::SwapchainKHR@{logi::SwapchainKHR}!getCounterEXT@{getCounterEXT}}
+\index{getCounterEXT@{getCounterEXT}!logi::SwapchainKHR@{logi::SwapchainKHR}}
+\doxysubsubsection{\texorpdfstring{getCounterEXT()}{getCounterEXT()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ uint64\+\_\+t $>$\+::type logi\+::\+Swapchain\+K\+H\+R\+::get\+Counter\+E\+XT (\begin{DoxyParamCaption}\item[{vk\+::\+Surface\+Counter\+Flag\+Bits\+E\+XT}]{counter }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_swapchain_k_h_r_a4b4204d2a9c201ca8674f45035fdfd6d}\label{classlogi_1_1_swapchain_k_h_r_a4b4204d2a9c201ca8674f45035fdfd6d}} 
+\index{logi::SwapchainKHR@{logi::SwapchainKHR}!getDispatcher@{getDispatcher}}
+\index{getDispatcher@{getDispatcher}!logi::SwapchainKHR@{logi::SwapchainKHR}}
+\doxysubsubsection{\texorpdfstring{getDispatcher()}{getDispatcher()}}
+{\footnotesize\ttfamily const vk\+::\+Dispatch\+Loader\+Dynamic \& logi\+::\+Swapchain\+K\+H\+R\+::get\+Dispatcher (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_swapchain_k_h_r_a0b93d722bf9da626f6cf01162af0a973}\label{classlogi_1_1_swapchain_k_h_r_a0b93d722bf9da626f6cf01162af0a973}} 
+\index{logi::SwapchainKHR@{logi::SwapchainKHR}!getImagesKHR@{getImagesKHR}}
+\index{getImagesKHR@{getImagesKHR}!logi::SwapchainKHR@{logi::SwapchainKHR}}
+\doxysubsubsection{\texorpdfstring{getImagesKHR()}{getImagesKHR()}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{classlogi_1_1_swapchain_image}{Swapchain\+Image}} $>$ logi\+::\+Swapchain\+K\+H\+R\+::get\+Images\+K\+HR (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_swapchain_k_h_r_a1dc36204b983ffb8cab129e5d5b222f1}\label{classlogi_1_1_swapchain_k_h_r_a1dc36204b983ffb8cab129e5d5b222f1}} 
+\index{logi::SwapchainKHR@{logi::SwapchainKHR}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!logi::SwapchainKHR@{logi::SwapchainKHR}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_vulkan_instance}{Vulkan\+Instance}} logi\+::\+Swapchain\+K\+H\+R\+::get\+Instance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_swapchain_k_h_r_a30ed020a9a3c27417584db96de5559a5}\label{classlogi_1_1_swapchain_k_h_r_a30ed020a9a3c27417584db96de5559a5}} 
+\index{logi::SwapchainKHR@{logi::SwapchainKHR}!getLogicalDevice@{getLogicalDevice}}
+\index{getLogicalDevice@{getLogicalDevice}!logi::SwapchainKHR@{logi::SwapchainKHR}}
+\doxysubsubsection{\texorpdfstring{getLogicalDevice()}{getLogicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_logical_device}{Logical\+Device}} logi\+::\+Swapchain\+K\+H\+R\+::get\+Logical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_swapchain_k_h_r_aadf3e4d57f5f3451ff3fffb68ecc60c0}\label{classlogi_1_1_swapchain_k_h_r_aadf3e4d57f5f3451ff3fffb68ecc60c0}} 
+\index{logi::SwapchainKHR@{logi::SwapchainKHR}!getPastPresentationTimingGOOGLE@{getPastPresentationTimingGOOGLE}}
+\index{getPastPresentationTimingGOOGLE@{getPastPresentationTimingGOOGLE}!logi::SwapchainKHR@{logi::SwapchainKHR}}
+\doxysubsubsection{\texorpdfstring{getPastPresentationTimingGOOGLE()}{getPastPresentationTimingGOOGLE()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ vk\+::\+Past\+Presentation\+Timing\+G\+O\+O\+G\+LE $>$ $>$\+::type logi\+::\+Swapchain\+K\+H\+R\+::get\+Past\+Presentation\+Timing\+G\+O\+O\+G\+LE (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_swapchain_k_h_r_a58435a312ad9f3b39c8d1e0fc998b7e4}\label{classlogi_1_1_swapchain_k_h_r_a58435a312ad9f3b39c8d1e0fc998b7e4}} 
+\index{logi::SwapchainKHR@{logi::SwapchainKHR}!getPhysicalDevice@{getPhysicalDevice}}
+\index{getPhysicalDevice@{getPhysicalDevice}!logi::SwapchainKHR@{logi::SwapchainKHR}}
+\doxysubsubsection{\texorpdfstring{getPhysicalDevice()}{getPhysicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_physical_device}{Physical\+Device}} logi\+::\+Swapchain\+K\+H\+R\+::get\+Physical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_swapchain_k_h_r_a08d8846de14ae6c6625a5c532678a984}\label{classlogi_1_1_swapchain_k_h_r_a08d8846de14ae6c6625a5c532678a984}} 
+\index{logi::SwapchainKHR@{logi::SwapchainKHR}!getRefreshCycleDurationGOOGLE@{getRefreshCycleDurationGOOGLE}}
+\index{getRefreshCycleDurationGOOGLE@{getRefreshCycleDurationGOOGLE}!logi::SwapchainKHR@{logi::SwapchainKHR}}
+\doxysubsubsection{\texorpdfstring{getRefreshCycleDurationGOOGLE()}{getRefreshCycleDurationGOOGLE()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ vk\+::\+Refresh\+Cycle\+Duration\+G\+O\+O\+G\+LE $>$\+::type logi\+::\+Swapchain\+K\+H\+R\+::get\+Refresh\+Cycle\+Duration\+G\+O\+O\+G\+LE (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_swapchain_k_h_r_a979beecf2761f95cf2f321102f08211b}\label{classlogi_1_1_swapchain_k_h_r_a979beecf2761f95cf2f321102f08211b}} 
+\index{logi::SwapchainKHR@{logi::SwapchainKHR}!getStatusKHR@{getStatusKHR}}
+\index{getStatusKHR@{getStatusKHR}!logi::SwapchainKHR@{logi::SwapchainKHR}}
+\doxysubsubsection{\texorpdfstring{getStatusKHR()}{getStatusKHR()}}
+{\footnotesize\ttfamily vk\+::\+Result logi\+::\+Swapchain\+K\+H\+R\+::get\+Status\+K\+HR (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_swapchain_k_h_r_a573850795cef46e5e0c9acc997cce250}\label{classlogi_1_1_swapchain_k_h_r_a573850795cef46e5e0c9acc997cce250}} 
+\index{logi::SwapchainKHR@{logi::SwapchainKHR}!Handle@{Handle}}
+\index{Handle@{Handle}!logi::SwapchainKHR@{logi::SwapchainKHR}}
+\doxysubsubsection{\texorpdfstring{Handle()}{Handle()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_handle}{logi\+::\+Handle}}$<$ T $>$\+::\mbox{\hyperlink{classlogi_1_1_handle}{Handle}}\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+Default null handle constructor. 
+
+\mbox{\Hypertarget{classlogi_1_1_swapchain_k_h_r_afd9a0687dd950205ac03c19afca4c553}\label{classlogi_1_1_swapchain_k_h_r_afd9a0687dd950205ac03c19afca4c553}} 
+\index{logi::SwapchainKHR@{logi::SwapchainKHR}!Handle@{Handle}}
+\index{Handle@{Handle}!logi::SwapchainKHR@{logi::SwapchainKHR}}
+\doxysubsubsection{\texorpdfstring{Handle()}{Handle()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_handle}{logi\+::\+Handle}}$<$ T $>$\+::\mbox{\hyperlink{classlogi_1_1_handle}{Handle}}\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Initialize the referred object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & Referred object. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlogi_1_1_swapchain_k_h_r_aa9c24dc4f61e059143c9c398dca61b00}\label{classlogi_1_1_swapchain_k_h_r_aa9c24dc4f61e059143c9c398dca61b00}} 
+\index{logi::SwapchainKHR@{logi::SwapchainKHR}!operator const vk::SwapchainKHR \&@{operator const vk::SwapchainKHR \&}}
+\index{operator const vk::SwapchainKHR \&@{operator const vk::SwapchainKHR \&}!logi::SwapchainKHR@{logi::SwapchainKHR}}
+\doxysubsubsection{\texorpdfstring{operator const vk::SwapchainKHR \&()}{operator const vk::SwapchainKHR \&()}}
+{\footnotesize\ttfamily logi\+::\+Swapchain\+K\+H\+R\+::operator const vk\+::\+Swapchain\+K\+HR \& (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_swapchain_k_h_r_ae7679f5f6c4175ddfadbdfe8575dc44d}\label{classlogi_1_1_swapchain_k_h_r_ae7679f5f6c4175ddfadbdfe8575dc44d}} 
+\index{logi::SwapchainKHR@{logi::SwapchainKHR}!setLocalDimmingAMD@{setLocalDimmingAMD}}
+\index{setLocalDimmingAMD@{setLocalDimmingAMD}!logi::SwapchainKHR@{logi::SwapchainKHR}}
+\doxysubsubsection{\texorpdfstring{setLocalDimmingAMD()}{setLocalDimmingAMD()}}
+{\footnotesize\ttfamily void logi\+::\+Swapchain\+K\+H\+R\+::set\+Local\+Dimming\+A\+MD (\begin{DoxyParamCaption}\item[{vk\+::\+Bool32}]{local\+Dimming\+Enable }\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+logi/swapchain/\mbox{\hyperlink{swapchain__khr_8hpp}{swapchain\+\_\+khr.\+hpp}}\item 
+C\+:/\+Users/aljaz/\+Documents/\+Visual\+Studio\+Code\+Projects/\+Logi/src/logi/swapchain/\mbox{\hyperlink{swapchain__khr_8cpp}{swapchain\+\_\+khr.\+cpp}}\end{DoxyCompactItemize}

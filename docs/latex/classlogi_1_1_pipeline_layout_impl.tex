@@ -1,0 +1,114 @@
+\hypertarget{classlogi_1_1_pipeline_layout_impl}{}\doxysection{logi\+::Pipeline\+Layout\+Impl Class Reference}
+\label{classlogi_1_1_pipeline_layout_impl}\index{logi::PipelineLayoutImpl@{logi::PipelineLayoutImpl}}
+
+
+{\ttfamily \#include $<$pipeline\+\_\+layout\+\_\+impl.\+hpp$>$}
+
+
+
+Inheritance diagram for logi\+::Pipeline\+Layout\+Impl\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=328pt]{classlogi_1_1_pipeline_layout_impl__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for logi\+::Pipeline\+Layout\+Impl\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=328pt]{classlogi_1_1_pipeline_layout_impl__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlogi_1_1_pipeline_layout_impl_a4b03c685f61114c826ced572133de2b0}{Pipeline\+Layout\+Impl}} (\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \&logical\+Device, const vk\+::\+Pipeline\+Layout\+Create\+Info \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\})
+\item 
+\mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl}{Vulkan\+Instance\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_pipeline_layout_impl_af4c34922ac4b57ddca33a649a9a16178}{get\+Instance}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_physical_device_impl}{Physical\+Device\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_pipeline_layout_impl_accc862f383f9ab6dd51c11040a2dd00c}{get\+Physical\+Device}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_pipeline_layout_impl_a76cfb37d2e6aea0de8794dffb4789b37}{get\+Logical\+Device}} () const
+\item 
+const vk\+::\+Dispatch\+Loader\+Dynamic \& \mbox{\hyperlink{classlogi_1_1_pipeline_layout_impl_a144f9f1c99e31a1895b368247fa9bd1b}{get\+Dispatcher}} () const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_pipeline_layout_impl_a37192aac0dac3cf68a4f2a8db2f68856}{destroy}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_pipeline_layout_impl_a9ce13411302d50f573cb1221fccfca92}{operator const vk\+::\+Pipeline\+Layout \&}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classlogi_1_1_pipeline_layout_impl_ab0f4a46ccf68fd71492971d73a28976c}{free}} () override
+\begin{DoxyCompactList}\small\item\em Invalidates \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. Overriding implementations should free the object\textquotesingle{}s resources and invoke \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}\textquotesingle{}s free. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlogi_1_1_pipeline_layout_impl_a4b03c685f61114c826ced572133de2b0}\label{classlogi_1_1_pipeline_layout_impl_a4b03c685f61114c826ced572133de2b0}} 
+\index{logi::PipelineLayoutImpl@{logi::PipelineLayoutImpl}!PipelineLayoutImpl@{PipelineLayoutImpl}}
+\index{PipelineLayoutImpl@{PipelineLayoutImpl}!logi::PipelineLayoutImpl@{logi::PipelineLayoutImpl}}
+\doxysubsubsection{\texorpdfstring{PipelineLayoutImpl()}{PipelineLayoutImpl()}}
+{\footnotesize\ttfamily logi\+::\+Pipeline\+Layout\+Impl\+::\+Pipeline\+Layout\+Impl (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \&}]{logical\+Device,  }\item[{const vk\+::\+Pipeline\+Layout\+Create\+Info \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogi_1_1_pipeline_layout_impl_a37192aac0dac3cf68a4f2a8db2f68856}\label{classlogi_1_1_pipeline_layout_impl_a37192aac0dac3cf68a4f2a8db2f68856}} 
+\index{logi::PipelineLayoutImpl@{logi::PipelineLayoutImpl}!destroy@{destroy}}
+\index{destroy@{destroy}!logi::PipelineLayoutImpl@{logi::PipelineLayoutImpl}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily void logi\+::\+Pipeline\+Layout\+Impl\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_pipeline_layout_impl_ab0f4a46ccf68fd71492971d73a28976c}\label{classlogi_1_1_pipeline_layout_impl_ab0f4a46ccf68fd71492971d73a28976c}} 
+\index{logi::PipelineLayoutImpl@{logi::PipelineLayoutImpl}!free@{free}}
+\index{free@{free}!logi::PipelineLayoutImpl@{logi::PipelineLayoutImpl}}
+\doxysubsubsection{\texorpdfstring{free()}{free()}}
+{\footnotesize\ttfamily void logi\+::\+Pipeline\+Layout\+Impl\+::free (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Invalidates \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. Overriding implementations should free the object\textquotesingle{}s resources and invoke \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}\textquotesingle{}s free. 
+
+
+
+Reimplemented from \mbox{\hyperlink{classlogi_1_1_vulkan_object_a7a5cafb30933f8bbd0d4e89e14477f4a}{logi\+::\+Vulkan\+Object}}.
+
+\mbox{\Hypertarget{classlogi_1_1_pipeline_layout_impl_a144f9f1c99e31a1895b368247fa9bd1b}\label{classlogi_1_1_pipeline_layout_impl_a144f9f1c99e31a1895b368247fa9bd1b}} 
+\index{logi::PipelineLayoutImpl@{logi::PipelineLayoutImpl}!getDispatcher@{getDispatcher}}
+\index{getDispatcher@{getDispatcher}!logi::PipelineLayoutImpl@{logi::PipelineLayoutImpl}}
+\doxysubsubsection{\texorpdfstring{getDispatcher()}{getDispatcher()}}
+{\footnotesize\ttfamily const vk\+::\+Dispatch\+Loader\+Dynamic \& logi\+::\+Pipeline\+Layout\+Impl\+::get\+Dispatcher (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_pipeline_layout_impl_af4c34922ac4b57ddca33a649a9a16178}\label{classlogi_1_1_pipeline_layout_impl_af4c34922ac4b57ddca33a649a9a16178}} 
+\index{logi::PipelineLayoutImpl@{logi::PipelineLayoutImpl}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!logi::PipelineLayoutImpl@{logi::PipelineLayoutImpl}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl}{Vulkan\+Instance\+Impl}} \& logi\+::\+Pipeline\+Layout\+Impl\+::get\+Instance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_pipeline_layout_impl_a76cfb37d2e6aea0de8794dffb4789b37}\label{classlogi_1_1_pipeline_layout_impl_a76cfb37d2e6aea0de8794dffb4789b37}} 
+\index{logi::PipelineLayoutImpl@{logi::PipelineLayoutImpl}!getLogicalDevice@{getLogicalDevice}}
+\index{getLogicalDevice@{getLogicalDevice}!logi::PipelineLayoutImpl@{logi::PipelineLayoutImpl}}
+\doxysubsubsection{\texorpdfstring{getLogicalDevice()}{getLogicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \& logi\+::\+Pipeline\+Layout\+Impl\+::get\+Logical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_pipeline_layout_impl_accc862f383f9ab6dd51c11040a2dd00c}\label{classlogi_1_1_pipeline_layout_impl_accc862f383f9ab6dd51c11040a2dd00c}} 
+\index{logi::PipelineLayoutImpl@{logi::PipelineLayoutImpl}!getPhysicalDevice@{getPhysicalDevice}}
+\index{getPhysicalDevice@{getPhysicalDevice}!logi::PipelineLayoutImpl@{logi::PipelineLayoutImpl}}
+\doxysubsubsection{\texorpdfstring{getPhysicalDevice()}{getPhysicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_physical_device_impl}{Physical\+Device\+Impl}} \& logi\+::\+Pipeline\+Layout\+Impl\+::get\+Physical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_pipeline_layout_impl_a9ce13411302d50f573cb1221fccfca92}\label{classlogi_1_1_pipeline_layout_impl_a9ce13411302d50f573cb1221fccfca92}} 
+\index{logi::PipelineLayoutImpl@{logi::PipelineLayoutImpl}!operator const vk::PipelineLayout \&@{operator const vk::PipelineLayout \&}}
+\index{operator const vk::PipelineLayout \&@{operator const vk::PipelineLayout \&}!logi::PipelineLayoutImpl@{logi::PipelineLayoutImpl}}
+\doxysubsubsection{\texorpdfstring{operator const vk::PipelineLayout \&()}{operator const vk::PipelineLayout \&()}}
+{\footnotesize\ttfamily logi\+::\+Pipeline\+Layout\+Impl\+::operator const vk\+::\+Pipeline\+Layout \& (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+logi/program/\mbox{\hyperlink{pipeline__layout__impl_8hpp}{pipeline\+\_\+layout\+\_\+impl.\+hpp}}\item 
+C\+:/\+Users/aljaz/\+Documents/\+Visual\+Studio\+Code\+Projects/\+Logi/src/logi/program/\mbox{\hyperlink{pipeline__layout__impl_8cpp}{pipeline\+\_\+layout\+\_\+impl.\+cpp}}\end{DoxyCompactItemize}

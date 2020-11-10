@@ -1,0 +1,746 @@
+\hypertarget{classlogi_1_1_logical_device}{}\doxysection{logi\+::Logical\+Device Class Reference}
+\label{classlogi_1_1_logical_device}\index{logi::LogicalDevice@{logi::LogicalDevice}}
+
+
+{\ttfamily \#include $<$logical\+\_\+device.\+hpp$>$}
+
+
+
+Inheritance diagram for logi\+::Logical\+Device\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{classlogi_1_1_logical_device__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for logi\+::Logical\+Device\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{classlogi_1_1_logical_device__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlogi_1_1_memory_allocator}{Memory\+Allocator}} \mbox{\hyperlink{classlogi_1_1_logical_device_a1023c831f3238434f406f22755e42855}{create\+Memory\+Allocator}} (vk\+::\+Device\+Size preferred\+Large\+Heap\+Block\+Size=0u, uint32\+\_\+t frame\+In\+Use\+Count=0u, const std\+::vector$<$ vk\+::\+Device\+Size $>$ \&heap\+Size\+Limits=\{\}, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_a38535a79656e6bf223adba21b548379a}{destroy\+Memory\+Allocator}} (const \mbox{\hyperlink{classlogi_1_1_memory_allocator}{Memory\+Allocator}} \&memory\+Allocator) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_device_memory}{Device\+Memory}} \mbox{\hyperlink{classlogi_1_1_logical_device_a061e24cb2694fc013546ee266a10e840}{allocate\+Memory}} (const vk\+::\+Memory\+Allocate\+Info \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_a451d7f80a9a49225850487fb175edf89}{free\+Memory}} (const \mbox{\hyperlink{classlogi_1_1_device_memory}{Device\+Memory}} \&device\+Memory) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_buffer}{Buffer}} \mbox{\hyperlink{classlogi_1_1_logical_device_a2596e6267f993bbe482ddacfcf4cb270}{create\+Buffer}} (const vk\+::\+Buffer\+Create\+Info \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_aef3fc7541f6f4f96f7f3d982ebd5840c}{destroy\+Buffer}} (const \mbox{\hyperlink{classlogi_1_1_buffer}{Buffer}} \&buffer) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_image}{Image}} \mbox{\hyperlink{classlogi_1_1_logical_device_a229c32bea27d50f5778bffe2f13ba894}{create\+Image}} (const vk\+::\+Image\+Create\+Info \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateImage.html}{\texttt{ vk\+Create\+Image}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_a1757c53096a18bd554a828393342b9e8}{destroy\+Image}} (const \mbox{\hyperlink{classlogi_1_1_image}{Image}} \&image) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroyImage.html}{\texttt{ vk\+Destroy\+Image}} \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classlogi_1_1_sampler}{Sampler}} \mbox{\hyperlink{classlogi_1_1_logical_device_a6427270083e61e8f5be9db488d14a6a8}{create\+Sampler}} (const vk\+::\+Sampler\+Create\+Info \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateSampler.html}{\texttt{ vk\+Create\+Sampler}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_af163c46b6fa4baaf06f69a9c762636c4}{destroy\+Sampler}} (const \mbox{\hyperlink{classlogi_1_1_sampler}{Sampler}} \&sampler) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroySampler.html}{\texttt{ vk\+Destroy\+Sampler}} \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classlogi_1_1_sampler_ycbcr_conversion}{Sampler\+Ycbcr\+Conversion}} \mbox{\hyperlink{classlogi_1_1_logical_device_a2112ca69f609b905e47d58a6e4dc6cf2}{create\+Sampler\+Ycbcr\+Conversion}} (const vk\+::\+Sampler\+Ycbcr\+Conversion\+Create\+Info \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateSamplerYcbcrConversion.html}{\texttt{ vk\+Create\+Sampler\+Ycbcr\+Conversion}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_a49072428f9b08961a33180df14e2a88f}{destroy\+Sampler\+Ycbcr\+Conversion}} (const \mbox{\hyperlink{classlogi_1_1_sampler_ycbcr_conversion}{Sampler\+Ycbcr\+Conversion}} \&sampler\+Ycbcr\+Conversion) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroySamplerYcbcrConversion.html}{\texttt{ vk\+Destroy\+Sampler\+Ycbcr\+Conversion}} \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classlogi_1_1_shader_module}{Shader\+Module}} \mbox{\hyperlink{classlogi_1_1_logical_device_a4d9695ba7786945b884b2430c9db7bd4}{create\+Shader\+Module}} (const vk\+::\+Shader\+Module\+Create\+Info \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_a020255d6f81db7e9bbcfbf6b47459042}{destroy\+Shader\+Module}} (const \mbox{\hyperlink{classlogi_1_1_shader_module}{Shader\+Module}} \&shader\+Module) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_pipeline_cache}{Pipeline\+Cache}} \mbox{\hyperlink{classlogi_1_1_logical_device_ab59742e305855efa35c73da78f912695}{create\+Pipeline\+Cache}} (const vk\+::\+Pipeline\+Cache\+Create\+Info \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_a809d04324dfba92ba6af2c44c0185076}{destroy\+Pipeline\+Cache}} (const \mbox{\hyperlink{classlogi_1_1_pipeline_cache}{Pipeline\+Cache}} \&pipeline\+Cache) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_descriptor_set_layout}{Descriptor\+Set\+Layout}} \mbox{\hyperlink{classlogi_1_1_logical_device_a562142bd5070e88fcc7872f683760f29}{create\+Descriptor\+Set\+Layout}} (const vk\+::\+Descriptor\+Set\+Layout\+Create\+Info \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_a67935e874495aa3d7e3c72c117e67bc5}{destroy\+Descriptor\+Set\+Layout}} (const \mbox{\hyperlink{classlogi_1_1_descriptor_set_layout}{Descriptor\+Set\+Layout}} \&descriptor\+Set\+Layout) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_descriptor_pool}{Descriptor\+Pool}} \mbox{\hyperlink{classlogi_1_1_logical_device_a59969879f1229b813bd97294d30e01ea}{create\+Descriptor\+Pool}} (const vk\+::\+Descriptor\+Pool\+Create\+Info \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_a47de66220fd4ea788d09151381996e76}{destroy\+Descriptor\+Pool}} (const \mbox{\hyperlink{classlogi_1_1_descriptor_pool}{Descriptor\+Pool}} \&descriptor\+Pool) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_pipeline_layout}{Pipeline\+Layout}} \mbox{\hyperlink{classlogi_1_1_logical_device_a7604d69225c6a4cb7f5f117fef7c6698}{create\+Pipeline\+Layout}} (const vk\+::\+Pipeline\+Layout\+Create\+Info \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_a30f4b36f0ccce41b6089ae78992d493a}{destroy\+Pipeline\+Layout}} (const \mbox{\hyperlink{classlogi_1_1_pipeline_layout}{Pipeline\+Layout}} \&pipeline\+Layout) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_descriptor_update_template}{Descriptor\+Update\+Template}} \mbox{\hyperlink{classlogi_1_1_logical_device_aa362a20fef16fe2272543552787e1d0e}{create\+Descriptor\+Update\+Template}} (const vk\+::\+Descriptor\+Update\+Template\+Create\+Info \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_a0b5588d0d2b16c3ab38c2640499f9094}{destroy\+Descriptor\+Update\+Template}} (const \mbox{\hyperlink{classlogi_1_1_descriptor_update_template}{Descriptor\+Update\+Template}} \&descriptor\+Update\+Template) const
+\item 
+std\+::vector$<$ \mbox{\hyperlink{classlogi_1_1_pipeline}{Pipeline}} $>$ \mbox{\hyperlink{classlogi_1_1_logical_device_a296db01429b7e746f25930bdcdeb2957}{create\+Compute\+Pipelines}} (const vk\+::\+Array\+Proxy$<$ const vk\+::\+Compute\+Pipeline\+Create\+Info $>$ \&create\+Infos, const vk\+::\+Pipeline\+Cache \&cache=nullptr, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_pipeline}{Pipeline}} \mbox{\hyperlink{classlogi_1_1_logical_device_afd11d2370d920c47428c295e77b371b8}{create\+Compute\+Pipeline}} (const vk\+::\+Compute\+Pipeline\+Create\+Info \&create\+Info, const vk\+::\+Pipeline\+Cache \&cache=nullptr, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+std\+::vector$<$ \mbox{\hyperlink{classlogi_1_1_pipeline}{Pipeline}} $>$ \mbox{\hyperlink{classlogi_1_1_logical_device_ad1f2630d3c0088854da0cd9d49d9914d}{create\+Graphics\+Pipelines}} (const vk\+::\+Array\+Proxy$<$ const vk\+::\+Graphics\+Pipeline\+Create\+Info $>$ \&create\+Infos, const vk\+::\+Pipeline\+Cache \&cache=nullptr, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_pipeline}{Pipeline}} \mbox{\hyperlink{classlogi_1_1_logical_device_a97b2706a7087d4c3c75f54411efd9fd9}{create\+Graphics\+Pipeline}} (const vk\+::\+Graphics\+Pipeline\+Create\+Info \&create\+Info, const vk\+::\+Pipeline\+Cache \&cache=nullptr, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+std\+::vector$<$ \mbox{\hyperlink{classlogi_1_1_pipeline}{Pipeline}} $>$ \mbox{\hyperlink{classlogi_1_1_logical_device_a48b46b3f5b7b6d993731cad1c4a5c9ea}{create\+Ray\+Tracing\+Pipelines\+NV}} (const vk\+::\+Array\+Proxy$<$ const vk\+::\+Ray\+Tracing\+Pipeline\+Create\+Info\+NV $>$ \&create\+Infos, const vk\+::\+Pipeline\+Cache \&cache=nullptr, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_pipeline}{Pipeline}} \mbox{\hyperlink{classlogi_1_1_logical_device_ad0016835d66d94051bc0675dc4f99459}{create\+Ray\+Tracing\+Pipeline\+NV}} (const vk\+::\+Ray\+Tracing\+Pipeline\+Create\+Info\+NV \&create\+Info, const vk\+::\+Pipeline\+Cache \&cache=nullptr, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_ae7d8f6d795feb43d007ed83f6595ccf7}{destroy\+Pipeline}} (const \mbox{\hyperlink{classlogi_1_1_pipeline}{Pipeline}} \&pipeline) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_query_pool}{Query\+Pool}} \mbox{\hyperlink{classlogi_1_1_logical_device_a87949fa07d1b97f582f4f535512ed5bf}{create\+Query\+Pool}} (const vk\+::\+Query\+Pool\+Create\+Info \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_a7174cc44d2a8555eae57a43727c94752}{destroy\+Query\+Pool}} (const \mbox{\hyperlink{classlogi_1_1_query_pool}{Query\+Pool}} \&query\+Pool) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_event}{Event}} \mbox{\hyperlink{classlogi_1_1_logical_device_accc5b45a260d9cce25f071a4437917fc}{create\+Event}} (const vk\+::\+Event\+Create\+Info \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_ab7a0dbd53d0f7e00d0d0dbe0b335fe54}{destroy\+Event}} (const \mbox{\hyperlink{classlogi_1_1_event}{Event}} \&event) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_fence}{Fence}} \mbox{\hyperlink{classlogi_1_1_logical_device_a1da1ba58dfdd8acc9885d18696a34331}{create\+Fence}} (const vk\+::\+Fence\+Create\+Info \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_fence}{Fence}} \mbox{\hyperlink{classlogi_1_1_logical_device_ac28de2ccb81cb053b86644e3b9d94354}{register\+Event\+E\+XT}} (const vk\+::\+Device\+Event\+Info\+E\+XT \&event\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_fence}{Fence}} \mbox{\hyperlink{classlogi_1_1_logical_device_a755619c5adcfd89f5cbfa3fb73f83e9c}{register\+Display\+Event\+E\+XT}} (const vk\+::\+Display\+K\+HR \&display, const vk\+::\+Display\+Event\+Info\+E\+XT \&event\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_a76ab7ace22792955ced49e429ca10049}{destroy\+Fence}} (const \mbox{\hyperlink{classlogi_1_1_fence}{Fence}} \&fence) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_semaphore}{Semaphore}} \mbox{\hyperlink{classlogi_1_1_logical_device_a5b9a9fe101fa07d551e0380255b0c8a8}{create\+Semaphore}} (const vk\+::\+Semaphore\+Create\+Info \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_a88b699205ca1348fa5a3932787ef47fa}{destroy\+Semaphore}} (const \mbox{\hyperlink{classlogi_1_1_semaphore}{Semaphore}} \&semaphore) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_a2cfea5771b135f315a75e8ece20248ae}{wait\+Semaphores}} (const vk\+::\+Semaphore\+Wait\+Info \&wait\+Info, uint64\+\_\+t timeout) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_render_pass}{Render\+Pass}} \mbox{\hyperlink{classlogi_1_1_logical_device_a74b4d78966d5400dbf7f910a821edfda}{create\+Render\+Pass}} (const vk\+::\+Render\+Pass\+Create\+Info \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_render_pass}{Render\+Pass}} \mbox{\hyperlink{classlogi_1_1_logical_device_af731ce0ede7b04e90300f183c1463903}{create\+Render\+Pass2}} (const vk\+::\+Render\+Pass\+Create\+Info2 \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_render_pass}{Render\+Pass}} \mbox{\hyperlink{classlogi_1_1_logical_device_a4b84e16d624181ddc58af70584516a4b}{create\+Render\+Pass}} (const vk\+::\+Render\+Pass\+Create\+Info2\+K\+HR \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_a1da500462322c6eaf2ed5cd75b3b917b}{destroy\+Render\+Pass}} (const \mbox{\hyperlink{classlogi_1_1_render_pass}{Render\+Pass}} \&render\+Pass) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_framebuffer}{Framebuffer}} \mbox{\hyperlink{classlogi_1_1_logical_device_a50383cd93df1e99d76b30aaabb7d2e06}{create\+Framebuffer}} (const vk\+::\+Framebuffer\+Create\+Info \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_a023a754bc9a2e90e4e092f8b9c0f9c7f}{destroy\+Framebuffer}} (const \mbox{\hyperlink{classlogi_1_1_framebuffer}{Framebuffer}} \&framebuffer) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_swapchain_k_h_r}{Swapchain\+K\+HR}} \mbox{\hyperlink{classlogi_1_1_logical_device_adbdb2536722cb6be98d215365c1de422}{create\+Swapchain\+K\+HR}} (const vk\+::\+Swapchain\+Create\+Info\+K\+HR \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+std\+::vector$<$ \mbox{\hyperlink{classlogi_1_1_swapchain_k_h_r}{Swapchain\+K\+HR}} $>$ \mbox{\hyperlink{classlogi_1_1_logical_device_acc4db8929de65bc6ccaa33fbe7607587}{create\+Shared\+Swapchains\+K\+HR}} (const vk\+::\+Array\+Proxy$<$ const vk\+::\+Swapchain\+Create\+Info\+K\+HR $>$ \&create\+Infos, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_afd4aaae496799d6b2cd9f382636f6efc}{destroy\+Swapchain\+K\+HR}} (const \mbox{\hyperlink{classlogi_1_1_swapchain_k_h_r}{Swapchain\+K\+HR}} \&swapchain) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_validation_cache_e_x_t}{Validation\+Cache\+E\+XT}} \mbox{\hyperlink{classlogi_1_1_logical_device_a3455941101b3d4c8a4c84e4abaef3685}{create\+Validation\+Cache\+E\+XT}} (const vk\+::\+Validation\+Cache\+Create\+Info\+E\+XT \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_af4965ea998f839959727fecc6aa59adf}{destroy\+Validation\+Cache\+E\+XT}} (const \mbox{\hyperlink{classlogi_1_1_validation_cache_e_x_t}{Validation\+Cache\+E\+XT}} \&validation\+Cache\+Ext) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_acceleration_structure_n_v}{Acceleration\+Structure\+NV}} \mbox{\hyperlink{classlogi_1_1_logical_device_a66ab4f8fb49f303d919dacdeced4ff11}{create\+Acceleration\+Structure\+NV}} (const vk\+::\+Acceleration\+Structure\+Create\+Info\+NV \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_a9797653822a42e0790b4f895a62f70ab}{destroy\+Acceleration\+Structure\+NV}} (const \mbox{\hyperlink{classlogi_1_1_acceleration_structure_n_v}{Acceleration\+Structure\+NV}} \&acceleration\+Structure) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_indirect_commands_layout_n_v_x}{Indirect\+Commands\+Layout\+N\+VX}} \mbox{\hyperlink{classlogi_1_1_logical_device_a8b8e1df800f8636540e89982ee924d9b}{create\+Indirect\+Commands\+Layout\+N\+V\+X\+Indirect\+Commands\+Layout\+N\+VX}} (const vk\+::\+Indirect\+Commands\+Layout\+Create\+Info\+N\+VX \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_a73838c1cfe0fe0e903ce8b76b462a044}{destroy\+Indirect\+Commands\+Layout\+N\+VX}} (const \mbox{\hyperlink{classlogi_1_1_indirect_commands_layout_n_v_x}{Indirect\+Commands\+Layout\+N\+VX}} \&indirect\+Commands\+Layout) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_object_table_n_v_x}{Object\+Table\+N\+VX}} \mbox{\hyperlink{classlogi_1_1_logical_device_ad3a9f411d6d4b4534c56f430a2f4b538}{create\+Object\+Table\+N\+VX}} (const vk\+::\+Object\+Table\+Create\+Info\+N\+VX \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_a9f250756fa006adc457758d3561213fc}{destroy\+Object\+Table\+N\+VX}} (const \mbox{\hyperlink{classlogi_1_1_object_table_n_v_x}{Object\+Table\+N\+VX}} \&object\+Table) const
+\item 
+std\+::vector$<$ \mbox{\hyperlink{classlogi_1_1_queue_family}{Queue\+Family}} $>$ \mbox{\hyperlink{classlogi_1_1_logical_device_ad2c64e03374bb61fe40fd879fdfa71d8}{enumerate\+Queue\+Families}} () const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_a530c7d4336ed31e40836f2d3fb5e530b}{update\+Descriptor\+Sets}} (const vk\+::\+Array\+Proxy$<$ const vk\+::\+Write\+Descriptor\+Set $>$ \&descriptor\+Writes, const vk\+::\+Array\+Proxy$<$ const vk\+::\+Copy\+Descriptor\+Set $>$ \&descriptor\+Copies=\{\}) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_logical_device_a557503f3f5101fcf2c02477895069489}{set\+Debug\+Utils\+Object\+Name\+E\+XT}} (const vk\+::\+Debug\+Utils\+Object\+Name\+Info\+E\+XT \&name\+Info) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_logical_device_a5dc69e14e216a73641e3d95d13cf5c00}{set\+Debug\+Utils\+Object\+Tag\+E\+XT}} (const vk\+::\+Debug\+Utils\+Object\+Tag\+Info\+E\+XT \&tag\+Info) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_logical_device_a6067564394e4bd7ad890278ec53926e1}{debug\+Marker\+Set\+Object\+Name\+E\+XT}} (const vk\+::\+Debug\+Marker\+Object\+Name\+Info\+E\+XT \&name\+Info) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_logical_device_a8ff6a841e5dd07a69f65ffca5c63b732}{debug\+Marker\+Set\+Object\+Tag\+E\+XT}} (const vk\+::\+Debug\+Marker\+Object\+Tag\+Info\+E\+XT \&tag\+Info) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_logical_device_a18c1a84e68795b38316d08f771a0a283}{wait\+Idle}} () const
+\item 
+vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_logical_device_a2c88785fed52b9f7de2a7174ee16646a}{display\+Power\+Control\+E\+XT}} (const vk\+::\+Display\+K\+HR \&display, const vk\+::\+Display\+Power\+Info\+E\+XT \&power\+Info) const
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlogi_1_1_logical_device_a3bb069e6f02b29a3f4de4f6f67903168}{get\+Image\+View\+Handle\+N\+VX}} (const vk\+::\+Image\+View\+Handle\+Info\+N\+VX \&handle\+Info) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_logical_device_a9e427d64e0bb1a04a38d8630b7f937f3}{flush\+Mapped\+Memory\+Ranges}} (const vk\+::\+Array\+Proxy$<$ const vk\+::\+Mapped\+Memory\+Range $>$ \&memory\+Ranges=\{\}) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_logical_device_a26ee7d3b8c260e1eebc5f1933e48e618}{invalidate\+Mapped\+Memory\+Ranges}} (const vk\+::\+Array\+Proxy$<$ const vk\+::\+Mapped\+Memory\+Range $>$ \&memory\+Ranges=\{\}) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ uint64\+\_\+t $>$\+::type \mbox{\hyperlink{classlogi_1_1_logical_device_a4d6f4e5e7ebfea9839ff933d39bf93d4}{get\+Calibrated\+Timestamps\+E\+XT}} (const vk\+::\+Array\+Proxy$<$ const vk\+::\+Calibrated\+Timestamp\+Info\+E\+XT $>$ \&timestamp\+Infos, const vk\+::\+Array\+Proxy$<$ uint64\+\_\+t $>$ \&timestamps) const
+\item 
+vk\+::\+Descriptor\+Set\+Layout\+Support \mbox{\hyperlink{classlogi_1_1_logical_device_a8d4578f46dce81cd8af0f467e57e9646}{get\+Descriptor\+Set\+Layout\+Support}} (const vk\+::\+Descriptor\+Set\+Layout\+Create\+Info \&create\+Info) const
+\item 
+vk\+::\+Descriptor\+Set\+Layout\+Support\+K\+HR \mbox{\hyperlink{classlogi_1_1_logical_device_ab32ea3efb02e1c011c58d28a5b84c670}{get\+Descriptor\+Set\+Layout\+Support\+K\+HR}} (const vk\+::\+Descriptor\+Set\+Layout\+Create\+Info \&create\+Info) const
+\item 
+vk\+::\+Peer\+Memory\+Feature\+Flags \mbox{\hyperlink{classlogi_1_1_logical_device_a27e11b692ebcd6a7f22aa9994bda52e8}{get\+Group\+Peer\+Memory\+Features}} (uint32\+\_\+t heap\+Index, uint32\+\_\+t local\+Device\+Index, uint32\+\_\+t remote\+Device\+Index) const
+\item 
+vk\+::\+Peer\+Memory\+Feature\+Flags\+K\+HR \mbox{\hyperlink{classlogi_1_1_logical_device_a13f1f55eadda24f1c529c75c270478f2}{get\+Group\+Peer\+Memory\+Features\+K\+HR}} (uint32\+\_\+t heap\+Index, uint32\+\_\+t local\+Device\+Index, uint32\+\_\+t remote\+Device\+Index) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ vk\+::\+Device\+Group\+Present\+Capabilities\+K\+HR $>$\+::type \mbox{\hyperlink{classlogi_1_1_logical_device_aebd108e114d22302d20642041e2ad5d7}{get\+Group\+Present\+Capabilities\+K\+HR}} () const
+\item 
+P\+F\+N\+\_\+vk\+Void\+Function \mbox{\hyperlink{classlogi_1_1_logical_device_aed6d43d6761cf8274284c385a0a3b56a}{get\+Proc\+Addr}} (const std\+::string \&name) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_vulkan_instance}{Vulkan\+Instance}} \mbox{\hyperlink{classlogi_1_1_logical_device_abb030540999a8ad91bdb961b50e3dd35}{get\+Instance}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_physical_device}{Physical\+Device}} \mbox{\hyperlink{classlogi_1_1_logical_device_abec40bbeccbdce138bced39b4dc4012c}{get\+Physical\+Device}} () const
+\item 
+const vk\+::\+Dispatch\+Loader\+Dynamic \& \mbox{\hyperlink{classlogi_1_1_logical_device_ac5847f26036661ae7bca9ad440ff0bfe}{get\+Dispatcher}} () const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_logical_device_a48613c9d126630c08a08501215ef6061}{destroy}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_logical_device_a316566e06e0991196b0ce58f8182a4f5}{operator const vk\+::\+Device \&}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_logical_device_a573850795cef46e5e0c9acc997cce250}{Handle}} ()=default
+\begin{DoxyCompactList}\small\item\em Default null handle constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classlogi_1_1_logical_device_afd9a0687dd950205ac03c19afca4c553}{Handle}} (std\+::shared\+\_\+ptr$<$ T $>$ object)
+\begin{DoxyCompactList}\small\item\em Initialize the referred object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a061e24cb2694fc013546ee266a10e840}\label{classlogi_1_1_logical_device_a061e24cb2694fc013546ee266a10e840}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!allocateMemory@{allocateMemory}}
+\index{allocateMemory@{allocateMemory}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{allocateMemory()}{allocateMemory()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_device_memory}{Device\+Memory}} logi\+::\+Logical\+Device\+::allocate\+Memory (\begin{DoxyParamCaption}\item[{const vk\+::\+Memory\+Allocate\+Info \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a66ab4f8fb49f303d919dacdeced4ff11}\label{classlogi_1_1_logical_device_a66ab4f8fb49f303d919dacdeced4ff11}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createAccelerationStructureNV@{createAccelerationStructureNV}}
+\index{createAccelerationStructureNV@{createAccelerationStructureNV}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createAccelerationStructureNV()}{createAccelerationStructureNV()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_acceleration_structure_n_v}{Acceleration\+Structure\+NV}} logi\+::\+Logical\+Device\+::create\+Acceleration\+Structure\+NV (\begin{DoxyParamCaption}\item[{const vk\+::\+Acceleration\+Structure\+Create\+Info\+NV \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a2596e6267f993bbe482ddacfcf4cb270}\label{classlogi_1_1_logical_device_a2596e6267f993bbe482ddacfcf4cb270}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createBuffer@{createBuffer}}
+\index{createBuffer@{createBuffer}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createBuffer()}{createBuffer()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_buffer}{Buffer}} logi\+::\+Logical\+Device\+::create\+Buffer (\begin{DoxyParamCaption}\item[{const vk\+::\+Buffer\+Create\+Info \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_afd11d2370d920c47428c295e77b371b8}\label{classlogi_1_1_logical_device_afd11d2370d920c47428c295e77b371b8}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createComputePipeline@{createComputePipeline}}
+\index{createComputePipeline@{createComputePipeline}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createComputePipeline()}{createComputePipeline()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_pipeline}{Pipeline}} logi\+::\+Logical\+Device\+::create\+Compute\+Pipeline (\begin{DoxyParamCaption}\item[{const vk\+::\+Compute\+Pipeline\+Create\+Info \&}]{create\+Info,  }\item[{const vk\+::\+Pipeline\+Cache \&}]{cache = {\ttfamily nullptr},  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a296db01429b7e746f25930bdcdeb2957}\label{classlogi_1_1_logical_device_a296db01429b7e746f25930bdcdeb2957}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createComputePipelines@{createComputePipelines}}
+\index{createComputePipelines@{createComputePipelines}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createComputePipelines()}{createComputePipelines()}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{classlogi_1_1_pipeline}{Pipeline}} $>$ logi\+::\+Logical\+Device\+::create\+Compute\+Pipelines (\begin{DoxyParamCaption}\item[{const vk\+::\+Array\+Proxy$<$ const vk\+::\+Compute\+Pipeline\+Create\+Info $>$ \&}]{create\+Infos,  }\item[{const vk\+::\+Pipeline\+Cache \&}]{cache = {\ttfamily nullptr},  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a59969879f1229b813bd97294d30e01ea}\label{classlogi_1_1_logical_device_a59969879f1229b813bd97294d30e01ea}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createDescriptorPool@{createDescriptorPool}}
+\index{createDescriptorPool@{createDescriptorPool}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createDescriptorPool()}{createDescriptorPool()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_descriptor_pool}{Descriptor\+Pool}} logi\+::\+Logical\+Device\+::create\+Descriptor\+Pool (\begin{DoxyParamCaption}\item[{const vk\+::\+Descriptor\+Pool\+Create\+Info \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a562142bd5070e88fcc7872f683760f29}\label{classlogi_1_1_logical_device_a562142bd5070e88fcc7872f683760f29}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createDescriptorSetLayout@{createDescriptorSetLayout}}
+\index{createDescriptorSetLayout@{createDescriptorSetLayout}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createDescriptorSetLayout()}{createDescriptorSetLayout()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_descriptor_set_layout}{Descriptor\+Set\+Layout}} logi\+::\+Logical\+Device\+::create\+Descriptor\+Set\+Layout (\begin{DoxyParamCaption}\item[{const vk\+::\+Descriptor\+Set\+Layout\+Create\+Info \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_aa362a20fef16fe2272543552787e1d0e}\label{classlogi_1_1_logical_device_aa362a20fef16fe2272543552787e1d0e}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createDescriptorUpdateTemplate@{createDescriptorUpdateTemplate}}
+\index{createDescriptorUpdateTemplate@{createDescriptorUpdateTemplate}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createDescriptorUpdateTemplate()}{createDescriptorUpdateTemplate()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_descriptor_update_template}{Descriptor\+Update\+Template}} logi\+::\+Logical\+Device\+::create\+Descriptor\+Update\+Template (\begin{DoxyParamCaption}\item[{const vk\+::\+Descriptor\+Update\+Template\+Create\+Info \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_accc5b45a260d9cce25f071a4437917fc}\label{classlogi_1_1_logical_device_accc5b45a260d9cce25f071a4437917fc}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createEvent@{createEvent}}
+\index{createEvent@{createEvent}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createEvent()}{createEvent()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_event}{Event}} logi\+::\+Logical\+Device\+::create\+Event (\begin{DoxyParamCaption}\item[{const vk\+::\+Event\+Create\+Info \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a1da1ba58dfdd8acc9885d18696a34331}\label{classlogi_1_1_logical_device_a1da1ba58dfdd8acc9885d18696a34331}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createFence@{createFence}}
+\index{createFence@{createFence}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createFence()}{createFence()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_fence}{Fence}} logi\+::\+Logical\+Device\+::create\+Fence (\begin{DoxyParamCaption}\item[{const vk\+::\+Fence\+Create\+Info \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a50383cd93df1e99d76b30aaabb7d2e06}\label{classlogi_1_1_logical_device_a50383cd93df1e99d76b30aaabb7d2e06}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createFramebuffer@{createFramebuffer}}
+\index{createFramebuffer@{createFramebuffer}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createFramebuffer()}{createFramebuffer()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_framebuffer}{Framebuffer}} logi\+::\+Logical\+Device\+::create\+Framebuffer (\begin{DoxyParamCaption}\item[{const vk\+::\+Framebuffer\+Create\+Info \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a97b2706a7087d4c3c75f54411efd9fd9}\label{classlogi_1_1_logical_device_a97b2706a7087d4c3c75f54411efd9fd9}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createGraphicsPipeline@{createGraphicsPipeline}}
+\index{createGraphicsPipeline@{createGraphicsPipeline}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createGraphicsPipeline()}{createGraphicsPipeline()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_pipeline}{Pipeline}} logi\+::\+Logical\+Device\+::create\+Graphics\+Pipeline (\begin{DoxyParamCaption}\item[{const vk\+::\+Graphics\+Pipeline\+Create\+Info \&}]{create\+Info,  }\item[{const vk\+::\+Pipeline\+Cache \&}]{cache = {\ttfamily nullptr},  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_ad1f2630d3c0088854da0cd9d49d9914d}\label{classlogi_1_1_logical_device_ad1f2630d3c0088854da0cd9d49d9914d}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createGraphicsPipelines@{createGraphicsPipelines}}
+\index{createGraphicsPipelines@{createGraphicsPipelines}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createGraphicsPipelines()}{createGraphicsPipelines()}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{classlogi_1_1_pipeline}{Pipeline}} $>$ logi\+::\+Logical\+Device\+::create\+Graphics\+Pipelines (\begin{DoxyParamCaption}\item[{const vk\+::\+Array\+Proxy$<$ const vk\+::\+Graphics\+Pipeline\+Create\+Info $>$ \&}]{create\+Infos,  }\item[{const vk\+::\+Pipeline\+Cache \&}]{cache = {\ttfamily nullptr},  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a229c32bea27d50f5778bffe2f13ba894}\label{classlogi_1_1_logical_device_a229c32bea27d50f5778bffe2f13ba894}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createImage@{createImage}}
+\index{createImage@{createImage}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createImage()}{createImage()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_image}{Image}} logi\+::\+Logical\+Device\+::create\+Image (\begin{DoxyParamCaption}\item[{const vk\+::\+Image\+Create\+Info \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateImage.html}{\texttt{ vk\+Create\+Image}} 
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a8b8e1df800f8636540e89982ee924d9b}\label{classlogi_1_1_logical_device_a8b8e1df800f8636540e89982ee924d9b}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createIndirectCommandsLayoutNVXIndirectCommandsLayoutNVX@{createIndirectCommandsLayoutNVXIndirectCommandsLayoutNVX}}
+\index{createIndirectCommandsLayoutNVXIndirectCommandsLayoutNVX@{createIndirectCommandsLayoutNVXIndirectCommandsLayoutNVX}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createIndirectCommandsLayoutNVXIndirectCommandsLayoutNVX()}{createIndirectCommandsLayoutNVXIndirectCommandsLayoutNVX()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_indirect_commands_layout_n_v_x}{Indirect\+Commands\+Layout\+N\+VX}} logi\+::\+Logical\+Device\+::create\+Indirect\+Commands\+Layout\+N\+V\+X\+Indirect\+Commands\+Layout\+N\+VX (\begin{DoxyParamCaption}\item[{const vk\+::\+Indirect\+Commands\+Layout\+Create\+Info\+N\+VX \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a1023c831f3238434f406f22755e42855}\label{classlogi_1_1_logical_device_a1023c831f3238434f406f22755e42855}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createMemoryAllocator@{createMemoryAllocator}}
+\index{createMemoryAllocator@{createMemoryAllocator}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createMemoryAllocator()}{createMemoryAllocator()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_memory_allocator}{Memory\+Allocator}} logi\+::\+Logical\+Device\+::create\+Memory\+Allocator (\begin{DoxyParamCaption}\item[{vk\+::\+Device\+Size}]{preferred\+Large\+Heap\+Block\+Size = {\ttfamily 0u},  }\item[{uint32\+\_\+t}]{frame\+In\+Use\+Count = {\ttfamily 0u},  }\item[{const std\+::vector$<$ vk\+::\+Device\+Size $>$ \&}]{heap\+Size\+Limits = {\ttfamily \{\}},  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_ad3a9f411d6d4b4534c56f430a2f4b538}\label{classlogi_1_1_logical_device_ad3a9f411d6d4b4534c56f430a2f4b538}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createObjectTableNVX@{createObjectTableNVX}}
+\index{createObjectTableNVX@{createObjectTableNVX}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createObjectTableNVX()}{createObjectTableNVX()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_object_table_n_v_x}{Object\+Table\+N\+VX}} logi\+::\+Logical\+Device\+::create\+Object\+Table\+N\+VX (\begin{DoxyParamCaption}\item[{const vk\+::\+Object\+Table\+Create\+Info\+N\+VX \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_ab59742e305855efa35c73da78f912695}\label{classlogi_1_1_logical_device_ab59742e305855efa35c73da78f912695}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createPipelineCache@{createPipelineCache}}
+\index{createPipelineCache@{createPipelineCache}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createPipelineCache()}{createPipelineCache()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_pipeline_cache}{Pipeline\+Cache}} logi\+::\+Logical\+Device\+::create\+Pipeline\+Cache (\begin{DoxyParamCaption}\item[{const vk\+::\+Pipeline\+Cache\+Create\+Info \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a7604d69225c6a4cb7f5f117fef7c6698}\label{classlogi_1_1_logical_device_a7604d69225c6a4cb7f5f117fef7c6698}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createPipelineLayout@{createPipelineLayout}}
+\index{createPipelineLayout@{createPipelineLayout}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createPipelineLayout()}{createPipelineLayout()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_pipeline_layout}{Pipeline\+Layout}} logi\+::\+Logical\+Device\+::create\+Pipeline\+Layout (\begin{DoxyParamCaption}\item[{const vk\+::\+Pipeline\+Layout\+Create\+Info \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a87949fa07d1b97f582f4f535512ed5bf}\label{classlogi_1_1_logical_device_a87949fa07d1b97f582f4f535512ed5bf}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createQueryPool@{createQueryPool}}
+\index{createQueryPool@{createQueryPool}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createQueryPool()}{createQueryPool()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_query_pool}{Query\+Pool}} logi\+::\+Logical\+Device\+::create\+Query\+Pool (\begin{DoxyParamCaption}\item[{const vk\+::\+Query\+Pool\+Create\+Info \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_ad0016835d66d94051bc0675dc4f99459}\label{classlogi_1_1_logical_device_ad0016835d66d94051bc0675dc4f99459}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createRayTracingPipelineNV@{createRayTracingPipelineNV}}
+\index{createRayTracingPipelineNV@{createRayTracingPipelineNV}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createRayTracingPipelineNV()}{createRayTracingPipelineNV()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_pipeline}{Pipeline}} logi\+::\+Logical\+Device\+::create\+Ray\+Tracing\+Pipeline\+NV (\begin{DoxyParamCaption}\item[{const vk\+::\+Ray\+Tracing\+Pipeline\+Create\+Info\+NV \&}]{create\+Info,  }\item[{const vk\+::\+Pipeline\+Cache \&}]{cache = {\ttfamily nullptr},  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a48b46b3f5b7b6d993731cad1c4a5c9ea}\label{classlogi_1_1_logical_device_a48b46b3f5b7b6d993731cad1c4a5c9ea}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createRayTracingPipelinesNV@{createRayTracingPipelinesNV}}
+\index{createRayTracingPipelinesNV@{createRayTracingPipelinesNV}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createRayTracingPipelinesNV()}{createRayTracingPipelinesNV()}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{classlogi_1_1_pipeline}{Pipeline}} $>$ logi\+::\+Logical\+Device\+::create\+Ray\+Tracing\+Pipelines\+NV (\begin{DoxyParamCaption}\item[{const vk\+::\+Array\+Proxy$<$ const vk\+::\+Ray\+Tracing\+Pipeline\+Create\+Info\+NV $>$ \&}]{create\+Infos,  }\item[{const vk\+::\+Pipeline\+Cache \&}]{cache = {\ttfamily nullptr},  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a74b4d78966d5400dbf7f910a821edfda}\label{classlogi_1_1_logical_device_a74b4d78966d5400dbf7f910a821edfda}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createRenderPass@{createRenderPass}}
+\index{createRenderPass@{createRenderPass}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createRenderPass()}{createRenderPass()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_render_pass}{Render\+Pass}} logi\+::\+Logical\+Device\+::create\+Render\+Pass (\begin{DoxyParamCaption}\item[{const vk\+::\+Render\+Pass\+Create\+Info \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a4b84e16d624181ddc58af70584516a4b}\label{classlogi_1_1_logical_device_a4b84e16d624181ddc58af70584516a4b}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createRenderPass@{createRenderPass}}
+\index{createRenderPass@{createRenderPass}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createRenderPass()}{createRenderPass()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_render_pass}{Render\+Pass}} logi\+::\+Logical\+Device\+::create\+Render\+Pass (\begin{DoxyParamCaption}\item[{const vk\+::\+Render\+Pass\+Create\+Info2\+K\+HR \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_af731ce0ede7b04e90300f183c1463903}\label{classlogi_1_1_logical_device_af731ce0ede7b04e90300f183c1463903}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createRenderPass2@{createRenderPass2}}
+\index{createRenderPass2@{createRenderPass2}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createRenderPass2()}{createRenderPass2()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_render_pass}{Render\+Pass}} logi\+::\+Logical\+Device\+::create\+Render\+Pass2 (\begin{DoxyParamCaption}\item[{const vk\+::\+Render\+Pass\+Create\+Info2 \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a6427270083e61e8f5be9db488d14a6a8}\label{classlogi_1_1_logical_device_a6427270083e61e8f5be9db488d14a6a8}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createSampler@{createSampler}}
+\index{createSampler@{createSampler}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createSampler()}{createSampler()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_sampler}{Sampler}} logi\+::\+Logical\+Device\+::create\+Sampler (\begin{DoxyParamCaption}\item[{const vk\+::\+Sampler\+Create\+Info \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateSampler.html}{\texttt{ vk\+Create\+Sampler}} 
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a2112ca69f609b905e47d58a6e4dc6cf2}\label{classlogi_1_1_logical_device_a2112ca69f609b905e47d58a6e4dc6cf2}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createSamplerYcbcrConversion@{createSamplerYcbcrConversion}}
+\index{createSamplerYcbcrConversion@{createSamplerYcbcrConversion}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createSamplerYcbcrConversion()}{createSamplerYcbcrConversion()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_sampler_ycbcr_conversion}{Sampler\+Ycbcr\+Conversion}} logi\+::\+Logical\+Device\+::create\+Sampler\+Ycbcr\+Conversion (\begin{DoxyParamCaption}\item[{const vk\+::\+Sampler\+Ycbcr\+Conversion\+Create\+Info \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateSamplerYcbcrConversion.html}{\texttt{ vk\+Create\+Sampler\+Ycbcr\+Conversion}} 
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a5b9a9fe101fa07d551e0380255b0c8a8}\label{classlogi_1_1_logical_device_a5b9a9fe101fa07d551e0380255b0c8a8}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createSemaphore@{createSemaphore}}
+\index{createSemaphore@{createSemaphore}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createSemaphore()}{createSemaphore()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_semaphore}{Semaphore}} logi\+::\+Logical\+Device\+::create\+Semaphore (\begin{DoxyParamCaption}\item[{const vk\+::\+Semaphore\+Create\+Info \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a4d9695ba7786945b884b2430c9db7bd4}\label{classlogi_1_1_logical_device_a4d9695ba7786945b884b2430c9db7bd4}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createShaderModule@{createShaderModule}}
+\index{createShaderModule@{createShaderModule}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createShaderModule()}{createShaderModule()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_shader_module}{Shader\+Module}} logi\+::\+Logical\+Device\+::create\+Shader\+Module (\begin{DoxyParamCaption}\item[{const vk\+::\+Shader\+Module\+Create\+Info \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_acc4db8929de65bc6ccaa33fbe7607587}\label{classlogi_1_1_logical_device_acc4db8929de65bc6ccaa33fbe7607587}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createSharedSwapchainsKHR@{createSharedSwapchainsKHR}}
+\index{createSharedSwapchainsKHR@{createSharedSwapchainsKHR}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createSharedSwapchainsKHR()}{createSharedSwapchainsKHR()}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{classlogi_1_1_swapchain_k_h_r}{Swapchain\+K\+HR}} $>$ logi\+::\+Logical\+Device\+::create\+Shared\+Swapchains\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Array\+Proxy$<$ const vk\+::\+Swapchain\+Create\+Info\+K\+HR $>$ \&}]{create\+Infos,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_adbdb2536722cb6be98d215365c1de422}\label{classlogi_1_1_logical_device_adbdb2536722cb6be98d215365c1de422}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createSwapchainKHR@{createSwapchainKHR}}
+\index{createSwapchainKHR@{createSwapchainKHR}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createSwapchainKHR()}{createSwapchainKHR()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_swapchain_k_h_r}{Swapchain\+K\+HR}} logi\+::\+Logical\+Device\+::create\+Swapchain\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Swapchain\+Create\+Info\+K\+HR \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a3455941101b3d4c8a4c84e4abaef3685}\label{classlogi_1_1_logical_device_a3455941101b3d4c8a4c84e4abaef3685}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!createValidationCacheEXT@{createValidationCacheEXT}}
+\index{createValidationCacheEXT@{createValidationCacheEXT}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{createValidationCacheEXT()}{createValidationCacheEXT()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_validation_cache_e_x_t}{Validation\+Cache\+E\+XT}} logi\+::\+Logical\+Device\+::create\+Validation\+Cache\+E\+XT (\begin{DoxyParamCaption}\item[{const vk\+::\+Validation\+Cache\+Create\+Info\+E\+XT \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a6067564394e4bd7ad890278ec53926e1}\label{classlogi_1_1_logical_device_a6067564394e4bd7ad890278ec53926e1}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!debugMarkerSetObjectNameEXT@{debugMarkerSetObjectNameEXT}}
+\index{debugMarkerSetObjectNameEXT@{debugMarkerSetObjectNameEXT}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{debugMarkerSetObjectNameEXT()}{debugMarkerSetObjectNameEXT()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Logical\+Device\+::debug\+Marker\+Set\+Object\+Name\+E\+XT (\begin{DoxyParamCaption}\item[{const vk\+::\+Debug\+Marker\+Object\+Name\+Info\+E\+XT \&}]{name\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a8ff6a841e5dd07a69f65ffca5c63b732}\label{classlogi_1_1_logical_device_a8ff6a841e5dd07a69f65ffca5c63b732}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!debugMarkerSetObjectTagEXT@{debugMarkerSetObjectTagEXT}}
+\index{debugMarkerSetObjectTagEXT@{debugMarkerSetObjectTagEXT}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{debugMarkerSetObjectTagEXT()}{debugMarkerSetObjectTagEXT()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Logical\+Device\+::debug\+Marker\+Set\+Object\+Tag\+E\+XT (\begin{DoxyParamCaption}\item[{const vk\+::\+Debug\+Marker\+Object\+Tag\+Info\+E\+XT \&}]{tag\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a48613c9d126630c08a08501215ef6061}\label{classlogi_1_1_logical_device_a48613c9d126630c08a08501215ef6061}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!destroy@{destroy}}
+\index{destroy@{destroy}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a9797653822a42e0790b4f895a62f70ab}\label{classlogi_1_1_logical_device_a9797653822a42e0790b4f895a62f70ab}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!destroyAccelerationStructureNV@{destroyAccelerationStructureNV}}
+\index{destroyAccelerationStructureNV@{destroyAccelerationStructureNV}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{destroyAccelerationStructureNV()}{destroyAccelerationStructureNV()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::destroy\+Acceleration\+Structure\+NV (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_acceleration_structure_n_v}{Acceleration\+Structure\+NV}} \&}]{acceleration\+Structure }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_aef3fc7541f6f4f96f7f3d982ebd5840c}\label{classlogi_1_1_logical_device_aef3fc7541f6f4f96f7f3d982ebd5840c}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!destroyBuffer@{destroyBuffer}}
+\index{destroyBuffer@{destroyBuffer}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{destroyBuffer()}{destroyBuffer()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::destroy\+Buffer (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_buffer}{Buffer}} \&}]{buffer }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a47de66220fd4ea788d09151381996e76}\label{classlogi_1_1_logical_device_a47de66220fd4ea788d09151381996e76}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!destroyDescriptorPool@{destroyDescriptorPool}}
+\index{destroyDescriptorPool@{destroyDescriptorPool}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{destroyDescriptorPool()}{destroyDescriptorPool()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::destroy\+Descriptor\+Pool (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_descriptor_pool}{Descriptor\+Pool}} \&}]{descriptor\+Pool }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a67935e874495aa3d7e3c72c117e67bc5}\label{classlogi_1_1_logical_device_a67935e874495aa3d7e3c72c117e67bc5}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!destroyDescriptorSetLayout@{destroyDescriptorSetLayout}}
+\index{destroyDescriptorSetLayout@{destroyDescriptorSetLayout}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{destroyDescriptorSetLayout()}{destroyDescriptorSetLayout()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::destroy\+Descriptor\+Set\+Layout (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_descriptor_set_layout}{Descriptor\+Set\+Layout}} \&}]{descriptor\+Set\+Layout }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a0b5588d0d2b16c3ab38c2640499f9094}\label{classlogi_1_1_logical_device_a0b5588d0d2b16c3ab38c2640499f9094}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!destroyDescriptorUpdateTemplate@{destroyDescriptorUpdateTemplate}}
+\index{destroyDescriptorUpdateTemplate@{destroyDescriptorUpdateTemplate}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{destroyDescriptorUpdateTemplate()}{destroyDescriptorUpdateTemplate()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::destroy\+Descriptor\+Update\+Template (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_descriptor_update_template}{Descriptor\+Update\+Template}} \&}]{descriptor\+Update\+Template }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_ab7a0dbd53d0f7e00d0d0dbe0b335fe54}\label{classlogi_1_1_logical_device_ab7a0dbd53d0f7e00d0d0dbe0b335fe54}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!destroyEvent@{destroyEvent}}
+\index{destroyEvent@{destroyEvent}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{destroyEvent()}{destroyEvent()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::destroy\+Event (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_event}{Event}} \&}]{event }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a76ab7ace22792955ced49e429ca10049}\label{classlogi_1_1_logical_device_a76ab7ace22792955ced49e429ca10049}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!destroyFence@{destroyFence}}
+\index{destroyFence@{destroyFence}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{destroyFence()}{destroyFence()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::destroy\+Fence (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_fence}{Fence}} \&}]{fence }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a023a754bc9a2e90e4e092f8b9c0f9c7f}\label{classlogi_1_1_logical_device_a023a754bc9a2e90e4e092f8b9c0f9c7f}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!destroyFramebuffer@{destroyFramebuffer}}
+\index{destroyFramebuffer@{destroyFramebuffer}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{destroyFramebuffer()}{destroyFramebuffer()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::destroy\+Framebuffer (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_framebuffer}{Framebuffer}} \&}]{framebuffer }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a1757c53096a18bd554a828393342b9e8}\label{classlogi_1_1_logical_device_a1757c53096a18bd554a828393342b9e8}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!destroyImage@{destroyImage}}
+\index{destroyImage@{destroyImage}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{destroyImage()}{destroyImage()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::destroy\+Image (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_image}{Image}} \&}]{image }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroyImage.html}{\texttt{ vk\+Destroy\+Image}} 
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a73838c1cfe0fe0e903ce8b76b462a044}\label{classlogi_1_1_logical_device_a73838c1cfe0fe0e903ce8b76b462a044}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!destroyIndirectCommandsLayoutNVX@{destroyIndirectCommandsLayoutNVX}}
+\index{destroyIndirectCommandsLayoutNVX@{destroyIndirectCommandsLayoutNVX}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{destroyIndirectCommandsLayoutNVX()}{destroyIndirectCommandsLayoutNVX()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::destroy\+Indirect\+Commands\+Layout\+N\+VX (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_indirect_commands_layout_n_v_x}{Indirect\+Commands\+Layout\+N\+VX}} \&}]{indirect\+Commands\+Layout }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a38535a79656e6bf223adba21b548379a}\label{classlogi_1_1_logical_device_a38535a79656e6bf223adba21b548379a}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!destroyMemoryAllocator@{destroyMemoryAllocator}}
+\index{destroyMemoryAllocator@{destroyMemoryAllocator}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{destroyMemoryAllocator()}{destroyMemoryAllocator()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::destroy\+Memory\+Allocator (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_memory_allocator}{Memory\+Allocator}} \&}]{memory\+Allocator }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a9f250756fa006adc457758d3561213fc}\label{classlogi_1_1_logical_device_a9f250756fa006adc457758d3561213fc}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!destroyObjectTableNVX@{destroyObjectTableNVX}}
+\index{destroyObjectTableNVX@{destroyObjectTableNVX}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{destroyObjectTableNVX()}{destroyObjectTableNVX()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::destroy\+Object\+Table\+N\+VX (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_object_table_n_v_x}{Object\+Table\+N\+VX}} \&}]{object\+Table }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_ae7d8f6d795feb43d007ed83f6595ccf7}\label{classlogi_1_1_logical_device_ae7d8f6d795feb43d007ed83f6595ccf7}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!destroyPipeline@{destroyPipeline}}
+\index{destroyPipeline@{destroyPipeline}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{destroyPipeline()}{destroyPipeline()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::destroy\+Pipeline (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_pipeline}{Pipeline}} \&}]{pipeline }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a809d04324dfba92ba6af2c44c0185076}\label{classlogi_1_1_logical_device_a809d04324dfba92ba6af2c44c0185076}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!destroyPipelineCache@{destroyPipelineCache}}
+\index{destroyPipelineCache@{destroyPipelineCache}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{destroyPipelineCache()}{destroyPipelineCache()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::destroy\+Pipeline\+Cache (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_pipeline_cache}{Pipeline\+Cache}} \&}]{pipeline\+Cache }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a30f4b36f0ccce41b6089ae78992d493a}\label{classlogi_1_1_logical_device_a30f4b36f0ccce41b6089ae78992d493a}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!destroyPipelineLayout@{destroyPipelineLayout}}
+\index{destroyPipelineLayout@{destroyPipelineLayout}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{destroyPipelineLayout()}{destroyPipelineLayout()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::destroy\+Pipeline\+Layout (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_pipeline_layout}{Pipeline\+Layout}} \&}]{pipeline\+Layout }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a7174cc44d2a8555eae57a43727c94752}\label{classlogi_1_1_logical_device_a7174cc44d2a8555eae57a43727c94752}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!destroyQueryPool@{destroyQueryPool}}
+\index{destroyQueryPool@{destroyQueryPool}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{destroyQueryPool()}{destroyQueryPool()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::destroy\+Query\+Pool (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_query_pool}{Query\+Pool}} \&}]{query\+Pool }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a1da500462322c6eaf2ed5cd75b3b917b}\label{classlogi_1_1_logical_device_a1da500462322c6eaf2ed5cd75b3b917b}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!destroyRenderPass@{destroyRenderPass}}
+\index{destroyRenderPass@{destroyRenderPass}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{destroyRenderPass()}{destroyRenderPass()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::destroy\+Render\+Pass (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_render_pass}{Render\+Pass}} \&}]{render\+Pass }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_af163c46b6fa4baaf06f69a9c762636c4}\label{classlogi_1_1_logical_device_af163c46b6fa4baaf06f69a9c762636c4}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!destroySampler@{destroySampler}}
+\index{destroySampler@{destroySampler}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{destroySampler()}{destroySampler()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::destroy\+Sampler (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_sampler}{Sampler}} \&}]{sampler }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroySampler.html}{\texttt{ vk\+Destroy\+Sampler}} 
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a49072428f9b08961a33180df14e2a88f}\label{classlogi_1_1_logical_device_a49072428f9b08961a33180df14e2a88f}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!destroySamplerYcbcrConversion@{destroySamplerYcbcrConversion}}
+\index{destroySamplerYcbcrConversion@{destroySamplerYcbcrConversion}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{destroySamplerYcbcrConversion()}{destroySamplerYcbcrConversion()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::destroy\+Sampler\+Ycbcr\+Conversion (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_sampler_ycbcr_conversion}{Sampler\+Ycbcr\+Conversion}} \&}]{sampler\+Ycbcr\+Conversion }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroySamplerYcbcrConversion.html}{\texttt{ vk\+Destroy\+Sampler\+Ycbcr\+Conversion}} 
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a88b699205ca1348fa5a3932787ef47fa}\label{classlogi_1_1_logical_device_a88b699205ca1348fa5a3932787ef47fa}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!destroySemaphore@{destroySemaphore}}
+\index{destroySemaphore@{destroySemaphore}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{destroySemaphore()}{destroySemaphore()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::destroy\+Semaphore (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_semaphore}{Semaphore}} \&}]{semaphore }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a020255d6f81db7e9bbcfbf6b47459042}\label{classlogi_1_1_logical_device_a020255d6f81db7e9bbcfbf6b47459042}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!destroyShaderModule@{destroyShaderModule}}
+\index{destroyShaderModule@{destroyShaderModule}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{destroyShaderModule()}{destroyShaderModule()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::destroy\+Shader\+Module (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_shader_module}{Shader\+Module}} \&}]{shader\+Module }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_afd4aaae496799d6b2cd9f382636f6efc}\label{classlogi_1_1_logical_device_afd4aaae496799d6b2cd9f382636f6efc}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!destroySwapchainKHR@{destroySwapchainKHR}}
+\index{destroySwapchainKHR@{destroySwapchainKHR}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{destroySwapchainKHR()}{destroySwapchainKHR()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::destroy\+Swapchain\+K\+HR (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_swapchain_k_h_r}{Swapchain\+K\+HR}} \&}]{swapchain }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_af4965ea998f839959727fecc6aa59adf}\label{classlogi_1_1_logical_device_af4965ea998f839959727fecc6aa59adf}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!destroyValidationCacheEXT@{destroyValidationCacheEXT}}
+\index{destroyValidationCacheEXT@{destroyValidationCacheEXT}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{destroyValidationCacheEXT()}{destroyValidationCacheEXT()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::destroy\+Validation\+Cache\+E\+XT (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_validation_cache_e_x_t}{Validation\+Cache\+E\+XT}} \&}]{validation\+Cache\+Ext }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a2c88785fed52b9f7de2a7174ee16646a}\label{classlogi_1_1_logical_device_a2c88785fed52b9f7de2a7174ee16646a}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!displayPowerControlEXT@{displayPowerControlEXT}}
+\index{displayPowerControlEXT@{displayPowerControlEXT}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{displayPowerControlEXT()}{displayPowerControlEXT()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Logical\+Device\+::display\+Power\+Control\+E\+XT (\begin{DoxyParamCaption}\item[{const vk\+::\+Display\+K\+HR \&}]{display,  }\item[{const vk\+::\+Display\+Power\+Info\+E\+XT \&}]{power\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_ad2c64e03374bb61fe40fd879fdfa71d8}\label{classlogi_1_1_logical_device_ad2c64e03374bb61fe40fd879fdfa71d8}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!enumerateQueueFamilies@{enumerateQueueFamilies}}
+\index{enumerateQueueFamilies@{enumerateQueueFamilies}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{enumerateQueueFamilies()}{enumerateQueueFamilies()}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{classlogi_1_1_queue_family}{Queue\+Family}} $>$ logi\+::\+Logical\+Device\+::enumerate\+Queue\+Families (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a9e427d64e0bb1a04a38d8630b7f937f3}\label{classlogi_1_1_logical_device_a9e427d64e0bb1a04a38d8630b7f937f3}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!flushMappedMemoryRanges@{flushMappedMemoryRanges}}
+\index{flushMappedMemoryRanges@{flushMappedMemoryRanges}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{flushMappedMemoryRanges()}{flushMappedMemoryRanges()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Logical\+Device\+::flush\+Mapped\+Memory\+Ranges (\begin{DoxyParamCaption}\item[{const vk\+::\+Array\+Proxy$<$ const vk\+::\+Mapped\+Memory\+Range $>$ \&}]{memory\+Ranges = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a451d7f80a9a49225850487fb175edf89}\label{classlogi_1_1_logical_device_a451d7f80a9a49225850487fb175edf89}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!freeMemory@{freeMemory}}
+\index{freeMemory@{freeMemory}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{freeMemory()}{freeMemory()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::free\+Memory (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_device_memory}{Device\+Memory}} \&}]{device\+Memory }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a4d6f4e5e7ebfea9839ff933d39bf93d4}\label{classlogi_1_1_logical_device_a4d6f4e5e7ebfea9839ff933d39bf93d4}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!getCalibratedTimestampsEXT@{getCalibratedTimestampsEXT}}
+\index{getCalibratedTimestampsEXT@{getCalibratedTimestampsEXT}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{getCalibratedTimestampsEXT()}{getCalibratedTimestampsEXT()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ uint64\+\_\+t $>$\+::type logi\+::\+Logical\+Device\+::get\+Calibrated\+Timestamps\+E\+XT (\begin{DoxyParamCaption}\item[{const vk\+::\+Array\+Proxy$<$ const vk\+::\+Calibrated\+Timestamp\+Info\+E\+XT $>$ \&}]{timestamp\+Infos,  }\item[{const vk\+::\+Array\+Proxy$<$ uint64\+\_\+t $>$ \&}]{timestamps }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a8d4578f46dce81cd8af0f467e57e9646}\label{classlogi_1_1_logical_device_a8d4578f46dce81cd8af0f467e57e9646}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!getDescriptorSetLayoutSupport@{getDescriptorSetLayoutSupport}}
+\index{getDescriptorSetLayoutSupport@{getDescriptorSetLayoutSupport}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{getDescriptorSetLayoutSupport()}{getDescriptorSetLayoutSupport()}}
+{\footnotesize\ttfamily vk\+::\+Descriptor\+Set\+Layout\+Support logi\+::\+Logical\+Device\+::get\+Descriptor\+Set\+Layout\+Support (\begin{DoxyParamCaption}\item[{const vk\+::\+Descriptor\+Set\+Layout\+Create\+Info \&}]{create\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_ab32ea3efb02e1c011c58d28a5b84c670}\label{classlogi_1_1_logical_device_ab32ea3efb02e1c011c58d28a5b84c670}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!getDescriptorSetLayoutSupportKHR@{getDescriptorSetLayoutSupportKHR}}
+\index{getDescriptorSetLayoutSupportKHR@{getDescriptorSetLayoutSupportKHR}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{getDescriptorSetLayoutSupportKHR()}{getDescriptorSetLayoutSupportKHR()}}
+{\footnotesize\ttfamily vk\+::\+Descriptor\+Set\+Layout\+Support\+K\+HR logi\+::\+Logical\+Device\+::get\+Descriptor\+Set\+Layout\+Support\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Descriptor\+Set\+Layout\+Create\+Info \&}]{create\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_ac5847f26036661ae7bca9ad440ff0bfe}\label{classlogi_1_1_logical_device_ac5847f26036661ae7bca9ad440ff0bfe}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!getDispatcher@{getDispatcher}}
+\index{getDispatcher@{getDispatcher}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{getDispatcher()}{getDispatcher()}}
+{\footnotesize\ttfamily const vk\+::\+Dispatch\+Loader\+Dynamic \& logi\+::\+Logical\+Device\+::get\+Dispatcher (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a27e11b692ebcd6a7f22aa9994bda52e8}\label{classlogi_1_1_logical_device_a27e11b692ebcd6a7f22aa9994bda52e8}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!getGroupPeerMemoryFeatures@{getGroupPeerMemoryFeatures}}
+\index{getGroupPeerMemoryFeatures@{getGroupPeerMemoryFeatures}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{getGroupPeerMemoryFeatures()}{getGroupPeerMemoryFeatures()}}
+{\footnotesize\ttfamily vk\+::\+Peer\+Memory\+Feature\+Flags logi\+::\+Logical\+Device\+::get\+Group\+Peer\+Memory\+Features (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{heap\+Index,  }\item[{uint32\+\_\+t}]{local\+Device\+Index,  }\item[{uint32\+\_\+t}]{remote\+Device\+Index }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a13f1f55eadda24f1c529c75c270478f2}\label{classlogi_1_1_logical_device_a13f1f55eadda24f1c529c75c270478f2}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!getGroupPeerMemoryFeaturesKHR@{getGroupPeerMemoryFeaturesKHR}}
+\index{getGroupPeerMemoryFeaturesKHR@{getGroupPeerMemoryFeaturesKHR}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{getGroupPeerMemoryFeaturesKHR()}{getGroupPeerMemoryFeaturesKHR()}}
+{\footnotesize\ttfamily vk\+::\+Peer\+Memory\+Feature\+Flags\+K\+HR logi\+::\+Logical\+Device\+::get\+Group\+Peer\+Memory\+Features\+K\+HR (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{heap\+Index,  }\item[{uint32\+\_\+t}]{local\+Device\+Index,  }\item[{uint32\+\_\+t}]{remote\+Device\+Index }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_aebd108e114d22302d20642041e2ad5d7}\label{classlogi_1_1_logical_device_aebd108e114d22302d20642041e2ad5d7}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!getGroupPresentCapabilitiesKHR@{getGroupPresentCapabilitiesKHR}}
+\index{getGroupPresentCapabilitiesKHR@{getGroupPresentCapabilitiesKHR}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{getGroupPresentCapabilitiesKHR()}{getGroupPresentCapabilitiesKHR()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ vk\+::\+Device\+Group\+Present\+Capabilities\+K\+HR $>$\+::type logi\+::\+Logical\+Device\+::get\+Group\+Present\+Capabilities\+K\+HR (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a3bb069e6f02b29a3f4de4f6f67903168}\label{classlogi_1_1_logical_device_a3bb069e6f02b29a3f4de4f6f67903168}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!getImageViewHandleNVX@{getImageViewHandleNVX}}
+\index{getImageViewHandleNVX@{getImageViewHandleNVX}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{getImageViewHandleNVX()}{getImageViewHandleNVX()}}
+{\footnotesize\ttfamily uint32\+\_\+t logi\+::\+Logical\+Device\+::get\+Image\+View\+Handle\+N\+VX (\begin{DoxyParamCaption}\item[{const vk\+::\+Image\+View\+Handle\+Info\+N\+VX \&}]{handle\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_abb030540999a8ad91bdb961b50e3dd35}\label{classlogi_1_1_logical_device_abb030540999a8ad91bdb961b50e3dd35}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_vulkan_instance}{Vulkan\+Instance}} logi\+::\+Logical\+Device\+::get\+Instance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_abec40bbeccbdce138bced39b4dc4012c}\label{classlogi_1_1_logical_device_abec40bbeccbdce138bced39b4dc4012c}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!getPhysicalDevice@{getPhysicalDevice}}
+\index{getPhysicalDevice@{getPhysicalDevice}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{getPhysicalDevice()}{getPhysicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_physical_device}{Physical\+Device}} logi\+::\+Logical\+Device\+::get\+Physical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_aed6d43d6761cf8274284c385a0a3b56a}\label{classlogi_1_1_logical_device_aed6d43d6761cf8274284c385a0a3b56a}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!getProcAddr@{getProcAddr}}
+\index{getProcAddr@{getProcAddr}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{getProcAddr()}{getProcAddr()}}
+{\footnotesize\ttfamily P\+F\+N\+\_\+vk\+Void\+Function logi\+::\+Logical\+Device\+::get\+Proc\+Addr (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a573850795cef46e5e0c9acc997cce250}\label{classlogi_1_1_logical_device_a573850795cef46e5e0c9acc997cce250}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!Handle@{Handle}}
+\index{Handle@{Handle}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{Handle()}{Handle()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_handle}{logi\+::\+Handle}}$<$ T $>$\+::\mbox{\hyperlink{classlogi_1_1_handle}{Handle}}\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+Default null handle constructor. 
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_afd9a0687dd950205ac03c19afca4c553}\label{classlogi_1_1_logical_device_afd9a0687dd950205ac03c19afca4c553}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!Handle@{Handle}}
+\index{Handle@{Handle}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{Handle()}{Handle()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_handle}{logi\+::\+Handle}}$<$ T $>$\+::\mbox{\hyperlink{classlogi_1_1_handle}{Handle}}\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Initialize the referred object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & Referred object. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a26ee7d3b8c260e1eebc5f1933e48e618}\label{classlogi_1_1_logical_device_a26ee7d3b8c260e1eebc5f1933e48e618}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!invalidateMappedMemoryRanges@{invalidateMappedMemoryRanges}}
+\index{invalidateMappedMemoryRanges@{invalidateMappedMemoryRanges}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{invalidateMappedMemoryRanges()}{invalidateMappedMemoryRanges()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Logical\+Device\+::invalidate\+Mapped\+Memory\+Ranges (\begin{DoxyParamCaption}\item[{const vk\+::\+Array\+Proxy$<$ const vk\+::\+Mapped\+Memory\+Range $>$ \&}]{memory\+Ranges = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a316566e06e0991196b0ce58f8182a4f5}\label{classlogi_1_1_logical_device_a316566e06e0991196b0ce58f8182a4f5}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!operator const vk::Device \&@{operator const vk::Device \&}}
+\index{operator const vk::Device \&@{operator const vk::Device \&}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{operator const vk::Device \&()}{operator const vk::Device \&()}}
+{\footnotesize\ttfamily logi\+::\+Logical\+Device\+::operator const vk\+::\+Device \& (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a755619c5adcfd89f5cbfa3fb73f83e9c}\label{classlogi_1_1_logical_device_a755619c5adcfd89f5cbfa3fb73f83e9c}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!registerDisplayEventEXT@{registerDisplayEventEXT}}
+\index{registerDisplayEventEXT@{registerDisplayEventEXT}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{registerDisplayEventEXT()}{registerDisplayEventEXT()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_fence}{Fence}} logi\+::\+Logical\+Device\+::register\+Display\+Event\+E\+XT (\begin{DoxyParamCaption}\item[{const vk\+::\+Display\+K\+HR \&}]{display,  }\item[{const vk\+::\+Display\+Event\+Info\+E\+XT \&}]{event\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_ac28de2ccb81cb053b86644e3b9d94354}\label{classlogi_1_1_logical_device_ac28de2ccb81cb053b86644e3b9d94354}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!registerEventEXT@{registerEventEXT}}
+\index{registerEventEXT@{registerEventEXT}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{registerEventEXT()}{registerEventEXT()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_fence}{Fence}} logi\+::\+Logical\+Device\+::register\+Event\+E\+XT (\begin{DoxyParamCaption}\item[{const vk\+::\+Device\+Event\+Info\+E\+XT \&}]{event\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a557503f3f5101fcf2c02477895069489}\label{classlogi_1_1_logical_device_a557503f3f5101fcf2c02477895069489}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!setDebugUtilsObjectNameEXT@{setDebugUtilsObjectNameEXT}}
+\index{setDebugUtilsObjectNameEXT@{setDebugUtilsObjectNameEXT}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{setDebugUtilsObjectNameEXT()}{setDebugUtilsObjectNameEXT()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Logical\+Device\+::set\+Debug\+Utils\+Object\+Name\+E\+XT (\begin{DoxyParamCaption}\item[{const vk\+::\+Debug\+Utils\+Object\+Name\+Info\+E\+XT \&}]{name\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a5dc69e14e216a73641e3d95d13cf5c00}\label{classlogi_1_1_logical_device_a5dc69e14e216a73641e3d95d13cf5c00}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!setDebugUtilsObjectTagEXT@{setDebugUtilsObjectTagEXT}}
+\index{setDebugUtilsObjectTagEXT@{setDebugUtilsObjectTagEXT}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{setDebugUtilsObjectTagEXT()}{setDebugUtilsObjectTagEXT()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Logical\+Device\+::set\+Debug\+Utils\+Object\+Tag\+E\+XT (\begin{DoxyParamCaption}\item[{const vk\+::\+Debug\+Utils\+Object\+Tag\+Info\+E\+XT \&}]{tag\+Info }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a530c7d4336ed31e40836f2d3fb5e530b}\label{classlogi_1_1_logical_device_a530c7d4336ed31e40836f2d3fb5e530b}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!updateDescriptorSets@{updateDescriptorSets}}
+\index{updateDescriptorSets@{updateDescriptorSets}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{updateDescriptorSets()}{updateDescriptorSets()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::update\+Descriptor\+Sets (\begin{DoxyParamCaption}\item[{const vk\+::\+Array\+Proxy$<$ const vk\+::\+Write\+Descriptor\+Set $>$ \&}]{descriptor\+Writes,  }\item[{const vk\+::\+Array\+Proxy$<$ const vk\+::\+Copy\+Descriptor\+Set $>$ \&}]{descriptor\+Copies = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a18c1a84e68795b38316d08f771a0a283}\label{classlogi_1_1_logical_device_a18c1a84e68795b38316d08f771a0a283}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!waitIdle@{waitIdle}}
+\index{waitIdle@{waitIdle}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{waitIdle()}{waitIdle()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Logical\+Device\+::wait\+Idle (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_logical_device_a2cfea5771b135f315a75e8ece20248ae}\label{classlogi_1_1_logical_device_a2cfea5771b135f315a75e8ece20248ae}} 
+\index{logi::LogicalDevice@{logi::LogicalDevice}!waitSemaphores@{waitSemaphores}}
+\index{waitSemaphores@{waitSemaphores}!logi::LogicalDevice@{logi::LogicalDevice}}
+\doxysubsubsection{\texorpdfstring{waitSemaphores()}{waitSemaphores()}}
+{\footnotesize\ttfamily void logi\+::\+Logical\+Device\+::wait\+Semaphores (\begin{DoxyParamCaption}\item[{const vk\+::\+Semaphore\+Wait\+Info \&}]{wait\+Info,  }\item[{uint64\+\_\+t}]{timeout }\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+logi/device/\mbox{\hyperlink{logical__device_8hpp}{logical\+\_\+device.\+hpp}}\item 
+C\+:/\+Users/aljaz/\+Documents/\+Visual\+Studio\+Code\+Projects/\+Logi/src/logi/device/\mbox{\hyperlink{logical__device_8cpp}{logical\+\_\+device.\+cpp}}\end{DoxyCompactItemize}

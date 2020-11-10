@@ -35,6 +35,9 @@ class DisplayModeKHR : public Handle<DisplayModeKHRImpl> {
 
   // region Vulkan Declarations
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetDisplayPlaneCapabilitiesKHR.html">vkGetDisplayPlaneCapabilitiesKHR</a>
+   */
   vk::ResultValueType<vk::DisplayPlaneCapabilitiesKHR>::type getDisplayPlaneCapabilitiesKHR(uint32_t planeIndex) const;
 
   // endregion

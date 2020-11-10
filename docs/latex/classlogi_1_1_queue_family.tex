@@ -1,0 +1,154 @@
+\hypertarget{classlogi_1_1_queue_family}{}\doxysection{logi\+::Queue\+Family Class Reference}
+\label{classlogi_1_1_queue_family}\index{logi::QueueFamily@{logi::QueueFamily}}
+
+
+{\ttfamily \#include $<$queue\+\_\+family.\+hpp$>$}
+
+
+
+Inheritance diagram for logi\+::Queue\+Family\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=214pt]{classlogi_1_1_queue_family__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for logi\+::Queue\+Family\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=214pt]{classlogi_1_1_queue_family__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlogi_1_1_command_pool}{Command\+Pool}} \mbox{\hyperlink{classlogi_1_1_queue_family_a3d4791a4e32c396e08e5e11234b21351}{create\+Command\+Pool}} (const vk\+::\+Command\+Pool\+Create\+Flags \&flags=\{\}, const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Command\+Pool\+Create\+Info $>$ \&next=\{\}, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\}) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_queue_family_af6eecddd4c0e2818f5e0c6cc022609b0}{destroy\+Command\+Pool}} (const \mbox{\hyperlink{classlogi_1_1_command_pool}{Command\+Pool}} \&command\+Pool) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_queue}{Queue}} \mbox{\hyperlink{classlogi_1_1_queue_family_a5b52ce7d455aa791849a4c339290363c}{get\+Queue}} (uint32\+\_\+t queue\+Index) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_queue}{Queue}} \mbox{\hyperlink{classlogi_1_1_queue_family_a22202140a0ad45ea0ef472ede9834961}{get\+Queue2}} (uint32\+\_\+t queue\+Index, const vk\+::\+Device\+Queue\+Create\+Flags \&flags=\{\}, const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Device\+Queue\+Info2 $>$ \&next=\{\}) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_vulkan_instance}{Vulkan\+Instance}} \mbox{\hyperlink{classlogi_1_1_queue_family_ac12459699f98bafd86e46ce0adfddeab}{get\+Instance}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_physical_device}{Physical\+Device}} \mbox{\hyperlink{classlogi_1_1_queue_family_a7bd8759d094eb54cf7e0a84e19e438ee}{get\+Physical\+Device}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_logical_device}{Logical\+Device}} \mbox{\hyperlink{classlogi_1_1_queue_family_a1702874859f5916a5b770638b62fb41a}{get\+Logical\+Device}} () const
+\item 
+const vk\+::\+Dispatch\+Loader\+Dynamic \& \mbox{\hyperlink{classlogi_1_1_queue_family_a6d15d6aa0883b5a58c146a290a884035}{get\+Dispatcher}} () const
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlogi_1_1_queue_family_ac30351fbf35ea065c658cc52dd696bb7}{queue\+Count}} () const
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlogi_1_1_queue_family_a85b23a817d7c3146ecfa8c9b7045bf8d}{get\+Index}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_queue_family_a52608452672d700feb2d5dc43a0ae0cb}{operator uint32\+\_\+t}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_queue_family_a573850795cef46e5e0c9acc997cce250}{Handle}} ()=default
+\begin{DoxyCompactList}\small\item\em Default null handle constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classlogi_1_1_queue_family_afd9a0687dd950205ac03c19afca4c553}{Handle}} (std\+::shared\+\_\+ptr$<$ T $>$ object)
+\begin{DoxyCompactList}\small\item\em Initialize the referred object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogi_1_1_queue_family_a3d4791a4e32c396e08e5e11234b21351}\label{classlogi_1_1_queue_family_a3d4791a4e32c396e08e5e11234b21351}} 
+\index{logi::QueueFamily@{logi::QueueFamily}!createCommandPool@{createCommandPool}}
+\index{createCommandPool@{createCommandPool}!logi::QueueFamily@{logi::QueueFamily}}
+\doxysubsubsection{\texorpdfstring{createCommandPool()}{createCommandPool()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_command_pool}{Command\+Pool}} logi\+::\+Queue\+Family\+::create\+Command\+Pool (\begin{DoxyParamCaption}\item[{const vk\+::\+Command\+Pool\+Create\+Flags \&}]{flags = {\ttfamily \{\}},  }\item[{const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Command\+Pool\+Create\+Info $>$ \&}]{next = {\ttfamily \{\}},  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_queue_family_af6eecddd4c0e2818f5e0c6cc022609b0}\label{classlogi_1_1_queue_family_af6eecddd4c0e2818f5e0c6cc022609b0}} 
+\index{logi::QueueFamily@{logi::QueueFamily}!destroyCommandPool@{destroyCommandPool}}
+\index{destroyCommandPool@{destroyCommandPool}!logi::QueueFamily@{logi::QueueFamily}}
+\doxysubsubsection{\texorpdfstring{destroyCommandPool()}{destroyCommandPool()}}
+{\footnotesize\ttfamily void logi\+::\+Queue\+Family\+::destroy\+Command\+Pool (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_command_pool}{Command\+Pool}} \&}]{command\+Pool }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_queue_family_a6d15d6aa0883b5a58c146a290a884035}\label{classlogi_1_1_queue_family_a6d15d6aa0883b5a58c146a290a884035}} 
+\index{logi::QueueFamily@{logi::QueueFamily}!getDispatcher@{getDispatcher}}
+\index{getDispatcher@{getDispatcher}!logi::QueueFamily@{logi::QueueFamily}}
+\doxysubsubsection{\texorpdfstring{getDispatcher()}{getDispatcher()}}
+{\footnotesize\ttfamily const vk\+::\+Dispatch\+Loader\+Dynamic \& logi\+::\+Queue\+Family\+::get\+Dispatcher (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_queue_family_a85b23a817d7c3146ecfa8c9b7045bf8d}\label{classlogi_1_1_queue_family_a85b23a817d7c3146ecfa8c9b7045bf8d}} 
+\index{logi::QueueFamily@{logi::QueueFamily}!getIndex@{getIndex}}
+\index{getIndex@{getIndex}!logi::QueueFamily@{logi::QueueFamily}}
+\doxysubsubsection{\texorpdfstring{getIndex()}{getIndex()}}
+{\footnotesize\ttfamily uint32\+\_\+t logi\+::\+Queue\+Family\+::get\+Index (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_queue_family_ac12459699f98bafd86e46ce0adfddeab}\label{classlogi_1_1_queue_family_ac12459699f98bafd86e46ce0adfddeab}} 
+\index{logi::QueueFamily@{logi::QueueFamily}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!logi::QueueFamily@{logi::QueueFamily}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_vulkan_instance}{Vulkan\+Instance}} logi\+::\+Queue\+Family\+::get\+Instance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_queue_family_a1702874859f5916a5b770638b62fb41a}\label{classlogi_1_1_queue_family_a1702874859f5916a5b770638b62fb41a}} 
+\index{logi::QueueFamily@{logi::QueueFamily}!getLogicalDevice@{getLogicalDevice}}
+\index{getLogicalDevice@{getLogicalDevice}!logi::QueueFamily@{logi::QueueFamily}}
+\doxysubsubsection{\texorpdfstring{getLogicalDevice()}{getLogicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_logical_device}{Logical\+Device}} logi\+::\+Queue\+Family\+::get\+Logical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_queue_family_a7bd8759d094eb54cf7e0a84e19e438ee}\label{classlogi_1_1_queue_family_a7bd8759d094eb54cf7e0a84e19e438ee}} 
+\index{logi::QueueFamily@{logi::QueueFamily}!getPhysicalDevice@{getPhysicalDevice}}
+\index{getPhysicalDevice@{getPhysicalDevice}!logi::QueueFamily@{logi::QueueFamily}}
+\doxysubsubsection{\texorpdfstring{getPhysicalDevice()}{getPhysicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_physical_device}{Physical\+Device}} logi\+::\+Queue\+Family\+::get\+Physical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_queue_family_a5b52ce7d455aa791849a4c339290363c}\label{classlogi_1_1_queue_family_a5b52ce7d455aa791849a4c339290363c}} 
+\index{logi::QueueFamily@{logi::QueueFamily}!getQueue@{getQueue}}
+\index{getQueue@{getQueue}!logi::QueueFamily@{logi::QueueFamily}}
+\doxysubsubsection{\texorpdfstring{getQueue()}{getQueue()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_queue}{Queue}} logi\+::\+Queue\+Family\+::get\+Queue (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{queue\+Index }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_queue_family_a22202140a0ad45ea0ef472ede9834961}\label{classlogi_1_1_queue_family_a22202140a0ad45ea0ef472ede9834961}} 
+\index{logi::QueueFamily@{logi::QueueFamily}!getQueue2@{getQueue2}}
+\index{getQueue2@{getQueue2}!logi::QueueFamily@{logi::QueueFamily}}
+\doxysubsubsection{\texorpdfstring{getQueue2()}{getQueue2()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_queue}{Queue}} logi\+::\+Queue\+Family\+::get\+Queue2 (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{queue\+Index,  }\item[{const vk\+::\+Device\+Queue\+Create\+Flags \&}]{flags = {\ttfamily \{\}},  }\item[{const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Device\+Queue\+Info2 $>$ \&}]{next = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_queue_family_a573850795cef46e5e0c9acc997cce250}\label{classlogi_1_1_queue_family_a573850795cef46e5e0c9acc997cce250}} 
+\index{logi::QueueFamily@{logi::QueueFamily}!Handle@{Handle}}
+\index{Handle@{Handle}!logi::QueueFamily@{logi::QueueFamily}}
+\doxysubsubsection{\texorpdfstring{Handle()}{Handle()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_handle}{logi\+::\+Handle}}$<$ T $>$\+::\mbox{\hyperlink{classlogi_1_1_handle}{Handle}}\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+Default null handle constructor. 
+
+\mbox{\Hypertarget{classlogi_1_1_queue_family_afd9a0687dd950205ac03c19afca4c553}\label{classlogi_1_1_queue_family_afd9a0687dd950205ac03c19afca4c553}} 
+\index{logi::QueueFamily@{logi::QueueFamily}!Handle@{Handle}}
+\index{Handle@{Handle}!logi::QueueFamily@{logi::QueueFamily}}
+\doxysubsubsection{\texorpdfstring{Handle()}{Handle()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_handle}{logi\+::\+Handle}}$<$ T $>$\+::\mbox{\hyperlink{classlogi_1_1_handle}{Handle}}\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Initialize the referred object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & Referred object. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlogi_1_1_queue_family_a52608452672d700feb2d5dc43a0ae0cb}\label{classlogi_1_1_queue_family_a52608452672d700feb2d5dc43a0ae0cb}} 
+\index{logi::QueueFamily@{logi::QueueFamily}!operator uint32\_t@{operator uint32\_t}}
+\index{operator uint32\_t@{operator uint32\_t}!logi::QueueFamily@{logi::QueueFamily}}
+\doxysubsubsection{\texorpdfstring{operator uint32\_t()}{operator uint32\_t()}}
+{\footnotesize\ttfamily logi\+::\+Queue\+Family\+::operator uint32\+\_\+t (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_queue_family_ac30351fbf35ea065c658cc52dd696bb7}\label{classlogi_1_1_queue_family_ac30351fbf35ea065c658cc52dd696bb7}} 
+\index{logi::QueueFamily@{logi::QueueFamily}!queueCount@{queueCount}}
+\index{queueCount@{queueCount}!logi::QueueFamily@{logi::QueueFamily}}
+\doxysubsubsection{\texorpdfstring{queueCount()}{queueCount()}}
+{\footnotesize\ttfamily uint32\+\_\+t logi\+::\+Queue\+Family\+::queue\+Count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+logi/queue/\mbox{\hyperlink{queue__family_8hpp}{queue\+\_\+family.\+hpp}}\item 
+C\+:/\+Users/aljaz/\+Documents/\+Visual\+Studio\+Code\+Projects/\+Logi/src/logi/queue/\mbox{\hyperlink{queue__family_8cpp}{queue\+\_\+family.\+cpp}}\end{DoxyCompactItemize}

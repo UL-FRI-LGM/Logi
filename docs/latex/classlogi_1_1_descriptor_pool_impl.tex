@@ -1,0 +1,138 @@
+\hypertarget{classlogi_1_1_descriptor_pool_impl}{}\doxysection{logi\+::Descriptor\+Pool\+Impl Class Reference}
+\label{classlogi_1_1_descriptor_pool_impl}\index{logi::DescriptorPoolImpl@{logi::DescriptorPoolImpl}}
+
+
+{\ttfamily \#include $<$descriptor\+\_\+pool\+\_\+impl.\+hpp$>$}
+
+
+
+Inheritance diagram for logi\+::Descriptor\+Pool\+Impl\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogi_1_1_descriptor_pool_impl__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for logi\+::Descriptor\+Pool\+Impl\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogi_1_1_descriptor_pool_impl__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlogi_1_1_descriptor_pool_impl_ae1ae29c0aa533ea827b83309f558024c}{Descriptor\+Pool\+Impl}} (\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \&logical\+Device, const vk\+::\+Descriptor\+Pool\+Create\+Info \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\})
+\item 
+std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlogi_1_1_descriptor_set_impl}{Descriptor\+Set\+Impl}} $>$ $>$ \mbox{\hyperlink{classlogi_1_1_descriptor_pool_impl_ae45f384937df6f739bc7f90dbcb96151}{allocate\+Descriptor\+Sets}} (const std\+::vector$<$ vk\+::\+Descriptor\+Set\+Layout $>$ \&descriptor\+Set\+Layouts, const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Descriptor\+Set\+Allocate\+Info $>$ \&next=\{\})
+\item 
+vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_descriptor_pool_impl_afbd9f5572f880788da2a7db51c03540e}{free\+Descriptor\+Sets}} (const std\+::vector$<$ size\+\_\+t $>$ \&descriptor\+Set\+Ids)
+\item 
+vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_descriptor_pool_impl_ae50e584b019047b654597323fa90c1bd}{reset}} (const vk\+::\+Descriptor\+Pool\+Reset\+Flags \&flags=vk\+::\+Descriptor\+Pool\+Reset\+Flags()) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl}{Vulkan\+Instance\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_descriptor_pool_impl_ac38e38375f046f4c0d216624e0a607df}{get\+Instance}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_physical_device_impl}{Physical\+Device\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_descriptor_pool_impl_a7ea719eecc94aa0b58e207c0a9fe697a}{get\+Physical\+Device}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_descriptor_pool_impl_aeba17d4688d9c2ef696c945620f18f51}{get\+Logical\+Device}} () const
+\item 
+const vk\+::\+Dispatch\+Loader\+Dynamic \& \mbox{\hyperlink{classlogi_1_1_descriptor_pool_impl_a2c0f4f37974a76534e77c8e542a18896}{get\+Dispatcher}} () const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_descriptor_pool_impl_aa9342f7bd6f602ee8ea8cde2c78db659}{destroy}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_descriptor_pool_impl_a3ec5b33251aa3cf464a863b8006c6009}{operator const vk\+::\+Descriptor\+Pool \&}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classlogi_1_1_descriptor_pool_impl_ab644db1532617a49fa879e7bab961e84}{free}} () override
+\begin{DoxyCompactList}\small\item\em Invalidates \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. Overriding implementations should free the object\textquotesingle{}s resources and invoke \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}\textquotesingle{}s free. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlogi_1_1_descriptor_pool_impl_ae1ae29c0aa533ea827b83309f558024c}\label{classlogi_1_1_descriptor_pool_impl_ae1ae29c0aa533ea827b83309f558024c}} 
+\index{logi::DescriptorPoolImpl@{logi::DescriptorPoolImpl}!DescriptorPoolImpl@{DescriptorPoolImpl}}
+\index{DescriptorPoolImpl@{DescriptorPoolImpl}!logi::DescriptorPoolImpl@{logi::DescriptorPoolImpl}}
+\doxysubsubsection{\texorpdfstring{DescriptorPoolImpl()}{DescriptorPoolImpl()}}
+{\footnotesize\ttfamily logi\+::\+Descriptor\+Pool\+Impl\+::\+Descriptor\+Pool\+Impl (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \&}]{logical\+Device,  }\item[{const vk\+::\+Descriptor\+Pool\+Create\+Info \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogi_1_1_descriptor_pool_impl_ae45f384937df6f739bc7f90dbcb96151}\label{classlogi_1_1_descriptor_pool_impl_ae45f384937df6f739bc7f90dbcb96151}} 
+\index{logi::DescriptorPoolImpl@{logi::DescriptorPoolImpl}!allocateDescriptorSets@{allocateDescriptorSets}}
+\index{allocateDescriptorSets@{allocateDescriptorSets}!logi::DescriptorPoolImpl@{logi::DescriptorPoolImpl}}
+\doxysubsubsection{\texorpdfstring{allocateDescriptorSets()}{allocateDescriptorSets()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlogi_1_1_descriptor_set_impl}{Descriptor\+Set\+Impl}} $>$ $>$ logi\+::\+Descriptor\+Pool\+Impl\+::allocate\+Descriptor\+Sets (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ vk\+::\+Descriptor\+Set\+Layout $>$ \&}]{descriptor\+Set\+Layouts,  }\item[{const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Descriptor\+Set\+Allocate\+Info $>$ \&}]{next = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_descriptor_pool_impl_aa9342f7bd6f602ee8ea8cde2c78db659}\label{classlogi_1_1_descriptor_pool_impl_aa9342f7bd6f602ee8ea8cde2c78db659}} 
+\index{logi::DescriptorPoolImpl@{logi::DescriptorPoolImpl}!destroy@{destroy}}
+\index{destroy@{destroy}!logi::DescriptorPoolImpl@{logi::DescriptorPoolImpl}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily void logi\+::\+Descriptor\+Pool\+Impl\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_descriptor_pool_impl_ab644db1532617a49fa879e7bab961e84}\label{classlogi_1_1_descriptor_pool_impl_ab644db1532617a49fa879e7bab961e84}} 
+\index{logi::DescriptorPoolImpl@{logi::DescriptorPoolImpl}!free@{free}}
+\index{free@{free}!logi::DescriptorPoolImpl@{logi::DescriptorPoolImpl}}
+\doxysubsubsection{\texorpdfstring{free()}{free()}}
+{\footnotesize\ttfamily void logi\+::\+Descriptor\+Pool\+Impl\+::free (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Invalidates \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. Overriding implementations should free the object\textquotesingle{}s resources and invoke \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}\textquotesingle{}s free. 
+
+
+
+Reimplemented from \mbox{\hyperlink{classlogi_1_1_vulkan_object_a7a5cafb30933f8bbd0d4e89e14477f4a}{logi\+::\+Vulkan\+Object}}.
+
+\mbox{\Hypertarget{classlogi_1_1_descriptor_pool_impl_afbd9f5572f880788da2a7db51c03540e}\label{classlogi_1_1_descriptor_pool_impl_afbd9f5572f880788da2a7db51c03540e}} 
+\index{logi::DescriptorPoolImpl@{logi::DescriptorPoolImpl}!freeDescriptorSets@{freeDescriptorSets}}
+\index{freeDescriptorSets@{freeDescriptorSets}!logi::DescriptorPoolImpl@{logi::DescriptorPoolImpl}}
+\doxysubsubsection{\texorpdfstring{freeDescriptorSets()}{freeDescriptorSets()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Descriptor\+Pool\+Impl\+::free\+Descriptor\+Sets (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ size\+\_\+t $>$ \&}]{descriptor\+Set\+Ids }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_descriptor_pool_impl_a2c0f4f37974a76534e77c8e542a18896}\label{classlogi_1_1_descriptor_pool_impl_a2c0f4f37974a76534e77c8e542a18896}} 
+\index{logi::DescriptorPoolImpl@{logi::DescriptorPoolImpl}!getDispatcher@{getDispatcher}}
+\index{getDispatcher@{getDispatcher}!logi::DescriptorPoolImpl@{logi::DescriptorPoolImpl}}
+\doxysubsubsection{\texorpdfstring{getDispatcher()}{getDispatcher()}}
+{\footnotesize\ttfamily const vk\+::\+Dispatch\+Loader\+Dynamic \& logi\+::\+Descriptor\+Pool\+Impl\+::get\+Dispatcher (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_descriptor_pool_impl_ac38e38375f046f4c0d216624e0a607df}\label{classlogi_1_1_descriptor_pool_impl_ac38e38375f046f4c0d216624e0a607df}} 
+\index{logi::DescriptorPoolImpl@{logi::DescriptorPoolImpl}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!logi::DescriptorPoolImpl@{logi::DescriptorPoolImpl}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl}{Vulkan\+Instance\+Impl}} \& logi\+::\+Descriptor\+Pool\+Impl\+::get\+Instance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_descriptor_pool_impl_aeba17d4688d9c2ef696c945620f18f51}\label{classlogi_1_1_descriptor_pool_impl_aeba17d4688d9c2ef696c945620f18f51}} 
+\index{logi::DescriptorPoolImpl@{logi::DescriptorPoolImpl}!getLogicalDevice@{getLogicalDevice}}
+\index{getLogicalDevice@{getLogicalDevice}!logi::DescriptorPoolImpl@{logi::DescriptorPoolImpl}}
+\doxysubsubsection{\texorpdfstring{getLogicalDevice()}{getLogicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \& logi\+::\+Descriptor\+Pool\+Impl\+::get\+Logical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_descriptor_pool_impl_a7ea719eecc94aa0b58e207c0a9fe697a}\label{classlogi_1_1_descriptor_pool_impl_a7ea719eecc94aa0b58e207c0a9fe697a}} 
+\index{logi::DescriptorPoolImpl@{logi::DescriptorPoolImpl}!getPhysicalDevice@{getPhysicalDevice}}
+\index{getPhysicalDevice@{getPhysicalDevice}!logi::DescriptorPoolImpl@{logi::DescriptorPoolImpl}}
+\doxysubsubsection{\texorpdfstring{getPhysicalDevice()}{getPhysicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_physical_device_impl}{Physical\+Device\+Impl}} \& logi\+::\+Descriptor\+Pool\+Impl\+::get\+Physical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_descriptor_pool_impl_a3ec5b33251aa3cf464a863b8006c6009}\label{classlogi_1_1_descriptor_pool_impl_a3ec5b33251aa3cf464a863b8006c6009}} 
+\index{logi::DescriptorPoolImpl@{logi::DescriptorPoolImpl}!operator const vk::DescriptorPool \&@{operator const vk::DescriptorPool \&}}
+\index{operator const vk::DescriptorPool \&@{operator const vk::DescriptorPool \&}!logi::DescriptorPoolImpl@{logi::DescriptorPoolImpl}}
+\doxysubsubsection{\texorpdfstring{operator const vk::DescriptorPool \&()}{operator const vk::DescriptorPool \&()}}
+{\footnotesize\ttfamily logi\+::\+Descriptor\+Pool\+Impl\+::operator const vk\+::\+Descriptor\+Pool \& (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_descriptor_pool_impl_ae50e584b019047b654597323fa90c1bd}\label{classlogi_1_1_descriptor_pool_impl_ae50e584b019047b654597323fa90c1bd}} 
+\index{logi::DescriptorPoolImpl@{logi::DescriptorPoolImpl}!reset@{reset}}
+\index{reset@{reset}!logi::DescriptorPoolImpl@{logi::DescriptorPoolImpl}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Descriptor\+Pool\+Impl\+::reset (\begin{DoxyParamCaption}\item[{const vk\+::\+Descriptor\+Pool\+Reset\+Flags \&}]{flags = {\ttfamily vk\+:\+:DescriptorPoolResetFlags()} }\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+logi/descriptor/\mbox{\hyperlink{descriptor__pool__impl_8hpp}{descriptor\+\_\+pool\+\_\+impl.\+hpp}}\item 
+C\+:/\+Users/aljaz/\+Documents/\+Visual\+Studio\+Code\+Projects/\+Logi/src/logi/descriptor/\mbox{\hyperlink{descriptor__pool__impl_8cpp}{descriptor\+\_\+pool\+\_\+impl.\+cpp}}\end{DoxyCompactItemize}

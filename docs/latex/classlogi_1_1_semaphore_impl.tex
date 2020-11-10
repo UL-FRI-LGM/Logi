@@ -1,0 +1,130 @@
+\hypertarget{classlogi_1_1_semaphore_impl}{}\doxysection{logi\+::Semaphore\+Impl Class Reference}
+\label{classlogi_1_1_semaphore_impl}\index{logi::SemaphoreImpl@{logi::SemaphoreImpl}}
+
+
+{\ttfamily \#include $<$semaphore\+\_\+impl.\+hpp$>$}
+
+
+
+Inheritance diagram for logi\+::Semaphore\+Impl\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=342pt]{classlogi_1_1_semaphore_impl__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for logi\+::Semaphore\+Impl\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=342pt]{classlogi_1_1_semaphore_impl__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlogi_1_1_semaphore_impl_a98c11720c11052bbda20401c01d6a138}{Semaphore\+Impl}} (\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \&logical\+Device, const vk\+::\+Semaphore\+Create\+Info \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\})
+\item 
+void \mbox{\hyperlink{classlogi_1_1_semaphore_impl_ada08b7c09bbcace036d6f1b8046e32f4}{signal\+Semaphore}} (const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Semaphore\+Signal\+Info $>$ \&next, uint64\+\_\+t value) const
+\item 
+uint64\+\_\+t \mbox{\hyperlink{classlogi_1_1_semaphore_impl_a5ed2cbe492c22386c5f5b3b0611c1cdb}{get\+Counter\+Value}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl}{Vulkan\+Instance\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_semaphore_impl_afe99cf48dd8ae6fa049edb79f12b35d4}{get\+Instance}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_physical_device_impl}{Physical\+Device\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_semaphore_impl_af5a59718f319c0212b0ea50d83b5302e}{get\+Physical\+Device}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_semaphore_impl_a4bf5784e383b422f767a8720cf0830c5}{get\+Logical\+Device}} () const
+\item 
+const vk\+::\+Dispatch\+Loader\+Dynamic \& \mbox{\hyperlink{classlogi_1_1_semaphore_impl_a7a56220ecf64c9c84f4f97864c5b00d9}{get\+Dispatcher}} () const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_semaphore_impl_a01da58a53dd308f7aa554343a215f590}{destroy}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_semaphore_impl_a94de31c6da8a52cd7d4f7e85a34c4b42}{operator const vk\+::\+Semaphore \&}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classlogi_1_1_semaphore_impl_a4e338493f17c26678423a4104f0d4ca3}{free}} () override
+\begin{DoxyCompactList}\small\item\em Invalidates \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. Overriding implementations should free the object\textquotesingle{}s resources and invoke \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}\textquotesingle{}s free. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlogi_1_1_semaphore_impl_a98c11720c11052bbda20401c01d6a138}\label{classlogi_1_1_semaphore_impl_a98c11720c11052bbda20401c01d6a138}} 
+\index{logi::SemaphoreImpl@{logi::SemaphoreImpl}!SemaphoreImpl@{SemaphoreImpl}}
+\index{SemaphoreImpl@{SemaphoreImpl}!logi::SemaphoreImpl@{logi::SemaphoreImpl}}
+\doxysubsubsection{\texorpdfstring{SemaphoreImpl()}{SemaphoreImpl()}}
+{\footnotesize\ttfamily logi\+::\+Semaphore\+Impl\+::\+Semaphore\+Impl (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \&}]{logical\+Device,  }\item[{const vk\+::\+Semaphore\+Create\+Info \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogi_1_1_semaphore_impl_a01da58a53dd308f7aa554343a215f590}\label{classlogi_1_1_semaphore_impl_a01da58a53dd308f7aa554343a215f590}} 
+\index{logi::SemaphoreImpl@{logi::SemaphoreImpl}!destroy@{destroy}}
+\index{destroy@{destroy}!logi::SemaphoreImpl@{logi::SemaphoreImpl}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily void logi\+::\+Semaphore\+Impl\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_semaphore_impl_a4e338493f17c26678423a4104f0d4ca3}\label{classlogi_1_1_semaphore_impl_a4e338493f17c26678423a4104f0d4ca3}} 
+\index{logi::SemaphoreImpl@{logi::SemaphoreImpl}!free@{free}}
+\index{free@{free}!logi::SemaphoreImpl@{logi::SemaphoreImpl}}
+\doxysubsubsection{\texorpdfstring{free()}{free()}}
+{\footnotesize\ttfamily void logi\+::\+Semaphore\+Impl\+::free (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Invalidates \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. Overriding implementations should free the object\textquotesingle{}s resources and invoke \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}\textquotesingle{}s free. 
+
+
+
+Reimplemented from \mbox{\hyperlink{classlogi_1_1_vulkan_object_a7a5cafb30933f8bbd0d4e89e14477f4a}{logi\+::\+Vulkan\+Object}}.
+
+\mbox{\Hypertarget{classlogi_1_1_semaphore_impl_a5ed2cbe492c22386c5f5b3b0611c1cdb}\label{classlogi_1_1_semaphore_impl_a5ed2cbe492c22386c5f5b3b0611c1cdb}} 
+\index{logi::SemaphoreImpl@{logi::SemaphoreImpl}!getCounterValue@{getCounterValue}}
+\index{getCounterValue@{getCounterValue}!logi::SemaphoreImpl@{logi::SemaphoreImpl}}
+\doxysubsubsection{\texorpdfstring{getCounterValue()}{getCounterValue()}}
+{\footnotesize\ttfamily uint64\+\_\+t logi\+::\+Semaphore\+Impl\+::get\+Counter\+Value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_semaphore_impl_a7a56220ecf64c9c84f4f97864c5b00d9}\label{classlogi_1_1_semaphore_impl_a7a56220ecf64c9c84f4f97864c5b00d9}} 
+\index{logi::SemaphoreImpl@{logi::SemaphoreImpl}!getDispatcher@{getDispatcher}}
+\index{getDispatcher@{getDispatcher}!logi::SemaphoreImpl@{logi::SemaphoreImpl}}
+\doxysubsubsection{\texorpdfstring{getDispatcher()}{getDispatcher()}}
+{\footnotesize\ttfamily const vk\+::\+Dispatch\+Loader\+Dynamic \& logi\+::\+Semaphore\+Impl\+::get\+Dispatcher (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_semaphore_impl_afe99cf48dd8ae6fa049edb79f12b35d4}\label{classlogi_1_1_semaphore_impl_afe99cf48dd8ae6fa049edb79f12b35d4}} 
+\index{logi::SemaphoreImpl@{logi::SemaphoreImpl}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!logi::SemaphoreImpl@{logi::SemaphoreImpl}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl}{Vulkan\+Instance\+Impl}} \& logi\+::\+Semaphore\+Impl\+::get\+Instance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_semaphore_impl_a4bf5784e383b422f767a8720cf0830c5}\label{classlogi_1_1_semaphore_impl_a4bf5784e383b422f767a8720cf0830c5}} 
+\index{logi::SemaphoreImpl@{logi::SemaphoreImpl}!getLogicalDevice@{getLogicalDevice}}
+\index{getLogicalDevice@{getLogicalDevice}!logi::SemaphoreImpl@{logi::SemaphoreImpl}}
+\doxysubsubsection{\texorpdfstring{getLogicalDevice()}{getLogicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \& logi\+::\+Semaphore\+Impl\+::get\+Logical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_semaphore_impl_af5a59718f319c0212b0ea50d83b5302e}\label{classlogi_1_1_semaphore_impl_af5a59718f319c0212b0ea50d83b5302e}} 
+\index{logi::SemaphoreImpl@{logi::SemaphoreImpl}!getPhysicalDevice@{getPhysicalDevice}}
+\index{getPhysicalDevice@{getPhysicalDevice}!logi::SemaphoreImpl@{logi::SemaphoreImpl}}
+\doxysubsubsection{\texorpdfstring{getPhysicalDevice()}{getPhysicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_physical_device_impl}{Physical\+Device\+Impl}} \& logi\+::\+Semaphore\+Impl\+::get\+Physical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_semaphore_impl_a94de31c6da8a52cd7d4f7e85a34c4b42}\label{classlogi_1_1_semaphore_impl_a94de31c6da8a52cd7d4f7e85a34c4b42}} 
+\index{logi::SemaphoreImpl@{logi::SemaphoreImpl}!operator const vk::Semaphore \&@{operator const vk::Semaphore \&}}
+\index{operator const vk::Semaphore \&@{operator const vk::Semaphore \&}!logi::SemaphoreImpl@{logi::SemaphoreImpl}}
+\doxysubsubsection{\texorpdfstring{operator const vk::Semaphore \&()}{operator const vk::Semaphore \&()}}
+{\footnotesize\ttfamily logi\+::\+Semaphore\+Impl\+::operator const vk\+::\+Semaphore \& (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_semaphore_impl_ada08b7c09bbcace036d6f1b8046e32f4}\label{classlogi_1_1_semaphore_impl_ada08b7c09bbcace036d6f1b8046e32f4}} 
+\index{logi::SemaphoreImpl@{logi::SemaphoreImpl}!signalSemaphore@{signalSemaphore}}
+\index{signalSemaphore@{signalSemaphore}!logi::SemaphoreImpl@{logi::SemaphoreImpl}}
+\doxysubsubsection{\texorpdfstring{signalSemaphore()}{signalSemaphore()}}
+{\footnotesize\ttfamily void logi\+::\+Semaphore\+Impl\+::signal\+Semaphore (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Semaphore\+Signal\+Info $>$ \&}]{next,  }\item[{uint64\+\_\+t}]{value }\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+logi/synchronization/\mbox{\hyperlink{semaphore__impl_8hpp}{semaphore\+\_\+impl.\+hpp}}\item 
+C\+:/\+Users/aljaz/\+Documents/\+Visual\+Studio\+Code\+Projects/\+Logi/src/logi/synchronization/\mbox{\hyperlink{semaphore__impl_8cpp}{semaphore\+\_\+impl.\+cpp}}\end{DoxyCompactItemize}

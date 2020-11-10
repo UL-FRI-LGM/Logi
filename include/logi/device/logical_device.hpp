@@ -32,7 +32,7 @@
 #include "logi/memory/memory_allocator.hpp"
 #include "logi/memory/sampler.hpp"
 #include "logi/memory/sampler_ycbcr_conversion.hpp"
-#include "logi/nvidia/indirect_commands_layout_nvx.hpp"
+#include "logi/nvidia/indirect_commands_layout_nv.hpp"
 #include "logi/nvidia/object_table_nvx.hpp"
 #include "logi/program/descriptor_set_layout.hpp"
 #include "logi/program/pipeline.hpp"
@@ -57,170 +57,331 @@ class LogicalDevice : public Handle<LogicalDeviceImpl> {
 
   // region Sub-Handles
 
+  // TODO: documentation for allocator!
   MemoryAllocator createMemoryAllocator(vk::DeviceSize preferredLargeHeapBlockSize = 0u, uint32_t frameInUseCount = 0u,
                                         const std::vector<vk::DeviceSize>& heapSizeLimits = {},
                                         const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
-
+  // TODO: documentation for allocator!
   void destroyMemoryAllocator(const MemoryAllocator& memoryAllocator) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkAllocateMemory.html">vkAllocateMemory</a>
+   */
   DeviceMemory allocateMemory(const vk::MemoryAllocateInfo& createInfo,
                               const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkFreeMemory.html">vkFreeMemory</a>
+   */
   void freeMemory(const DeviceMemory& deviceMemory) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateBuffer.html">vkCreateBuffer</a>
+   */
   Buffer createBuffer(const vk::BufferCreateInfo& createInfo,
                       const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroyBuffer.html">vkDestroyBuffer</a>
+   */
   void destroyBuffer(const Buffer& buffer) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateImage.html">vkCreateImage</a>
+   */
   Image createImage(const vk::ImageCreateInfo& createInfo,
                     const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
-
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroyImage.html">vkDestroyImage</a>
+   */
   void destroyImage(const Image& image) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateSampler.html">vkCreateSampler</a>
+   */
   Sampler createSampler(const vk::SamplerCreateInfo& createInfo,
                         const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
-
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroySampler.html">vkDestroySampler</a>
+   */
   void destroySampler(const Sampler& sampler) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateSamplerYcbcrConversion.html">vkCreateSamplerYcbcrConversion</a>
+   */
   SamplerYcbcrConversion
     createSamplerYcbcrConversion(const vk::SamplerYcbcrConversionCreateInfo& createInfo,
                                  const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroySamplerYcbcrConversion.html">vkDestroySamplerYcbcrConversion</a>
+   */
   void destroySamplerYcbcrConversion(const SamplerYcbcrConversion& samplerYcbcrConversion) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateShaderModule.html">vkCreateShaderModule</a>
+   */
   ShaderModule createShaderModule(const vk::ShaderModuleCreateInfo& createInfo,
                                   const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroyShaderModule.html">vkDestroyShaderModule</a>
+   */
   void destroyShaderModule(const ShaderModule& shaderModule) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreatePipelineCache.html">vkCreatePipelineCache</a>
+   */
   PipelineCache createPipelineCache(const vk::PipelineCacheCreateInfo& createInfo,
                                     const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroyPipelineCache.html">vkDestroyPipelineCache</a>
+   */
   void destroyPipelineCache(const PipelineCache& pipelineCache) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateDescriptorSetLayout.html">vkCreateDescriptorSetLayout</a>
+   */
   DescriptorSetLayout createDescriptorSetLayout(const vk::DescriptorSetLayoutCreateInfo& createInfo,
                                                 const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroyDescriptorSetLayout.html">vkDestroyDescriptorSetLayout</a>
+   */
   void destroyDescriptorSetLayout(const DescriptorSetLayout& descriptorSetLayout) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateDescriptorPool.html">vkCreateDescriptorPool</a>
+   */
   DescriptorPool createDescriptorPool(const vk::DescriptorPoolCreateInfo& createInfo,
                                       const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroyDescriptorPool.html">vkDestroyDescriptorPool</a>
+   */
   void destroyDescriptorPool(const DescriptorPool& descriptorPool) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreatePipelineLayout.html">vkCreatePipelineLayout</a>
+   */
   PipelineLayout createPipelineLayout(const vk::PipelineLayoutCreateInfo& createInfo,
                                       const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroyPipelineLayout.html">vkDestroyPipelineLayout</a>
+   */
   void destroyPipelineLayout(const PipelineLayout& pipelineLayout) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateDescriptorUpdateTemplate.html">vkCreateDescriptorUpdateTemplate</a>
+   */
   DescriptorUpdateTemplate
     createDescriptorUpdateTemplate(const vk::DescriptorUpdateTemplateCreateInfo& createInfo,
                                    const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroyDescriptorUpdateTemplate.html">vkDestroyDescriptorUpdateTemplate</a>
+   */
   void destroyDescriptorUpdateTemplate(const DescriptorUpdateTemplate& descriptorUpdateTemplate) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateComputePipelines.html">vkCreateComputePipelines</a>
+   */
   std::vector<Pipeline> createComputePipelines(const vk::ArrayProxy<const vk::ComputePipelineCreateInfo>& createInfos,
                                                const vk::PipelineCache& cache = nullptr,
                                                const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateComputePipelines.html">vkCreateComputePipelines</a>
+   */
   Pipeline createComputePipeline(const vk::ComputePipelineCreateInfo& createInfo,
                                  const vk::PipelineCache& cache = nullptr,
                                  const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateGraphicsPipelines.html">vkCreateGraphicsPipelines</a>
+   */
   std::vector<Pipeline> createGraphicsPipelines(const vk::ArrayProxy<const vk::GraphicsPipelineCreateInfo>& createInfos,
                                                 const vk::PipelineCache& cache = nullptr,
                                                 const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateGraphicsPipelines.html">vkCreateGraphicsPipelines</a>
+   */
   Pipeline createGraphicsPipeline(const vk::GraphicsPipelineCreateInfo& createInfo,
                                   const vk::PipelineCache& cache = nullptr,
                                   const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateRayTracingPipelinesNV.html">vkCreateRayTracingPipelinesNV</a>
+   */
   std::vector<Pipeline>
     createRayTracingPipelinesNV(const vk::ArrayProxy<const vk::RayTracingPipelineCreateInfoNV>& createInfos,
                                 const vk::PipelineCache& cache = nullptr,
                                 const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateRayTracingPipelinesNV.html">vkCreateRayTracingPipelinesNV</a>
+   */
   Pipeline createRayTracingPipelineNV(const vk::RayTracingPipelineCreateInfoNV& createInfo,
                                       const vk::PipelineCache& cache = nullptr,
                                       const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroyPipeline.html">vkDestroyPipeline</a>
+   */
   void destroyPipeline(const Pipeline& pipeline) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateQueryPool.html">vkCreateQueryPool</a>
+   */
   QueryPool createQueryPool(const vk::QueryPoolCreateInfo& createInfo,
                             const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroyQueryPool.html">vkDestroyQueryPool</a>
+   */
   void destroyQueryPool(const QueryPool& queryPool) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroyQueryPool.html">vkDestroyQueryPool</a>
+   */
   Event createEvent(const vk::EventCreateInfo& createInfo,
                     const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroyEvent.html">vkDestroyEvent</a>
+   */
   void destroyEvent(const Event& event) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateFence.html">vkCreateFence</a>
+   */
   Fence createFence(const vk::FenceCreateInfo& createInfo,
                     const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkRegisterDeviceEventEXT.html">vkRegisterDeviceEventEXT</a>
+   */
   Fence registerEventEXT(const vk::DeviceEventInfoEXT& eventInfo,
                          const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkRegisterDisplayEventEXT.html">vkRegisterDisplayEventEXT</a>
+   */
   Fence registerDisplayEventEXT(const vk::DisplayKHR& display, const vk::DisplayEventInfoEXT& eventInfo,
                                 const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroyFence.html">vkDestroyFence</a>
+   */
   void destroyFence(const Fence& fence) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateSemaphore.html">vkCreateSemaphore</a>
+   */
   Semaphore createSemaphore(const vk::SemaphoreCreateInfo& createInfo,
                             const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroySemaphore.html">vkDestroySemaphore</a>
+   */
   void destroySemaphore(const Semaphore& semaphore) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkWaitSemaphores.html">vkWaitSemaphores</a>
+   */
   void waitSemaphores(const vk::SemaphoreWaitInfo& waitInfo, uint64_t timeout) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateRenderPass.html">vkCreateRenderPass</a>
+   */
   RenderPass createRenderPass(const vk::RenderPassCreateInfo& createInfo,
                               const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateRenderPass2.html">vkCreateRenderPass2</a>
+   */
   RenderPass createRenderPass2(const vk::RenderPassCreateInfo2& createInfo, 
                                const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
-
+  
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateRenderPass2KHR.html">vkCreateRenderPass2KHR</a>
+   */
   RenderPass createRenderPass(const vk::RenderPassCreateInfo2KHR& createInfo,
                               const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateRenderPass2KHR.html">vkCreateRenderPass2KHR</a>
+   */
   void destroyRenderPass(const RenderPass& renderPass) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroyRenderPass.html">vkDestroyRenderPass</a>
+   */
   Framebuffer createFramebuffer(const vk::FramebufferCreateInfo& createInfo,
                                 const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroyFramebuffer.html">vkDestroyFramebuffer</a>
+   */
   void destroyFramebuffer(const Framebuffer& framebuffer) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateSwapchainKHR.html">vkCreateSwapchainKHR</a>
+   */
   SwapchainKHR createSwapchainKHR(const vk::SwapchainCreateInfoKHR& createInfo,
                                   const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateSwapchainKHR.html">vkCreateSwapchainKHR</a>
+   */
   std::vector<SwapchainKHR>
     createSharedSwapchainsKHR(const vk::ArrayProxy<const vk::SwapchainCreateInfoKHR>& createInfos,
                               const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroySwapchainKHR.html">vkDestroySwapchainKHR</a>
+   */
   void destroySwapchainKHR(const SwapchainKHR& swapchain) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateValidationCacheEXT.html">vkCreateValidationCacheEXT</a>
+   */
   ValidationCacheEXT createValidationCacheEXT(const vk::ValidationCacheCreateInfoEXT& createInfo,
                                               const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroyValidationCacheEXT.html">vkDestroyValidationCacheEXT</a>
+   */
   void destroyValidationCacheEXT(const ValidationCacheEXT& validationCacheExt) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateAccelerationStructureNV.html">vkCreateAccelerationStructureNV</a>
+   */
   AccelerationStructureNV
     createAccelerationStructureNV(const vk::AccelerationStructureCreateInfoNV& createInfo,
                                   const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroyAccelerationStructureNV.html">vkDestroyAccelerationStructureNV</a>
+   */
   void destroyAccelerationStructureNV(const AccelerationStructureNV& accelerationStructure) const;
 
-  IndirectCommandsLayoutNVX createIndirectCommandsLayoutNVXIndirectCommandsLayoutNVX(
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateIndirectCommandsLayoutNV.html">vkCreateIndirectCommandsLayoutNVXIndirectCommandsLayoutNVX</a>
+   */
+  IndirectCommandsLayoutNV createIndirectCommandsLayoutNVX(
     const vk::IndirectCommandsLayoutCreateInfoNVX& createInfo,
     const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
-  void destroyIndirectCommandsLayoutNVX(const IndirectCommandsLayoutNVX& indirectCommandsLayout) const;
+  void destroyIndirectCommandsLayoutNVX(const IndirectCommandsLayoutNV& indirectCommandsLayout) const;
 
-  ObjectTableNVX createObjectTableNVX(const vk::ObjectTableCreateInfoNVX& createInfo,
-                                      const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
+  // ObjectTableNVX createObjectTableNVX(const vk::ObjectTableCreateInfoNV& createInfo,
+  //                                     const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
-  void destroyObjectTableNVX(const ObjectTableNVX& objectTable) const;
+  // void destroyObjectTableNVX(const ObjectTableNVX& objectTable) const;
 
   std::vector<QueueFamily> enumerateQueueFamilies() const;
 

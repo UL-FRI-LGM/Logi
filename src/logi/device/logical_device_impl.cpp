@@ -407,7 +407,7 @@ void LogicalDeviceImpl::destroyAccelerationStructureNV(size_t id) {
 }
 
 const std::shared_ptr<IndirectCommandsLayoutNVXImpl>&
-  LogicalDeviceImpl::createIndirectCommandsLayoutNVXIndirectCommandsLayoutNVX(
+  LogicalDeviceImpl::createIndirectCommandsLayoutNVX(
     const vk::IndirectCommandsLayoutCreateInfoNVX& createInfo,
     const std::optional<vk::AllocationCallbacks>& allocator) {
   return VulkanObjectComposite<IndirectCommandsLayoutNVXImpl>::createObject(*this, createInfo, allocator);

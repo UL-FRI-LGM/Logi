@@ -1,0 +1,9 @@
+<map id="logi::LogiException" name="logi::LogiException">
+<area shape="rect" id="node1" title="Base class for Logi framework exception." alt="" coords="177,107,309,133"/>
+<area shape="rect" id="node3" href="$classlogi_1_1_bad_allocation.html" title="BadAllocation error." alt="" coords="365,5,496,32"/>
+<area shape="rect" id="node4" href="$classlogi_1_1_illegal_invocation.html" title="IllegalInvocation error." alt="" coords="361,56,501,83"/>
+<area shape="rect" id="node5" href="$classlogi_1_1_initialization_error.html" title="InitializationError error." alt="" coords="357,107,504,133"/>
+<area shape="rect" id="node6" href="$classlogi_1_1_reflection_error.html" title="ReflectionError error." alt="" coords="363,157,498,184"/>
+<area shape="rect" id="node7" href="$classlogi_1_1_vulkan_error.html" title="Vulkan error." alt="" coords="371,208,490,235"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,107,129,133"/>
+</map>

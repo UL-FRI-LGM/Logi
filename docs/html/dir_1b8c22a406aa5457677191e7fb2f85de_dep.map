@@ -1,0 +1,12 @@
+<map id="logi/memory" name="logi/memory">
+<area shape="rect" id="node1" href="dir_1b8c22a406aa5457677191e7fb2f85de.html" title="memory" alt="" coords="101,52,173,100"/>
+<area shape="rect" id="node2" href="dir_8cc7127cefa0746e7fdaa0681d3e0f8e.html" title="base" alt="" coords="5,148,77,196"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000006_000001.html" title="40" alt="" coords="76,134,91,149"/>
+<area shape="rect" id="node3" href="dir_3e9207f58cac13c9b4b53848455efb87.html" title="device" alt="" coords="5,52,77,100"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000006_000004.html" title="1" alt="" coords="92,77,100,92"/>
+<area shape="rect" id="node4" href="dir_797b84dee34b1a555a00fe2d5c72d002.html" title="structures" alt="" coords="101,148,181,196"/>
+<area shape="rect" id="edge3-headlabel" href="dir_000006_000012.html" title="8" alt="" coords="144,122,152,137"/>
+<area shape="rect" id="edge4-headlabel" href="dir_000004_000006.html" title="7" alt="" coords="79,60,87,75"/>
+<area shape="rect" id="edge5-headlabel" href="dir_000004_000001.html" title="14" alt="" coords="42,122,57,137"/>
+<area shape="rect" id="clust1" href="dir_3e9022bbf33efb31a833e46271e2516a.html" title="logi" alt="" coords="91,16,184,111"/>
+</map>

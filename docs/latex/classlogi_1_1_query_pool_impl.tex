@@ -1,0 +1,139 @@
+\hypertarget{classlogi_1_1_query_pool_impl}{}\doxysection{logi\+::Query\+Pool\+Impl Class Reference}
+\label{classlogi_1_1_query_pool_impl}\index{logi::QueryPoolImpl@{logi::QueryPoolImpl}}
+
+
+{\ttfamily \#include $<$query\+\_\+pool\+\_\+impl.\+hpp$>$}
+
+
+
+Inheritance diagram for logi\+::Query\+Pool\+Impl\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=338pt]{classlogi_1_1_query_pool_impl__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for logi\+::Query\+Pool\+Impl\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=338pt]{classlogi_1_1_query_pool_impl__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlogi_1_1_query_pool_impl_a0fcd0106b9861e4c3445ba8d22f8a8a3}{Query\+Pool\+Impl}} (\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \&logical\+Device, const vk\+::\+Query\+Pool\+Create\+Info \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\})
+\item 
+{\footnotesize template$<$typename T $>$ }\\vk\+::\+Result \mbox{\hyperlink{classlogi_1_1_query_pool_impl_aa7703c212be6e0fd7e5bffef09fdc3ec}{get\+Results}} (uint32\+\_\+t first\+Query, uint32\+\_\+t query\+Count, vk\+::\+Array\+Proxy$<$ T $>$ data, vk\+::\+Device\+Size stride, vk\+::\+Query\+Result\+Flags flags) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_query_pool_impl_ad1e4e2f4a392adea236662586ec0c14f}{reset\+Query\+Pool}} (uint32\+\_\+t first\+Query, uint32\+\_\+t query\+Count) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_query_pool_impl_af1c4c9ad6a186f96dd695af3ef756035}{reset\+Query\+Pool\+E\+XT}} (uint32\+\_\+t first\+Query, uint32\+\_\+t query\+Count) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl}{Vulkan\+Instance\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_query_pool_impl_afb44fc97e19a095626c57c0a7265a79c}{get\+Instance}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_physical_device_impl}{Physical\+Device\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_query_pool_impl_a5ec71a2e99f922b5add40c11a9f0049a}{get\+Physical\+Device}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_query_pool_impl_a083edad79f7f959a5e7b20acb6755ec0}{get\+Logical\+Device}} () const
+\item 
+const vk\+::\+Dispatch\+Loader\+Dynamic \& \mbox{\hyperlink{classlogi_1_1_query_pool_impl_a95ed781605d9f2282158a3f12ea85f6b}{get\+Dispatcher}} () const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_query_pool_impl_a090e76b95c163163e355e73ac13ea7b5}{destroy}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_query_pool_impl_a0fa01e4898bb8c251155f0ed565687c8}{operator const vk\+::\+Query\+Pool \&}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classlogi_1_1_query_pool_impl_a6c46437fb47e553fea5a463f5c551f5c}{free}} () override
+\begin{DoxyCompactList}\small\item\em Invalidates \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. Overriding implementations should free the object\textquotesingle{}s resources and invoke \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}\textquotesingle{}s free. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlogi_1_1_query_pool_impl_a0fcd0106b9861e4c3445ba8d22f8a8a3}\label{classlogi_1_1_query_pool_impl_a0fcd0106b9861e4c3445ba8d22f8a8a3}} 
+\index{logi::QueryPoolImpl@{logi::QueryPoolImpl}!QueryPoolImpl@{QueryPoolImpl}}
+\index{QueryPoolImpl@{QueryPoolImpl}!logi::QueryPoolImpl@{logi::QueryPoolImpl}}
+\doxysubsubsection{\texorpdfstring{QueryPoolImpl()}{QueryPoolImpl()}}
+{\footnotesize\ttfamily logi\+::\+Query\+Pool\+Impl\+::\+Query\+Pool\+Impl (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \&}]{logical\+Device,  }\item[{const vk\+::\+Query\+Pool\+Create\+Info \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogi_1_1_query_pool_impl_a090e76b95c163163e355e73ac13ea7b5}\label{classlogi_1_1_query_pool_impl_a090e76b95c163163e355e73ac13ea7b5}} 
+\index{logi::QueryPoolImpl@{logi::QueryPoolImpl}!destroy@{destroy}}
+\index{destroy@{destroy}!logi::QueryPoolImpl@{logi::QueryPoolImpl}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily void logi\+::\+Query\+Pool\+Impl\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_query_pool_impl_a6c46437fb47e553fea5a463f5c551f5c}\label{classlogi_1_1_query_pool_impl_a6c46437fb47e553fea5a463f5c551f5c}} 
+\index{logi::QueryPoolImpl@{logi::QueryPoolImpl}!free@{free}}
+\index{free@{free}!logi::QueryPoolImpl@{logi::QueryPoolImpl}}
+\doxysubsubsection{\texorpdfstring{free()}{free()}}
+{\footnotesize\ttfamily void logi\+::\+Query\+Pool\+Impl\+::free (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Invalidates \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. Overriding implementations should free the object\textquotesingle{}s resources and invoke \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}\textquotesingle{}s free. 
+
+
+
+Reimplemented from \mbox{\hyperlink{classlogi_1_1_vulkan_object_a7a5cafb30933f8bbd0d4e89e14477f4a}{logi\+::\+Vulkan\+Object}}.
+
+\mbox{\Hypertarget{classlogi_1_1_query_pool_impl_a95ed781605d9f2282158a3f12ea85f6b}\label{classlogi_1_1_query_pool_impl_a95ed781605d9f2282158a3f12ea85f6b}} 
+\index{logi::QueryPoolImpl@{logi::QueryPoolImpl}!getDispatcher@{getDispatcher}}
+\index{getDispatcher@{getDispatcher}!logi::QueryPoolImpl@{logi::QueryPoolImpl}}
+\doxysubsubsection{\texorpdfstring{getDispatcher()}{getDispatcher()}}
+{\footnotesize\ttfamily const vk\+::\+Dispatch\+Loader\+Dynamic \& logi\+::\+Query\+Pool\+Impl\+::get\+Dispatcher (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_query_pool_impl_afb44fc97e19a095626c57c0a7265a79c}\label{classlogi_1_1_query_pool_impl_afb44fc97e19a095626c57c0a7265a79c}} 
+\index{logi::QueryPoolImpl@{logi::QueryPoolImpl}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!logi::QueryPoolImpl@{logi::QueryPoolImpl}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl}{Vulkan\+Instance\+Impl}} \& logi\+::\+Query\+Pool\+Impl\+::get\+Instance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_query_pool_impl_a083edad79f7f959a5e7b20acb6755ec0}\label{classlogi_1_1_query_pool_impl_a083edad79f7f959a5e7b20acb6755ec0}} 
+\index{logi::QueryPoolImpl@{logi::QueryPoolImpl}!getLogicalDevice@{getLogicalDevice}}
+\index{getLogicalDevice@{getLogicalDevice}!logi::QueryPoolImpl@{logi::QueryPoolImpl}}
+\doxysubsubsection{\texorpdfstring{getLogicalDevice()}{getLogicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \& logi\+::\+Query\+Pool\+Impl\+::get\+Logical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_query_pool_impl_a5ec71a2e99f922b5add40c11a9f0049a}\label{classlogi_1_1_query_pool_impl_a5ec71a2e99f922b5add40c11a9f0049a}} 
+\index{logi::QueryPoolImpl@{logi::QueryPoolImpl}!getPhysicalDevice@{getPhysicalDevice}}
+\index{getPhysicalDevice@{getPhysicalDevice}!logi::QueryPoolImpl@{logi::QueryPoolImpl}}
+\doxysubsubsection{\texorpdfstring{getPhysicalDevice()}{getPhysicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_physical_device_impl}{Physical\+Device\+Impl}} \& logi\+::\+Query\+Pool\+Impl\+::get\+Physical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_query_pool_impl_aa7703c212be6e0fd7e5bffef09fdc3ec}\label{classlogi_1_1_query_pool_impl_aa7703c212be6e0fd7e5bffef09fdc3ec}} 
+\index{logi::QueryPoolImpl@{logi::QueryPoolImpl}!getResults@{getResults}}
+\index{getResults@{getResults}!logi::QueryPoolImpl@{logi::QueryPoolImpl}}
+\doxysubsubsection{\texorpdfstring{getResults()}{getResults()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+vk\+::\+Result logi\+::\+Query\+Pool\+Impl\+::get\+Results (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{first\+Query,  }\item[{uint32\+\_\+t}]{query\+Count,  }\item[{vk\+::\+Array\+Proxy$<$ T $>$}]{data,  }\item[{vk\+::\+Device\+Size}]{stride,  }\item[{vk\+::\+Query\+Result\+Flags}]{flags }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_query_pool_impl_a0fa01e4898bb8c251155f0ed565687c8}\label{classlogi_1_1_query_pool_impl_a0fa01e4898bb8c251155f0ed565687c8}} 
+\index{logi::QueryPoolImpl@{logi::QueryPoolImpl}!operator const vk::QueryPool \&@{operator const vk::QueryPool \&}}
+\index{operator const vk::QueryPool \&@{operator const vk::QueryPool \&}!logi::QueryPoolImpl@{logi::QueryPoolImpl}}
+\doxysubsubsection{\texorpdfstring{operator const vk::QueryPool \&()}{operator const vk::QueryPool \&()}}
+{\footnotesize\ttfamily logi\+::\+Query\+Pool\+Impl\+::operator const vk\+::\+Query\+Pool \& (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_query_pool_impl_ad1e4e2f4a392adea236662586ec0c14f}\label{classlogi_1_1_query_pool_impl_ad1e4e2f4a392adea236662586ec0c14f}} 
+\index{logi::QueryPoolImpl@{logi::QueryPoolImpl}!resetQueryPool@{resetQueryPool}}
+\index{resetQueryPool@{resetQueryPool}!logi::QueryPoolImpl@{logi::QueryPoolImpl}}
+\doxysubsubsection{\texorpdfstring{resetQueryPool()}{resetQueryPool()}}
+{\footnotesize\ttfamily void logi\+::\+Query\+Pool\+Impl\+::reset\+Query\+Pool (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{first\+Query,  }\item[{uint32\+\_\+t}]{query\+Count }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_query_pool_impl_af1c4c9ad6a186f96dd695af3ef756035}\label{classlogi_1_1_query_pool_impl_af1c4c9ad6a186f96dd695af3ef756035}} 
+\index{logi::QueryPoolImpl@{logi::QueryPoolImpl}!resetQueryPoolEXT@{resetQueryPoolEXT}}
+\index{resetQueryPoolEXT@{resetQueryPoolEXT}!logi::QueryPoolImpl@{logi::QueryPoolImpl}}
+\doxysubsubsection{\texorpdfstring{resetQueryPoolEXT()}{resetQueryPoolEXT()}}
+{\footnotesize\ttfamily void logi\+::\+Query\+Pool\+Impl\+::reset\+Query\+Pool\+E\+XT (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{first\+Query,  }\item[{uint32\+\_\+t}]{query\+Count }\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+logi/query/\mbox{\hyperlink{query__pool__impl_8hpp}{query\+\_\+pool\+\_\+impl.\+hpp}}\item 
+C\+:/\+Users/aljaz/\+Documents/\+Visual\+Studio\+Code\+Projects/\+Logi/src/logi/query/\mbox{\hyperlink{query__pool__impl_8cpp}{query\+\_\+pool\+\_\+impl.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,134 @@
+\hypertarget{classlogi_1_1_handle}{}\doxysection{logi\+::Handle$<$ T $>$ Class Template Reference}
+\label{classlogi_1_1_handle}\index{logi::Handle$<$ T $>$@{logi::Handle$<$ T $>$}}
+
+
+{\ttfamily \#include $<$handle.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlogi_1_1_handle_a573850795cef46e5e0c9acc997cce250}{Handle}} ()=default
+\begin{DoxyCompactList}\small\item\em Default null handle constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classlogi_1_1_handle_afd9a0687dd950205ac03c19afca4c553}{Handle}} (std\+::shared\+\_\+ptr$<$ T $>$ object)
+\begin{DoxyCompactList}\small\item\em Initialize the referred object. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classlogi_1_1_handle_aebdd29f3dc550f1dddf340363add4341}{id}} () const
+\begin{DoxyCompactList}\small\item\em Retrieve object identifier. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classlogi_1_1_handle_a1ea3cef4ca13e51b0cb73106b1883732}{operator bool}} () const
+\begin{DoxyCompactList}\small\item\em Converts to true if the referred \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}} is valid. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classlogi_1_1_handle_aa8ff39afebf6d3bb68eb047a8ae22df1}{operator==}} (const \mbox{\hyperlink{classlogi_1_1_handle}{Handle}}$<$ T $>$ \&other) const
+\begin{DoxyCompactList}\small\item\em Check if the given handles refer to the same object. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classlogi_1_1_handle_a17e3d963d3fa941f9526f3f8572e5858}{operator!=}} (const \mbox{\hyperlink{classlogi_1_1_handle}{Handle}}$<$ T $>$ \&other) const
+\begin{DoxyCompactList}\small\item\em Check if the given handles do not refer to the same object. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classlogi_1_1_handle_ae485915f47fe78f37fbf35e219de7fd7}{operator!}} () const
+\begin{DoxyCompactList}\small\item\em Return true if the referred \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}} is not valid. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::shared\+\_\+ptr$<$ T $>$ \mbox{\hyperlink{classlogi_1_1_handle_aed80938bac622d0a5f6249121bd0f005}{object\+\_\+}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlogi_1_1_handle_a573850795cef46e5e0c9acc997cce250}\label{classlogi_1_1_handle_a573850795cef46e5e0c9acc997cce250}} 
+\index{logi::Handle$<$ T $>$@{logi::Handle$<$ T $>$}!Handle@{Handle}}
+\index{Handle@{Handle}!logi::Handle$<$ T $>$@{logi::Handle$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Handle()}{Handle()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classlogi_1_1_handle}{logi\+::\+Handle}}$<$ T $>$\+::\mbox{\hyperlink{classlogi_1_1_handle}{Handle}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+Default null handle constructor. 
+
+\mbox{\Hypertarget{classlogi_1_1_handle_afd9a0687dd950205ac03c19afca4c553}\label{classlogi_1_1_handle_afd9a0687dd950205ac03c19afca4c553}} 
+\index{logi::Handle$<$ T $>$@{logi::Handle$<$ T $>$}!Handle@{Handle}}
+\index{Handle@{Handle}!logi::Handle$<$ T $>$@{logi::Handle$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Handle()}{Handle()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classlogi_1_1_handle}{logi\+::\+Handle}}$<$ T $>$\+::\mbox{\hyperlink{classlogi_1_1_handle}{Handle}} (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ T $>$}]{object }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Initialize the referred object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & Referred object. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogi_1_1_handle_aebdd29f3dc550f1dddf340363add4341}\label{classlogi_1_1_handle_aebdd29f3dc550f1dddf340363add4341}} 
+\index{logi::Handle$<$ T $>$@{logi::Handle$<$ T $>$}!id@{id}}
+\index{id@{id}!logi::Handle$<$ T $>$@{logi::Handle$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{id()}{id()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+size\+\_\+t \mbox{\hyperlink{classlogi_1_1_handle}{logi\+::\+Handle}}$<$ T $>$\+::id}
+
+
+
+Retrieve object identifier. 
+
+\begin{DoxyReturn}{Returns}
+Object identfier. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlogi_1_1_handle_a1ea3cef4ca13e51b0cb73106b1883732}\label{classlogi_1_1_handle_a1ea3cef4ca13e51b0cb73106b1883732}} 
+\index{logi::Handle$<$ T $>$@{logi::Handle$<$ T $>$}!operator bool@{operator bool}}
+\index{operator bool@{operator bool}!logi::Handle$<$ T $>$@{logi::Handle$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator bool()}{operator bool()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classlogi_1_1_handle}{logi\+::\+Handle}}$<$ T $>$\+::operator bool}
+
+
+
+Converts to true if the referred \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}} is valid. 
+
+\mbox{\Hypertarget{classlogi_1_1_handle_ae485915f47fe78f37fbf35e219de7fd7}\label{classlogi_1_1_handle_ae485915f47fe78f37fbf35e219de7fd7}} 
+\index{logi::Handle$<$ T $>$@{logi::Handle$<$ T $>$}!operator"!@{operator"!}}
+\index{operator"!@{operator"!}!logi::Handle$<$ T $>$@{logi::Handle$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator"!()}{operator!()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool \mbox{\hyperlink{classlogi_1_1_handle}{logi\+::\+Handle}}$<$ T $>$\+::operator!}
+
+
+
+Return true if the referred \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}} is not valid. 
+
+\mbox{\Hypertarget{classlogi_1_1_handle_a17e3d963d3fa941f9526f3f8572e5858}\label{classlogi_1_1_handle_a17e3d963d3fa941f9526f3f8572e5858}} 
+\index{logi::Handle$<$ T $>$@{logi::Handle$<$ T $>$}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!logi::Handle$<$ T $>$@{logi::Handle$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool \mbox{\hyperlink{classlogi_1_1_handle}{logi\+::\+Handle}}$<$ T $>$\+::\mbox{\hyperlink{classlogi_1_1_handle_ae485915f47fe78f37fbf35e219de7fd7}{operator!}}= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_handle}{Handle}}$<$ T $>$ \&}]{other }\end{DoxyParamCaption}) const}
+
+
+
+Check if the given handles do not refer to the same object. 
+
+\mbox{\Hypertarget{classlogi_1_1_handle_aa8ff39afebf6d3bb68eb047a8ae22df1}\label{classlogi_1_1_handle_aa8ff39afebf6d3bb68eb047a8ae22df1}} 
+\index{logi::Handle$<$ T $>$@{logi::Handle$<$ T $>$}!operator==@{operator==}}
+\index{operator==@{operator==}!logi::Handle$<$ T $>$@{logi::Handle$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool \mbox{\hyperlink{classlogi_1_1_handle}{logi\+::\+Handle}}$<$ T $>$\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_handle}{Handle}}$<$ T $>$ \&}]{other }\end{DoxyParamCaption}) const}
+
+
+
+Check if the given handles refer to the same object. 
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classlogi_1_1_handle_aed80938bac622d0a5f6249121bd0f005}\label{classlogi_1_1_handle_aed80938bac622d0a5f6249121bd0f005}} 
+\index{logi::Handle$<$ T $>$@{logi::Handle$<$ T $>$}!object\_@{object\_}}
+\index{object\_@{object\_}!logi::Handle$<$ T $>$@{logi::Handle$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{object\_}{object\_}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::shared\+\_\+ptr$<$T$>$ \mbox{\hyperlink{classlogi_1_1_handle}{logi\+::\+Handle}}$<$ T $>$\+::object\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+logi/base/\mbox{\hyperlink{handle_8hpp}{handle.\+hpp}}\end{DoxyCompactItemize}

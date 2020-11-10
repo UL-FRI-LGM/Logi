@@ -1,0 +1,264 @@
+\hypertarget{classlogi_1_1_image_impl}{}\doxysection{logi\+::Image\+Impl Class Reference}
+\label{classlogi_1_1_image_impl}\index{logi::ImageImpl@{logi::ImageImpl}}
+
+
+{\ttfamily \#include $<$image\+\_\+impl.\+hpp$>$}
+
+
+
+Inheritance diagram for logi\+::Image\+Impl\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogi_1_1_image_impl__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for logi\+::Image\+Impl\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{classlogi_1_1_image_impl__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlogi_1_1_image_impl_ad04b7a856b3e0b16a8c0d21f37273f11}{Image\+Impl}} (\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \&logical\+Device, const vk\+::\+Image\+Create\+Info \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\})
+\item 
+\mbox{\hyperlink{classlogi_1_1_image_impl_a7986dcc476bb1c4375b7b3c4397cae17}{Image\+Impl}} (\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \&logical\+Device, const vk\+::\+Image \&image)
+\item 
+vk\+::\+Memory\+Requirements \mbox{\hyperlink{classlogi_1_1_image_impl_a53c4bbeaa7ace3c725224af8ce6d3977}{get\+Memory\+Requirements}} () const
+\item 
+std\+::vector$<$ vk\+::\+Sparse\+Image\+Memory\+Requirements $>$ \mbox{\hyperlink{classlogi_1_1_image_impl_a46b4123f2f3babe7139366f65a8ed2b6}{get\+Sparse\+Memory\+Requirements}} () const
+\item 
+vk\+::\+Subresource\+Layout \mbox{\hyperlink{classlogi_1_1_image_impl_a74d5c1309e5fe516f4346744f8ed6e3c}{get\+Image\+Subresource\+Layout}} (const vk\+::\+Image\+Subresource \&subresource) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ vk\+::\+Image\+Drm\+Format\+Modifier\+Properties\+E\+XT $>$\+::type \mbox{\hyperlink{classlogi_1_1_image_impl_a23c374fff42057deefe9bea1d171aacb}{get\+Drm\+Format\+Modifier\+Properties\+E\+XT}} () const
+\item 
+vk\+::\+Memory\+Requirements2 \mbox{\hyperlink{classlogi_1_1_image_impl_a92622418142dab239c39c834d70036f9}{get\+Image\+Memory\+Requirements2}} (const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Image\+Memory\+Requirements\+Info2 $>$ \&next) const
+\item 
+vk\+::\+Memory\+Requirements2\+K\+HR \mbox{\hyperlink{classlogi_1_1_image_impl_a72f3753fa5c9f3434832bf3d0e42917a}{get\+Image\+Memory\+Requirements2\+K\+HR}} (const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Image\+Memory\+Requirements\+Info2\+K\+HR $>$ \&next) const
+\item 
+std\+::vector$<$ vk\+::\+Sparse\+Image\+Memory\+Requirements2 $>$ \mbox{\hyperlink{classlogi_1_1_image_impl_a3bc2b7741d132a5948cea01688385ac4}{get\+Image\+Sparse\+Memory\+Requirements2}} (const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Image\+Sparse\+Memory\+Requirements\+Info2 $>$ \&next) const
+\item 
+std\+::vector$<$ vk\+::\+Sparse\+Image\+Memory\+Requirements2\+K\+HR $>$ \mbox{\hyperlink{classlogi_1_1_image_impl_a3a8077f347dc8dbda68d157e217a8241}{get\+Image\+Sparse\+Memory\+Requirements2\+K\+HR}} (const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Image\+Sparse\+Memory\+Requirements\+Info2\+K\+HR $>$ \&next) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_image_impl_a08bcba9385d9746b8aefafc128f0997b}{bind\+Memory}} (const vk\+::\+Device\+Memory \&memory, vk\+::\+Device\+Size memory\+Offset) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_image_impl_ab5b83fb3a04a6ddfc0e6b6baf11f155f}{bind\+Memory2}} (const vk\+::\+Device\+Memory \&memory, vk\+::\+Device\+Size memory\+Offset, const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Bind\+Image\+Memory\+Info $>$ \&next) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_image_impl_a3ac01009709285292e20c28d950f175f}{bind\+Memory2\+K\+HR}} (const vk\+::\+Device\+Memory \&memory, vk\+::\+Device\+Size memory\+Offset, const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Bind\+Image\+Memory\+Info\+K\+HR $>$ \&next) const
+\item 
+const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlogi_1_1_image_view_impl}{Image\+View\+Impl}} $>$ \& \mbox{\hyperlink{classlogi_1_1_image_impl_a7e35ca3feb30f19f45c8ef9ed76addf1}{create\+Image\+View}} (const vk\+::\+Image\+View\+Create\+Flags \&flags, vk\+::\+Image\+View\+Type view\+Type, vk\+::\+Format format, const vk\+::\+Component\+Mapping \&components, const vk\+::\+Image\+Subresource\+Range \&subresource\+Range, const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Image\+View\+Create\+Info $>$ \&next=\{\}, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\})
+\item 
+void \mbox{\hyperlink{classlogi_1_1_image_impl_a78d9a4a66d1399240854d0552d2596a3}{destroy\+Image\+View}} (size\+\_\+t \mbox{\hyperlink{classlogi_1_1_vulkan_object_a228d983c6b7d202aa7e1f372856cc707}{id}})
+\item 
+\mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl}{Vulkan\+Instance\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_image_impl_a91139d65c5f60c95943e2716c61d5eff}{get\+Instance}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_physical_device_impl}{Physical\+Device\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_image_impl_acff8227cad9c053e1acff5f3d62de7ef}{get\+Physical\+Device}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_image_impl_aad8436b56443294c8c46417368e16833}{get\+Logical\+Device}} () const
+\item 
+const vk\+::\+Dispatch\+Loader\+Dynamic \& \mbox{\hyperlink{classlogi_1_1_image_impl_a5303d563b7992213cf85cc29ea407b61}{get\+Dispatcher}} () const
+\item 
+virtual void \mbox{\hyperlink{classlogi_1_1_image_impl_abf9cd2b77e3f18d72ffbd51e797ba9dc}{destroy}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_image_impl_a8674db40bdfc105e25eaa2667b13c451}{operator const vk\+::\+Image \&}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classlogi_1_1_image_impl_a1d8805af51dbf266fdb11f609b2f3a96}{free}} () override
+\begin{DoxyCompactList}\small\item\em Invalidates \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. Overriding implementations should free the object\textquotesingle{}s resources and invoke \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}\textquotesingle{}s free. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_image_impl_af53a5b15ba4faf09fc658594f22b1b2c}{logical\+Device\+\_\+}}
+\item 
+vk\+::\+Image \mbox{\hyperlink{classlogi_1_1_image_impl_a50e540877fb71b27dbd67a99074c58d7}{vk\+Image\+\_\+}}
+\item 
+std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \mbox{\hyperlink{classlogi_1_1_image_impl_a44981030143c0766d1f576c94180d845}{allocator\+\_\+}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlogi_1_1_image_impl_ad04b7a856b3e0b16a8c0d21f37273f11}\label{classlogi_1_1_image_impl_ad04b7a856b3e0b16a8c0d21f37273f11}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!ImageImpl@{ImageImpl}}
+\index{ImageImpl@{ImageImpl}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{ImageImpl()}{ImageImpl()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily logi\+::\+Image\+Impl\+::\+Image\+Impl (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \&}]{logical\+Device,  }\item[{const vk\+::\+Image\+Create\+Info \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_image_impl_a7986dcc476bb1c4375b7b3c4397cae17}\label{classlogi_1_1_image_impl_a7986dcc476bb1c4375b7b3c4397cae17}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!ImageImpl@{ImageImpl}}
+\index{ImageImpl@{ImageImpl}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{ImageImpl()}{ImageImpl()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily logi\+::\+Image\+Impl\+::\+Image\+Impl (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \&}]{logical\+Device,  }\item[{const vk\+::\+Image \&}]{image }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogi_1_1_image_impl_a08bcba9385d9746b8aefafc128f0997b}\label{classlogi_1_1_image_impl_a08bcba9385d9746b8aefafc128f0997b}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!bindMemory@{bindMemory}}
+\index{bindMemory@{bindMemory}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{bindMemory()}{bindMemory()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Image\+Impl\+::bind\+Memory (\begin{DoxyParamCaption}\item[{const vk\+::\+Device\+Memory \&}]{memory,  }\item[{vk\+::\+Device\+Size}]{memory\+Offset }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_image_impl_ab5b83fb3a04a6ddfc0e6b6baf11f155f}\label{classlogi_1_1_image_impl_ab5b83fb3a04a6ddfc0e6b6baf11f155f}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!bindMemory2@{bindMemory2}}
+\index{bindMemory2@{bindMemory2}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{bindMemory2()}{bindMemory2()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Image\+Impl\+::bind\+Memory2 (\begin{DoxyParamCaption}\item[{const vk\+::\+Device\+Memory \&}]{memory,  }\item[{vk\+::\+Device\+Size}]{memory\+Offset,  }\item[{const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Bind\+Image\+Memory\+Info $>$ \&}]{next }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_image_impl_a3ac01009709285292e20c28d950f175f}\label{classlogi_1_1_image_impl_a3ac01009709285292e20c28d950f175f}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!bindMemory2KHR@{bindMemory2KHR}}
+\index{bindMemory2KHR@{bindMemory2KHR}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{bindMemory2KHR()}{bindMemory2KHR()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Image\+Impl\+::bind\+Memory2\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Device\+Memory \&}]{memory,  }\item[{vk\+::\+Device\+Size}]{memory\+Offset,  }\item[{const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Bind\+Image\+Memory\+Info\+K\+HR $>$ \&}]{next }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_image_impl_a7e35ca3feb30f19f45c8ef9ed76addf1}\label{classlogi_1_1_image_impl_a7e35ca3feb30f19f45c8ef9ed76addf1}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!createImageView@{createImageView}}
+\index{createImageView@{createImageView}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{createImageView()}{createImageView()}}
+{\footnotesize\ttfamily const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlogi_1_1_image_view_impl}{Image\+View\+Impl}} $>$ \& logi\+::\+Image\+Impl\+::create\+Image\+View (\begin{DoxyParamCaption}\item[{const vk\+::\+Image\+View\+Create\+Flags \&}]{flags,  }\item[{vk\+::\+Image\+View\+Type}]{view\+Type,  }\item[{vk\+::\+Format}]{format,  }\item[{const vk\+::\+Component\+Mapping \&}]{components,  }\item[{const vk\+::\+Image\+Subresource\+Range \&}]{subresource\+Range,  }\item[{const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Image\+View\+Create\+Info $>$ \&}]{next = {\ttfamily \{\}},  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_image_impl_abf9cd2b77e3f18d72ffbd51e797ba9dc}\label{classlogi_1_1_image_impl_abf9cd2b77e3f18d72ffbd51e797ba9dc}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!destroy@{destroy}}
+\index{destroy@{destroy}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily void logi\+::\+Image\+Impl\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classlogi_1_1_swapchain_image_impl_ab05592ea21fa075e559d478433cf6507}{logi\+::\+Swapchain\+Image\+Impl}}, and \mbox{\hyperlink{classlogi_1_1_v_m_a_image_impl_aae43a984176390655558f701cf5aae05}{logi\+::\+V\+M\+A\+Image\+Impl}}.
+
+\mbox{\Hypertarget{classlogi_1_1_image_impl_a78d9a4a66d1399240854d0552d2596a3}\label{classlogi_1_1_image_impl_a78d9a4a66d1399240854d0552d2596a3}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!destroyImageView@{destroyImageView}}
+\index{destroyImageView@{destroyImageView}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{destroyImageView()}{destroyImageView()}}
+{\footnotesize\ttfamily void logi\+::\+Image\+Impl\+::destroy\+Image\+View (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{id }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_image_impl_a1d8805af51dbf266fdb11f609b2f3a96}\label{classlogi_1_1_image_impl_a1d8805af51dbf266fdb11f609b2f3a96}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!free@{free}}
+\index{free@{free}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{free()}{free()}}
+{\footnotesize\ttfamily void logi\+::\+Image\+Impl\+::free (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Invalidates \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. Overriding implementations should free the object\textquotesingle{}s resources and invoke \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}\textquotesingle{}s free. 
+
+
+
+Reimplemented from \mbox{\hyperlink{classlogi_1_1_vulkan_object_a7a5cafb30933f8bbd0d4e89e14477f4a}{logi\+::\+Vulkan\+Object}}.
+
+
+
+Reimplemented in \mbox{\hyperlink{classlogi_1_1_swapchain_image_impl_acd0bb710e78da93d2add616675d9f56c}{logi\+::\+Swapchain\+Image\+Impl}}, and \mbox{\hyperlink{classlogi_1_1_v_m_a_image_impl_a8c5e46ee1894ffafb74404c8c7fb9ff0}{logi\+::\+V\+M\+A\+Image\+Impl}}.
+
+\mbox{\Hypertarget{classlogi_1_1_image_impl_a5303d563b7992213cf85cc29ea407b61}\label{classlogi_1_1_image_impl_a5303d563b7992213cf85cc29ea407b61}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!getDispatcher@{getDispatcher}}
+\index{getDispatcher@{getDispatcher}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{getDispatcher()}{getDispatcher()}}
+{\footnotesize\ttfamily const vk\+::\+Dispatch\+Loader\+Dynamic \& logi\+::\+Image\+Impl\+::get\+Dispatcher (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_image_impl_a23c374fff42057deefe9bea1d171aacb}\label{classlogi_1_1_image_impl_a23c374fff42057deefe9bea1d171aacb}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!getDrmFormatModifierPropertiesEXT@{getDrmFormatModifierPropertiesEXT}}
+\index{getDrmFormatModifierPropertiesEXT@{getDrmFormatModifierPropertiesEXT}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{getDrmFormatModifierPropertiesEXT()}{getDrmFormatModifierPropertiesEXT()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ vk\+::\+Image\+Drm\+Format\+Modifier\+Properties\+E\+XT $>$\+::type logi\+::\+Image\+Impl\+::get\+Drm\+Format\+Modifier\+Properties\+E\+XT (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_image_impl_a92622418142dab239c39c834d70036f9}\label{classlogi_1_1_image_impl_a92622418142dab239c39c834d70036f9}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!getImageMemoryRequirements2@{getImageMemoryRequirements2}}
+\index{getImageMemoryRequirements2@{getImageMemoryRequirements2}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{getImageMemoryRequirements2()}{getImageMemoryRequirements2()}}
+{\footnotesize\ttfamily vk\+::\+Memory\+Requirements2 logi\+::\+Image\+Impl\+::get\+Image\+Memory\+Requirements2 (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Image\+Memory\+Requirements\+Info2 $>$ \&}]{next }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_image_impl_a72f3753fa5c9f3434832bf3d0e42917a}\label{classlogi_1_1_image_impl_a72f3753fa5c9f3434832bf3d0e42917a}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!getImageMemoryRequirements2KHR@{getImageMemoryRequirements2KHR}}
+\index{getImageMemoryRequirements2KHR@{getImageMemoryRequirements2KHR}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{getImageMemoryRequirements2KHR()}{getImageMemoryRequirements2KHR()}}
+{\footnotesize\ttfamily vk\+::\+Memory\+Requirements2\+K\+HR logi\+::\+Image\+Impl\+::get\+Image\+Memory\+Requirements2\+K\+HR (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Image\+Memory\+Requirements\+Info2\+K\+HR $>$ \&}]{next }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_image_impl_a3bc2b7741d132a5948cea01688385ac4}\label{classlogi_1_1_image_impl_a3bc2b7741d132a5948cea01688385ac4}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!getImageSparseMemoryRequirements2@{getImageSparseMemoryRequirements2}}
+\index{getImageSparseMemoryRequirements2@{getImageSparseMemoryRequirements2}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{getImageSparseMemoryRequirements2()}{getImageSparseMemoryRequirements2()}}
+{\footnotesize\ttfamily std\+::vector$<$ vk\+::\+Sparse\+Image\+Memory\+Requirements2 $>$ logi\+::\+Image\+Impl\+::get\+Image\+Sparse\+Memory\+Requirements2 (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Image\+Sparse\+Memory\+Requirements\+Info2 $>$ \&}]{next }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_image_impl_a3a8077f347dc8dbda68d157e217a8241}\label{classlogi_1_1_image_impl_a3a8077f347dc8dbda68d157e217a8241}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!getImageSparseMemoryRequirements2KHR@{getImageSparseMemoryRequirements2KHR}}
+\index{getImageSparseMemoryRequirements2KHR@{getImageSparseMemoryRequirements2KHR}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{getImageSparseMemoryRequirements2KHR()}{getImageSparseMemoryRequirements2KHR()}}
+{\footnotesize\ttfamily std\+::vector$<$ vk\+::\+Sparse\+Image\+Memory\+Requirements2\+K\+HR $>$ logi\+::\+Image\+Impl\+::get\+Image\+Sparse\+Memory\+Requirements2\+K\+HR (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Image\+Sparse\+Memory\+Requirements\+Info2\+K\+HR $>$ \&}]{next }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_image_impl_a74d5c1309e5fe516f4346744f8ed6e3c}\label{classlogi_1_1_image_impl_a74d5c1309e5fe516f4346744f8ed6e3c}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!getImageSubresourceLayout@{getImageSubresourceLayout}}
+\index{getImageSubresourceLayout@{getImageSubresourceLayout}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{getImageSubresourceLayout()}{getImageSubresourceLayout()}}
+{\footnotesize\ttfamily vk\+::\+Subresource\+Layout logi\+::\+Image\+Impl\+::get\+Image\+Subresource\+Layout (\begin{DoxyParamCaption}\item[{const vk\+::\+Image\+Subresource \&}]{subresource }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_image_impl_a91139d65c5f60c95943e2716c61d5eff}\label{classlogi_1_1_image_impl_a91139d65c5f60c95943e2716c61d5eff}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl}{Vulkan\+Instance\+Impl}} \& logi\+::\+Image\+Impl\+::get\+Instance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_image_impl_aad8436b56443294c8c46417368e16833}\label{classlogi_1_1_image_impl_aad8436b56443294c8c46417368e16833}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!getLogicalDevice@{getLogicalDevice}}
+\index{getLogicalDevice@{getLogicalDevice}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{getLogicalDevice()}{getLogicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \& logi\+::\+Image\+Impl\+::get\+Logical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_image_impl_a53c4bbeaa7ace3c725224af8ce6d3977}\label{classlogi_1_1_image_impl_a53c4bbeaa7ace3c725224af8ce6d3977}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!getMemoryRequirements@{getMemoryRequirements}}
+\index{getMemoryRequirements@{getMemoryRequirements}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{getMemoryRequirements()}{getMemoryRequirements()}}
+{\footnotesize\ttfamily vk\+::\+Memory\+Requirements logi\+::\+Image\+Impl\+::get\+Memory\+Requirements (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_image_impl_acff8227cad9c053e1acff5f3d62de7ef}\label{classlogi_1_1_image_impl_acff8227cad9c053e1acff5f3d62de7ef}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!getPhysicalDevice@{getPhysicalDevice}}
+\index{getPhysicalDevice@{getPhysicalDevice}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{getPhysicalDevice()}{getPhysicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_physical_device_impl}{Physical\+Device\+Impl}} \& logi\+::\+Image\+Impl\+::get\+Physical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_image_impl_a46b4123f2f3babe7139366f65a8ed2b6}\label{classlogi_1_1_image_impl_a46b4123f2f3babe7139366f65a8ed2b6}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!getSparseMemoryRequirements@{getSparseMemoryRequirements}}
+\index{getSparseMemoryRequirements@{getSparseMemoryRequirements}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{getSparseMemoryRequirements()}{getSparseMemoryRequirements()}}
+{\footnotesize\ttfamily std\+::vector$<$ vk\+::\+Sparse\+Image\+Memory\+Requirements $>$ logi\+::\+Image\+Impl\+::get\+Sparse\+Memory\+Requirements (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_image_impl_a8674db40bdfc105e25eaa2667b13c451}\label{classlogi_1_1_image_impl_a8674db40bdfc105e25eaa2667b13c451}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!operator const vk::Image \&@{operator const vk::Image \&}}
+\index{operator const vk::Image \&@{operator const vk::Image \&}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{operator const vk::Image \&()}{operator const vk::Image \&()}}
+{\footnotesize\ttfamily logi\+::\+Image\+Impl\+::operator const vk\+::\+Image \& (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classlogi_1_1_image_impl_a44981030143c0766d1f576c94180d845}\label{classlogi_1_1_image_impl_a44981030143c0766d1f576c94180d845}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!allocator\_@{allocator\_}}
+\index{allocator\_@{allocator\_}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{allocator\_}{allocator\_}}
+{\footnotesize\ttfamily std\+::optional$<$vk\+::\+Allocation\+Callbacks$>$ logi\+::\+Image\+Impl\+::allocator\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classlogi_1_1_image_impl_af53a5b15ba4faf09fc658594f22b1b2c}\label{classlogi_1_1_image_impl_af53a5b15ba4faf09fc658594f22b1b2c}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!logicalDevice\_@{logicalDevice\_}}
+\index{logicalDevice\_@{logicalDevice\_}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{logicalDevice\_}{logicalDevice\_}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}}\& logi\+::\+Image\+Impl\+::logical\+Device\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classlogi_1_1_image_impl_a50e540877fb71b27dbd67a99074c58d7}\label{classlogi_1_1_image_impl_a50e540877fb71b27dbd67a99074c58d7}} 
+\index{logi::ImageImpl@{logi::ImageImpl}!vkImage\_@{vkImage\_}}
+\index{vkImage\_@{vkImage\_}!logi::ImageImpl@{logi::ImageImpl}}
+\doxysubsubsection{\texorpdfstring{vkImage\_}{vkImage\_}}
+{\footnotesize\ttfamily vk\+::\+Image logi\+::\+Image\+Impl\+::vk\+Image\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+logi/memory/\mbox{\hyperlink{image__impl_8hpp}{image\+\_\+impl.\+hpp}}\item 
+C\+:/\+Users/aljaz/\+Documents/\+Visual\+Studio\+Code\+Projects/\+Logi/src/logi/memory/\mbox{\hyperlink{image__impl_8cpp}{image\+\_\+impl.\+cpp}}\end{DoxyCompactItemize}

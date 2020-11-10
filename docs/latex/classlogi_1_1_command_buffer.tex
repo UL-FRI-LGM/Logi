@@ -1,0 +1,1296 @@
+\hypertarget{classlogi_1_1_command_buffer}{}\doxysection{logi\+::Command\+Buffer Class Reference}
+\label{classlogi_1_1_command_buffer}\index{logi::CommandBuffer@{logi::CommandBuffer}}
+
+
+{\ttfamily \#include $<$command\+\_\+buffer.\+hpp$>$}
+
+
+
+Inheritance diagram for logi\+::Command\+Buffer\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{classlogi_1_1_command_buffer__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for logi\+::Command\+Buffer\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{classlogi_1_1_command_buffer__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_command_buffer_ae8d8d845470cf749a270f16ce093249e}{begin}} (const vk\+::\+Command\+Buffer\+Begin\+Info \&begin\+Info=\{\}) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkBeginCommandBuffer.html}{\texttt{ vk\+Begin\+Command\+Buffer}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a607792d7ec89fd2ccb084485e53ef06b}{begin\+Query}} (vk\+::\+Query\+Pool query\+Pool, uint32\+\_\+t query, const vk\+::\+Query\+Control\+Flags \&flags) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBeginQuery.html}{\texttt{ vk\+Cmd\+Begin\+Query}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a0b33b79bd9a2d16e513ba53274c4eedb}{begin\+Render\+Pass}} (const vk\+::\+Render\+Pass\+Begin\+Info \&render\+Pass\+Begin, vk\+::\+Subpass\+Contents contents) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBeginRenderPass.html}{\texttt{ vk\+Cmd\+Begin\+Render\+Pass}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a0e77a0254a8ed510c7a0b0db93565e2d}{begin\+Render\+Pass2}} (const vk\+::\+Render\+Pass\+Begin\+Info \&render\+Pass\+Begin, vk\+::\+Subpass\+Contents contens) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBeginRenderPass2.html}{\texttt{ vk\+Cmd\+Begin\+Render\+Pass2}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_aba2664dd23e20c10febec1466c13d513}{bind\+Descriptor\+Sets}} (vk\+::\+Pipeline\+Bind\+Point pipeline\+Bind\+Point, vk\+::\+Pipeline\+Layout layout, uint32\+\_\+t first\+Set, vk\+::\+Array\+Proxy$<$ const vk\+::\+Descriptor\+Set $>$ descriptor\+Sets, vk\+::\+Array\+Proxy$<$ const uint32\+\_\+t $>$ dynamic\+Offsets=\{\}) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBindDescriptorSets.html}{\texttt{ vk\+Cmd\+Bind\+Descriptor\+Sets}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_ade8c89d96a06ba6f8e03f3474787176a}{bind\+Index\+Buffer}} (vk\+::\+Buffer buffer, vk\+::\+Device\+Size offset, vk\+::\+Index\+Type index\+Type) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBindIndexBuffer.html}{\texttt{ vk\+Cmd\+Bind\+Index\+Buffer}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_aa80f8ab874dbe990544e2dbc5cf17ed2}{bind\+Pipeline}} (vk\+::\+Pipeline\+Bind\+Point pipeline\+Bind\+Point, vk\+::\+Pipeline pipeline) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBindPipeline.html}{\texttt{ vk\+Cmd\+Bind\+Pipeline}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a8b42f9266d9b009095808d3a968a246c}{bind\+Vertex\+Buffers}} (uint32\+\_\+t first\+Binding, vk\+::\+Array\+Proxy$<$ const vk\+::\+Buffer $>$ buffers, vk\+::\+Array\+Proxy$<$ const vk\+::\+Device\+Size $>$ offsets) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBindVertexBuffers.html}{\texttt{ vk\+Cmd\+Bind\+Vertex\+Buffers}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a4de3cc9ea58c1deba996e32ea3ad9925}{blit\+Image}} (vk\+::\+Image src\+Image, vk\+::\+Image\+Layout src\+Image\+Layout, vk\+::\+Image dst\+Image, vk\+::\+Image\+Layout dst\+Image\+Layout, vk\+::\+Array\+Proxy$<$ const vk\+::\+Image\+Blit $>$ regions, vk\+::\+Filter filter) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBlitImage.html}{\texttt{ vk\+Cmd\+Blit\+Image}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a954329aea66cf3cf7dd3052651ad3afb}{clear\+Attachments}} (vk\+::\+Array\+Proxy$<$ const vk\+::\+Clear\+Attachment $>$ attachments, vk\+::\+Array\+Proxy$<$ const vk\+::\+Clear\+Rect $>$ rects) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdClearAttachments.html}{\texttt{ vk\+Cmd\+Clear\+Attachments}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a14efdbbc98a9b78b918993fc53cf75db}{clear\+Color\+Image}} (vk\+::\+Image image, vk\+::\+Image\+Layout image\+Layout, const vk\+::\+Clear\+Color\+Value \&color, vk\+::\+Array\+Proxy$<$ const vk\+::\+Image\+Subresource\+Range $>$ ranges) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdClearColorImage.html}{\texttt{ vk\+Cmd\+Clear\+Color\+Image}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a0640efe8ba2bb19d752b2d3680954866}{clear\+Depth\+Stencil\+Image}} (vk\+::\+Image image, vk\+::\+Image\+Layout image\+Layout, const vk\+::\+Clear\+Depth\+Stencil\+Value \&depth\+Stencil, vk\+::\+Array\+Proxy$<$ const vk\+::\+Image\+Subresource\+Range $>$ ranges) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdClearDepthStencilImage.html}{\texttt{ vk\+Cmd\+Clear\+Depth\+Stencil\+Image}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a1c75e8d3b6f24baae208a09012356d2a}{copy\+Buffer}} (vk\+::\+Buffer src\+Buffer, vk\+::\+Buffer dst\+Buffer, vk\+::\+Array\+Proxy$<$ const vk\+::\+Buffer\+Copy $>$ regions) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdCopyBuffer.html}{\texttt{ vk\+Cmd\+Copy\+Buffer}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a1a6b2960a21c24b81499ac399cf2c657}{copy\+Buffer\+To\+Image}} (vk\+::\+Buffer src\+Buffer, vk\+::\+Image dst\+Image, vk\+::\+Image\+Layout dst\+Image\+Layout, vk\+::\+Array\+Proxy$<$ const vk\+::\+Buffer\+Image\+Copy $>$ regions) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdCopyBufferToImage.html}{\texttt{ vk\+Cmd\+Copy\+Buffer\+To\+Image}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a5970b6261c6b8e7d4590eefd0cb7fe22}{copy\+Image}} (vk\+::\+Image src\+Image, vk\+::\+Image\+Layout src\+Image\+Layout, vk\+::\+Image dst\+Image, vk\+::\+Image\+Layout dst\+Image\+Layout, vk\+::\+Array\+Proxy$<$ const vk\+::\+Image\+Copy $>$ regions) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdCopyImage.html}{\texttt{ vk\+Cmd\+Copy\+Image}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_ae96069341fa6ce0ac45d3d884516f753}{copy\+Image\+To\+Buffer}} (vk\+::\+Image src\+Image, vk\+::\+Image\+Layout src\+Image\+Layout, vk\+::\+Buffer dst\+Buffer, vk\+::\+Array\+Proxy$<$ const vk\+::\+Buffer\+Image\+Copy $>$ regions) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdCopyImageToBuffer.html}{\texttt{ vk\+Cmd\+Copy\+Image\+To\+Buffer}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a10d2260c3c34c3c4e963326c27b063df}{copy\+Query\+Pool\+Results}} (vk\+::\+Query\+Pool query\+Pool, uint32\+\_\+t first\+Query, uint32\+\_\+t query\+Count, vk\+::\+Buffer dst\+Buffer, vk\+::\+Device\+Size dst\+Offset, vk\+::\+Device\+Size stride, const vk\+::\+Query\+Result\+Flags \&flags) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdCopyQueryPoolResults.html}{\texttt{ vk\+Cmd\+Copy\+Query\+Pool\+Results}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a034059b8a8f8f31dbfe00bb5fc023e9f}{dispatch}} (uint32\+\_\+t group\+CountX, uint32\+\_\+t group\+CountY, uint32\+\_\+t group\+CountZ) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDispatch.html}{\texttt{ vk\+Cmd\+Dispatch}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a890dcd5fe38242bb71fb3bdec52fb148}{dispatch\+Base}} (uint32\+\_\+t base\+GroupX, uint32\+\_\+t base\+GroupY, uint32\+\_\+t base\+GroupZ, uint32\+\_\+t group\+CountX, uint32\+\_\+t group\+CountY, uint32\+\_\+t group\+CountZ) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDispatchBase.html}{\texttt{ vk\+Cmd\+Dispatch\+Base}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a471a1e3bc72bbe609c2f5dd092d7bef0}{dispatch\+Indirect}} (vk\+::\+Buffer buffer, vk\+::\+Device\+Size offset) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDispatchIndirect.html}{\texttt{ vk\+Cmd\+Dispatch\+Indirect}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a9e9b00578c62ba37e800227c8181f067}{draw}} (uint32\+\_\+t vertex\+Count, uint32\+\_\+t instance\+Count=1, uint32\+\_\+t first\+Vertex=0, uint32\+\_\+t first\+Instance=0) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDraw.html}{\texttt{ vk\+Cmd\+Draw}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_af9a979442770c7069a3d84550123e801}{draw\+Indexed}} (uint32\+\_\+t index\+Count, uint32\+\_\+t instance\+Count, uint32\+\_\+t first\+Index, int32\+\_\+t vertex\+Offset, uint32\+\_\+t first\+Instance) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawIndexed.html}{\texttt{ vk\+Cmd\+Draw\+Indexed}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a5b059aa54bfe16484ac5eb51613add95}{draw\+Indexed\+Indirect}} (vk\+::\+Buffer buffer, vk\+::\+Device\+Size offset, uint32\+\_\+t draw\+Count, uint32\+\_\+t stride) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawIndexedIndirect.html}{\texttt{ vk\+Cmd\+Draw\+Indexed\+Indirect}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a5d9781bb9bbb2907769483dfea5b2549}{draw\+Indexed\+Indirect\+Count}} (vk\+::\+Buffer buffer, vk\+::\+Device\+Size offset, vk\+::\+Buffer count\+Buffer, vk\+::\+Device\+Size count\+Buffer\+Offset, uint32\+\_\+t max\+Draw\+Count, uint32\+\_\+t stride) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawIndexedIndirectCount.html}{\texttt{ vk\+Cmd\+Draw\+Indexed\+Indirect\+Count}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a33acb24de37f6f9cc45842b74ba6f978}{draw\+Indirect}} (vk\+::\+Buffer buffer, vk\+::\+Device\+Size offset, uint32\+\_\+t draw\+Count, uint32\+\_\+t stride) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawIndirect.html}{\texttt{ vk\+Cmd\+Draw\+Indirect}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a1b870492faec2e4d7d341fdb45c5790c}{draw\+Indirect\+Count}} (vk\+::\+Buffer buffer, vk\+::\+Device\+Size offset, vk\+::\+Buffer count\+Buffer, vk\+::\+Device\+Size count\+Buffer\+Offset, uint32\+\_\+t max\+Draw\+Count, uint32\+\_\+t stride) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawIndirectCount.html}{\texttt{ vk\+Cmd\+Draw\+Indirect\+Count}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a3962f5e42145532bc40210dd0bb690e1}{end\+Query}} (vk\+::\+Query\+Pool query\+Pool, uint32\+\_\+t query) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdEndQuery.html}{\texttt{ vk\+Cmd\+Draw}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_aeefd242cc9affcdd0a79d0c7119eda01}{end\+Render\+Pass}} () const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdEndRenderPass.html}{\texttt{ vk\+Cmd\+End\+Render\+Pass}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a969e73678afbc3ec7abe9dae0e103d64}{end\+Render\+Pass2}} (const vk\+::\+Subpass\+End\+Info \&subpass\+End\+Info) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdEndRenderPass2.html}{\texttt{ vk\+Cmd\+End\+Render\+Pass2}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a467f78f0f30fd26b0c0acb9df1bf5c10}{execute\+Commands}} (vk\+::\+Array\+Proxy$<$ const vk\+::\+Command\+Buffer $>$ command\+Buffers) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdExecuteCommands.html}{\texttt{ vk\+Cmd\+Execute\+Commands}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_abb7e360f4a04d35e5b6690e22b162f5e}{fill\+Buffer}} (vk\+::\+Buffer dst\+Buffer, vk\+::\+Device\+Size dst\+Offset, vk\+::\+Device\+Size size, uint32\+\_\+t data) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdFillBuffer.html}{\texttt{ vk\+Cmd\+Fill\+Buffer}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a1c5941b70b40fb2422a8e61543952059}{next\+Subpass}} (vk\+::\+Subpass\+Contents contents) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdNextSubpass.html}{\texttt{ vk\+Cmd\+Next\+Subpass}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a015a727097c2f9ba2a5550c3df01758f}{next\+Subpass2}} (vk\+::\+Subpass\+Begin\+Info subpass\+Begin\+Info, vk\+::\+Subpass\+End\+Info subpass\+End\+Info) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdNextSubpass2.html}{\texttt{ vk\+Cmd\+Next\+Subpass2}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a3b752a52458d52beeb2a20a234d4a42a}{pipeline\+Barrier}} (const vk\+::\+Pipeline\+Stage\+Flags \&src\+Stage\+Mask, vk\+::\+Pipeline\+Stage\+Flags dst\+Stage\+Mask, const vk\+::\+Dependency\+Flags \&dependency\+Flags, vk\+::\+Array\+Proxy$<$ const vk\+::\+Memory\+Barrier $>$ memory\+Barriers, vk\+::\+Array\+Proxy$<$ const vk\+::\+Buffer\+Memory\+Barrier $>$ buffer\+Memory\+Barriers, vk\+::\+Array\+Proxy$<$ const vk\+::\+Image\+Memory\+Barrier $>$ image\+Memory\+Barriers) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdPipelineBarrier.html}{\texttt{ vk\+Cmd\+Pipeline\+Barrier}} \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\void \mbox{\hyperlink{classlogi_1_1_command_buffer_aac1634eb1781ec86a13c1cf59af0a1ad}{push\+Constants}} (vk\+::\+Pipeline\+Layout layout, vk\+::\+Shader\+Stage\+Flags stage\+Flags, uint32\+\_\+t offset, vk\+::\+Array\+Proxy$<$ const T $>$ values) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdPushConstants.html}{\texttt{ vk\+Cmd\+Push\+Constants}} \end{DoxyCompactList}\item 
+vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_command_buffer_a7a3ccf10f0ba04e26227a4fee790a8d8}{reset}} (const vk\+::\+Command\+Buffer\+Reset\+Flags \&flags=\{\}) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkResetCommandBuffer.html}{\texttt{ vk\+Reset\+Command\+Buffer}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_aff3feefd0da7da40c6d01417192813da}{reset\+Event}} (vk\+::\+Event event, const vk\+::\+Pipeline\+Stage\+Flags \&stage\+Mask) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkResetEvent.html}{\texttt{ vk\+Reset\+Event}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a5a1e72bbaa49cb06362de213e85b8485}{reset\+Query\+Pool}} (vk\+::\+Query\+Pool query\+Pool, uint32\+\_\+t first\+Query, uint32\+\_\+t query\+Count) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkResetQueryPool.html}{\texttt{ vk\+Reset\+Query\+Pool}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a6c2d5a1010fa8b15c3470f32e5a0110a}{resolve\+Image}} (vk\+::\+Image src\+Image, vk\+::\+Image\+Layout src\+Image\+Layout, vk\+::\+Image dst\+Image, vk\+::\+Image\+Layout dst\+Image\+Layout, vk\+::\+Array\+Proxy$<$ const vk\+::\+Image\+Resolve $>$ regions) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdResolveImage.html}{\texttt{ vk\+Cmd\+Resolve\+Image}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_ad19a6caa085184889c56d6983297ab33}{set\+Blend\+Constants}} (const float blend\+Constants\mbox{[}4\mbox{]}) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetBlendConstants.html}{\texttt{ vk\+Cmd\+Set\+Blend\+Constants}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a8c406a257b10ecfacb1863b79b21ea82}{set\+Depth\+Bias}} (float depth\+Bias\+Constant\+Factor, float depth\+Bias\+Clamp, float depth\+Bias\+Slope\+Factor) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetDepthBias.html}{\texttt{ vk\+Cmd\+Set\+Depth\+Bias}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_abc23abc0fb1c115b4f6af5871a941a8e}{set\+Depth\+Bounds}} (float min\+Depth\+Bounds, float max\+Depth\+Bounds) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetDepthBounds.html}{\texttt{ vk\+Cmd\+Set\+Depth\+Bounds}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_ade80154b4c063cc8b2c0f0e14dd10814}{set\+Device\+Mask}} (uint32\+\_\+t device\+Mask) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetDeviceMask.html}{\texttt{ vk\+Cmd\+Set\+Device\+Mask}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_ab3b74e5a512ff2cb604066fe571e9e16}{set\+Event}} (vk\+::\+Event event, vk\+::\+Pipeline\+Stage\+Flags stage\+Mask) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetEvent.html}{\texttt{ vk\+Cmd\+Set\+Event}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_ac395cd526b36e760b00f2a83e7218449}{set\+Line\+Width}} (float line\+Width) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetLineWidth.html}{\texttt{ vk\+Cmd\+Set\+Line\+Width}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_abbe51364e66beaa66a3b0fb2ba0ab04d}{set\+Scissor}} (uint32\+\_\+t first\+Scissor, vk\+::\+Array\+Proxy$<$ const vk\+::\+Rect2D $>$ scissors) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetScissor.html}{\texttt{ vk\+Cmd\+Set\+Scissor}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_adc667d9cb1d69ed2830f6ad7f8f732a6}{set\+Stencil\+Compare\+Mask}} (vk\+::\+Stencil\+Face\+Flags face\+Mask, uint32\+\_\+t compare\+Mask) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetStencilCompareMask.html}{\texttt{ vk\+Cmd\+Set\+Stencil\+Compare\+Mask}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_ab99631c0026c18159a3a2d87c0257d68}{set\+Stencil\+Reference}} (vk\+::\+Stencil\+Face\+Flags face\+Mask, uint32\+\_\+t reference) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetStencilReference.html}{\texttt{ vk\+Cmd\+Set\+Stencil\+Reference}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a40c2f41577a528cf3e233388c9cbd77d}{set\+Stencil\+Write\+Mask}} (vk\+::\+Stencil\+Face\+Flags face\+Mask, uint32\+\_\+t write\+Mask) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetStencilWriteMask.html}{\texttt{ vk\+Cmd\+Set\+Stencil\+Write\+Mask}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a19a595c6cf78157bfc207e794802f1f8}{set\+Viewport}} (uint32\+\_\+t first\+Viewport, vk\+::\+Array\+Proxy$<$ const vk\+::\+Viewport $>$ viewports) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetViewport.html}{\texttt{ vk\+Cmd\+Set\+Viewport}} \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\void \mbox{\hyperlink{classlogi_1_1_command_buffer_a83059b0b8bc8e90bc8fe8e054a98614b}{update\+Buffer}} (vk\+::\+Buffer dst\+Buffer, vk\+::\+Device\+Size dst\+Offset, vk\+::\+Array\+Proxy$<$ const T $>$ data) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdUpdateBuffer.html}{\texttt{ vk\+Cmd\+Update\+Buffer}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a1ecda8ae32dd9880559fab4311d8c45f}{wait\+Events}} (vk\+::\+Array\+Proxy$<$ const vk\+::\+Event $>$ events, const vk\+::\+Pipeline\+Stage\+Flags \&src\+Stage\+Mask, const vk\+::\+Pipeline\+Stage\+Flags \&dst\+Stage\+Mask, vk\+::\+Array\+Proxy$<$ const vk\+::\+Memory\+Barrier $>$ memory\+Barriers, vk\+::\+Array\+Proxy$<$ const vk\+::\+Buffer\+Memory\+Barrier $>$ buffer\+Memory\+Barriers, vk\+::\+Array\+Proxy$<$ const vk\+::\+Image\+Memory\+Barrier $>$ image\+Memory\+Barriers) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdWaitEvents.html}{\texttt{ vk\+Cmd\+Wait\+Events}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_ac2009f69a4617a5c91c9befe4b071d6e}{write\+Timestamp}} (vk\+::\+Pipeline\+Stage\+Flag\+Bits pipeline\+Stage, vk\+::\+Query\+Pool query\+Pool, uint32\+\_\+t query) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdWriteTimestamp.html}{\texttt{ vk\+Cmd\+Write\+Timestamp}} \end{DoxyCompactList}\item 
+vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_command_buffer_a8400a22ff919ca3303e661a9a42a375a}{end}} () const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkEndCommandBuffer.html}{\texttt{ vk\+End\+Command\+Buffer}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_ac90b94b6ce3435df01fbd3eb83bdf69a}{begin\+Render\+Pass2\+K\+HR}} (const vk\+::\+Render\+Pass\+Begin\+Info \&render\+Pass\+Begin, const vk\+::\+Subpass\+Begin\+Info\+K\+HR \&subpass\+Begin\+Info) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBeginRenderPass2KHR.html}{\texttt{ vk\+Cmd\+Begin\+Render\+Pass2\+K\+HR}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a635ba357e58abda7bfec6b8e17ec129c}{dispatch\+Base\+K\+HR}} (uint32\+\_\+t base\+GroupX, uint32\+\_\+t base\+GroupY, uint32\+\_\+t base\+GroupZ, uint32\+\_\+t group\+CountX, uint32\+\_\+t group\+CountY, uint32\+\_\+t group\+CountZ) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDispatchBaseKHR.html}{\texttt{ vk\+Cmd\+Dispatch\+Base\+K\+HR}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_afd15fd965b91fb33caef61801b9c7814}{draw\+Indexed\+Indirect\+Count\+K\+HR}} (vk\+::\+Buffer buffer, vk\+::\+Device\+Size offset, vk\+::\+Buffer count\+Buffer, vk\+::\+Device\+Size count\+Buffer\+Offset, uint32\+\_\+t max\+Draw\+Count, uint32\+\_\+t stride) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawIndexedIndirectCountKHR.html}{\texttt{ vk\+Cmd\+Draw\+Indexed\+Indirect\+Count\+K\+HR}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a569fd543ed94e9bdc5f9a87178fac5c4}{draw\+Indirect\+Count\+K\+HR}} (vk\+::\+Buffer buffer, vk\+::\+Device\+Size offset, vk\+::\+Buffer count\+Buffer, vk\+::\+Device\+Size count\+Buffer\+Offset, uint32\+\_\+t max\+Draw\+Count, uint32\+\_\+t stride) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawIndirectCountKHR.html}{\texttt{ vk\+Cmd\+Draw\+Indirect\+Count\+K\+HR}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a4c838224cd8c16ead7a33b2cea042023}{end\+Render\+Pass2\+K\+HR}} (const vk\+::\+Subpass\+End\+Info\+K\+HR \&subpass\+End\+Info) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdEndRenderPass2KHR.html}{\texttt{ vk\+Cmd\+End\+Render\+Pass2\+K\+HR}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a713ba1e9c168b004dd3a203f659d5710}{next\+Subpass2\+K\+HR}} (const vk\+::\+Subpass\+Begin\+Info\+K\+HR \&subpass\+Begin\+Info, const vk\+::\+Subpass\+End\+Info\+K\+HR \&subpass\+End\+Info) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdNextSubpass2KHR.html}{\texttt{ vk\+Cmd\+Next\+Subpass2\+K\+HR}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a1868836acfe84a14b876e9d553dc071a}{push\+Descriptor\+Set\+K\+HR}} (vk\+::\+Pipeline\+Bind\+Point pipeline\+Bind\+Point, vk\+::\+Pipeline\+Layout layout, uint32\+\_\+t set, vk\+::\+Array\+Proxy$<$ const vk\+::\+Write\+Descriptor\+Set $>$ descriptor\+Writes) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdPushDescriptorSetKHR.html}{\texttt{ vk\+Cmd\+Push\+Descriptor\+Set\+K\+HR}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_ad970d21a386b5c2fcb5767efede0afd2}{push\+Descriptor\+Set\+With\+Template\+K\+HR}} (vk\+::\+Descriptor\+Update\+Template descriptor\+Update\+Template, vk\+::\+Pipeline\+Layout layout, uint32\+\_\+t set, const void $\ast$p\+Data) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdPushDescriptorSetWithTemplateKHR.html}{\texttt{ vk\+Cmd\+Push\+Descriptor\+Set\+With\+Template\+K\+HR}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a44c1e437dbbcb5c07aaa0547fcc5026e}{set\+Device\+Mask\+K\+HR}} (uint32\+\_\+t device\+Mask) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetDeviceMaskKHR.html}{\texttt{ vk\+Cmd\+Set\+Device\+Mask\+K\+HR}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a6c85f3e24e8feb6a722f933ecb65e68f}{begin\+Conditional\+Rendering\+E\+XT}} (const vk\+::\+Conditional\+Rendering\+Begin\+Info\+E\+XT \&conditional\+Rendering\+Begin) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBeginConditionalRenderingEXT.html}{\texttt{ vk\+Cmd\+Begin\+Conditional\+Rendering\+E\+XT}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a262e56427db91f942febba68ee92b4e6}{begin\+Debug\+Utils\+Label\+E\+XT}} (const vk\+::\+Debug\+Utils\+Label\+E\+XT \&label\+Info) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBeginDebugUtilsLabelEXT.html}{\texttt{ vk\+Cmd\+Begin\+Debug\+Utils\+Label\+E\+XT}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a20ef023597740c5a300be2a831f0a64f}{begin\+Query\+Indexed\+E\+XT}} (vk\+::\+Query\+Pool query\+Pool, uint32\+\_\+t query, const vk\+::\+Query\+Control\+Flags \&flags, uint32\+\_\+t index) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBeginQueryIndexedEXT.html}{\texttt{ vk\+Cmd\+Begin\+Query\+Indexed\+E\+XT}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_af790aad51bf2904d9376d649fede05b2}{begin\+Transform\+Feedback\+E\+XT}} (uint32\+\_\+t first\+Counter\+Buffer, vk\+::\+Array\+Proxy$<$ const vk\+::\+Buffer $>$ counter\+Buffers, vk\+::\+Array\+Proxy$<$ const vk\+::\+Device\+Size $>$ counter\+Buffer\+Offsets) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBeginTransformFeedbackEXT.html}{\texttt{ vk\+Cmd\+Begin\+Transform\+Feedback\+E\+XT}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a0a6d3a71577b6ceb491d550767b54322}{bind\+Transform\+Feedback\+Buffers\+E\+XT}} (uint32\+\_\+t first\+Binding, vk\+::\+Array\+Proxy$<$ const vk\+::\+Buffer $>$ buffers, vk\+::\+Array\+Proxy$<$ const vk\+::\+Device\+Size $>$ offsets, vk\+::\+Array\+Proxy$<$ const vk\+::\+Device\+Size $>$ sizes) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBindTransformFeedbackBuffersEXT.html}{\texttt{ vk\+Cmd\+Bind\+Transform\+Feedback\+Buffers\+E\+XT}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a48bc3bc3c4a7b4f17dc90eb082e16bf4}{debug\+Marker\+Begin\+E\+XT}} (const vk\+::\+Debug\+Marker\+Marker\+Info\+E\+XT \&marker\+Info) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDebugMarkerBeginEXT.html}{\texttt{ vk\+Cmd\+Debug\+Marker\+Begin\+E\+XT}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a37023a28b3f392ab54acd055a78dc7c3}{debug\+Marker\+End\+E\+XT}} () const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDebugMarkerEndEXT.html}{\texttt{ vk\+Cmd\+Debug\+Marker\+End\+E\+XT}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_ae63771a3ace6c66394f55a31d311c2d0}{debug\+Marker\+Insert\+E\+XT}} (const vk\+::\+Debug\+Marker\+Marker\+Info\+E\+XT \&marker\+Info) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDebugMarkerInsertEXT.html}{\texttt{ vk\+Cmd\+Debug\+Marker\+Insert\+E\+XT}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_ab0bf154cb348800d1d9234fe76c3d962}{draw\+Indirect\+Byte\+Count\+E\+XT}} (uint32\+\_\+t instance\+Count, uint32\+\_\+t first\+Instance, vk\+::\+Buffer counter\+Buffer, vk\+::\+Device\+Size counter\+Buffer\+Offset, uint32\+\_\+t counter\+Offset, uint32\+\_\+t vertex\+Stride) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawIndirectByteCountEXT.html}{\texttt{ vk\+Cmd\+Draw\+Indirect\+Byte\+Count\+E\+XT}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a569348f92fa39d80803ae9157ef61a99}{end\+Conditional\+Rendering\+E\+XT}} () const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdEndConditionalRenderingEXT.html}{\texttt{ vk\+Cmd\+End\+Conditional\+Rendering\+E\+XT}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a6e4602c4d8f43c31e3ebb143489bd852}{end\+Debug\+Utils\+Label\+E\+XT}} () const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdEndDebugUtilsLabelEXT.html}{\texttt{ vk\+Cmd\+End\+Debug\+Utils\+Label\+E\+XT}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a2f2eaae2402240b09f7c80c9ca4665d2}{end\+Query\+Indexed\+E\+XT}} (vk\+::\+Query\+Pool query\+Pool, uint32\+\_\+t query, uint32\+\_\+t index) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdEndQueryIndexedEXT.html}{\texttt{ vk\+Cmd\+End\+Query\+Indexed\+E\+XT}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a1a27f6036aa70eb3f678392140e47f78}{end\+Transform\+Feedback\+E\+XT}} (uint32\+\_\+t first\+Counter\+Buffer, vk\+::\+Array\+Proxy$<$ const vk\+::\+Buffer $>$ counter\+Buffers, vk\+::\+Array\+Proxy$<$ const vk\+::\+Device\+Size $>$ counter\+Buffer\+Offsets) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdEndTransformFeedbackEXT.html}{\texttt{ vk\+Cmd\+End\+Transform\+Feedback\+E\+XT}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_adeffeffc116b7accb4968ed86791e671}{insert\+Debug\+Utils\+Label\+E\+XT}} (const vk\+::\+Debug\+Utils\+Label\+E\+XT \&label\+Info) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdInsertDebugUtilsLabelEXT.html}{\texttt{ vk\+Cmd\+Insert\+Debug\+Utils\+Label\+E\+XT}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a2169f1f305aa0d048946a21f89401b76}{set\+Discard\+Rectangle\+E\+XT}} (uint32\+\_\+t first\+Discard\+Rectangle, vk\+::\+Array\+Proxy$<$ const vk\+::\+Rect2D $>$ discard\+Rectangles) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetDiscardRectangleEXT.html}{\texttt{ vk\+Cmd\+Set\+Discard\+Rectangle\+E\+XT}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a85e9c026ad7ae9900fa49f9b91b651df}{set\+Sample\+Locations\+E\+XT}} (const vk\+::\+Sample\+Locations\+Info\+E\+XT \&sample\+Locations\+Info) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetSampleLocationsEXT.html}{\texttt{ vk\+Cmd\+Set\+Sample\+Locations\+E\+XT}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_af62d9207403d94223454262667a19f67}{bind\+Shading\+Rate\+Image\+NV}} (vk\+::\+Image\+View image\+View, vk\+::\+Image\+Layout image\+Layout) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBindShadingRateImageNV.html}{\texttt{ vk\+Cmd\+Bind\+Shading\+Rate\+Image\+NV}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_afe563287e3173e000ea77b3a3ef2d9af}{build\+Acceleration\+Structure\+NV}} (const vk\+::\+Acceleration\+Structure\+Info\+NV \&info, vk\+::\+Buffer instance\+Data, vk\+::\+Device\+Size instance\+Offset, vk\+::\+Bool32 update, vk\+::\+Acceleration\+Structure\+NV dst, vk\+::\+Acceleration\+Structure\+NV src, vk\+::\+Buffer scratch, vk\+::\+Device\+Size scratch\+Offset) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBuildAccelerationStructureNV.html}{\texttt{ vk\+Cmd\+Build\+Acceleration\+Structure\+NV}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_aa573f2dbe20e44eb963de0b401dae15c}{copy\+Acceleration\+Structure\+NV}} (vk\+::\+Acceleration\+Structure\+NV dst, vk\+::\+Acceleration\+Structure\+NV src, vk\+::\+Copy\+Acceleration\+Structure\+Mode\+NV mode) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdCopyAccelerationStructureNV.html}{\texttt{ vk\+Cmd\+Copy\+Acceleration\+Structure\+NV}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_af2b8c0ad91bf4b35f186f3fb1b3a4053}{draw\+Mesh\+Tasks\+Indirect\+Count\+NV}} (vk\+::\+Buffer buffer, vk\+::\+Device\+Size offset, vk\+::\+Buffer count\+Buffer, vk\+::\+Device\+Size count\+Buffer\+Offset, uint32\+\_\+t max\+Draw\+Count, uint32\+\_\+t stride) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawMeshTasksIndirectCountNV.html}{\texttt{ vk\+Cmd\+Draw\+Mesh\+Tasks\+Indirect\+Count\+NV}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_aaf7905f37f9b0a7c2af0086ce8651239}{draw\+Mesh\+Tasks\+Indirect\+NV}} (vk\+::\+Buffer buffer, vk\+::\+Device\+Size offset, uint32\+\_\+t draw\+Count, uint32\+\_\+t stride) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawMeshTasksIndirectNV.html}{\texttt{ vk\+Cmd\+Draw\+Mesh\+Tasks\+Indirect\+NV}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a1e0a2366079311d87792c4cf4b3b6ac8}{draw\+Mesh\+Tasks\+NV}} (uint32\+\_\+t task\+Count, uint32\+\_\+t first\+Task) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawMeshTasksNV.html}{\texttt{ vk\+Cmd\+Draw\+Mesh\+Tasks\+NV}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_abb1f68fcc0f68c5bf2609b714cd916ad}{set\+Checkpoint\+NV}} (const void $\ast$p\+Checkpoint\+Marker) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetCheckpointNV.html}{\texttt{ vk\+Cmd\+Set\+Checkpoint\+NV}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_ac6046cfa9d08dfa716ac94ef46c9eef9}{set\+Coarse\+Sample\+Order\+NV}} (vk\+::\+Coarse\+Sample\+Order\+Type\+NV sample\+Order\+Type, vk\+::\+Array\+Proxy$<$ const vk\+::\+Coarse\+Sample\+Order\+Custom\+NV $>$ custom\+Sample\+Orders) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetCoarseSampleOrderNV.html}{\texttt{ vk\+Cmd\+Set\+Coarse\+Sample\+Order\+NV}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a683151a2a38eb99ac4395bdb49b223b5}{set\+Exclusive\+Scissor\+NV}} (uint32\+\_\+t first\+Exclusive\+Scissor, vk\+::\+Array\+Proxy$<$ const vk\+::\+Rect2D $>$ exclusive\+Scissors) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetExclusiveScissorNV.html}{\texttt{ vk\+Cmd\+Set\+Exclusive\+Scissor\+NV}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a422f78775c48db2f121473c02405a0cd}{set\+Viewport\+Shading\+Rate\+Palette\+NV}} (uint32\+\_\+t first\+Viewport, vk\+::\+Array\+Proxy$<$ const vk\+::\+Shading\+Rate\+Palette\+NV $>$ shading\+Rate\+Palettes) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetViewportShadingRatePaletteNV.html}{\texttt{ vk\+Cmd\+Set\+Viewport\+Shading\+Rate\+Palette\+NV}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_acc1d40c036dc189ded7f600ca5fc4244}{set\+Viewport\+W\+Scaling\+NV}} (uint32\+\_\+t first\+Viewport, vk\+::\+Array\+Proxy$<$ const vk\+::\+Viewport\+W\+Scaling\+NV $>$ viewport\+W\+Scalings) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetViewportWScalingNV.html}{\texttt{ vk\+Cmd\+Set\+Viewport\+W\+Scaling\+NV}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a4df69b7e8502994ef04f530302bf9746}{trace\+Rays\+NV}} (vk\+::\+Buffer raygen\+Shader\+Binding\+Table\+Buffer, vk\+::\+Device\+Size raygen\+Shader\+Binding\+Offset, vk\+::\+Buffer miss\+Shader\+Binding\+Table\+Buffer, vk\+::\+Device\+Size miss\+Shader\+Binding\+Offset, vk\+::\+Device\+Size miss\+Shader\+Binding\+Stride, vk\+::\+Buffer hit\+Shader\+Binding\+Table\+Buffer, vk\+::\+Device\+Size hit\+Shader\+Binding\+Offset, vk\+::\+Device\+Size hit\+Shader\+Binding\+Stride, vk\+::\+Buffer callable\+Shader\+Binding\+Table\+Buffer, vk\+::\+Device\+Size callable\+Shader\+Binding\+Offset, vk\+::\+Device\+Size callable\+Shader\+Binding\+Stride, uint32\+\_\+t width, uint32\+\_\+t height, uint32\+\_\+t depth) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdTraceRaysNV.html}{\texttt{ vk\+Cmd\+Trace\+Rays\+NV}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_abf702600459c3d3742252b65f4bfeeb6}{write\+Acceleration\+Structures\+Properties\+NV}} (vk\+::\+Array\+Proxy$<$ const vk\+::\+Acceleration\+Structure\+NV $>$ acceleration\+Structures, vk\+::\+Query\+Type query\+Type, vk\+::\+Query\+Pool query\+Pool, uint32\+\_\+t first\+Query) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdWriteAccelerationStructuresPropertiesNV.html}{\texttt{ vk\+Cmd\+Write\+Acceleration\+Structures\+Properties\+NV}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a550c001cf00da8ca1c5a6dffdd89a9f5}{process\+Commands\+N\+VX}} (const vk\+::\+Cmd\+Process\+Commands\+Info\+N\+VX \&process\+Commands\+Info) const
+\begin{DoxyCompactList}\small\item\em Not supported anymore! \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a776c78767792e3cf8e5cfa0c8f378ee9}{reserve\+Space\+For\+Commands\+N\+VX}} (const vk\+::\+Cmd\+Reserve\+Space\+For\+Commands\+Info\+N\+VX \&reserve\+Space\+Info) const
+\begin{DoxyCompactList}\small\item\em Not supported anymore! \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a795bc6612d5cf990915df6621b0bf049}{draw\+Indexed\+Indirect\+Count\+A\+MD}} (vk\+::\+Buffer buffer, vk\+::\+Device\+Size offset, vk\+::\+Buffer count\+Buffer, vk\+::\+Device\+Size count\+Buffer\+Offset, uint32\+\_\+t max\+Draw\+Count, uint32\+\_\+t stride) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawIndexedIndirectCountAMD.html}{\texttt{ vk\+Cmd\+Draw\+Indexed\+Indirect\+Count\+A\+MD}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_af5f24b82b48670709508e2cb41cb89a6}{draw\+Indirect\+Count\+A\+MD}} (vk\+::\+Buffer buffer, vk\+::\+Device\+Size offset, vk\+::\+Buffer count\+Buffer, vk\+::\+Device\+Size count\+Buffer\+Offset, uint32\+\_\+t max\+Draw\+Count, uint32\+\_\+t stride) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawIndirectCountAMD.html}{\texttt{ vk\+Cmd\+Draw\+Indirect\+Count\+A\+MD}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_a055389e24f5de9d2605d26f3c3266c4b}{write\+Buffer\+Marker\+A\+MD}} (vk\+::\+Pipeline\+Stage\+Flag\+Bits pipeline\+Stage, vk\+::\+Buffer dst\+Buffer, vk\+::\+Device\+Size dst\+Offset, uint32\+\_\+t marker) const
+\begin{DoxyCompactList}\small\item\em Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdWriteBufferMarkerAMD.html}{\texttt{ vk\+Cmd\+Write\+Buffer\+Marker\+A\+MD}} \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classlogi_1_1_vulkan_instance}{Vulkan\+Instance}} \mbox{\hyperlink{classlogi_1_1_command_buffer_ad8e4ea0f2606bac888d691f132d3cee3}{get\+Instance}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_physical_device}{Physical\+Device}} \mbox{\hyperlink{classlogi_1_1_command_buffer_a374a5a60832a89ca5dccb3200bed725e}{get\+Physical\+Device}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_logical_device}{Logical\+Device}} \mbox{\hyperlink{classlogi_1_1_command_buffer_a82bfcbe5bd6305f28b30c9fc9ffcddde}{get\+Logical\+Device}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_queue_family}{Queue\+Family}} \mbox{\hyperlink{classlogi_1_1_command_buffer_ae3e9f94345f65a8df13f609a01180785}{get\+Queue\+Family}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_command_pool}{Command\+Pool}} \mbox{\hyperlink{classlogi_1_1_command_buffer_a993cb444dca4139b70ffcf3a7c127096}{get\+Command\+Pool}} () const
+\item 
+const vk\+::\+Dispatch\+Loader\+Dynamic \& \mbox{\hyperlink{classlogi_1_1_command_buffer_a46d4204db702e51331f71da58206bd47}{get\+Dispatcher}} () const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_command_buffer_aa0adeed523ab0103a8ce665fe1f932c0}{destroy}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_command_buffer_a7b255685e77172ce8a4ea9e6aa3b45d9}{operator const vk\+::\+Command\+Buffer \&}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_command_buffer_a573850795cef46e5e0c9acc997cce250}{Handle}} ()=default
+\begin{DoxyCompactList}\small\item\em Default null handle constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classlogi_1_1_command_buffer_afd9a0687dd950205ac03c19afca4c553}{Handle}} (std\+::shared\+\_\+ptr$<$ T $>$ object)
+\begin{DoxyCompactList}\small\item\em Initialize the referred object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_ae8d8d845470cf749a270f16ce093249e}\label{classlogi_1_1_command_buffer_ae8d8d845470cf749a270f16ce093249e}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!begin@{begin}}
+\index{begin@{begin}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{begin()}{begin()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Command\+Buffer\+::begin (\begin{DoxyParamCaption}\item[{const vk\+::\+Command\+Buffer\+Begin\+Info \&}]{begin\+Info = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkBeginCommandBuffer.html}{\texttt{ vk\+Begin\+Command\+Buffer}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a6c85f3e24e8feb6a722f933ecb65e68f}\label{classlogi_1_1_command_buffer_a6c85f3e24e8feb6a722f933ecb65e68f}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!beginConditionalRenderingEXT@{beginConditionalRenderingEXT}}
+\index{beginConditionalRenderingEXT@{beginConditionalRenderingEXT}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{beginConditionalRenderingEXT()}{beginConditionalRenderingEXT()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::begin\+Conditional\+Rendering\+E\+XT (\begin{DoxyParamCaption}\item[{const vk\+::\+Conditional\+Rendering\+Begin\+Info\+E\+XT \&}]{conditional\+Rendering\+Begin }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBeginConditionalRenderingEXT.html}{\texttt{ vk\+Cmd\+Begin\+Conditional\+Rendering\+E\+XT}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a262e56427db91f942febba68ee92b4e6}\label{classlogi_1_1_command_buffer_a262e56427db91f942febba68ee92b4e6}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!beginDebugUtilsLabelEXT@{beginDebugUtilsLabelEXT}}
+\index{beginDebugUtilsLabelEXT@{beginDebugUtilsLabelEXT}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{beginDebugUtilsLabelEXT()}{beginDebugUtilsLabelEXT()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::begin\+Debug\+Utils\+Label\+E\+XT (\begin{DoxyParamCaption}\item[{const vk\+::\+Debug\+Utils\+Label\+E\+XT \&}]{label\+Info }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBeginDebugUtilsLabelEXT.html}{\texttt{ vk\+Cmd\+Begin\+Debug\+Utils\+Label\+E\+XT}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a607792d7ec89fd2ccb084485e53ef06b}\label{classlogi_1_1_command_buffer_a607792d7ec89fd2ccb084485e53ef06b}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!beginQuery@{beginQuery}}
+\index{beginQuery@{beginQuery}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{beginQuery()}{beginQuery()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::begin\+Query (\begin{DoxyParamCaption}\item[{vk\+::\+Query\+Pool}]{query\+Pool,  }\item[{uint32\+\_\+t}]{query,  }\item[{const vk\+::\+Query\+Control\+Flags \&}]{flags }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBeginQuery.html}{\texttt{ vk\+Cmd\+Begin\+Query}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a20ef023597740c5a300be2a831f0a64f}\label{classlogi_1_1_command_buffer_a20ef023597740c5a300be2a831f0a64f}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!beginQueryIndexedEXT@{beginQueryIndexedEXT}}
+\index{beginQueryIndexedEXT@{beginQueryIndexedEXT}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{beginQueryIndexedEXT()}{beginQueryIndexedEXT()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::begin\+Query\+Indexed\+E\+XT (\begin{DoxyParamCaption}\item[{vk\+::\+Query\+Pool}]{query\+Pool,  }\item[{uint32\+\_\+t}]{query,  }\item[{const vk\+::\+Query\+Control\+Flags \&}]{flags,  }\item[{uint32\+\_\+t}]{index }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBeginQueryIndexedEXT.html}{\texttt{ vk\+Cmd\+Begin\+Query\+Indexed\+E\+XT}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a0b33b79bd9a2d16e513ba53274c4eedb}\label{classlogi_1_1_command_buffer_a0b33b79bd9a2d16e513ba53274c4eedb}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!beginRenderPass@{beginRenderPass}}
+\index{beginRenderPass@{beginRenderPass}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{beginRenderPass()}{beginRenderPass()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::begin\+Render\+Pass (\begin{DoxyParamCaption}\item[{const vk\+::\+Render\+Pass\+Begin\+Info \&}]{render\+Pass\+Begin,  }\item[{vk\+::\+Subpass\+Contents}]{contents }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBeginRenderPass.html}{\texttt{ vk\+Cmd\+Begin\+Render\+Pass}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a0e77a0254a8ed510c7a0b0db93565e2d}\label{classlogi_1_1_command_buffer_a0e77a0254a8ed510c7a0b0db93565e2d}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!beginRenderPass2@{beginRenderPass2}}
+\index{beginRenderPass2@{beginRenderPass2}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{beginRenderPass2()}{beginRenderPass2()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::begin\+Render\+Pass2 (\begin{DoxyParamCaption}\item[{const vk\+::\+Render\+Pass\+Begin\+Info \&}]{render\+Pass\+Begin,  }\item[{vk\+::\+Subpass\+Contents}]{contens }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBeginRenderPass2.html}{\texttt{ vk\+Cmd\+Begin\+Render\+Pass2}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_ac90b94b6ce3435df01fbd3eb83bdf69a}\label{classlogi_1_1_command_buffer_ac90b94b6ce3435df01fbd3eb83bdf69a}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!beginRenderPass2KHR@{beginRenderPass2KHR}}
+\index{beginRenderPass2KHR@{beginRenderPass2KHR}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{beginRenderPass2KHR()}{beginRenderPass2KHR()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::begin\+Render\+Pass2\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Render\+Pass\+Begin\+Info \&}]{render\+Pass\+Begin,  }\item[{const vk\+::\+Subpass\+Begin\+Info\+K\+HR \&}]{subpass\+Begin\+Info }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBeginRenderPass2KHR.html}{\texttt{ vk\+Cmd\+Begin\+Render\+Pass2\+K\+HR}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_af790aad51bf2904d9376d649fede05b2}\label{classlogi_1_1_command_buffer_af790aad51bf2904d9376d649fede05b2}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!beginTransformFeedbackEXT@{beginTransformFeedbackEXT}}
+\index{beginTransformFeedbackEXT@{beginTransformFeedbackEXT}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{beginTransformFeedbackEXT()}{beginTransformFeedbackEXT()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::begin\+Transform\+Feedback\+E\+XT (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{first\+Counter\+Buffer,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Buffer $>$}]{counter\+Buffers,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Device\+Size $>$}]{counter\+Buffer\+Offsets }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBeginTransformFeedbackEXT.html}{\texttt{ vk\+Cmd\+Begin\+Transform\+Feedback\+E\+XT}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_aba2664dd23e20c10febec1466c13d513}\label{classlogi_1_1_command_buffer_aba2664dd23e20c10febec1466c13d513}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!bindDescriptorSets@{bindDescriptorSets}}
+\index{bindDescriptorSets@{bindDescriptorSets}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{bindDescriptorSets()}{bindDescriptorSets()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::bind\+Descriptor\+Sets (\begin{DoxyParamCaption}\item[{vk\+::\+Pipeline\+Bind\+Point}]{pipeline\+Bind\+Point,  }\item[{vk\+::\+Pipeline\+Layout}]{layout,  }\item[{uint32\+\_\+t}]{first\+Set,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Descriptor\+Set $>$}]{descriptor\+Sets,  }\item[{vk\+::\+Array\+Proxy$<$ const uint32\+\_\+t $>$}]{dynamic\+Offsets = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBindDescriptorSets.html}{\texttt{ vk\+Cmd\+Bind\+Descriptor\+Sets}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_ade8c89d96a06ba6f8e03f3474787176a}\label{classlogi_1_1_command_buffer_ade8c89d96a06ba6f8e03f3474787176a}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!bindIndexBuffer@{bindIndexBuffer}}
+\index{bindIndexBuffer@{bindIndexBuffer}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{bindIndexBuffer()}{bindIndexBuffer()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::bind\+Index\+Buffer (\begin{DoxyParamCaption}\item[{vk\+::\+Buffer}]{buffer,  }\item[{vk\+::\+Device\+Size}]{offset,  }\item[{vk\+::\+Index\+Type}]{index\+Type }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBindIndexBuffer.html}{\texttt{ vk\+Cmd\+Bind\+Index\+Buffer}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_aa80f8ab874dbe990544e2dbc5cf17ed2}\label{classlogi_1_1_command_buffer_aa80f8ab874dbe990544e2dbc5cf17ed2}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!bindPipeline@{bindPipeline}}
+\index{bindPipeline@{bindPipeline}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{bindPipeline()}{bindPipeline()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::bind\+Pipeline (\begin{DoxyParamCaption}\item[{vk\+::\+Pipeline\+Bind\+Point}]{pipeline\+Bind\+Point,  }\item[{vk\+::\+Pipeline}]{pipeline }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBindPipeline.html}{\texttt{ vk\+Cmd\+Bind\+Pipeline}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_af62d9207403d94223454262667a19f67}\label{classlogi_1_1_command_buffer_af62d9207403d94223454262667a19f67}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!bindShadingRateImageNV@{bindShadingRateImageNV}}
+\index{bindShadingRateImageNV@{bindShadingRateImageNV}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{bindShadingRateImageNV()}{bindShadingRateImageNV()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::bind\+Shading\+Rate\+Image\+NV (\begin{DoxyParamCaption}\item[{vk\+::\+Image\+View}]{image\+View,  }\item[{vk\+::\+Image\+Layout}]{image\+Layout }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBindShadingRateImageNV.html}{\texttt{ vk\+Cmd\+Bind\+Shading\+Rate\+Image\+NV}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a0a6d3a71577b6ceb491d550767b54322}\label{classlogi_1_1_command_buffer_a0a6d3a71577b6ceb491d550767b54322}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!bindTransformFeedbackBuffersEXT@{bindTransformFeedbackBuffersEXT}}
+\index{bindTransformFeedbackBuffersEXT@{bindTransformFeedbackBuffersEXT}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{bindTransformFeedbackBuffersEXT()}{bindTransformFeedbackBuffersEXT()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::bind\+Transform\+Feedback\+Buffers\+E\+XT (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{first\+Binding,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Buffer $>$}]{buffers,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Device\+Size $>$}]{offsets,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Device\+Size $>$}]{sizes }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBindTransformFeedbackBuffersEXT.html}{\texttt{ vk\+Cmd\+Bind\+Transform\+Feedback\+Buffers\+E\+XT}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a8b42f9266d9b009095808d3a968a246c}\label{classlogi_1_1_command_buffer_a8b42f9266d9b009095808d3a968a246c}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!bindVertexBuffers@{bindVertexBuffers}}
+\index{bindVertexBuffers@{bindVertexBuffers}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{bindVertexBuffers()}{bindVertexBuffers()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::bind\+Vertex\+Buffers (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{first\+Binding,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Buffer $>$}]{buffers,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Device\+Size $>$}]{offsets }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBindVertexBuffers.html}{\texttt{ vk\+Cmd\+Bind\+Vertex\+Buffers}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a4de3cc9ea58c1deba996e32ea3ad9925}\label{classlogi_1_1_command_buffer_a4de3cc9ea58c1deba996e32ea3ad9925}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!blitImage@{blitImage}}
+\index{blitImage@{blitImage}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{blitImage()}{blitImage()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::blit\+Image (\begin{DoxyParamCaption}\item[{vk\+::\+Image}]{src\+Image,  }\item[{vk\+::\+Image\+Layout}]{src\+Image\+Layout,  }\item[{vk\+::\+Image}]{dst\+Image,  }\item[{vk\+::\+Image\+Layout}]{dst\+Image\+Layout,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Image\+Blit $>$}]{regions,  }\item[{vk\+::\+Filter}]{filter }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBlitImage.html}{\texttt{ vk\+Cmd\+Blit\+Image}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_afe563287e3173e000ea77b3a3ef2d9af}\label{classlogi_1_1_command_buffer_afe563287e3173e000ea77b3a3ef2d9af}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!buildAccelerationStructureNV@{buildAccelerationStructureNV}}
+\index{buildAccelerationStructureNV@{buildAccelerationStructureNV}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{buildAccelerationStructureNV()}{buildAccelerationStructureNV()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::build\+Acceleration\+Structure\+NV (\begin{DoxyParamCaption}\item[{const vk\+::\+Acceleration\+Structure\+Info\+NV \&}]{info,  }\item[{vk\+::\+Buffer}]{instance\+Data,  }\item[{vk\+::\+Device\+Size}]{instance\+Offset,  }\item[{vk\+::\+Bool32}]{update,  }\item[{vk\+::\+Acceleration\+Structure\+NV}]{dst,  }\item[{vk\+::\+Acceleration\+Structure\+NV}]{src,  }\item[{vk\+::\+Buffer}]{scratch,  }\item[{vk\+::\+Device\+Size}]{scratch\+Offset }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBuildAccelerationStructureNV.html}{\texttt{ vk\+Cmd\+Build\+Acceleration\+Structure\+NV}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a954329aea66cf3cf7dd3052651ad3afb}\label{classlogi_1_1_command_buffer_a954329aea66cf3cf7dd3052651ad3afb}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!clearAttachments@{clearAttachments}}
+\index{clearAttachments@{clearAttachments}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{clearAttachments()}{clearAttachments()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::clear\+Attachments (\begin{DoxyParamCaption}\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Clear\+Attachment $>$}]{attachments,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Clear\+Rect $>$}]{rects }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdClearAttachments.html}{\texttt{ vk\+Cmd\+Clear\+Attachments}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a14efdbbc98a9b78b918993fc53cf75db}\label{classlogi_1_1_command_buffer_a14efdbbc98a9b78b918993fc53cf75db}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!clearColorImage@{clearColorImage}}
+\index{clearColorImage@{clearColorImage}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{clearColorImage()}{clearColorImage()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::clear\+Color\+Image (\begin{DoxyParamCaption}\item[{vk\+::\+Image}]{image,  }\item[{vk\+::\+Image\+Layout}]{image\+Layout,  }\item[{const vk\+::\+Clear\+Color\+Value \&}]{color,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Image\+Subresource\+Range $>$}]{ranges }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdClearColorImage.html}{\texttt{ vk\+Cmd\+Clear\+Color\+Image}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a0640efe8ba2bb19d752b2d3680954866}\label{classlogi_1_1_command_buffer_a0640efe8ba2bb19d752b2d3680954866}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!clearDepthStencilImage@{clearDepthStencilImage}}
+\index{clearDepthStencilImage@{clearDepthStencilImage}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{clearDepthStencilImage()}{clearDepthStencilImage()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::clear\+Depth\+Stencil\+Image (\begin{DoxyParamCaption}\item[{vk\+::\+Image}]{image,  }\item[{vk\+::\+Image\+Layout}]{image\+Layout,  }\item[{const vk\+::\+Clear\+Depth\+Stencil\+Value \&}]{depth\+Stencil,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Image\+Subresource\+Range $>$}]{ranges }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdClearDepthStencilImage.html}{\texttt{ vk\+Cmd\+Clear\+Depth\+Stencil\+Image}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_aa573f2dbe20e44eb963de0b401dae15c}\label{classlogi_1_1_command_buffer_aa573f2dbe20e44eb963de0b401dae15c}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!copyAccelerationStructureNV@{copyAccelerationStructureNV}}
+\index{copyAccelerationStructureNV@{copyAccelerationStructureNV}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{copyAccelerationStructureNV()}{copyAccelerationStructureNV()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::copy\+Acceleration\+Structure\+NV (\begin{DoxyParamCaption}\item[{vk\+::\+Acceleration\+Structure\+NV}]{dst,  }\item[{vk\+::\+Acceleration\+Structure\+NV}]{src,  }\item[{vk\+::\+Copy\+Acceleration\+Structure\+Mode\+NV}]{mode }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdCopyAccelerationStructureNV.html}{\texttt{ vk\+Cmd\+Copy\+Acceleration\+Structure\+NV}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a1c75e8d3b6f24baae208a09012356d2a}\label{classlogi_1_1_command_buffer_a1c75e8d3b6f24baae208a09012356d2a}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!copyBuffer@{copyBuffer}}
+\index{copyBuffer@{copyBuffer}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{copyBuffer()}{copyBuffer()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::copy\+Buffer (\begin{DoxyParamCaption}\item[{vk\+::\+Buffer}]{src\+Buffer,  }\item[{vk\+::\+Buffer}]{dst\+Buffer,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Buffer\+Copy $>$}]{regions }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdCopyBuffer.html}{\texttt{ vk\+Cmd\+Copy\+Buffer}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a1a6b2960a21c24b81499ac399cf2c657}\label{classlogi_1_1_command_buffer_a1a6b2960a21c24b81499ac399cf2c657}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!copyBufferToImage@{copyBufferToImage}}
+\index{copyBufferToImage@{copyBufferToImage}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{copyBufferToImage()}{copyBufferToImage()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::copy\+Buffer\+To\+Image (\begin{DoxyParamCaption}\item[{vk\+::\+Buffer}]{src\+Buffer,  }\item[{vk\+::\+Image}]{dst\+Image,  }\item[{vk\+::\+Image\+Layout}]{dst\+Image\+Layout,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Buffer\+Image\+Copy $>$}]{regions }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdCopyBufferToImage.html}{\texttt{ vk\+Cmd\+Copy\+Buffer\+To\+Image}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a5970b6261c6b8e7d4590eefd0cb7fe22}\label{classlogi_1_1_command_buffer_a5970b6261c6b8e7d4590eefd0cb7fe22}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!copyImage@{copyImage}}
+\index{copyImage@{copyImage}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{copyImage()}{copyImage()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::copy\+Image (\begin{DoxyParamCaption}\item[{vk\+::\+Image}]{src\+Image,  }\item[{vk\+::\+Image\+Layout}]{src\+Image\+Layout,  }\item[{vk\+::\+Image}]{dst\+Image,  }\item[{vk\+::\+Image\+Layout}]{dst\+Image\+Layout,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Image\+Copy $>$}]{regions }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdCopyImage.html}{\texttt{ vk\+Cmd\+Copy\+Image}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_ae96069341fa6ce0ac45d3d884516f753}\label{classlogi_1_1_command_buffer_ae96069341fa6ce0ac45d3d884516f753}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!copyImageToBuffer@{copyImageToBuffer}}
+\index{copyImageToBuffer@{copyImageToBuffer}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{copyImageToBuffer()}{copyImageToBuffer()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::copy\+Image\+To\+Buffer (\begin{DoxyParamCaption}\item[{vk\+::\+Image}]{src\+Image,  }\item[{vk\+::\+Image\+Layout}]{src\+Image\+Layout,  }\item[{vk\+::\+Buffer}]{dst\+Buffer,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Buffer\+Image\+Copy $>$}]{regions }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdCopyImageToBuffer.html}{\texttt{ vk\+Cmd\+Copy\+Image\+To\+Buffer}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a10d2260c3c34c3c4e963326c27b063df}\label{classlogi_1_1_command_buffer_a10d2260c3c34c3c4e963326c27b063df}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!copyQueryPoolResults@{copyQueryPoolResults}}
+\index{copyQueryPoolResults@{copyQueryPoolResults}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{copyQueryPoolResults()}{copyQueryPoolResults()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::copy\+Query\+Pool\+Results (\begin{DoxyParamCaption}\item[{vk\+::\+Query\+Pool}]{query\+Pool,  }\item[{uint32\+\_\+t}]{first\+Query,  }\item[{uint32\+\_\+t}]{query\+Count,  }\item[{vk\+::\+Buffer}]{dst\+Buffer,  }\item[{vk\+::\+Device\+Size}]{dst\+Offset,  }\item[{vk\+::\+Device\+Size}]{stride,  }\item[{const vk\+::\+Query\+Result\+Flags \&}]{flags }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdCopyQueryPoolResults.html}{\texttt{ vk\+Cmd\+Copy\+Query\+Pool\+Results}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a48bc3bc3c4a7b4f17dc90eb082e16bf4}\label{classlogi_1_1_command_buffer_a48bc3bc3c4a7b4f17dc90eb082e16bf4}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!debugMarkerBeginEXT@{debugMarkerBeginEXT}}
+\index{debugMarkerBeginEXT@{debugMarkerBeginEXT}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{debugMarkerBeginEXT()}{debugMarkerBeginEXT()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::debug\+Marker\+Begin\+E\+XT (\begin{DoxyParamCaption}\item[{const vk\+::\+Debug\+Marker\+Marker\+Info\+E\+XT \&}]{marker\+Info }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDebugMarkerBeginEXT.html}{\texttt{ vk\+Cmd\+Debug\+Marker\+Begin\+E\+XT}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a37023a28b3f392ab54acd055a78dc7c3}\label{classlogi_1_1_command_buffer_a37023a28b3f392ab54acd055a78dc7c3}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!debugMarkerEndEXT@{debugMarkerEndEXT}}
+\index{debugMarkerEndEXT@{debugMarkerEndEXT}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{debugMarkerEndEXT()}{debugMarkerEndEXT()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::debug\+Marker\+End\+E\+XT (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDebugMarkerEndEXT.html}{\texttt{ vk\+Cmd\+Debug\+Marker\+End\+E\+XT}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_ae63771a3ace6c66394f55a31d311c2d0}\label{classlogi_1_1_command_buffer_ae63771a3ace6c66394f55a31d311c2d0}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!debugMarkerInsertEXT@{debugMarkerInsertEXT}}
+\index{debugMarkerInsertEXT@{debugMarkerInsertEXT}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{debugMarkerInsertEXT()}{debugMarkerInsertEXT()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::debug\+Marker\+Insert\+E\+XT (\begin{DoxyParamCaption}\item[{const vk\+::\+Debug\+Marker\+Marker\+Info\+E\+XT \&}]{marker\+Info }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDebugMarkerInsertEXT.html}{\texttt{ vk\+Cmd\+Debug\+Marker\+Insert\+E\+XT}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_aa0adeed523ab0103a8ce665fe1f932c0}\label{classlogi_1_1_command_buffer_aa0adeed523ab0103a8ce665fe1f932c0}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!destroy@{destroy}}
+\index{destroy@{destroy}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a034059b8a8f8f31dbfe00bb5fc023e9f}\label{classlogi_1_1_command_buffer_a034059b8a8f8f31dbfe00bb5fc023e9f}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!dispatch@{dispatch}}
+\index{dispatch@{dispatch}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{dispatch()}{dispatch()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::dispatch (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{group\+CountX,  }\item[{uint32\+\_\+t}]{group\+CountY,  }\item[{uint32\+\_\+t}]{group\+CountZ }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDispatch.html}{\texttt{ vk\+Cmd\+Dispatch}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a890dcd5fe38242bb71fb3bdec52fb148}\label{classlogi_1_1_command_buffer_a890dcd5fe38242bb71fb3bdec52fb148}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!dispatchBase@{dispatchBase}}
+\index{dispatchBase@{dispatchBase}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{dispatchBase()}{dispatchBase()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::dispatch\+Base (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{base\+GroupX,  }\item[{uint32\+\_\+t}]{base\+GroupY,  }\item[{uint32\+\_\+t}]{base\+GroupZ,  }\item[{uint32\+\_\+t}]{group\+CountX,  }\item[{uint32\+\_\+t}]{group\+CountY,  }\item[{uint32\+\_\+t}]{group\+CountZ }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDispatchBase.html}{\texttt{ vk\+Cmd\+Dispatch\+Base}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a635ba357e58abda7bfec6b8e17ec129c}\label{classlogi_1_1_command_buffer_a635ba357e58abda7bfec6b8e17ec129c}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!dispatchBaseKHR@{dispatchBaseKHR}}
+\index{dispatchBaseKHR@{dispatchBaseKHR}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{dispatchBaseKHR()}{dispatchBaseKHR()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::dispatch\+Base\+K\+HR (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{base\+GroupX,  }\item[{uint32\+\_\+t}]{base\+GroupY,  }\item[{uint32\+\_\+t}]{base\+GroupZ,  }\item[{uint32\+\_\+t}]{group\+CountX,  }\item[{uint32\+\_\+t}]{group\+CountY,  }\item[{uint32\+\_\+t}]{group\+CountZ }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDispatchBaseKHR.html}{\texttt{ vk\+Cmd\+Dispatch\+Base\+K\+HR}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a471a1e3bc72bbe609c2f5dd092d7bef0}\label{classlogi_1_1_command_buffer_a471a1e3bc72bbe609c2f5dd092d7bef0}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!dispatchIndirect@{dispatchIndirect}}
+\index{dispatchIndirect@{dispatchIndirect}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{dispatchIndirect()}{dispatchIndirect()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::dispatch\+Indirect (\begin{DoxyParamCaption}\item[{vk\+::\+Buffer}]{buffer,  }\item[{vk\+::\+Device\+Size}]{offset }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDispatchIndirect.html}{\texttt{ vk\+Cmd\+Dispatch\+Indirect}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a9e9b00578c62ba37e800227c8181f067}\label{classlogi_1_1_command_buffer_a9e9b00578c62ba37e800227c8181f067}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!draw@{draw}}
+\index{draw@{draw}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{draw()}{draw()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::draw (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{vertex\+Count,  }\item[{uint32\+\_\+t}]{instance\+Count = {\ttfamily 1},  }\item[{uint32\+\_\+t}]{first\+Vertex = {\ttfamily 0},  }\item[{uint32\+\_\+t}]{first\+Instance = {\ttfamily 0} }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDraw.html}{\texttt{ vk\+Cmd\+Draw}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_af9a979442770c7069a3d84550123e801}\label{classlogi_1_1_command_buffer_af9a979442770c7069a3d84550123e801}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!drawIndexed@{drawIndexed}}
+\index{drawIndexed@{drawIndexed}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{drawIndexed()}{drawIndexed()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::draw\+Indexed (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{index\+Count,  }\item[{uint32\+\_\+t}]{instance\+Count,  }\item[{uint32\+\_\+t}]{first\+Index,  }\item[{int32\+\_\+t}]{vertex\+Offset,  }\item[{uint32\+\_\+t}]{first\+Instance }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawIndexed.html}{\texttt{ vk\+Cmd\+Draw\+Indexed}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a5b059aa54bfe16484ac5eb51613add95}\label{classlogi_1_1_command_buffer_a5b059aa54bfe16484ac5eb51613add95}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!drawIndexedIndirect@{drawIndexedIndirect}}
+\index{drawIndexedIndirect@{drawIndexedIndirect}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{drawIndexedIndirect()}{drawIndexedIndirect()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::draw\+Indexed\+Indirect (\begin{DoxyParamCaption}\item[{vk\+::\+Buffer}]{buffer,  }\item[{vk\+::\+Device\+Size}]{offset,  }\item[{uint32\+\_\+t}]{draw\+Count,  }\item[{uint32\+\_\+t}]{stride }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawIndexedIndirect.html}{\texttt{ vk\+Cmd\+Draw\+Indexed\+Indirect}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a5d9781bb9bbb2907769483dfea5b2549}\label{classlogi_1_1_command_buffer_a5d9781bb9bbb2907769483dfea5b2549}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!drawIndexedIndirectCount@{drawIndexedIndirectCount}}
+\index{drawIndexedIndirectCount@{drawIndexedIndirectCount}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{drawIndexedIndirectCount()}{drawIndexedIndirectCount()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::draw\+Indexed\+Indirect\+Count (\begin{DoxyParamCaption}\item[{vk\+::\+Buffer}]{buffer,  }\item[{vk\+::\+Device\+Size}]{offset,  }\item[{vk\+::\+Buffer}]{count\+Buffer,  }\item[{vk\+::\+Device\+Size}]{count\+Buffer\+Offset,  }\item[{uint32\+\_\+t}]{max\+Draw\+Count,  }\item[{uint32\+\_\+t}]{stride }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawIndexedIndirectCount.html}{\texttt{ vk\+Cmd\+Draw\+Indexed\+Indirect\+Count}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a795bc6612d5cf990915df6621b0bf049}\label{classlogi_1_1_command_buffer_a795bc6612d5cf990915df6621b0bf049}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!drawIndexedIndirectCountAMD@{drawIndexedIndirectCountAMD}}
+\index{drawIndexedIndirectCountAMD@{drawIndexedIndirectCountAMD}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{drawIndexedIndirectCountAMD()}{drawIndexedIndirectCountAMD()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::draw\+Indexed\+Indirect\+Count\+A\+MD (\begin{DoxyParamCaption}\item[{vk\+::\+Buffer}]{buffer,  }\item[{vk\+::\+Device\+Size}]{offset,  }\item[{vk\+::\+Buffer}]{count\+Buffer,  }\item[{vk\+::\+Device\+Size}]{count\+Buffer\+Offset,  }\item[{uint32\+\_\+t}]{max\+Draw\+Count,  }\item[{uint32\+\_\+t}]{stride }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawIndexedIndirectCountAMD.html}{\texttt{ vk\+Cmd\+Draw\+Indexed\+Indirect\+Count\+A\+MD}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_afd15fd965b91fb33caef61801b9c7814}\label{classlogi_1_1_command_buffer_afd15fd965b91fb33caef61801b9c7814}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!drawIndexedIndirectCountKHR@{drawIndexedIndirectCountKHR}}
+\index{drawIndexedIndirectCountKHR@{drawIndexedIndirectCountKHR}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{drawIndexedIndirectCountKHR()}{drawIndexedIndirectCountKHR()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::draw\+Indexed\+Indirect\+Count\+K\+HR (\begin{DoxyParamCaption}\item[{vk\+::\+Buffer}]{buffer,  }\item[{vk\+::\+Device\+Size}]{offset,  }\item[{vk\+::\+Buffer}]{count\+Buffer,  }\item[{vk\+::\+Device\+Size}]{count\+Buffer\+Offset,  }\item[{uint32\+\_\+t}]{max\+Draw\+Count,  }\item[{uint32\+\_\+t}]{stride }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawIndexedIndirectCountKHR.html}{\texttt{ vk\+Cmd\+Draw\+Indexed\+Indirect\+Count\+K\+HR}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a33acb24de37f6f9cc45842b74ba6f978}\label{classlogi_1_1_command_buffer_a33acb24de37f6f9cc45842b74ba6f978}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!drawIndirect@{drawIndirect}}
+\index{drawIndirect@{drawIndirect}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{drawIndirect()}{drawIndirect()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::draw\+Indirect (\begin{DoxyParamCaption}\item[{vk\+::\+Buffer}]{buffer,  }\item[{vk\+::\+Device\+Size}]{offset,  }\item[{uint32\+\_\+t}]{draw\+Count,  }\item[{uint32\+\_\+t}]{stride }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawIndirect.html}{\texttt{ vk\+Cmd\+Draw\+Indirect}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_ab0bf154cb348800d1d9234fe76c3d962}\label{classlogi_1_1_command_buffer_ab0bf154cb348800d1d9234fe76c3d962}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!drawIndirectByteCountEXT@{drawIndirectByteCountEXT}}
+\index{drawIndirectByteCountEXT@{drawIndirectByteCountEXT}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{drawIndirectByteCountEXT()}{drawIndirectByteCountEXT()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::draw\+Indirect\+Byte\+Count\+E\+XT (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{instance\+Count,  }\item[{uint32\+\_\+t}]{first\+Instance,  }\item[{vk\+::\+Buffer}]{counter\+Buffer,  }\item[{vk\+::\+Device\+Size}]{counter\+Buffer\+Offset,  }\item[{uint32\+\_\+t}]{counter\+Offset,  }\item[{uint32\+\_\+t}]{vertex\+Stride }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawIndirectByteCountEXT.html}{\texttt{ vk\+Cmd\+Draw\+Indirect\+Byte\+Count\+E\+XT}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a1b870492faec2e4d7d341fdb45c5790c}\label{classlogi_1_1_command_buffer_a1b870492faec2e4d7d341fdb45c5790c}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!drawIndirectCount@{drawIndirectCount}}
+\index{drawIndirectCount@{drawIndirectCount}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{drawIndirectCount()}{drawIndirectCount()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::draw\+Indirect\+Count (\begin{DoxyParamCaption}\item[{vk\+::\+Buffer}]{buffer,  }\item[{vk\+::\+Device\+Size}]{offset,  }\item[{vk\+::\+Buffer}]{count\+Buffer,  }\item[{vk\+::\+Device\+Size}]{count\+Buffer\+Offset,  }\item[{uint32\+\_\+t}]{max\+Draw\+Count,  }\item[{uint32\+\_\+t}]{stride }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawIndirectCount.html}{\texttt{ vk\+Cmd\+Draw\+Indirect\+Count}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_af5f24b82b48670709508e2cb41cb89a6}\label{classlogi_1_1_command_buffer_af5f24b82b48670709508e2cb41cb89a6}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!drawIndirectCountAMD@{drawIndirectCountAMD}}
+\index{drawIndirectCountAMD@{drawIndirectCountAMD}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{drawIndirectCountAMD()}{drawIndirectCountAMD()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::draw\+Indirect\+Count\+A\+MD (\begin{DoxyParamCaption}\item[{vk\+::\+Buffer}]{buffer,  }\item[{vk\+::\+Device\+Size}]{offset,  }\item[{vk\+::\+Buffer}]{count\+Buffer,  }\item[{vk\+::\+Device\+Size}]{count\+Buffer\+Offset,  }\item[{uint32\+\_\+t}]{max\+Draw\+Count,  }\item[{uint32\+\_\+t}]{stride }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawIndirectCountAMD.html}{\texttt{ vk\+Cmd\+Draw\+Indirect\+Count\+A\+MD}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a569fd543ed94e9bdc5f9a87178fac5c4}\label{classlogi_1_1_command_buffer_a569fd543ed94e9bdc5f9a87178fac5c4}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!drawIndirectCountKHR@{drawIndirectCountKHR}}
+\index{drawIndirectCountKHR@{drawIndirectCountKHR}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{drawIndirectCountKHR()}{drawIndirectCountKHR()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::draw\+Indirect\+Count\+K\+HR (\begin{DoxyParamCaption}\item[{vk\+::\+Buffer}]{buffer,  }\item[{vk\+::\+Device\+Size}]{offset,  }\item[{vk\+::\+Buffer}]{count\+Buffer,  }\item[{vk\+::\+Device\+Size}]{count\+Buffer\+Offset,  }\item[{uint32\+\_\+t}]{max\+Draw\+Count,  }\item[{uint32\+\_\+t}]{stride }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawIndirectCountKHR.html}{\texttt{ vk\+Cmd\+Draw\+Indirect\+Count\+K\+HR}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_af2b8c0ad91bf4b35f186f3fb1b3a4053}\label{classlogi_1_1_command_buffer_af2b8c0ad91bf4b35f186f3fb1b3a4053}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!drawMeshTasksIndirectCountNV@{drawMeshTasksIndirectCountNV}}
+\index{drawMeshTasksIndirectCountNV@{drawMeshTasksIndirectCountNV}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{drawMeshTasksIndirectCountNV()}{drawMeshTasksIndirectCountNV()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::draw\+Mesh\+Tasks\+Indirect\+Count\+NV (\begin{DoxyParamCaption}\item[{vk\+::\+Buffer}]{buffer,  }\item[{vk\+::\+Device\+Size}]{offset,  }\item[{vk\+::\+Buffer}]{count\+Buffer,  }\item[{vk\+::\+Device\+Size}]{count\+Buffer\+Offset,  }\item[{uint32\+\_\+t}]{max\+Draw\+Count,  }\item[{uint32\+\_\+t}]{stride }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawMeshTasksIndirectCountNV.html}{\texttt{ vk\+Cmd\+Draw\+Mesh\+Tasks\+Indirect\+Count\+NV}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_aaf7905f37f9b0a7c2af0086ce8651239}\label{classlogi_1_1_command_buffer_aaf7905f37f9b0a7c2af0086ce8651239}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!drawMeshTasksIndirectNV@{drawMeshTasksIndirectNV}}
+\index{drawMeshTasksIndirectNV@{drawMeshTasksIndirectNV}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{drawMeshTasksIndirectNV()}{drawMeshTasksIndirectNV()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::draw\+Mesh\+Tasks\+Indirect\+NV (\begin{DoxyParamCaption}\item[{vk\+::\+Buffer}]{buffer,  }\item[{vk\+::\+Device\+Size}]{offset,  }\item[{uint32\+\_\+t}]{draw\+Count,  }\item[{uint32\+\_\+t}]{stride }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawMeshTasksIndirectNV.html}{\texttt{ vk\+Cmd\+Draw\+Mesh\+Tasks\+Indirect\+NV}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a1e0a2366079311d87792c4cf4b3b6ac8}\label{classlogi_1_1_command_buffer_a1e0a2366079311d87792c4cf4b3b6ac8}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!drawMeshTasksNV@{drawMeshTasksNV}}
+\index{drawMeshTasksNV@{drawMeshTasksNV}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{drawMeshTasksNV()}{drawMeshTasksNV()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::draw\+Mesh\+Tasks\+NV (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{task\+Count,  }\item[{uint32\+\_\+t}]{first\+Task }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdDrawMeshTasksNV.html}{\texttt{ vk\+Cmd\+Draw\+Mesh\+Tasks\+NV}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a8400a22ff919ca3303e661a9a42a375a}\label{classlogi_1_1_command_buffer_a8400a22ff919ca3303e661a9a42a375a}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!end@{end}}
+\index{end@{end}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{end()}{end()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Command\+Buffer\+::end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkEndCommandBuffer.html}{\texttt{ vk\+End\+Command\+Buffer}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a569348f92fa39d80803ae9157ef61a99}\label{classlogi_1_1_command_buffer_a569348f92fa39d80803ae9157ef61a99}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!endConditionalRenderingEXT@{endConditionalRenderingEXT}}
+\index{endConditionalRenderingEXT@{endConditionalRenderingEXT}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{endConditionalRenderingEXT()}{endConditionalRenderingEXT()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::end\+Conditional\+Rendering\+E\+XT (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdEndConditionalRenderingEXT.html}{\texttt{ vk\+Cmd\+End\+Conditional\+Rendering\+E\+XT}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a6e4602c4d8f43c31e3ebb143489bd852}\label{classlogi_1_1_command_buffer_a6e4602c4d8f43c31e3ebb143489bd852}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!endDebugUtilsLabelEXT@{endDebugUtilsLabelEXT}}
+\index{endDebugUtilsLabelEXT@{endDebugUtilsLabelEXT}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{endDebugUtilsLabelEXT()}{endDebugUtilsLabelEXT()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::end\+Debug\+Utils\+Label\+E\+XT (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdEndDebugUtilsLabelEXT.html}{\texttt{ vk\+Cmd\+End\+Debug\+Utils\+Label\+E\+XT}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a3962f5e42145532bc40210dd0bb690e1}\label{classlogi_1_1_command_buffer_a3962f5e42145532bc40210dd0bb690e1}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!endQuery@{endQuery}}
+\index{endQuery@{endQuery}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{endQuery()}{endQuery()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::end\+Query (\begin{DoxyParamCaption}\item[{vk\+::\+Query\+Pool}]{query\+Pool,  }\item[{uint32\+\_\+t}]{query }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdEndQuery.html}{\texttt{ vk\+Cmd\+Draw}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a2f2eaae2402240b09f7c80c9ca4665d2}\label{classlogi_1_1_command_buffer_a2f2eaae2402240b09f7c80c9ca4665d2}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!endQueryIndexedEXT@{endQueryIndexedEXT}}
+\index{endQueryIndexedEXT@{endQueryIndexedEXT}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{endQueryIndexedEXT()}{endQueryIndexedEXT()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::end\+Query\+Indexed\+E\+XT (\begin{DoxyParamCaption}\item[{vk\+::\+Query\+Pool}]{query\+Pool,  }\item[{uint32\+\_\+t}]{query,  }\item[{uint32\+\_\+t}]{index }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdEndQueryIndexedEXT.html}{\texttt{ vk\+Cmd\+End\+Query\+Indexed\+E\+XT}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_aeefd242cc9affcdd0a79d0c7119eda01}\label{classlogi_1_1_command_buffer_aeefd242cc9affcdd0a79d0c7119eda01}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!endRenderPass@{endRenderPass}}
+\index{endRenderPass@{endRenderPass}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{endRenderPass()}{endRenderPass()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::end\+Render\+Pass (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdEndRenderPass.html}{\texttt{ vk\+Cmd\+End\+Render\+Pass}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a969e73678afbc3ec7abe9dae0e103d64}\label{classlogi_1_1_command_buffer_a969e73678afbc3ec7abe9dae0e103d64}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!endRenderPass2@{endRenderPass2}}
+\index{endRenderPass2@{endRenderPass2}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{endRenderPass2()}{endRenderPass2()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::end\+Render\+Pass2 (\begin{DoxyParamCaption}\item[{const vk\+::\+Subpass\+End\+Info \&}]{subpass\+End\+Info }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdEndRenderPass2.html}{\texttt{ vk\+Cmd\+End\+Render\+Pass2}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a4c838224cd8c16ead7a33b2cea042023}\label{classlogi_1_1_command_buffer_a4c838224cd8c16ead7a33b2cea042023}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!endRenderPass2KHR@{endRenderPass2KHR}}
+\index{endRenderPass2KHR@{endRenderPass2KHR}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{endRenderPass2KHR()}{endRenderPass2KHR()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::end\+Render\+Pass2\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Subpass\+End\+Info\+K\+HR \&}]{subpass\+End\+Info }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdEndRenderPass2KHR.html}{\texttt{ vk\+Cmd\+End\+Render\+Pass2\+K\+HR}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a1a27f6036aa70eb3f678392140e47f78}\label{classlogi_1_1_command_buffer_a1a27f6036aa70eb3f678392140e47f78}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!endTransformFeedbackEXT@{endTransformFeedbackEXT}}
+\index{endTransformFeedbackEXT@{endTransformFeedbackEXT}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{endTransformFeedbackEXT()}{endTransformFeedbackEXT()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::end\+Transform\+Feedback\+E\+XT (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{first\+Counter\+Buffer,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Buffer $>$}]{counter\+Buffers,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Device\+Size $>$}]{counter\+Buffer\+Offsets }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdEndTransformFeedbackEXT.html}{\texttt{ vk\+Cmd\+End\+Transform\+Feedback\+E\+XT}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a467f78f0f30fd26b0c0acb9df1bf5c10}\label{classlogi_1_1_command_buffer_a467f78f0f30fd26b0c0acb9df1bf5c10}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!executeCommands@{executeCommands}}
+\index{executeCommands@{executeCommands}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{executeCommands()}{executeCommands()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::execute\+Commands (\begin{DoxyParamCaption}\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Command\+Buffer $>$}]{command\+Buffers }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdExecuteCommands.html}{\texttt{ vk\+Cmd\+Execute\+Commands}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_abb7e360f4a04d35e5b6690e22b162f5e}\label{classlogi_1_1_command_buffer_abb7e360f4a04d35e5b6690e22b162f5e}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!fillBuffer@{fillBuffer}}
+\index{fillBuffer@{fillBuffer}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{fillBuffer()}{fillBuffer()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::fill\+Buffer (\begin{DoxyParamCaption}\item[{vk\+::\+Buffer}]{dst\+Buffer,  }\item[{vk\+::\+Device\+Size}]{dst\+Offset,  }\item[{vk\+::\+Device\+Size}]{size,  }\item[{uint32\+\_\+t}]{data }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdFillBuffer.html}{\texttt{ vk\+Cmd\+Fill\+Buffer}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a993cb444dca4139b70ffcf3a7c127096}\label{classlogi_1_1_command_buffer_a993cb444dca4139b70ffcf3a7c127096}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!getCommandPool@{getCommandPool}}
+\index{getCommandPool@{getCommandPool}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{getCommandPool()}{getCommandPool()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_command_pool}{Command\+Pool}} logi\+::\+Command\+Buffer\+::get\+Command\+Pool (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a46d4204db702e51331f71da58206bd47}\label{classlogi_1_1_command_buffer_a46d4204db702e51331f71da58206bd47}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!getDispatcher@{getDispatcher}}
+\index{getDispatcher@{getDispatcher}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{getDispatcher()}{getDispatcher()}}
+{\footnotesize\ttfamily const vk\+::\+Dispatch\+Loader\+Dynamic \& logi\+::\+Command\+Buffer\+::get\+Dispatcher (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_ad8e4ea0f2606bac888d691f132d3cee3}\label{classlogi_1_1_command_buffer_ad8e4ea0f2606bac888d691f132d3cee3}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_vulkan_instance}{Vulkan\+Instance}} logi\+::\+Command\+Buffer\+::get\+Instance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a82bfcbe5bd6305f28b30c9fc9ffcddde}\label{classlogi_1_1_command_buffer_a82bfcbe5bd6305f28b30c9fc9ffcddde}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!getLogicalDevice@{getLogicalDevice}}
+\index{getLogicalDevice@{getLogicalDevice}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{getLogicalDevice()}{getLogicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_logical_device}{Logical\+Device}} logi\+::\+Command\+Buffer\+::get\+Logical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a374a5a60832a89ca5dccb3200bed725e}\label{classlogi_1_1_command_buffer_a374a5a60832a89ca5dccb3200bed725e}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!getPhysicalDevice@{getPhysicalDevice}}
+\index{getPhysicalDevice@{getPhysicalDevice}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{getPhysicalDevice()}{getPhysicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_physical_device}{Physical\+Device}} logi\+::\+Command\+Buffer\+::get\+Physical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_ae3e9f94345f65a8df13f609a01180785}\label{classlogi_1_1_command_buffer_ae3e9f94345f65a8df13f609a01180785}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!getQueueFamily@{getQueueFamily}}
+\index{getQueueFamily@{getQueueFamily}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{getQueueFamily()}{getQueueFamily()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_queue_family}{Queue\+Family}} logi\+::\+Command\+Buffer\+::get\+Queue\+Family (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a573850795cef46e5e0c9acc997cce250}\label{classlogi_1_1_command_buffer_a573850795cef46e5e0c9acc997cce250}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!Handle@{Handle}}
+\index{Handle@{Handle}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{Handle()}{Handle()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_handle}{logi\+::\+Handle}}$<$ T $>$\+::\mbox{\hyperlink{classlogi_1_1_handle}{Handle}}\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+Default null handle constructor. 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_afd9a0687dd950205ac03c19afca4c553}\label{classlogi_1_1_command_buffer_afd9a0687dd950205ac03c19afca4c553}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!Handle@{Handle}}
+\index{Handle@{Handle}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{Handle()}{Handle()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_handle}{logi\+::\+Handle}}$<$ T $>$\+::\mbox{\hyperlink{classlogi_1_1_handle}{Handle}}\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Initialize the referred object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & Referred object. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_adeffeffc116b7accb4968ed86791e671}\label{classlogi_1_1_command_buffer_adeffeffc116b7accb4968ed86791e671}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!insertDebugUtilsLabelEXT@{insertDebugUtilsLabelEXT}}
+\index{insertDebugUtilsLabelEXT@{insertDebugUtilsLabelEXT}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{insertDebugUtilsLabelEXT()}{insertDebugUtilsLabelEXT()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::insert\+Debug\+Utils\+Label\+E\+XT (\begin{DoxyParamCaption}\item[{const vk\+::\+Debug\+Utils\+Label\+E\+XT \&}]{label\+Info }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdInsertDebugUtilsLabelEXT.html}{\texttt{ vk\+Cmd\+Insert\+Debug\+Utils\+Label\+E\+XT}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a1c5941b70b40fb2422a8e61543952059}\label{classlogi_1_1_command_buffer_a1c5941b70b40fb2422a8e61543952059}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!nextSubpass@{nextSubpass}}
+\index{nextSubpass@{nextSubpass}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{nextSubpass()}{nextSubpass()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::next\+Subpass (\begin{DoxyParamCaption}\item[{vk\+::\+Subpass\+Contents}]{contents }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdNextSubpass.html}{\texttt{ vk\+Cmd\+Next\+Subpass}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a015a727097c2f9ba2a5550c3df01758f}\label{classlogi_1_1_command_buffer_a015a727097c2f9ba2a5550c3df01758f}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!nextSubpass2@{nextSubpass2}}
+\index{nextSubpass2@{nextSubpass2}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{nextSubpass2()}{nextSubpass2()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::next\+Subpass2 (\begin{DoxyParamCaption}\item[{vk\+::\+Subpass\+Begin\+Info}]{subpass\+Begin\+Info,  }\item[{vk\+::\+Subpass\+End\+Info}]{subpass\+End\+Info }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdNextSubpass2.html}{\texttt{ vk\+Cmd\+Next\+Subpass2}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a713ba1e9c168b004dd3a203f659d5710}\label{classlogi_1_1_command_buffer_a713ba1e9c168b004dd3a203f659d5710}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!nextSubpass2KHR@{nextSubpass2KHR}}
+\index{nextSubpass2KHR@{nextSubpass2KHR}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{nextSubpass2KHR()}{nextSubpass2KHR()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::next\+Subpass2\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Subpass\+Begin\+Info\+K\+HR \&}]{subpass\+Begin\+Info,  }\item[{const vk\+::\+Subpass\+End\+Info\+K\+HR \&}]{subpass\+End\+Info }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdNextSubpass2KHR.html}{\texttt{ vk\+Cmd\+Next\+Subpass2\+K\+HR}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a7b255685e77172ce8a4ea9e6aa3b45d9}\label{classlogi_1_1_command_buffer_a7b255685e77172ce8a4ea9e6aa3b45d9}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!operator const vk::CommandBuffer \&@{operator const vk::CommandBuffer \&}}
+\index{operator const vk::CommandBuffer \&@{operator const vk::CommandBuffer \&}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{operator const vk::CommandBuffer \&()}{operator const vk::CommandBuffer \&()}}
+{\footnotesize\ttfamily logi\+::\+Command\+Buffer\+::operator const vk\+::\+Command\+Buffer \& (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a3b752a52458d52beeb2a20a234d4a42a}\label{classlogi_1_1_command_buffer_a3b752a52458d52beeb2a20a234d4a42a}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!pipelineBarrier@{pipelineBarrier}}
+\index{pipelineBarrier@{pipelineBarrier}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{pipelineBarrier()}{pipelineBarrier()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::pipeline\+Barrier (\begin{DoxyParamCaption}\item[{const vk\+::\+Pipeline\+Stage\+Flags \&}]{src\+Stage\+Mask,  }\item[{vk\+::\+Pipeline\+Stage\+Flags}]{dst\+Stage\+Mask,  }\item[{const vk\+::\+Dependency\+Flags \&}]{dependency\+Flags,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Memory\+Barrier $>$}]{memory\+Barriers,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Buffer\+Memory\+Barrier $>$}]{buffer\+Memory\+Barriers,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Image\+Memory\+Barrier $>$}]{image\+Memory\+Barriers }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdPipelineBarrier.html}{\texttt{ vk\+Cmd\+Pipeline\+Barrier}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a550c001cf00da8ca1c5a6dffdd89a9f5}\label{classlogi_1_1_command_buffer_a550c001cf00da8ca1c5a6dffdd89a9f5}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!processCommandsNVX@{processCommandsNVX}}
+\index{processCommandsNVX@{processCommandsNVX}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{processCommandsNVX()}{processCommandsNVX()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::process\+Commands\+N\+VX (\begin{DoxyParamCaption}\item[{const vk\+::\+Cmd\+Process\+Commands\+Info\+N\+VX \&}]{process\+Commands\+Info }\end{DoxyParamCaption}) const}
+
+
+
+Not supported anymore! 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_aac1634eb1781ec86a13c1cf59af0a1ad}\label{classlogi_1_1_command_buffer_aac1634eb1781ec86a13c1cf59af0a1ad}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!pushConstants@{pushConstants}}
+\index{pushConstants@{pushConstants}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{pushConstants()}{pushConstants()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void logi\+::\+Command\+Buffer\+::push\+Constants (\begin{DoxyParamCaption}\item[{vk\+::\+Pipeline\+Layout}]{layout,  }\item[{vk\+::\+Shader\+Stage\+Flags}]{stage\+Flags,  }\item[{uint32\+\_\+t}]{offset,  }\item[{vk\+::\+Array\+Proxy$<$ const T $>$}]{values }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdPushConstants.html}{\texttt{ vk\+Cmd\+Push\+Constants}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a1868836acfe84a14b876e9d553dc071a}\label{classlogi_1_1_command_buffer_a1868836acfe84a14b876e9d553dc071a}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!pushDescriptorSetKHR@{pushDescriptorSetKHR}}
+\index{pushDescriptorSetKHR@{pushDescriptorSetKHR}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{pushDescriptorSetKHR()}{pushDescriptorSetKHR()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::push\+Descriptor\+Set\+K\+HR (\begin{DoxyParamCaption}\item[{vk\+::\+Pipeline\+Bind\+Point}]{pipeline\+Bind\+Point,  }\item[{vk\+::\+Pipeline\+Layout}]{layout,  }\item[{uint32\+\_\+t}]{set,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Write\+Descriptor\+Set $>$}]{descriptor\+Writes }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdPushDescriptorSetKHR.html}{\texttt{ vk\+Cmd\+Push\+Descriptor\+Set\+K\+HR}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_ad970d21a386b5c2fcb5767efede0afd2}\label{classlogi_1_1_command_buffer_ad970d21a386b5c2fcb5767efede0afd2}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!pushDescriptorSetWithTemplateKHR@{pushDescriptorSetWithTemplateKHR}}
+\index{pushDescriptorSetWithTemplateKHR@{pushDescriptorSetWithTemplateKHR}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{pushDescriptorSetWithTemplateKHR()}{pushDescriptorSetWithTemplateKHR()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::push\+Descriptor\+Set\+With\+Template\+K\+HR (\begin{DoxyParamCaption}\item[{vk\+::\+Descriptor\+Update\+Template}]{descriptor\+Update\+Template,  }\item[{vk\+::\+Pipeline\+Layout}]{layout,  }\item[{uint32\+\_\+t}]{set,  }\item[{const void $\ast$}]{p\+Data }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdPushDescriptorSetWithTemplateKHR.html}{\texttt{ vk\+Cmd\+Push\+Descriptor\+Set\+With\+Template\+K\+HR}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a776c78767792e3cf8e5cfa0c8f378ee9}\label{classlogi_1_1_command_buffer_a776c78767792e3cf8e5cfa0c8f378ee9}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!reserveSpaceForCommandsNVX@{reserveSpaceForCommandsNVX}}
+\index{reserveSpaceForCommandsNVX@{reserveSpaceForCommandsNVX}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{reserveSpaceForCommandsNVX()}{reserveSpaceForCommandsNVX()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::reserve\+Space\+For\+Commands\+N\+VX (\begin{DoxyParamCaption}\item[{const vk\+::\+Cmd\+Reserve\+Space\+For\+Commands\+Info\+N\+VX \&}]{reserve\+Space\+Info }\end{DoxyParamCaption}) const}
+
+
+
+Not supported anymore! 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a7a3ccf10f0ba04e26227a4fee790a8d8}\label{classlogi_1_1_command_buffer_a7a3ccf10f0ba04e26227a4fee790a8d8}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!reset@{reset}}
+\index{reset@{reset}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Command\+Buffer\+::reset (\begin{DoxyParamCaption}\item[{const vk\+::\+Command\+Buffer\+Reset\+Flags \&}]{flags = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkResetCommandBuffer.html}{\texttt{ vk\+Reset\+Command\+Buffer}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_aff3feefd0da7da40c6d01417192813da}\label{classlogi_1_1_command_buffer_aff3feefd0da7da40c6d01417192813da}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!resetEvent@{resetEvent}}
+\index{resetEvent@{resetEvent}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{resetEvent()}{resetEvent()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::reset\+Event (\begin{DoxyParamCaption}\item[{vk\+::\+Event}]{event,  }\item[{const vk\+::\+Pipeline\+Stage\+Flags \&}]{stage\+Mask }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkResetEvent.html}{\texttt{ vk\+Reset\+Event}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a5a1e72bbaa49cb06362de213e85b8485}\label{classlogi_1_1_command_buffer_a5a1e72bbaa49cb06362de213e85b8485}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!resetQueryPool@{resetQueryPool}}
+\index{resetQueryPool@{resetQueryPool}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{resetQueryPool()}{resetQueryPool()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::reset\+Query\+Pool (\begin{DoxyParamCaption}\item[{vk\+::\+Query\+Pool}]{query\+Pool,  }\item[{uint32\+\_\+t}]{first\+Query,  }\item[{uint32\+\_\+t}]{query\+Count }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkResetQueryPool.html}{\texttt{ vk\+Reset\+Query\+Pool}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a6c2d5a1010fa8b15c3470f32e5a0110a}\label{classlogi_1_1_command_buffer_a6c2d5a1010fa8b15c3470f32e5a0110a}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!resolveImage@{resolveImage}}
+\index{resolveImage@{resolveImage}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{resolveImage()}{resolveImage()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::resolve\+Image (\begin{DoxyParamCaption}\item[{vk\+::\+Image}]{src\+Image,  }\item[{vk\+::\+Image\+Layout}]{src\+Image\+Layout,  }\item[{vk\+::\+Image}]{dst\+Image,  }\item[{vk\+::\+Image\+Layout}]{dst\+Image\+Layout,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Image\+Resolve $>$}]{regions }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdResolveImage.html}{\texttt{ vk\+Cmd\+Resolve\+Image}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_ad19a6caa085184889c56d6983297ab33}\label{classlogi_1_1_command_buffer_ad19a6caa085184889c56d6983297ab33}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!setBlendConstants@{setBlendConstants}}
+\index{setBlendConstants@{setBlendConstants}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{setBlendConstants()}{setBlendConstants()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::set\+Blend\+Constants (\begin{DoxyParamCaption}\item[{const float}]{blend\+Constants\mbox{[}4\mbox{]} }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetBlendConstants.html}{\texttt{ vk\+Cmd\+Set\+Blend\+Constants}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_abb1f68fcc0f68c5bf2609b714cd916ad}\label{classlogi_1_1_command_buffer_abb1f68fcc0f68c5bf2609b714cd916ad}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!setCheckpointNV@{setCheckpointNV}}
+\index{setCheckpointNV@{setCheckpointNV}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{setCheckpointNV()}{setCheckpointNV()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::set\+Checkpoint\+NV (\begin{DoxyParamCaption}\item[{const void $\ast$}]{p\+Checkpoint\+Marker }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetCheckpointNV.html}{\texttt{ vk\+Cmd\+Set\+Checkpoint\+NV}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_ac6046cfa9d08dfa716ac94ef46c9eef9}\label{classlogi_1_1_command_buffer_ac6046cfa9d08dfa716ac94ef46c9eef9}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!setCoarseSampleOrderNV@{setCoarseSampleOrderNV}}
+\index{setCoarseSampleOrderNV@{setCoarseSampleOrderNV}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{setCoarseSampleOrderNV()}{setCoarseSampleOrderNV()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::set\+Coarse\+Sample\+Order\+NV (\begin{DoxyParamCaption}\item[{vk\+::\+Coarse\+Sample\+Order\+Type\+NV}]{sample\+Order\+Type,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Coarse\+Sample\+Order\+Custom\+NV $>$}]{custom\+Sample\+Orders }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetCoarseSampleOrderNV.html}{\texttt{ vk\+Cmd\+Set\+Coarse\+Sample\+Order\+NV}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a8c406a257b10ecfacb1863b79b21ea82}\label{classlogi_1_1_command_buffer_a8c406a257b10ecfacb1863b79b21ea82}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!setDepthBias@{setDepthBias}}
+\index{setDepthBias@{setDepthBias}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{setDepthBias()}{setDepthBias()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::set\+Depth\+Bias (\begin{DoxyParamCaption}\item[{float}]{depth\+Bias\+Constant\+Factor,  }\item[{float}]{depth\+Bias\+Clamp,  }\item[{float}]{depth\+Bias\+Slope\+Factor }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetDepthBias.html}{\texttt{ vk\+Cmd\+Set\+Depth\+Bias}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_abc23abc0fb1c115b4f6af5871a941a8e}\label{classlogi_1_1_command_buffer_abc23abc0fb1c115b4f6af5871a941a8e}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!setDepthBounds@{setDepthBounds}}
+\index{setDepthBounds@{setDepthBounds}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{setDepthBounds()}{setDepthBounds()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::set\+Depth\+Bounds (\begin{DoxyParamCaption}\item[{float}]{min\+Depth\+Bounds,  }\item[{float}]{max\+Depth\+Bounds }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetDepthBounds.html}{\texttt{ vk\+Cmd\+Set\+Depth\+Bounds}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_ade80154b4c063cc8b2c0f0e14dd10814}\label{classlogi_1_1_command_buffer_ade80154b4c063cc8b2c0f0e14dd10814}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!setDeviceMask@{setDeviceMask}}
+\index{setDeviceMask@{setDeviceMask}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{setDeviceMask()}{setDeviceMask()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::set\+Device\+Mask (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{device\+Mask }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetDeviceMask.html}{\texttt{ vk\+Cmd\+Set\+Device\+Mask}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a44c1e437dbbcb5c07aaa0547fcc5026e}\label{classlogi_1_1_command_buffer_a44c1e437dbbcb5c07aaa0547fcc5026e}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!setDeviceMaskKHR@{setDeviceMaskKHR}}
+\index{setDeviceMaskKHR@{setDeviceMaskKHR}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{setDeviceMaskKHR()}{setDeviceMaskKHR()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::set\+Device\+Mask\+K\+HR (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{device\+Mask }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetDeviceMaskKHR.html}{\texttt{ vk\+Cmd\+Set\+Device\+Mask\+K\+HR}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a2169f1f305aa0d048946a21f89401b76}\label{classlogi_1_1_command_buffer_a2169f1f305aa0d048946a21f89401b76}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!setDiscardRectangleEXT@{setDiscardRectangleEXT}}
+\index{setDiscardRectangleEXT@{setDiscardRectangleEXT}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{setDiscardRectangleEXT()}{setDiscardRectangleEXT()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::set\+Discard\+Rectangle\+E\+XT (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{first\+Discard\+Rectangle,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Rect2D $>$}]{discard\+Rectangles }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetDiscardRectangleEXT.html}{\texttt{ vk\+Cmd\+Set\+Discard\+Rectangle\+E\+XT}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_ab3b74e5a512ff2cb604066fe571e9e16}\label{classlogi_1_1_command_buffer_ab3b74e5a512ff2cb604066fe571e9e16}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!setEvent@{setEvent}}
+\index{setEvent@{setEvent}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{setEvent()}{setEvent()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::set\+Event (\begin{DoxyParamCaption}\item[{vk\+::\+Event}]{event,  }\item[{vk\+::\+Pipeline\+Stage\+Flags}]{stage\+Mask }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetEvent.html}{\texttt{ vk\+Cmd\+Set\+Event}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a683151a2a38eb99ac4395bdb49b223b5}\label{classlogi_1_1_command_buffer_a683151a2a38eb99ac4395bdb49b223b5}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!setExclusiveScissorNV@{setExclusiveScissorNV}}
+\index{setExclusiveScissorNV@{setExclusiveScissorNV}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{setExclusiveScissorNV()}{setExclusiveScissorNV()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::set\+Exclusive\+Scissor\+NV (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{first\+Exclusive\+Scissor,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Rect2D $>$}]{exclusive\+Scissors }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetExclusiveScissorNV.html}{\texttt{ vk\+Cmd\+Set\+Exclusive\+Scissor\+NV}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_ac395cd526b36e760b00f2a83e7218449}\label{classlogi_1_1_command_buffer_ac395cd526b36e760b00f2a83e7218449}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!setLineWidth@{setLineWidth}}
+\index{setLineWidth@{setLineWidth}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{setLineWidth()}{setLineWidth()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::set\+Line\+Width (\begin{DoxyParamCaption}\item[{float}]{line\+Width }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetLineWidth.html}{\texttt{ vk\+Cmd\+Set\+Line\+Width}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a85e9c026ad7ae9900fa49f9b91b651df}\label{classlogi_1_1_command_buffer_a85e9c026ad7ae9900fa49f9b91b651df}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!setSampleLocationsEXT@{setSampleLocationsEXT}}
+\index{setSampleLocationsEXT@{setSampleLocationsEXT}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{setSampleLocationsEXT()}{setSampleLocationsEXT()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::set\+Sample\+Locations\+E\+XT (\begin{DoxyParamCaption}\item[{const vk\+::\+Sample\+Locations\+Info\+E\+XT \&}]{sample\+Locations\+Info }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetSampleLocationsEXT.html}{\texttt{ vk\+Cmd\+Set\+Sample\+Locations\+E\+XT}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_abbe51364e66beaa66a3b0fb2ba0ab04d}\label{classlogi_1_1_command_buffer_abbe51364e66beaa66a3b0fb2ba0ab04d}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!setScissor@{setScissor}}
+\index{setScissor@{setScissor}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{setScissor()}{setScissor()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::set\+Scissor (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{first\+Scissor,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Rect2D $>$}]{scissors }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetScissor.html}{\texttt{ vk\+Cmd\+Set\+Scissor}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_adc667d9cb1d69ed2830f6ad7f8f732a6}\label{classlogi_1_1_command_buffer_adc667d9cb1d69ed2830f6ad7f8f732a6}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!setStencilCompareMask@{setStencilCompareMask}}
+\index{setStencilCompareMask@{setStencilCompareMask}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{setStencilCompareMask()}{setStencilCompareMask()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::set\+Stencil\+Compare\+Mask (\begin{DoxyParamCaption}\item[{vk\+::\+Stencil\+Face\+Flags}]{face\+Mask,  }\item[{uint32\+\_\+t}]{compare\+Mask }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetStencilCompareMask.html}{\texttt{ vk\+Cmd\+Set\+Stencil\+Compare\+Mask}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_ab99631c0026c18159a3a2d87c0257d68}\label{classlogi_1_1_command_buffer_ab99631c0026c18159a3a2d87c0257d68}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!setStencilReference@{setStencilReference}}
+\index{setStencilReference@{setStencilReference}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{setStencilReference()}{setStencilReference()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::set\+Stencil\+Reference (\begin{DoxyParamCaption}\item[{vk\+::\+Stencil\+Face\+Flags}]{face\+Mask,  }\item[{uint32\+\_\+t}]{reference }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetStencilReference.html}{\texttt{ vk\+Cmd\+Set\+Stencil\+Reference}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a40c2f41577a528cf3e233388c9cbd77d}\label{classlogi_1_1_command_buffer_a40c2f41577a528cf3e233388c9cbd77d}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!setStencilWriteMask@{setStencilWriteMask}}
+\index{setStencilWriteMask@{setStencilWriteMask}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{setStencilWriteMask()}{setStencilWriteMask()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::set\+Stencil\+Write\+Mask (\begin{DoxyParamCaption}\item[{vk\+::\+Stencil\+Face\+Flags}]{face\+Mask,  }\item[{uint32\+\_\+t}]{write\+Mask }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetStencilWriteMask.html}{\texttt{ vk\+Cmd\+Set\+Stencil\+Write\+Mask}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a19a595c6cf78157bfc207e794802f1f8}\label{classlogi_1_1_command_buffer_a19a595c6cf78157bfc207e794802f1f8}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!setViewport@{setViewport}}
+\index{setViewport@{setViewport}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{setViewport()}{setViewport()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::set\+Viewport (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{first\+Viewport,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Viewport $>$}]{viewports }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetViewport.html}{\texttt{ vk\+Cmd\+Set\+Viewport}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a422f78775c48db2f121473c02405a0cd}\label{classlogi_1_1_command_buffer_a422f78775c48db2f121473c02405a0cd}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!setViewportShadingRatePaletteNV@{setViewportShadingRatePaletteNV}}
+\index{setViewportShadingRatePaletteNV@{setViewportShadingRatePaletteNV}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{setViewportShadingRatePaletteNV()}{setViewportShadingRatePaletteNV()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::set\+Viewport\+Shading\+Rate\+Palette\+NV (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{first\+Viewport,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Shading\+Rate\+Palette\+NV $>$}]{shading\+Rate\+Palettes }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetViewportShadingRatePaletteNV.html}{\texttt{ vk\+Cmd\+Set\+Viewport\+Shading\+Rate\+Palette\+NV}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_acc1d40c036dc189ded7f600ca5fc4244}\label{classlogi_1_1_command_buffer_acc1d40c036dc189ded7f600ca5fc4244}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!setViewportWScalingNV@{setViewportWScalingNV}}
+\index{setViewportWScalingNV@{setViewportWScalingNV}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{setViewportWScalingNV()}{setViewportWScalingNV()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::set\+Viewport\+W\+Scaling\+NV (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{first\+Viewport,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Viewport\+W\+Scaling\+NV $>$}]{viewport\+W\+Scalings }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetViewportWScalingNV.html}{\texttt{ vk\+Cmd\+Set\+Viewport\+W\+Scaling\+NV}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a4df69b7e8502994ef04f530302bf9746}\label{classlogi_1_1_command_buffer_a4df69b7e8502994ef04f530302bf9746}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!traceRaysNV@{traceRaysNV}}
+\index{traceRaysNV@{traceRaysNV}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{traceRaysNV()}{traceRaysNV()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::trace\+Rays\+NV (\begin{DoxyParamCaption}\item[{vk\+::\+Buffer}]{raygen\+Shader\+Binding\+Table\+Buffer,  }\item[{vk\+::\+Device\+Size}]{raygen\+Shader\+Binding\+Offset,  }\item[{vk\+::\+Buffer}]{miss\+Shader\+Binding\+Table\+Buffer,  }\item[{vk\+::\+Device\+Size}]{miss\+Shader\+Binding\+Offset,  }\item[{vk\+::\+Device\+Size}]{miss\+Shader\+Binding\+Stride,  }\item[{vk\+::\+Buffer}]{hit\+Shader\+Binding\+Table\+Buffer,  }\item[{vk\+::\+Device\+Size}]{hit\+Shader\+Binding\+Offset,  }\item[{vk\+::\+Device\+Size}]{hit\+Shader\+Binding\+Stride,  }\item[{vk\+::\+Buffer}]{callable\+Shader\+Binding\+Table\+Buffer,  }\item[{vk\+::\+Device\+Size}]{callable\+Shader\+Binding\+Offset,  }\item[{vk\+::\+Device\+Size}]{callable\+Shader\+Binding\+Stride,  }\item[{uint32\+\_\+t}]{width,  }\item[{uint32\+\_\+t}]{height,  }\item[{uint32\+\_\+t}]{depth }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdTraceRaysNV.html}{\texttt{ vk\+Cmd\+Trace\+Rays\+NV}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a83059b0b8bc8e90bc8fe8e054a98614b}\label{classlogi_1_1_command_buffer_a83059b0b8bc8e90bc8fe8e054a98614b}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!updateBuffer@{updateBuffer}}
+\index{updateBuffer@{updateBuffer}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{updateBuffer()}{updateBuffer()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void logi\+::\+Command\+Buffer\+::update\+Buffer (\begin{DoxyParamCaption}\item[{vk\+::\+Buffer}]{dst\+Buffer,  }\item[{vk\+::\+Device\+Size}]{dst\+Offset,  }\item[{vk\+::\+Array\+Proxy$<$ const T $>$}]{data }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdUpdateBuffer.html}{\texttt{ vk\+Cmd\+Update\+Buffer}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a1ecda8ae32dd9880559fab4311d8c45f}\label{classlogi_1_1_command_buffer_a1ecda8ae32dd9880559fab4311d8c45f}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!waitEvents@{waitEvents}}
+\index{waitEvents@{waitEvents}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{waitEvents()}{waitEvents()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::wait\+Events (\begin{DoxyParamCaption}\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Event $>$}]{events,  }\item[{const vk\+::\+Pipeline\+Stage\+Flags \&}]{src\+Stage\+Mask,  }\item[{const vk\+::\+Pipeline\+Stage\+Flags \&}]{dst\+Stage\+Mask,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Memory\+Barrier $>$}]{memory\+Barriers,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Buffer\+Memory\+Barrier $>$}]{buffer\+Memory\+Barriers,  }\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Image\+Memory\+Barrier $>$}]{image\+Memory\+Barriers }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdWaitEvents.html}{\texttt{ vk\+Cmd\+Wait\+Events}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_abf702600459c3d3742252b65f4bfeeb6}\label{classlogi_1_1_command_buffer_abf702600459c3d3742252b65f4bfeeb6}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!writeAccelerationStructuresPropertiesNV@{writeAccelerationStructuresPropertiesNV}}
+\index{writeAccelerationStructuresPropertiesNV@{writeAccelerationStructuresPropertiesNV}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{writeAccelerationStructuresPropertiesNV()}{writeAccelerationStructuresPropertiesNV()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::write\+Acceleration\+Structures\+Properties\+NV (\begin{DoxyParamCaption}\item[{vk\+::\+Array\+Proxy$<$ const vk\+::\+Acceleration\+Structure\+NV $>$}]{acceleration\+Structures,  }\item[{vk\+::\+Query\+Type}]{query\+Type,  }\item[{vk\+::\+Query\+Pool}]{query\+Pool,  }\item[{uint32\+\_\+t}]{first\+Query }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdWriteAccelerationStructuresPropertiesNV.html}{\texttt{ vk\+Cmd\+Write\+Acceleration\+Structures\+Properties\+NV}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_a055389e24f5de9d2605d26f3c3266c4b}\label{classlogi_1_1_command_buffer_a055389e24f5de9d2605d26f3c3266c4b}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!writeBufferMarkerAMD@{writeBufferMarkerAMD}}
+\index{writeBufferMarkerAMD@{writeBufferMarkerAMD}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{writeBufferMarkerAMD()}{writeBufferMarkerAMD()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::write\+Buffer\+Marker\+A\+MD (\begin{DoxyParamCaption}\item[{vk\+::\+Pipeline\+Stage\+Flag\+Bits}]{pipeline\+Stage,  }\item[{vk\+::\+Buffer}]{dst\+Buffer,  }\item[{vk\+::\+Device\+Size}]{dst\+Offset,  }\item[{uint32\+\_\+t}]{marker }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdWriteBufferMarkerAMD.html}{\texttt{ vk\+Cmd\+Write\+Buffer\+Marker\+A\+MD}} 
+
+\mbox{\Hypertarget{classlogi_1_1_command_buffer_ac2009f69a4617a5c91c9befe4b071d6e}\label{classlogi_1_1_command_buffer_ac2009f69a4617a5c91c9befe4b071d6e}} 
+\index{logi::CommandBuffer@{logi::CommandBuffer}!writeTimestamp@{writeTimestamp}}
+\index{writeTimestamp@{writeTimestamp}!logi::CommandBuffer@{logi::CommandBuffer}}
+\doxysubsubsection{\texorpdfstring{writeTimestamp()}{writeTimestamp()}}
+{\footnotesize\ttfamily void logi\+::\+Command\+Buffer\+::write\+Timestamp (\begin{DoxyParamCaption}\item[{vk\+::\+Pipeline\+Stage\+Flag\+Bits}]{pipeline\+Stage,  }\item[{vk\+::\+Query\+Pool}]{query\+Pool,  }\item[{uint32\+\_\+t}]{query }\end{DoxyParamCaption}) const}
+
+
+
+Reference\+: \href{https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdWriteTimestamp.html}{\texttt{ vk\+Cmd\+Write\+Timestamp}} 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+logi/command/\mbox{\hyperlink{command__buffer_8hpp}{command\+\_\+buffer.\+hpp}}\item 
+C\+:/\+Users/aljaz/\+Documents/\+Visual\+Studio\+Code\+Projects/\+Logi/src/logi/command/\mbox{\hyperlink{command__buffer_8cpp}{command\+\_\+buffer.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,162 @@
+\hypertarget{classlogi_1_1_queue_family_impl}{}\doxysection{logi\+::Queue\+Family\+Impl Class Reference}
+\label{classlogi_1_1_queue_family_impl}\index{logi::QueueFamilyImpl@{logi::QueueFamilyImpl}}
+
+
+{\ttfamily \#include $<$queue\+\_\+family\+\_\+impl.\+hpp$>$}
+
+
+
+Inheritance diagram for logi\+::Queue\+Family\+Impl\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogi_1_1_queue_family_impl__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for logi\+::Queue\+Family\+Impl\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogi_1_1_queue_family_impl__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlogi_1_1_queue_family_impl_aa73e48aee4c53db252fbd1175c439f95}{Queue\+Family\+Impl}} (\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \&logical\+Device, const vk\+::\+Device\+Queue\+Create\+Info \&create\+Info)
+\item 
+const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlogi_1_1_command_pool_impl}{Command\+Pool\+Impl}} $>$ \& \mbox{\hyperlink{classlogi_1_1_queue_family_impl_a2e24a59613423f6eb2db7f1f693454af}{create\+Command\+Pool}} (const vk\+::\+Command\+Pool\+Create\+Flags \&flags=\{\}, const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Command\+Pool\+Create\+Info $>$ \&next=\{\}, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\})
+\item 
+void \mbox{\hyperlink{classlogi_1_1_queue_family_impl_a25ab13a8c10743c4bcfcc032d2a286c0}{destroy\+Command\+Pool}} (size\+\_\+t \mbox{\hyperlink{classlogi_1_1_vulkan_object_a228d983c6b7d202aa7e1f372856cc707}{id}})
+\item 
+const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlogi_1_1_queue_impl}{Queue\+Impl}} $>$ \& \mbox{\hyperlink{classlogi_1_1_queue_family_impl_a19f7684a9f4481b75c550c07452bb2f1}{get\+Queue}} (uint32\+\_\+t queue\+Index)
+\item 
+const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlogi_1_1_queue_impl}{Queue\+Impl}} $>$ \& \mbox{\hyperlink{classlogi_1_1_queue_family_impl_abe02cb3693cdbf03c8bbb1a4931b987e}{get\+Queue2}} (uint32\+\_\+t queue\+Index, const vk\+::\+Device\+Queue\+Create\+Flags \&flags=\{\}, const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Device\+Queue\+Info2 $>$ \&next=\{\})
+\item 
+void \mbox{\hyperlink{classlogi_1_1_queue_family_impl_aff04d2750c4554416aa7cd48c2c5c61e}{destroy\+Queue}} (size\+\_\+t \mbox{\hyperlink{classlogi_1_1_vulkan_object_a228d983c6b7d202aa7e1f372856cc707}{id}})
+\item 
+\mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl}{Vulkan\+Instance\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_queue_family_impl_ae4ef4045c60607e3f8ed6fe2715172d2}{get\+Instance}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_physical_device_impl}{Physical\+Device\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_queue_family_impl_ad89d7d645701513641a505ba130bf0a6}{get\+Physical\+Device}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_queue_family_impl_a4defc3edac1061cdc225d69fec3f8d2b}{get\+Logical\+Device}} () const
+\item 
+const vk\+::\+Dispatch\+Loader\+Dynamic \& \mbox{\hyperlink{classlogi_1_1_queue_family_impl_a2ae2259dd822699aad1407052ae8d7fe}{get\+Dispatcher}} () const
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlogi_1_1_queue_family_impl_a877a267fad44bac85abdd7c8b49e7ff6}{queue\+Count}} () const
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classlogi_1_1_queue_family_impl_a4a6198cf332fe7f95bfd9859ffe44999}{get\+Index}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_queue_family_impl_a1749f7a3eb5910fd012da08d497336e2}{operator uint32\+\_\+t}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classlogi_1_1_queue_family_impl_a6e5a716383a95de0da8a4e414a466763}{free}} () override
+\begin{DoxyCompactList}\small\item\em Invalidates \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. Overriding implementations should free the object\textquotesingle{}s resources and invoke \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}\textquotesingle{}s free. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlogi_1_1_queue_family_impl_aa73e48aee4c53db252fbd1175c439f95}\label{classlogi_1_1_queue_family_impl_aa73e48aee4c53db252fbd1175c439f95}} 
+\index{logi::QueueFamilyImpl@{logi::QueueFamilyImpl}!QueueFamilyImpl@{QueueFamilyImpl}}
+\index{QueueFamilyImpl@{QueueFamilyImpl}!logi::QueueFamilyImpl@{logi::QueueFamilyImpl}}
+\doxysubsubsection{\texorpdfstring{QueueFamilyImpl()}{QueueFamilyImpl()}}
+{\footnotesize\ttfamily logi\+::\+Queue\+Family\+Impl\+::\+Queue\+Family\+Impl (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \&}]{logical\+Device,  }\item[{const vk\+::\+Device\+Queue\+Create\+Info \&}]{create\+Info }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogi_1_1_queue_family_impl_a2e24a59613423f6eb2db7f1f693454af}\label{classlogi_1_1_queue_family_impl_a2e24a59613423f6eb2db7f1f693454af}} 
+\index{logi::QueueFamilyImpl@{logi::QueueFamilyImpl}!createCommandPool@{createCommandPool}}
+\index{createCommandPool@{createCommandPool}!logi::QueueFamilyImpl@{logi::QueueFamilyImpl}}
+\doxysubsubsection{\texorpdfstring{createCommandPool()}{createCommandPool()}}
+{\footnotesize\ttfamily const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlogi_1_1_command_pool_impl}{Command\+Pool\+Impl}} $>$ \& logi\+::\+Queue\+Family\+Impl\+::create\+Command\+Pool (\begin{DoxyParamCaption}\item[{const vk\+::\+Command\+Pool\+Create\+Flags \&}]{flags = {\ttfamily \{\}},  }\item[{const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Command\+Pool\+Create\+Info $>$ \&}]{next = {\ttfamily \{\}},  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_queue_family_impl_a25ab13a8c10743c4bcfcc032d2a286c0}\label{classlogi_1_1_queue_family_impl_a25ab13a8c10743c4bcfcc032d2a286c0}} 
+\index{logi::QueueFamilyImpl@{logi::QueueFamilyImpl}!destroyCommandPool@{destroyCommandPool}}
+\index{destroyCommandPool@{destroyCommandPool}!logi::QueueFamilyImpl@{logi::QueueFamilyImpl}}
+\doxysubsubsection{\texorpdfstring{destroyCommandPool()}{destroyCommandPool()}}
+{\footnotesize\ttfamily void logi\+::\+Queue\+Family\+Impl\+::destroy\+Command\+Pool (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{id }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_queue_family_impl_aff04d2750c4554416aa7cd48c2c5c61e}\label{classlogi_1_1_queue_family_impl_aff04d2750c4554416aa7cd48c2c5c61e}} 
+\index{logi::QueueFamilyImpl@{logi::QueueFamilyImpl}!destroyQueue@{destroyQueue}}
+\index{destroyQueue@{destroyQueue}!logi::QueueFamilyImpl@{logi::QueueFamilyImpl}}
+\doxysubsubsection{\texorpdfstring{destroyQueue()}{destroyQueue()}}
+{\footnotesize\ttfamily void logi\+::\+Queue\+Family\+Impl\+::destroy\+Queue (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{id }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_queue_family_impl_a6e5a716383a95de0da8a4e414a466763}\label{classlogi_1_1_queue_family_impl_a6e5a716383a95de0da8a4e414a466763}} 
+\index{logi::QueueFamilyImpl@{logi::QueueFamilyImpl}!free@{free}}
+\index{free@{free}!logi::QueueFamilyImpl@{logi::QueueFamilyImpl}}
+\doxysubsubsection{\texorpdfstring{free()}{free()}}
+{\footnotesize\ttfamily void logi\+::\+Queue\+Family\+Impl\+::free (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Invalidates \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. Overriding implementations should free the object\textquotesingle{}s resources and invoke \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}\textquotesingle{}s free. 
+
+
+
+Reimplemented from \mbox{\hyperlink{classlogi_1_1_vulkan_object_a7a5cafb30933f8bbd0d4e89e14477f4a}{logi\+::\+Vulkan\+Object}}.
+
+\mbox{\Hypertarget{classlogi_1_1_queue_family_impl_a2ae2259dd822699aad1407052ae8d7fe}\label{classlogi_1_1_queue_family_impl_a2ae2259dd822699aad1407052ae8d7fe}} 
+\index{logi::QueueFamilyImpl@{logi::QueueFamilyImpl}!getDispatcher@{getDispatcher}}
+\index{getDispatcher@{getDispatcher}!logi::QueueFamilyImpl@{logi::QueueFamilyImpl}}
+\doxysubsubsection{\texorpdfstring{getDispatcher()}{getDispatcher()}}
+{\footnotesize\ttfamily const vk\+::\+Dispatch\+Loader\+Dynamic \& logi\+::\+Queue\+Family\+Impl\+::get\+Dispatcher (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_queue_family_impl_a4a6198cf332fe7f95bfd9859ffe44999}\label{classlogi_1_1_queue_family_impl_a4a6198cf332fe7f95bfd9859ffe44999}} 
+\index{logi::QueueFamilyImpl@{logi::QueueFamilyImpl}!getIndex@{getIndex}}
+\index{getIndex@{getIndex}!logi::QueueFamilyImpl@{logi::QueueFamilyImpl}}
+\doxysubsubsection{\texorpdfstring{getIndex()}{getIndex()}}
+{\footnotesize\ttfamily uint32\+\_\+t logi\+::\+Queue\+Family\+Impl\+::get\+Index (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_queue_family_impl_ae4ef4045c60607e3f8ed6fe2715172d2}\label{classlogi_1_1_queue_family_impl_ae4ef4045c60607e3f8ed6fe2715172d2}} 
+\index{logi::QueueFamilyImpl@{logi::QueueFamilyImpl}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!logi::QueueFamilyImpl@{logi::QueueFamilyImpl}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl}{Vulkan\+Instance\+Impl}} \& logi\+::\+Queue\+Family\+Impl\+::get\+Instance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_queue_family_impl_a4defc3edac1061cdc225d69fec3f8d2b}\label{classlogi_1_1_queue_family_impl_a4defc3edac1061cdc225d69fec3f8d2b}} 
+\index{logi::QueueFamilyImpl@{logi::QueueFamilyImpl}!getLogicalDevice@{getLogicalDevice}}
+\index{getLogicalDevice@{getLogicalDevice}!logi::QueueFamilyImpl@{logi::QueueFamilyImpl}}
+\doxysubsubsection{\texorpdfstring{getLogicalDevice()}{getLogicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \& logi\+::\+Queue\+Family\+Impl\+::get\+Logical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_queue_family_impl_ad89d7d645701513641a505ba130bf0a6}\label{classlogi_1_1_queue_family_impl_ad89d7d645701513641a505ba130bf0a6}} 
+\index{logi::QueueFamilyImpl@{logi::QueueFamilyImpl}!getPhysicalDevice@{getPhysicalDevice}}
+\index{getPhysicalDevice@{getPhysicalDevice}!logi::QueueFamilyImpl@{logi::QueueFamilyImpl}}
+\doxysubsubsection{\texorpdfstring{getPhysicalDevice()}{getPhysicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_physical_device_impl}{Physical\+Device\+Impl}} \& logi\+::\+Queue\+Family\+Impl\+::get\+Physical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_queue_family_impl_a19f7684a9f4481b75c550c07452bb2f1}\label{classlogi_1_1_queue_family_impl_a19f7684a9f4481b75c550c07452bb2f1}} 
+\index{logi::QueueFamilyImpl@{logi::QueueFamilyImpl}!getQueue@{getQueue}}
+\index{getQueue@{getQueue}!logi::QueueFamilyImpl@{logi::QueueFamilyImpl}}
+\doxysubsubsection{\texorpdfstring{getQueue()}{getQueue()}}
+{\footnotesize\ttfamily const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlogi_1_1_queue_impl}{Queue\+Impl}} $>$ \& logi\+::\+Queue\+Family\+Impl\+::get\+Queue (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{queue\+Index }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_queue_family_impl_abe02cb3693cdbf03c8bbb1a4931b987e}\label{classlogi_1_1_queue_family_impl_abe02cb3693cdbf03c8bbb1a4931b987e}} 
+\index{logi::QueueFamilyImpl@{logi::QueueFamilyImpl}!getQueue2@{getQueue2}}
+\index{getQueue2@{getQueue2}!logi::QueueFamilyImpl@{logi::QueueFamilyImpl}}
+\doxysubsubsection{\texorpdfstring{getQueue2()}{getQueue2()}}
+{\footnotesize\ttfamily const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlogi_1_1_queue_impl}{Queue\+Impl}} $>$ \& logi\+::\+Queue\+Family\+Impl\+::get\+Queue2 (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{queue\+Index,  }\item[{const vk\+::\+Device\+Queue\+Create\+Flags \&}]{flags = {\ttfamily \{\}},  }\item[{const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Device\+Queue\+Info2 $>$ \&}]{next = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_queue_family_impl_a1749f7a3eb5910fd012da08d497336e2}\label{classlogi_1_1_queue_family_impl_a1749f7a3eb5910fd012da08d497336e2}} 
+\index{logi::QueueFamilyImpl@{logi::QueueFamilyImpl}!operator uint32\_t@{operator uint32\_t}}
+\index{operator uint32\_t@{operator uint32\_t}!logi::QueueFamilyImpl@{logi::QueueFamilyImpl}}
+\doxysubsubsection{\texorpdfstring{operator uint32\_t()}{operator uint32\_t()}}
+{\footnotesize\ttfamily logi\+::\+Queue\+Family\+Impl\+::operator uint32\+\_\+t (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_queue_family_impl_a877a267fad44bac85abdd7c8b49e7ff6}\label{classlogi_1_1_queue_family_impl_a877a267fad44bac85abdd7c8b49e7ff6}} 
+\index{logi::QueueFamilyImpl@{logi::QueueFamilyImpl}!queueCount@{queueCount}}
+\index{queueCount@{queueCount}!logi::QueueFamilyImpl@{logi::QueueFamilyImpl}}
+\doxysubsubsection{\texorpdfstring{queueCount()}{queueCount()}}
+{\footnotesize\ttfamily uint32\+\_\+t logi\+::\+Queue\+Family\+Impl\+::queue\+Count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+logi/queue/\mbox{\hyperlink{queue__family__impl_8hpp}{queue\+\_\+family\+\_\+impl.\+hpp}}\item 
+C\+:/\+Users/aljaz/\+Documents/\+Visual\+Studio\+Code\+Projects/\+Logi/src/logi/queue/\mbox{\hyperlink{queue__family__impl_8cpp}{queue\+\_\+family\+\_\+impl.\+cpp}}\end{DoxyCompactItemize}

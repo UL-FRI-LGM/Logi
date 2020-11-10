@@ -328,11 +328,11 @@ void LogicalDevice::destroyAccelerationStructureNV(const AccelerationStructureNV
   object_->destroyAccelerationStructureNV(accelerationStructure.id());
 }
 
-IndirectCommandsLayoutNVX LogicalDevice::createIndirectCommandsLayoutNVXIndirectCommandsLayoutNVX(
+IndirectCommandsLayoutNVX LogicalDevice::createIndirectCommandsLayoutNVX(
   const vk::IndirectCommandsLayoutCreateInfoNVX& createInfo,
   const std::optional<vk::AllocationCallbacks>& allocator) const {
   return IndirectCommandsLayoutNVX(
-    object_->createIndirectCommandsLayoutNVXIndirectCommandsLayoutNVX(createInfo, allocator));
+    object_->createIndirectCommandsLayoutNVX(createInfo, allocator));
 }
 
 void LogicalDevice::destroyIndirectCommandsLayoutNVX(const IndirectCommandsLayoutNVX& indirectCommandsLayout) const {

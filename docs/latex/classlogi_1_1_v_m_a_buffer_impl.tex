@@ -1,0 +1,127 @@
+\hypertarget{classlogi_1_1_v_m_a_buffer_impl}{}\doxysection{logi\+::V\+M\+A\+Buffer\+Impl Class Reference}
+\label{classlogi_1_1_v_m_a_buffer_impl}\index{logi::VMABufferImpl@{logi::VMABufferImpl}}
+
+
+{\ttfamily \#include $<$vma\+\_\+buffer\+\_\+impl.\+hpp$>$}
+
+
+
+Inheritance diagram for logi\+::V\+M\+A\+Buffer\+Impl\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogi_1_1_v_m_a_buffer_impl__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for logi\+::V\+M\+A\+Buffer\+Impl\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{classlogi_1_1_v_m_a_buffer_impl__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlogi_1_1_v_m_a_buffer_impl_a5ff363c1f8dad3df51c906fc5619f00f}{V\+M\+A\+Buffer\+Impl}} (\mbox{\hyperlink{classlogi_1_1_memory_allocator_impl}{Memory\+Allocator\+Impl}} \&memory\+Allocator, const vk\+::\+Buffer\+Create\+Info \&buffer\+Create\+Info, const Vma\+Allocation\+Create\+Info \&allocation\+Create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\})
+\item 
+void $\ast$ \mbox{\hyperlink{classlogi_1_1_v_m_a_buffer_impl_a083283d4922c076fa003c4aa41ef68fb}{map\+Memory}} () const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_v_m_a_buffer_impl_a65e07639584d6b7cca0f84d2e5e345a6}{unmap\+Memory}} () const
+\item 
+size\+\_\+t \mbox{\hyperlink{classlogi_1_1_v_m_a_buffer_impl_aa29de62cea1faf8578708be0e2cae27f}{size}} () const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_v_m_a_buffer_impl_a9fab651e73d17d9c0cc486c43c392f85}{write\+To\+Buffer}} (const void $\ast$data, size\+\_\+t \mbox{\hyperlink{classlogi_1_1_v_m_a_buffer_impl_aa29de62cea1faf8578708be0e2cae27f}{size}}, size\+\_\+t offset=0) const
+\item 
+bool \mbox{\hyperlink{classlogi_1_1_v_m_a_buffer_impl_a4cba5aac5e317152ab59d7e40829e006}{is\+Mappable}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_memory_allocator_impl}{Memory\+Allocator\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_v_m_a_buffer_impl_aad253b232e39cc3fff26c51f7267d8d1}{get\+Memory\+Allocator}} () const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_v_m_a_buffer_impl_a63d35ddb342c704f9ef4e2f401026bda}{destroy}} () const override
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classlogi_1_1_v_m_a_buffer_impl_ad6b5ef45c65c68e8dc1073a3b8829441}{free}} () override
+\begin{DoxyCompactList}\small\item\em Invalidates \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. Overriding implementations should free the object\textquotesingle{}s resources and invoke \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}\textquotesingle{}s free. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlogi_1_1_v_m_a_buffer_impl_a5ff363c1f8dad3df51c906fc5619f00f}\label{classlogi_1_1_v_m_a_buffer_impl_a5ff363c1f8dad3df51c906fc5619f00f}} 
+\index{logi::VMABufferImpl@{logi::VMABufferImpl}!VMABufferImpl@{VMABufferImpl}}
+\index{VMABufferImpl@{VMABufferImpl}!logi::VMABufferImpl@{logi::VMABufferImpl}}
+\doxysubsubsection{\texorpdfstring{VMABufferImpl()}{VMABufferImpl()}}
+{\footnotesize\ttfamily logi\+::\+V\+M\+A\+Buffer\+Impl\+::\+V\+M\+A\+Buffer\+Impl (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlogi_1_1_memory_allocator_impl}{Memory\+Allocator\+Impl}} \&}]{memory\+Allocator,  }\item[{const vk\+::\+Buffer\+Create\+Info \&}]{buffer\+Create\+Info,  }\item[{const Vma\+Allocation\+Create\+Info \&}]{allocation\+Create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogi_1_1_v_m_a_buffer_impl_a63d35ddb342c704f9ef4e2f401026bda}\label{classlogi_1_1_v_m_a_buffer_impl_a63d35ddb342c704f9ef4e2f401026bda}} 
+\index{logi::VMABufferImpl@{logi::VMABufferImpl}!destroy@{destroy}}
+\index{destroy@{destroy}!logi::VMABufferImpl@{logi::VMABufferImpl}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily void logi\+::\+V\+M\+A\+Buffer\+Impl\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlogi_1_1_buffer_impl_ad3948676e7d1d642aafd2958d7bc5c2e}{logi\+::\+Buffer\+Impl}}.
+
+\mbox{\Hypertarget{classlogi_1_1_v_m_a_buffer_impl_ad6b5ef45c65c68e8dc1073a3b8829441}\label{classlogi_1_1_v_m_a_buffer_impl_ad6b5ef45c65c68e8dc1073a3b8829441}} 
+\index{logi::VMABufferImpl@{logi::VMABufferImpl}!free@{free}}
+\index{free@{free}!logi::VMABufferImpl@{logi::VMABufferImpl}}
+\doxysubsubsection{\texorpdfstring{free()}{free()}}
+{\footnotesize\ttfamily void logi\+::\+V\+M\+A\+Buffer\+Impl\+::free (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Invalidates \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. Overriding implementations should free the object\textquotesingle{}s resources and invoke \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}\textquotesingle{}s free. 
+
+
+
+Reimplemented from \mbox{\hyperlink{classlogi_1_1_buffer_impl_a16a66737455897824c6f33eec2f566a8}{logi\+::\+Buffer\+Impl}}.
+
+\mbox{\Hypertarget{classlogi_1_1_v_m_a_buffer_impl_aad253b232e39cc3fff26c51f7267d8d1}\label{classlogi_1_1_v_m_a_buffer_impl_aad253b232e39cc3fff26c51f7267d8d1}} 
+\index{logi::VMABufferImpl@{logi::VMABufferImpl}!getMemoryAllocator@{getMemoryAllocator}}
+\index{getMemoryAllocator@{getMemoryAllocator}!logi::VMABufferImpl@{logi::VMABufferImpl}}
+\doxysubsubsection{\texorpdfstring{getMemoryAllocator()}{getMemoryAllocator()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_memory_allocator_impl}{Memory\+Allocator\+Impl}} \& logi\+::\+V\+M\+A\+Buffer\+Impl\+::get\+Memory\+Allocator (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_v_m_a_buffer_impl_a4cba5aac5e317152ab59d7e40829e006}\label{classlogi_1_1_v_m_a_buffer_impl_a4cba5aac5e317152ab59d7e40829e006}} 
+\index{logi::VMABufferImpl@{logi::VMABufferImpl}!isMappable@{isMappable}}
+\index{isMappable@{isMappable}!logi::VMABufferImpl@{logi::VMABufferImpl}}
+\doxysubsubsection{\texorpdfstring{isMappable()}{isMappable()}}
+{\footnotesize\ttfamily bool logi\+::\+V\+M\+A\+Buffer\+Impl\+::is\+Mappable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_v_m_a_buffer_impl_a083283d4922c076fa003c4aa41ef68fb}\label{classlogi_1_1_v_m_a_buffer_impl_a083283d4922c076fa003c4aa41ef68fb}} 
+\index{logi::VMABufferImpl@{logi::VMABufferImpl}!mapMemory@{mapMemory}}
+\index{mapMemory@{mapMemory}!logi::VMABufferImpl@{logi::VMABufferImpl}}
+\doxysubsubsection{\texorpdfstring{mapMemory()}{mapMemory()}}
+{\footnotesize\ttfamily void $\ast$ logi\+::\+V\+M\+A\+Buffer\+Impl\+::map\+Memory (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_v_m_a_buffer_impl_aa29de62cea1faf8578708be0e2cae27f}\label{classlogi_1_1_v_m_a_buffer_impl_aa29de62cea1faf8578708be0e2cae27f}} 
+\index{logi::VMABufferImpl@{logi::VMABufferImpl}!size@{size}}
+\index{size@{size}!logi::VMABufferImpl@{logi::VMABufferImpl}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily size\+\_\+t logi\+::\+V\+M\+A\+Buffer\+Impl\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_v_m_a_buffer_impl_a65e07639584d6b7cca0f84d2e5e345a6}\label{classlogi_1_1_v_m_a_buffer_impl_a65e07639584d6b7cca0f84d2e5e345a6}} 
+\index{logi::VMABufferImpl@{logi::VMABufferImpl}!unmapMemory@{unmapMemory}}
+\index{unmapMemory@{unmapMemory}!logi::VMABufferImpl@{logi::VMABufferImpl}}
+\doxysubsubsection{\texorpdfstring{unmapMemory()}{unmapMemory()}}
+{\footnotesize\ttfamily void logi\+::\+V\+M\+A\+Buffer\+Impl\+::unmap\+Memory (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_v_m_a_buffer_impl_a9fab651e73d17d9c0cc486c43c392f85}\label{classlogi_1_1_v_m_a_buffer_impl_a9fab651e73d17d9c0cc486c43c392f85}} 
+\index{logi::VMABufferImpl@{logi::VMABufferImpl}!writeToBuffer@{writeToBuffer}}
+\index{writeToBuffer@{writeToBuffer}!logi::VMABufferImpl@{logi::VMABufferImpl}}
+\doxysubsubsection{\texorpdfstring{writeToBuffer()}{writeToBuffer()}}
+{\footnotesize\ttfamily void logi\+::\+V\+M\+A\+Buffer\+Impl\+::write\+To\+Buffer (\begin{DoxyParamCaption}\item[{const void $\ast$}]{data,  }\item[{size\+\_\+t}]{size,  }\item[{size\+\_\+t}]{offset = {\ttfamily 0} }\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+logi/memory/\mbox{\hyperlink{vma__buffer__impl_8hpp}{vma\+\_\+buffer\+\_\+impl.\+hpp}}\item 
+C\+:/\+Users/aljaz/\+Documents/\+Visual\+Studio\+Code\+Projects/\+Logi/src/logi/memory/\mbox{\hyperlink{vma__buffer__impl_8cpp}{vma\+\_\+buffer\+\_\+impl.\+cpp}}\end{DoxyCompactItemize}

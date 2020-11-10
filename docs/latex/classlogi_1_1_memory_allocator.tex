@@ -1,0 +1,162 @@
+\hypertarget{classlogi_1_1_memory_allocator}{}\doxysection{logi\+::Memory\+Allocator Class Reference}
+\label{classlogi_1_1_memory_allocator}\index{logi::MemoryAllocator@{logi::MemoryAllocator}}
+
+
+{\ttfamily \#include $<$memory\+\_\+allocator.\+hpp$>$}
+
+
+
+Inheritance diagram for logi\+::Memory\+Allocator\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=230pt]{classlogi_1_1_memory_allocator__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for logi\+::Memory\+Allocator\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=230pt]{classlogi_1_1_memory_allocator__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlogi_1_1_v_m_a_buffer}{V\+M\+A\+Buffer}} \mbox{\hyperlink{classlogi_1_1_memory_allocator_a0a914e2095043cda1480157a3472dfd4}{create\+Buffer}} (const vk\+::\+Buffer\+Create\+Info \&buffer\+Create\+Info, const Vma\+Allocation\+Create\+Info \&allocation\+Create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\})
+\item 
+void \mbox{\hyperlink{classlogi_1_1_memory_allocator_a12872b9440ae3601db22d37d0aa094ab}{destroy\+Buffer}} (const \mbox{\hyperlink{classlogi_1_1_v_m_a_buffer}{V\+M\+A\+Buffer}} \&buffer)
+\item 
+\mbox{\hyperlink{classlogi_1_1_v_m_a_image}{V\+M\+A\+Image}} \mbox{\hyperlink{classlogi_1_1_memory_allocator_ac03017ad709ed2ee0afb0279d803c3b9}{create\+Image}} (const vk\+::\+Image\+Create\+Info \&image\+Create\+Info, const Vma\+Allocation\+Create\+Info \&allocation\+Create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\})
+\item 
+void \mbox{\hyperlink{classlogi_1_1_memory_allocator_a428f41bdac1fbc78ecfc82977e77c1b3}{destroy\+Image}} (const \mbox{\hyperlink{classlogi_1_1_v_m_a_image}{V\+M\+A\+Image}} \&image)
+\item 
+\mbox{\hyperlink{classlogi_1_1_v_m_a_acceleration_structure_n_v}{V\+M\+A\+Acceleration\+Structure\+NV}} \mbox{\hyperlink{classlogi_1_1_memory_allocator_a2cc09c7e943be9531f825f6ec8bd464b}{create\+Acceleration\+Structure\+NV}} (const vk\+::\+Acceleration\+Structure\+Create\+Info\+NV \&acceleration\+Structure\+Create\+Info, const Vma\+Allocation\+Create\+Info \&allocation\+Create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\})
+\item 
+void \mbox{\hyperlink{classlogi_1_1_memory_allocator_a8d8de794676302ccc360a2669b2f92d8}{destroy\+Acceleration\+Structure\+NV}} (const \mbox{\hyperlink{classlogi_1_1_v_m_a_acceleration_structure_n_v}{V\+M\+A\+Acceleration\+Structure\+NV}} \&acceleration\+Structure)
+\item 
+\mbox{\hyperlink{classlogi_1_1_vulkan_instance}{Vulkan\+Instance}} \mbox{\hyperlink{classlogi_1_1_memory_allocator_a7fec8e64ee24b94e302134f63845814f}{get\+Instance}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_physical_device}{Physical\+Device}} \mbox{\hyperlink{classlogi_1_1_memory_allocator_a440c3ef80e0a5ca474b43d1c778188c4}{get\+Physical\+Device}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_logical_device}{Logical\+Device}} \mbox{\hyperlink{classlogi_1_1_memory_allocator_ad3f6b4807a14cfc5b8498dc88f2b83c0}{get\+Logical\+Device}} () const
+\item 
+const vk\+::\+Dispatch\+Loader\+Dynamic \& \mbox{\hyperlink{classlogi_1_1_memory_allocator_a720cd59a53d782c9056e54ec3d5bfac0}{get\+Dispatcher}} () const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_memory_allocator_ac466ee9be18e74810fdf5aa902ca5015}{destroy}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_memory_allocator_a679a4a808236a742e21f89017e4143f9}{operator const Vma\+Allocator \&}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_memory_allocator_a573850795cef46e5e0c9acc997cce250}{Handle}} ()=default
+\begin{DoxyCompactList}\small\item\em Default null handle constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classlogi_1_1_memory_allocator_afd9a0687dd950205ac03c19afca4c553}{Handle}} (std\+::shared\+\_\+ptr$<$ T $>$ object)
+\begin{DoxyCompactList}\small\item\em Initialize the referred object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogi_1_1_memory_allocator_a2cc09c7e943be9531f825f6ec8bd464b}\label{classlogi_1_1_memory_allocator_a2cc09c7e943be9531f825f6ec8bd464b}} 
+\index{logi::MemoryAllocator@{logi::MemoryAllocator}!createAccelerationStructureNV@{createAccelerationStructureNV}}
+\index{createAccelerationStructureNV@{createAccelerationStructureNV}!logi::MemoryAllocator@{logi::MemoryAllocator}}
+\doxysubsubsection{\texorpdfstring{createAccelerationStructureNV()}{createAccelerationStructureNV()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_v_m_a_acceleration_structure_n_v}{V\+M\+A\+Acceleration\+Structure\+NV}} logi\+::\+Memory\+Allocator\+::create\+Acceleration\+Structure\+NV (\begin{DoxyParamCaption}\item[{const vk\+::\+Acceleration\+Structure\+Create\+Info\+NV \&}]{acceleration\+Structure\+Create\+Info,  }\item[{const Vma\+Allocation\+Create\+Info \&}]{allocation\+Create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_memory_allocator_a0a914e2095043cda1480157a3472dfd4}\label{classlogi_1_1_memory_allocator_a0a914e2095043cda1480157a3472dfd4}} 
+\index{logi::MemoryAllocator@{logi::MemoryAllocator}!createBuffer@{createBuffer}}
+\index{createBuffer@{createBuffer}!logi::MemoryAllocator@{logi::MemoryAllocator}}
+\doxysubsubsection{\texorpdfstring{createBuffer()}{createBuffer()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_v_m_a_buffer}{V\+M\+A\+Buffer}} logi\+::\+Memory\+Allocator\+::create\+Buffer (\begin{DoxyParamCaption}\item[{const vk\+::\+Buffer\+Create\+Info \&}]{buffer\+Create\+Info,  }\item[{const Vma\+Allocation\+Create\+Info \&}]{allocation\+Create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_memory_allocator_ac03017ad709ed2ee0afb0279d803c3b9}\label{classlogi_1_1_memory_allocator_ac03017ad709ed2ee0afb0279d803c3b9}} 
+\index{logi::MemoryAllocator@{logi::MemoryAllocator}!createImage@{createImage}}
+\index{createImage@{createImage}!logi::MemoryAllocator@{logi::MemoryAllocator}}
+\doxysubsubsection{\texorpdfstring{createImage()}{createImage()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_v_m_a_image}{V\+M\+A\+Image}} logi\+::\+Memory\+Allocator\+::create\+Image (\begin{DoxyParamCaption}\item[{const vk\+::\+Image\+Create\+Info \&}]{image\+Create\+Info,  }\item[{const Vma\+Allocation\+Create\+Info \&}]{allocation\+Create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_memory_allocator_ac466ee9be18e74810fdf5aa902ca5015}\label{classlogi_1_1_memory_allocator_ac466ee9be18e74810fdf5aa902ca5015}} 
+\index{logi::MemoryAllocator@{logi::MemoryAllocator}!destroy@{destroy}}
+\index{destroy@{destroy}!logi::MemoryAllocator@{logi::MemoryAllocator}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily void logi\+::\+Memory\+Allocator\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_memory_allocator_a8d8de794676302ccc360a2669b2f92d8}\label{classlogi_1_1_memory_allocator_a8d8de794676302ccc360a2669b2f92d8}} 
+\index{logi::MemoryAllocator@{logi::MemoryAllocator}!destroyAccelerationStructureNV@{destroyAccelerationStructureNV}}
+\index{destroyAccelerationStructureNV@{destroyAccelerationStructureNV}!logi::MemoryAllocator@{logi::MemoryAllocator}}
+\doxysubsubsection{\texorpdfstring{destroyAccelerationStructureNV()}{destroyAccelerationStructureNV()}}
+{\footnotesize\ttfamily void logi\+::\+Memory\+Allocator\+::destroy\+Acceleration\+Structure\+NV (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_v_m_a_acceleration_structure_n_v}{V\+M\+A\+Acceleration\+Structure\+NV}} \&}]{acceleration\+Structure }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_memory_allocator_a12872b9440ae3601db22d37d0aa094ab}\label{classlogi_1_1_memory_allocator_a12872b9440ae3601db22d37d0aa094ab}} 
+\index{logi::MemoryAllocator@{logi::MemoryAllocator}!destroyBuffer@{destroyBuffer}}
+\index{destroyBuffer@{destroyBuffer}!logi::MemoryAllocator@{logi::MemoryAllocator}}
+\doxysubsubsection{\texorpdfstring{destroyBuffer()}{destroyBuffer()}}
+{\footnotesize\ttfamily void logi\+::\+Memory\+Allocator\+::destroy\+Buffer (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_v_m_a_buffer}{V\+M\+A\+Buffer}} \&}]{buffer }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_memory_allocator_a428f41bdac1fbc78ecfc82977e77c1b3}\label{classlogi_1_1_memory_allocator_a428f41bdac1fbc78ecfc82977e77c1b3}} 
+\index{logi::MemoryAllocator@{logi::MemoryAllocator}!destroyImage@{destroyImage}}
+\index{destroyImage@{destroyImage}!logi::MemoryAllocator@{logi::MemoryAllocator}}
+\doxysubsubsection{\texorpdfstring{destroyImage()}{destroyImage()}}
+{\footnotesize\ttfamily void logi\+::\+Memory\+Allocator\+::destroy\+Image (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_v_m_a_image}{V\+M\+A\+Image}} \&}]{image }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlogi_1_1_memory_allocator_a720cd59a53d782c9056e54ec3d5bfac0}\label{classlogi_1_1_memory_allocator_a720cd59a53d782c9056e54ec3d5bfac0}} 
+\index{logi::MemoryAllocator@{logi::MemoryAllocator}!getDispatcher@{getDispatcher}}
+\index{getDispatcher@{getDispatcher}!logi::MemoryAllocator@{logi::MemoryAllocator}}
+\doxysubsubsection{\texorpdfstring{getDispatcher()}{getDispatcher()}}
+{\footnotesize\ttfamily const vk\+::\+Dispatch\+Loader\+Dynamic \& logi\+::\+Memory\+Allocator\+::get\+Dispatcher (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_memory_allocator_a7fec8e64ee24b94e302134f63845814f}\label{classlogi_1_1_memory_allocator_a7fec8e64ee24b94e302134f63845814f}} 
+\index{logi::MemoryAllocator@{logi::MemoryAllocator}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!logi::MemoryAllocator@{logi::MemoryAllocator}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_vulkan_instance}{Vulkan\+Instance}} logi\+::\+Memory\+Allocator\+::get\+Instance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_memory_allocator_ad3f6b4807a14cfc5b8498dc88f2b83c0}\label{classlogi_1_1_memory_allocator_ad3f6b4807a14cfc5b8498dc88f2b83c0}} 
+\index{logi::MemoryAllocator@{logi::MemoryAllocator}!getLogicalDevice@{getLogicalDevice}}
+\index{getLogicalDevice@{getLogicalDevice}!logi::MemoryAllocator@{logi::MemoryAllocator}}
+\doxysubsubsection{\texorpdfstring{getLogicalDevice()}{getLogicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_logical_device}{Logical\+Device}} logi\+::\+Memory\+Allocator\+::get\+Logical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_memory_allocator_a440c3ef80e0a5ca474b43d1c778188c4}\label{classlogi_1_1_memory_allocator_a440c3ef80e0a5ca474b43d1c778188c4}} 
+\index{logi::MemoryAllocator@{logi::MemoryAllocator}!getPhysicalDevice@{getPhysicalDevice}}
+\index{getPhysicalDevice@{getPhysicalDevice}!logi::MemoryAllocator@{logi::MemoryAllocator}}
+\doxysubsubsection{\texorpdfstring{getPhysicalDevice()}{getPhysicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_physical_device}{Physical\+Device}} logi\+::\+Memory\+Allocator\+::get\+Physical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_memory_allocator_a573850795cef46e5e0c9acc997cce250}\label{classlogi_1_1_memory_allocator_a573850795cef46e5e0c9acc997cce250}} 
+\index{logi::MemoryAllocator@{logi::MemoryAllocator}!Handle@{Handle}}
+\index{Handle@{Handle}!logi::MemoryAllocator@{logi::MemoryAllocator}}
+\doxysubsubsection{\texorpdfstring{Handle()}{Handle()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_handle}{logi\+::\+Handle}}$<$ T $>$\+::\mbox{\hyperlink{classlogi_1_1_handle}{Handle}}\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+Default null handle constructor. 
+
+\mbox{\Hypertarget{classlogi_1_1_memory_allocator_afd9a0687dd950205ac03c19afca4c553}\label{classlogi_1_1_memory_allocator_afd9a0687dd950205ac03c19afca4c553}} 
+\index{logi::MemoryAllocator@{logi::MemoryAllocator}!Handle@{Handle}}
+\index{Handle@{Handle}!logi::MemoryAllocator@{logi::MemoryAllocator}}
+\doxysubsubsection{\texorpdfstring{Handle()}{Handle()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_handle}{logi\+::\+Handle}}$<$ T $>$\+::\mbox{\hyperlink{classlogi_1_1_handle}{Handle}}\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Initialize the referred object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & Referred object. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlogi_1_1_memory_allocator_a679a4a808236a742e21f89017e4143f9}\label{classlogi_1_1_memory_allocator_a679a4a808236a742e21f89017e4143f9}} 
+\index{logi::MemoryAllocator@{logi::MemoryAllocator}!operator const VmaAllocator \&@{operator const VmaAllocator \&}}
+\index{operator const VmaAllocator \&@{operator const VmaAllocator \&}!logi::MemoryAllocator@{logi::MemoryAllocator}}
+\doxysubsubsection{\texorpdfstring{operator const VmaAllocator \&()}{operator const VmaAllocator \&()}}
+{\footnotesize\ttfamily logi\+::\+Memory\+Allocator\+::operator const Vma\+Allocator \& (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+logi/memory/\mbox{\hyperlink{memory__allocator_8hpp}{memory\+\_\+allocator.\+hpp}}\item 
+C\+:/\+Users/aljaz/\+Documents/\+Visual\+Studio\+Code\+Projects/\+Logi/src/logi/memory/\mbox{\hyperlink{memory__allocator_8cpp}{memory\+\_\+allocator.\+cpp}}\end{DoxyCompactItemize}

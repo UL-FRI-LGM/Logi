@@ -1,0 +1,146 @@
+\hypertarget{classlogi_1_1_device_memory}{}\doxysection{logi\+::Device\+Memory Class Reference}
+\label{classlogi_1_1_device_memory}\index{logi::DeviceMemory@{logi::DeviceMemory}}
+
+
+{\ttfamily \#include $<$device\+\_\+memory.\+hpp$>$}
+
+
+
+Inheritance diagram for logi\+::Device\+Memory\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=220pt]{classlogi_1_1_device_memory__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for logi\+::Device\+Memory\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=220pt]{classlogi_1_1_device_memory__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+vk\+::\+Device\+Size \mbox{\hyperlink{classlogi_1_1_device_memory_a14bae17a0037e0812feb3ddfd23e6380}{get\+Commitment}} () const
+\item 
+vk\+::\+Result\+Value\+Type$<$ void $\ast$ $>$\+::type \mbox{\hyperlink{classlogi_1_1_device_memory_a24388bcc3fa615b7ba03cdb41a9bfad9}{map\+Memory}} (vk\+::\+Device\+Size offset, vk\+::\+Device\+Size size, const vk\+::\+Memory\+Map\+Flags \&flags) const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_device_memory_ab6ba97e2d37088ea6ae8b157bea201cd}{unmap\+Memory}} () const
+\item 
+uint64\+\_\+t \mbox{\hyperlink{classlogi_1_1_device_memory_a6a75a27575924d7e4dbaced3dd64008f}{get\+Opaque\+Capture\+Address}} (const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Device\+Memory\+Opaque\+Capture\+Address\+Info $>$ \&next=\{\}) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_vulkan_instance}{Vulkan\+Instance}} \mbox{\hyperlink{classlogi_1_1_device_memory_a07b6a52cc63bfb5db3571530439cdc80}{get\+Instance}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_physical_device}{Physical\+Device}} \mbox{\hyperlink{classlogi_1_1_device_memory_a972da0c1748dc89228d621b2c0807e8c}{get\+Physical\+Device}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_logical_device}{Logical\+Device}} \mbox{\hyperlink{classlogi_1_1_device_memory_a1fea2515f20de73ef06c07523e91613b}{get\+Logical\+Device}} () const
+\item 
+const vk\+::\+Dispatch\+Loader\+Dynamic \& \mbox{\hyperlink{classlogi_1_1_device_memory_a135948c1499c80bfca9ad50220acb0a7}{get\+Dispatcher}} () const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_device_memory_ae0239e4d5999aed149b64e62d4e5b914}{destroy}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_device_memory_ac6a27646388398189993f09440d9db66}{operator const vk\+::\+Device\+Memory \&}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_device_memory_a573850795cef46e5e0c9acc997cce250}{Handle}} ()=default
+\begin{DoxyCompactList}\small\item\em Default null handle constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classlogi_1_1_device_memory_afd9a0687dd950205ac03c19afca4c553}{Handle}} (std\+::shared\+\_\+ptr$<$ T $>$ object)
+\begin{DoxyCompactList}\small\item\em Initialize the referred object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogi_1_1_device_memory_ae0239e4d5999aed149b64e62d4e5b914}\label{classlogi_1_1_device_memory_ae0239e4d5999aed149b64e62d4e5b914}} 
+\index{logi::DeviceMemory@{logi::DeviceMemory}!destroy@{destroy}}
+\index{destroy@{destroy}!logi::DeviceMemory@{logi::DeviceMemory}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily void logi\+::\+Device\+Memory\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_device_memory_a14bae17a0037e0812feb3ddfd23e6380}\label{classlogi_1_1_device_memory_a14bae17a0037e0812feb3ddfd23e6380}} 
+\index{logi::DeviceMemory@{logi::DeviceMemory}!getCommitment@{getCommitment}}
+\index{getCommitment@{getCommitment}!logi::DeviceMemory@{logi::DeviceMemory}}
+\doxysubsubsection{\texorpdfstring{getCommitment()}{getCommitment()}}
+{\footnotesize\ttfamily vk\+::\+Device\+Size logi\+::\+Device\+Memory\+::get\+Commitment (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_device_memory_a135948c1499c80bfca9ad50220acb0a7}\label{classlogi_1_1_device_memory_a135948c1499c80bfca9ad50220acb0a7}} 
+\index{logi::DeviceMemory@{logi::DeviceMemory}!getDispatcher@{getDispatcher}}
+\index{getDispatcher@{getDispatcher}!logi::DeviceMemory@{logi::DeviceMemory}}
+\doxysubsubsection{\texorpdfstring{getDispatcher()}{getDispatcher()}}
+{\footnotesize\ttfamily const vk\+::\+Dispatch\+Loader\+Dynamic \& logi\+::\+Device\+Memory\+::get\+Dispatcher (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_device_memory_a07b6a52cc63bfb5db3571530439cdc80}\label{classlogi_1_1_device_memory_a07b6a52cc63bfb5db3571530439cdc80}} 
+\index{logi::DeviceMemory@{logi::DeviceMemory}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!logi::DeviceMemory@{logi::DeviceMemory}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_vulkan_instance}{Vulkan\+Instance}} logi\+::\+Device\+Memory\+::get\+Instance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_device_memory_a1fea2515f20de73ef06c07523e91613b}\label{classlogi_1_1_device_memory_a1fea2515f20de73ef06c07523e91613b}} 
+\index{logi::DeviceMemory@{logi::DeviceMemory}!getLogicalDevice@{getLogicalDevice}}
+\index{getLogicalDevice@{getLogicalDevice}!logi::DeviceMemory@{logi::DeviceMemory}}
+\doxysubsubsection{\texorpdfstring{getLogicalDevice()}{getLogicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_logical_device}{Logical\+Device}} logi\+::\+Device\+Memory\+::get\+Logical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_device_memory_a6a75a27575924d7e4dbaced3dd64008f}\label{classlogi_1_1_device_memory_a6a75a27575924d7e4dbaced3dd64008f}} 
+\index{logi::DeviceMemory@{logi::DeviceMemory}!getOpaqueCaptureAddress@{getOpaqueCaptureAddress}}
+\index{getOpaqueCaptureAddress@{getOpaqueCaptureAddress}!logi::DeviceMemory@{logi::DeviceMemory}}
+\doxysubsubsection{\texorpdfstring{getOpaqueCaptureAddress()}{getOpaqueCaptureAddress()}}
+{\footnotesize\ttfamily uint64\+\_\+t logi\+::\+Device\+Memory\+::get\+Opaque\+Capture\+Address (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Device\+Memory\+Opaque\+Capture\+Address\+Info $>$ \&}]{next = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_device_memory_a972da0c1748dc89228d621b2c0807e8c}\label{classlogi_1_1_device_memory_a972da0c1748dc89228d621b2c0807e8c}} 
+\index{logi::DeviceMemory@{logi::DeviceMemory}!getPhysicalDevice@{getPhysicalDevice}}
+\index{getPhysicalDevice@{getPhysicalDevice}!logi::DeviceMemory@{logi::DeviceMemory}}
+\doxysubsubsection{\texorpdfstring{getPhysicalDevice()}{getPhysicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_physical_device}{Physical\+Device}} logi\+::\+Device\+Memory\+::get\+Physical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_device_memory_a573850795cef46e5e0c9acc997cce250}\label{classlogi_1_1_device_memory_a573850795cef46e5e0c9acc997cce250}} 
+\index{logi::DeviceMemory@{logi::DeviceMemory}!Handle@{Handle}}
+\index{Handle@{Handle}!logi::DeviceMemory@{logi::DeviceMemory}}
+\doxysubsubsection{\texorpdfstring{Handle()}{Handle()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_handle}{logi\+::\+Handle}}$<$ T $>$\+::\mbox{\hyperlink{classlogi_1_1_handle}{Handle}}\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+Default null handle constructor. 
+
+\mbox{\Hypertarget{classlogi_1_1_device_memory_afd9a0687dd950205ac03c19afca4c553}\label{classlogi_1_1_device_memory_afd9a0687dd950205ac03c19afca4c553}} 
+\index{logi::DeviceMemory@{logi::DeviceMemory}!Handle@{Handle}}
+\index{Handle@{Handle}!logi::DeviceMemory@{logi::DeviceMemory}}
+\doxysubsubsection{\texorpdfstring{Handle()}{Handle()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_handle}{logi\+::\+Handle}}$<$ T $>$\+::\mbox{\hyperlink{classlogi_1_1_handle}{Handle}}\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Initialize the referred object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & Referred object. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlogi_1_1_device_memory_a24388bcc3fa615b7ba03cdb41a9bfad9}\label{classlogi_1_1_device_memory_a24388bcc3fa615b7ba03cdb41a9bfad9}} 
+\index{logi::DeviceMemory@{logi::DeviceMemory}!mapMemory@{mapMemory}}
+\index{mapMemory@{mapMemory}!logi::DeviceMemory@{logi::DeviceMemory}}
+\doxysubsubsection{\texorpdfstring{mapMemory()}{mapMemory()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $\ast$ $>$\+::type logi\+::\+Device\+Memory\+::map\+Memory (\begin{DoxyParamCaption}\item[{vk\+::\+Device\+Size}]{offset,  }\item[{vk\+::\+Device\+Size}]{size,  }\item[{const vk\+::\+Memory\+Map\+Flags \&}]{flags }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_device_memory_ac6a27646388398189993f09440d9db66}\label{classlogi_1_1_device_memory_ac6a27646388398189993f09440d9db66}} 
+\index{logi::DeviceMemory@{logi::DeviceMemory}!operator const vk::DeviceMemory \&@{operator const vk::DeviceMemory \&}}
+\index{operator const vk::DeviceMemory \&@{operator const vk::DeviceMemory \&}!logi::DeviceMemory@{logi::DeviceMemory}}
+\doxysubsubsection{\texorpdfstring{operator const vk::DeviceMemory \&()}{operator const vk::DeviceMemory \&()}}
+{\footnotesize\ttfamily logi\+::\+Device\+Memory\+::operator const vk\+::\+Device\+Memory \& (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_device_memory_ab6ba97e2d37088ea6ae8b157bea201cd}\label{classlogi_1_1_device_memory_ab6ba97e2d37088ea6ae8b157bea201cd}} 
+\index{logi::DeviceMemory@{logi::DeviceMemory}!unmapMemory@{unmapMemory}}
+\index{unmapMemory@{unmapMemory}!logi::DeviceMemory@{logi::DeviceMemory}}
+\doxysubsubsection{\texorpdfstring{unmapMemory()}{unmapMemory()}}
+{\footnotesize\ttfamily void logi\+::\+Device\+Memory\+::unmap\+Memory (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+logi/memory/\mbox{\hyperlink{device__memory_8hpp}{device\+\_\+memory.\+hpp}}\item 
+C\+:/\+Users/aljaz/\+Documents/\+Visual\+Studio\+Code\+Projects/\+Logi/src/logi/memory/\mbox{\hyperlink{device__memory_8cpp}{device\+\_\+memory.\+cpp}}\end{DoxyCompactItemize}

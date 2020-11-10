@@ -1,0 +1,147 @@
+\hypertarget{classlogi_1_1_acceleration_structure_n_v_impl}{}\doxysection{logi\+::Acceleration\+Structure\+N\+V\+Impl Class Reference}
+\label{classlogi_1_1_acceleration_structure_n_v_impl}\index{logi::AccelerationStructureNVImpl@{logi::AccelerationStructureNVImpl}}
+
+
+{\ttfamily \#include $<$acceleration\+\_\+structure\+\_\+nv\+\_\+impl.\+hpp$>$}
+
+
+
+Inheritance diagram for logi\+::Acceleration\+Structure\+N\+V\+Impl\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogi_1_1_acceleration_structure_n_v_impl__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for logi\+::Acceleration\+Structure\+N\+V\+Impl\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogi_1_1_acceleration_structure_n_v_impl__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlogi_1_1_acceleration_structure_n_v_impl_a6894956df8cb1fdd1a63ef9dfac9f0d2}{Acceleration\+Structure\+N\+V\+Impl}} (\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \&logical\+Device, const vk\+::\+Acceleration\+Structure\+Create\+Info\+NV \&create\+Info, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\})
+\item 
+{\footnotesize template$<$typename T $>$ }\\vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_acceleration_structure_n_v_impl_a10c323883f7f2064f4efe23b791e0078}{get\+Handle\+NV}} (vk\+::\+Array\+Proxy$<$ T $>$ data) const
+\item 
+vk\+::\+Memory\+Requirements2\+K\+HR \mbox{\hyperlink{classlogi_1_1_acceleration_structure_n_v_impl_a1233024deae30166d555af9f81eea69e}{get\+Memory\+Requirements\+NV}} (vk\+::\+Acceleration\+Structure\+Memory\+Requirements\+Type\+NV type, const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Acceleration\+Structure\+Memory\+Requirements\+Info\+NV $>$ \&next=\{\}) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_acceleration_structure_n_v_impl_a25eab6f75bf9df73d65edf6b130346e8}{bind\+Memory}} (vk\+::\+Device\+Memory memory, vk\+::\+Device\+Size memory\+Offset, const vk\+::\+Array\+Proxy$<$ uint32\+\_\+t $>$ \&device\+Indices=nullptr, const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Bind\+Acceleration\+Structure\+Memory\+Info\+NV $>$ \&next=\{\}) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl}{Vulkan\+Instance\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_acceleration_structure_n_v_impl_a2be60ca2a67a4878e1dac4b46b006251}{get\+Instance}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_physical_device_impl}{Physical\+Device\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_acceleration_structure_n_v_impl_ac40700242bb322ecd77b5152d3876095}{get\+Physical\+Device}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_acceleration_structure_n_v_impl_aa3248eaa7e30ed7cd024f2d8e5dd8841}{get\+Logical\+Device}} () const
+\item 
+const vk\+::\+Dispatch\+Loader\+Dynamic \& \mbox{\hyperlink{classlogi_1_1_acceleration_structure_n_v_impl_aca0e030f1e65685b747d3d65925f0caa}{get\+Dispatcher}} () const
+\item 
+virtual void \mbox{\hyperlink{classlogi_1_1_acceleration_structure_n_v_impl_abd5d43a3df0bd37dfd757b9065527ce3}{destroy}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_acceleration_structure_n_v_impl_ad82eb3dd8638d8fe0fac5923cdf17279}{operator const vk\+::\+Acceleration\+Structure\+N\+V \&}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classlogi_1_1_acceleration_structure_n_v_impl_af5178be86c0eb483253f8219e227e553}{free}} () override
+\begin{DoxyCompactList}\small\item\em Invalidates \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. Overriding implementations should free the object\textquotesingle{}s resources and invoke \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}\textquotesingle{}s free. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlogi_1_1_acceleration_structure_n_v_impl_a6894956df8cb1fdd1a63ef9dfac9f0d2}\label{classlogi_1_1_acceleration_structure_n_v_impl_a6894956df8cb1fdd1a63ef9dfac9f0d2}} 
+\index{logi::AccelerationStructureNVImpl@{logi::AccelerationStructureNVImpl}!AccelerationStructureNVImpl@{AccelerationStructureNVImpl}}
+\index{AccelerationStructureNVImpl@{AccelerationStructureNVImpl}!logi::AccelerationStructureNVImpl@{logi::AccelerationStructureNVImpl}}
+\doxysubsubsection{\texorpdfstring{AccelerationStructureNVImpl()}{AccelerationStructureNVImpl()}}
+{\footnotesize\ttfamily logi\+::\+Acceleration\+Structure\+N\+V\+Impl\+::\+Acceleration\+Structure\+N\+V\+Impl (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \&}]{logical\+Device,  }\item[{const vk\+::\+Acceleration\+Structure\+Create\+Info\+NV \&}]{create\+Info,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogi_1_1_acceleration_structure_n_v_impl_a25eab6f75bf9df73d65edf6b130346e8}\label{classlogi_1_1_acceleration_structure_n_v_impl_a25eab6f75bf9df73d65edf6b130346e8}} 
+\index{logi::AccelerationStructureNVImpl@{logi::AccelerationStructureNVImpl}!bindMemory@{bindMemory}}
+\index{bindMemory@{bindMemory}!logi::AccelerationStructureNVImpl@{logi::AccelerationStructureNVImpl}}
+\doxysubsubsection{\texorpdfstring{bindMemory()}{bindMemory()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Acceleration\+Structure\+N\+V\+Impl\+::bind\+Memory (\begin{DoxyParamCaption}\item[{vk\+::\+Device\+Memory}]{memory,  }\item[{vk\+::\+Device\+Size}]{memory\+Offset,  }\item[{const vk\+::\+Array\+Proxy$<$ uint32\+\_\+t $>$ \&}]{device\+Indices = {\ttfamily nullptr},  }\item[{const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Bind\+Acceleration\+Structure\+Memory\+Info\+NV $>$ \&}]{next = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_acceleration_structure_n_v_impl_abd5d43a3df0bd37dfd757b9065527ce3}\label{classlogi_1_1_acceleration_structure_n_v_impl_abd5d43a3df0bd37dfd757b9065527ce3}} 
+\index{logi::AccelerationStructureNVImpl@{logi::AccelerationStructureNVImpl}!destroy@{destroy}}
+\index{destroy@{destroy}!logi::AccelerationStructureNVImpl@{logi::AccelerationStructureNVImpl}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily void logi\+::\+Acceleration\+Structure\+N\+V\+Impl\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classlogi_1_1_v_m_a_acceleration_structure_n_v_impl_af0633d77de8c952001d6493e2d5538a3}{logi\+::\+V\+M\+A\+Acceleration\+Structure\+N\+V\+Impl}}.
+
+\mbox{\Hypertarget{classlogi_1_1_acceleration_structure_n_v_impl_af5178be86c0eb483253f8219e227e553}\label{classlogi_1_1_acceleration_structure_n_v_impl_af5178be86c0eb483253f8219e227e553}} 
+\index{logi::AccelerationStructureNVImpl@{logi::AccelerationStructureNVImpl}!free@{free}}
+\index{free@{free}!logi::AccelerationStructureNVImpl@{logi::AccelerationStructureNVImpl}}
+\doxysubsubsection{\texorpdfstring{free()}{free()}}
+{\footnotesize\ttfamily void logi\+::\+Acceleration\+Structure\+N\+V\+Impl\+::free (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Invalidates \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. Overriding implementations should free the object\textquotesingle{}s resources and invoke \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}\textquotesingle{}s free. 
+
+
+
+Reimplemented from \mbox{\hyperlink{classlogi_1_1_vulkan_object_a7a5cafb30933f8bbd0d4e89e14477f4a}{logi\+::\+Vulkan\+Object}}.
+
+
+
+Reimplemented in \mbox{\hyperlink{classlogi_1_1_v_m_a_acceleration_structure_n_v_impl_aaf25df893f13a98042ef1344ac18014f}{logi\+::\+V\+M\+A\+Acceleration\+Structure\+N\+V\+Impl}}.
+
+\mbox{\Hypertarget{classlogi_1_1_acceleration_structure_n_v_impl_aca0e030f1e65685b747d3d65925f0caa}\label{classlogi_1_1_acceleration_structure_n_v_impl_aca0e030f1e65685b747d3d65925f0caa}} 
+\index{logi::AccelerationStructureNVImpl@{logi::AccelerationStructureNVImpl}!getDispatcher@{getDispatcher}}
+\index{getDispatcher@{getDispatcher}!logi::AccelerationStructureNVImpl@{logi::AccelerationStructureNVImpl}}
+\doxysubsubsection{\texorpdfstring{getDispatcher()}{getDispatcher()}}
+{\footnotesize\ttfamily const vk\+::\+Dispatch\+Loader\+Dynamic \& logi\+::\+Acceleration\+Structure\+N\+V\+Impl\+::get\+Dispatcher (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_acceleration_structure_n_v_impl_a10c323883f7f2064f4efe23b791e0078}\label{classlogi_1_1_acceleration_structure_n_v_impl_a10c323883f7f2064f4efe23b791e0078}} 
+\index{logi::AccelerationStructureNVImpl@{logi::AccelerationStructureNVImpl}!getHandleNV@{getHandleNV}}
+\index{getHandleNV@{getHandleNV}!logi::AccelerationStructureNVImpl@{logi::AccelerationStructureNVImpl}}
+\doxysubsubsection{\texorpdfstring{getHandleNV()}{getHandleNV()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Acceleration\+Structure\+N\+V\+Impl\+::get\+Handle\+NV (\begin{DoxyParamCaption}\item[{vk\+::\+Array\+Proxy$<$ T $>$}]{data }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_acceleration_structure_n_v_impl_a2be60ca2a67a4878e1dac4b46b006251}\label{classlogi_1_1_acceleration_structure_n_v_impl_a2be60ca2a67a4878e1dac4b46b006251}} 
+\index{logi::AccelerationStructureNVImpl@{logi::AccelerationStructureNVImpl}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!logi::AccelerationStructureNVImpl@{logi::AccelerationStructureNVImpl}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl}{Vulkan\+Instance\+Impl}} \& logi\+::\+Acceleration\+Structure\+N\+V\+Impl\+::get\+Instance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_acceleration_structure_n_v_impl_aa3248eaa7e30ed7cd024f2d8e5dd8841}\label{classlogi_1_1_acceleration_structure_n_v_impl_aa3248eaa7e30ed7cd024f2d8e5dd8841}} 
+\index{logi::AccelerationStructureNVImpl@{logi::AccelerationStructureNVImpl}!getLogicalDevice@{getLogicalDevice}}
+\index{getLogicalDevice@{getLogicalDevice}!logi::AccelerationStructureNVImpl@{logi::AccelerationStructureNVImpl}}
+\doxysubsubsection{\texorpdfstring{getLogicalDevice()}{getLogicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \& logi\+::\+Acceleration\+Structure\+N\+V\+Impl\+::get\+Logical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_acceleration_structure_n_v_impl_a1233024deae30166d555af9f81eea69e}\label{classlogi_1_1_acceleration_structure_n_v_impl_a1233024deae30166d555af9f81eea69e}} 
+\index{logi::AccelerationStructureNVImpl@{logi::AccelerationStructureNVImpl}!getMemoryRequirementsNV@{getMemoryRequirementsNV}}
+\index{getMemoryRequirementsNV@{getMemoryRequirementsNV}!logi::AccelerationStructureNVImpl@{logi::AccelerationStructureNVImpl}}
+\doxysubsubsection{\texorpdfstring{getMemoryRequirementsNV()}{getMemoryRequirementsNV()}}
+{\footnotesize\ttfamily vk\+::\+Memory\+Requirements2\+K\+HR logi\+::\+Acceleration\+Structure\+N\+V\+Impl\+::get\+Memory\+Requirements\+NV (\begin{DoxyParamCaption}\item[{vk\+::\+Acceleration\+Structure\+Memory\+Requirements\+Type\+NV}]{type,  }\item[{const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Acceleration\+Structure\+Memory\+Requirements\+Info\+NV $>$ \&}]{next = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_acceleration_structure_n_v_impl_ac40700242bb322ecd77b5152d3876095}\label{classlogi_1_1_acceleration_structure_n_v_impl_ac40700242bb322ecd77b5152d3876095}} 
+\index{logi::AccelerationStructureNVImpl@{logi::AccelerationStructureNVImpl}!getPhysicalDevice@{getPhysicalDevice}}
+\index{getPhysicalDevice@{getPhysicalDevice}!logi::AccelerationStructureNVImpl@{logi::AccelerationStructureNVImpl}}
+\doxysubsubsection{\texorpdfstring{getPhysicalDevice()}{getPhysicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_physical_device_impl}{Physical\+Device\+Impl}} \& logi\+::\+Acceleration\+Structure\+N\+V\+Impl\+::get\+Physical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_acceleration_structure_n_v_impl_ad82eb3dd8638d8fe0fac5923cdf17279}\label{classlogi_1_1_acceleration_structure_n_v_impl_ad82eb3dd8638d8fe0fac5923cdf17279}} 
+\index{logi::AccelerationStructureNVImpl@{logi::AccelerationStructureNVImpl}!operator const vk::AccelerationStructureNV \&@{operator const vk::AccelerationStructureNV \&}}
+\index{operator const vk::AccelerationStructureNV \&@{operator const vk::AccelerationStructureNV \&}!logi::AccelerationStructureNVImpl@{logi::AccelerationStructureNVImpl}}
+\doxysubsubsection{\texorpdfstring{operator const vk::AccelerationStructureNV \&()}{operator const vk::AccelerationStructureNV \&()}}
+{\footnotesize\ttfamily logi\+::\+Acceleration\+Structure\+N\+V\+Impl\+::operator const vk\+::\+Acceleration\+Structure\+NV \& (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+logi/memory/\mbox{\hyperlink{acceleration__structure__nv__impl_8hpp}{acceleration\+\_\+structure\+\_\+nv\+\_\+impl.\+hpp}}\item 
+C\+:/\+Users/aljaz/\+Documents/\+Visual\+Studio\+Code\+Projects/\+Logi/src/logi/memory/\mbox{\hyperlink{acceleration__structure__nv__impl_8cpp}{acceleration\+\_\+structure\+\_\+nv\+\_\+impl.\+cpp}}\end{DoxyCompactItemize}

@@ -10,7 +10,7 @@ list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules")
 # C++ Google Test
 option(LOGI_BUILD_TESTS "Build tests." ON)
 option(LOGI_BUILD_DOC "Build documentation" ON)
-option(LOGI_BUILD_EXAMPLES "Build examples" OFF)
+option(LOGI_BUILD_EXAMPLES "Build examples" ON)
 
 ##############################################
 # BUILD LOGI LIBRARY
@@ -36,9 +36,9 @@ target_include_directories(logi
 target_link_libraries(logi Vulkan::Vulkan spirv-cross-core vma)
 
 # TEST -> before did not work
-#if (LOGI_BUILD_EXAMPLES)
+if (LOGI_BUILD_EXAMPLES)
     add_subdirectory(examples)
-#endif (LOGI_BUILD_EXAMPLES)
+endif (LOGI_BUILD_EXAMPLES)
 
 ##########################################################
 ####################### DOXYGEN ##########################

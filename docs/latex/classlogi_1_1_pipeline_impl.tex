@@ -1,0 +1,139 @@
+\hypertarget{classlogi_1_1_pipeline_impl}{}\doxysection{logi\+::Pipeline\+Impl Class Reference}
+\label{classlogi_1_1_pipeline_impl}\index{logi::PipelineImpl@{logi::PipelineImpl}}
+
+
+{\ttfamily \#include $<$pipeline\+\_\+impl.\+hpp$>$}
+
+
+
+Inheritance diagram for logi\+::Pipeline\+Impl\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=326pt]{classlogi_1_1_pipeline_impl__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for logi\+::Pipeline\+Impl\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=326pt]{classlogi_1_1_pipeline_impl__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlogi_1_1_pipeline_impl_adc95b4f770c22431a8273fd6cc6755c8}{Pipeline\+Impl}} (\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \&logical\+Device, const vk\+::\+Pipeline \&vk\+Pipeline, const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&allocator=\{\})
+\item 
+vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_pipeline_impl_ac1ec2f58a3807b72e624f310e50c2a6a}{compile\+Deferred\+NV}} (uint32\+\_\+t shader) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ uint8\+\_\+t $>$ $>$\+::type \mbox{\hyperlink{classlogi_1_1_pipeline_impl_ae093d3a590b392f6513e10750125882a}{get\+Shader\+Info\+A\+MD}} (vk\+::\+Shader\+Stage\+Flag\+Bits shader\+Stage, vk\+::\+Shader\+Info\+Type\+A\+MD info\+Type) const
+\item 
+{\footnotesize template$<$typename T $>$ }\\vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_pipeline_impl_ace455971a1edb068717c60bb7b98d2a7}{get\+Ray\+Tracing\+Shader\+Group\+Handles\+NV}} (uint32\+\_\+t first\+Group, uint32\+\_\+t group\+Count, vk\+::\+Array\+Proxy$<$ T $>$ data) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl}{Vulkan\+Instance\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_pipeline_impl_aaf3bd440158b191c2b110df6a9ad1e2d}{get\+Instance}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_physical_device_impl}{Physical\+Device\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_pipeline_impl_af00d3e0c6d28181de66843bf786dad38}{get\+Physical\+Device}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \& \mbox{\hyperlink{classlogi_1_1_pipeline_impl_ae39ab221559e2d5910a1902223f8a0ba}{get\+Logical\+Device}} () const
+\item 
+const vk\+::\+Dispatch\+Loader\+Dynamic \& \mbox{\hyperlink{classlogi_1_1_pipeline_impl_a76a6d8cdd7f74a2236efe7cf3ab6ed91}{get\+Dispatcher}} () const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_pipeline_impl_a63ad4cb44e58e66b71235ed37ed0332f}{destroy}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_pipeline_impl_a63fcc20668c514a95ac81829277211b0}{operator const vk\+::\+Pipeline \&}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classlogi_1_1_pipeline_impl_a8087130cceaa53204494b30aa773f84a}{free}} () override
+\begin{DoxyCompactList}\small\item\em Invalidates \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. Overriding implementations should free the object\textquotesingle{}s resources and invoke \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}\textquotesingle{}s free. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlogi_1_1_pipeline_impl_adc95b4f770c22431a8273fd6cc6755c8}\label{classlogi_1_1_pipeline_impl_adc95b4f770c22431a8273fd6cc6755c8}} 
+\index{logi::PipelineImpl@{logi::PipelineImpl}!PipelineImpl@{PipelineImpl}}
+\index{PipelineImpl@{PipelineImpl}!logi::PipelineImpl@{logi::PipelineImpl}}
+\doxysubsubsection{\texorpdfstring{PipelineImpl()}{PipelineImpl()}}
+{\footnotesize\ttfamily logi\+::\+Pipeline\+Impl\+::\+Pipeline\+Impl (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \&}]{logical\+Device,  }\item[{const vk\+::\+Pipeline \&}]{vk\+Pipeline,  }\item[{const std\+::optional$<$ vk\+::\+Allocation\+Callbacks $>$ \&}]{allocator = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogi_1_1_pipeline_impl_ac1ec2f58a3807b72e624f310e50c2a6a}\label{classlogi_1_1_pipeline_impl_ac1ec2f58a3807b72e624f310e50c2a6a}} 
+\index{logi::PipelineImpl@{logi::PipelineImpl}!compileDeferredNV@{compileDeferredNV}}
+\index{compileDeferredNV@{compileDeferredNV}!logi::PipelineImpl@{logi::PipelineImpl}}
+\doxysubsubsection{\texorpdfstring{compileDeferredNV()}{compileDeferredNV()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Pipeline\+Impl\+::compile\+Deferred\+NV (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{shader }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_pipeline_impl_a63ad4cb44e58e66b71235ed37ed0332f}\label{classlogi_1_1_pipeline_impl_a63ad4cb44e58e66b71235ed37ed0332f}} 
+\index{logi::PipelineImpl@{logi::PipelineImpl}!destroy@{destroy}}
+\index{destroy@{destroy}!logi::PipelineImpl@{logi::PipelineImpl}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily void logi\+::\+Pipeline\+Impl\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_pipeline_impl_a8087130cceaa53204494b30aa773f84a}\label{classlogi_1_1_pipeline_impl_a8087130cceaa53204494b30aa773f84a}} 
+\index{logi::PipelineImpl@{logi::PipelineImpl}!free@{free}}
+\index{free@{free}!logi::PipelineImpl@{logi::PipelineImpl}}
+\doxysubsubsection{\texorpdfstring{free()}{free()}}
+{\footnotesize\ttfamily void logi\+::\+Pipeline\+Impl\+::free (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Invalidates \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. Overriding implementations should free the object\textquotesingle{}s resources and invoke \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}\textquotesingle{}s free. 
+
+
+
+Reimplemented from \mbox{\hyperlink{classlogi_1_1_vulkan_object_a7a5cafb30933f8bbd0d4e89e14477f4a}{logi\+::\+Vulkan\+Object}}.
+
+\mbox{\Hypertarget{classlogi_1_1_pipeline_impl_a76a6d8cdd7f74a2236efe7cf3ab6ed91}\label{classlogi_1_1_pipeline_impl_a76a6d8cdd7f74a2236efe7cf3ab6ed91}} 
+\index{logi::PipelineImpl@{logi::PipelineImpl}!getDispatcher@{getDispatcher}}
+\index{getDispatcher@{getDispatcher}!logi::PipelineImpl@{logi::PipelineImpl}}
+\doxysubsubsection{\texorpdfstring{getDispatcher()}{getDispatcher()}}
+{\footnotesize\ttfamily const vk\+::\+Dispatch\+Loader\+Dynamic \& logi\+::\+Pipeline\+Impl\+::get\+Dispatcher (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_pipeline_impl_aaf3bd440158b191c2b110df6a9ad1e2d}\label{classlogi_1_1_pipeline_impl_aaf3bd440158b191c2b110df6a9ad1e2d}} 
+\index{logi::PipelineImpl@{logi::PipelineImpl}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!logi::PipelineImpl@{logi::PipelineImpl}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl}{Vulkan\+Instance\+Impl}} \& logi\+::\+Pipeline\+Impl\+::get\+Instance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_pipeline_impl_ae39ab221559e2d5910a1902223f8a0ba}\label{classlogi_1_1_pipeline_impl_ae39ab221559e2d5910a1902223f8a0ba}} 
+\index{logi::PipelineImpl@{logi::PipelineImpl}!getLogicalDevice@{getLogicalDevice}}
+\index{getLogicalDevice@{getLogicalDevice}!logi::PipelineImpl@{logi::PipelineImpl}}
+\doxysubsubsection{\texorpdfstring{getLogicalDevice()}{getLogicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_logical_device_impl}{Logical\+Device\+Impl}} \& logi\+::\+Pipeline\+Impl\+::get\+Logical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_pipeline_impl_af00d3e0c6d28181de66843bf786dad38}\label{classlogi_1_1_pipeline_impl_af00d3e0c6d28181de66843bf786dad38}} 
+\index{logi::PipelineImpl@{logi::PipelineImpl}!getPhysicalDevice@{getPhysicalDevice}}
+\index{getPhysicalDevice@{getPhysicalDevice}!logi::PipelineImpl@{logi::PipelineImpl}}
+\doxysubsubsection{\texorpdfstring{getPhysicalDevice()}{getPhysicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_physical_device_impl}{Physical\+Device\+Impl}} \& logi\+::\+Pipeline\+Impl\+::get\+Physical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_pipeline_impl_ace455971a1edb068717c60bb7b98d2a7}\label{classlogi_1_1_pipeline_impl_ace455971a1edb068717c60bb7b98d2a7}} 
+\index{logi::PipelineImpl@{logi::PipelineImpl}!getRayTracingShaderGroupHandlesNV@{getRayTracingShaderGroupHandlesNV}}
+\index{getRayTracingShaderGroupHandlesNV@{getRayTracingShaderGroupHandlesNV}!logi::PipelineImpl@{logi::PipelineImpl}}
+\doxysubsubsection{\texorpdfstring{getRayTracingShaderGroupHandlesNV()}{getRayTracingShaderGroupHandlesNV()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Pipeline\+Impl\+::get\+Ray\+Tracing\+Shader\+Group\+Handles\+NV (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{first\+Group,  }\item[{uint32\+\_\+t}]{group\+Count,  }\item[{vk\+::\+Array\+Proxy$<$ T $>$}]{data }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_pipeline_impl_ae093d3a590b392f6513e10750125882a}\label{classlogi_1_1_pipeline_impl_ae093d3a590b392f6513e10750125882a}} 
+\index{logi::PipelineImpl@{logi::PipelineImpl}!getShaderInfoAMD@{getShaderInfoAMD}}
+\index{getShaderInfoAMD@{getShaderInfoAMD}!logi::PipelineImpl@{logi::PipelineImpl}}
+\doxysubsubsection{\texorpdfstring{getShaderInfoAMD()}{getShaderInfoAMD()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ std\+::vector$<$ uint8\+\_\+t $>$ $>$\+::type logi\+::\+Pipeline\+Impl\+::get\+Shader\+Info\+A\+MD (\begin{DoxyParamCaption}\item[{vk\+::\+Shader\+Stage\+Flag\+Bits}]{shader\+Stage,  }\item[{vk\+::\+Shader\+Info\+Type\+A\+MD}]{info\+Type }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_pipeline_impl_a63fcc20668c514a95ac81829277211b0}\label{classlogi_1_1_pipeline_impl_a63fcc20668c514a95ac81829277211b0}} 
+\index{logi::PipelineImpl@{logi::PipelineImpl}!operator const vk::Pipeline \&@{operator const vk::Pipeline \&}}
+\index{operator const vk::Pipeline \&@{operator const vk::Pipeline \&}!logi::PipelineImpl@{logi::PipelineImpl}}
+\doxysubsubsection{\texorpdfstring{operator const vk::Pipeline \&()}{operator const vk::Pipeline \&()}}
+{\footnotesize\ttfamily logi\+::\+Pipeline\+Impl\+::operator const vk\+::\+Pipeline \& (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+logi/program/\mbox{\hyperlink{pipeline__impl_8hpp}{pipeline\+\_\+impl.\+hpp}}\item 
+C\+:/\+Users/aljaz/\+Documents/\+Visual\+Studio\+Code\+Projects/\+Logi/src/logi/program/\mbox{\hyperlink{pipeline__impl_8cpp}{pipeline\+\_\+impl.\+cpp}}\end{DoxyCompactItemize}

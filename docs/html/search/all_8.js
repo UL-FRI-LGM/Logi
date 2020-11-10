@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['id_429',['id',['../structlogi_1_1_specialization_constant_reflection_info.html#a2ec896c1ab9944bb711d3d27816a9185',1,'logi::SpecializationConstantReflectionInfo::id()'],['../classlogi_1_1_handle.html#aebdd29f3dc550f1dddf340363add4341',1,'logi::Handle::id()'],['../classlogi_1_1_vulkan_object.html#a228d983c6b7d202aa7e1f372856cc707',1,'logi::VulkanObject::id()']]],
+  ['illegalinvocation_430',['IllegalInvocation',['../classlogi_1_1_illegal_invocation.html',1,'logi']]],
+  ['image_431',['Image',['../classlogi_1_1_image.html',1,'logi']]],
+  ['image_2ecpp_432',['image.cpp',['../image_8cpp.html',1,'']]],
+  ['image_2ehpp_433',['image.hpp',['../image_8hpp.html',1,'']]],
+  ['image_5fimpl_2ecpp_434',['image_impl.cpp',['../image__impl_8cpp.html',1,'']]],
+  ['image_5fimpl_2ehpp_435',['image_impl.hpp',['../image__impl_8hpp.html',1,'']]],
+  ['image_5fview_2ecpp_436',['image_view.cpp',['../image__view_8cpp.html',1,'']]],
+  ['image_5fview_2ehpp_437',['image_view.hpp',['../image__view_8hpp.html',1,'']]],
+  ['image_5fview_5fimpl_2ecpp_438',['image_view_impl.cpp',['../image__view__impl_8cpp.html',1,'']]],
+  ['image_5fview_5fimpl_2ehpp_439',['image_view_impl.hpp',['../image__view__impl_8hpp.html',1,'']]],
+  ['imageimpl_440',['ImageImpl',['../classlogi_1_1_image_impl.html',1,'logi::ImageImpl'],['../classlogi_1_1_image_impl.html#ad04b7a856b3e0b16a8c0d21f37273f11',1,'logi::ImageImpl::ImageImpl(LogicalDeviceImpl &amp;logicalDevice, const vk::ImageCreateInfo &amp;createInfo, const std::optional&lt; vk::AllocationCallbacks &gt; &amp;allocator={})'],['../classlogi_1_1_image_impl.html#a7986dcc476bb1c4375b7b3c4397cae17',1,'logi::ImageImpl::ImageImpl(LogicalDeviceImpl &amp;logicalDevice, const vk::Image &amp;image)']]],
+  ['imageview_441',['ImageView',['../classlogi_1_1_image_view.html',1,'logi']]],
+  ['imageviewimpl_442',['ImageViewImpl',['../classlogi_1_1_image_view_impl.html',1,'logi::ImageViewImpl'],['../classlogi_1_1_image_view_impl.html#a53cdb7d135b9c2397afa9946a6ddbd9b',1,'logi::ImageViewImpl::ImageViewImpl()']]],
+  ['importfdkhr_443',['importFdKHR',['../classlogi_1_1_fence.html#a4fa684647a0bab2344084de81102d045',1,'logi::Fence::importFdKHR()'],['../classlogi_1_1_fence_impl.html#a7b5a4317be66d0a7f52ab65f8eae80dd',1,'logi::FenceImpl::importFdKHR()']]],
+  ['indirect_5fcommands_5flayout_5fnvx_2ecpp_444',['indirect_commands_layout_nvx.cpp',['../indirect__commands__layout__nvx_8cpp.html',1,'']]],
+  ['indirect_5fcommands_5flayout_5fnvx_2ehpp_445',['indirect_commands_layout_nvx.hpp',['../indirect__commands__layout__nvx_8hpp.html',1,'']]],
+  ['indirect_5fcommands_5flayout_5fnvx_5fimpl_2ecpp_446',['indirect_commands_layout_nvx_impl.cpp',['../indirect__commands__layout__nvx__impl_8cpp.html',1,'']]],
+  ['indirect_5fcommands_5flayout_5fnvx_5fimpl_2ehpp_447',['indirect_commands_layout_nvx_impl.hpp',['../indirect__commands__layout__nvx__impl_8hpp.html',1,'']]],
+  ['indirectcommandslayoutnvx_448',['IndirectCommandsLayoutNVX',['../classlogi_1_1_indirect_commands_layout_n_v_x.html',1,'logi']]],
+  ['indirectcommandslayoutnvximpl_449',['IndirectCommandsLayoutNVXImpl',['../classlogi_1_1_indirect_commands_layout_n_v_x_impl.html',1,'logi::IndirectCommandsLayoutNVXImpl'],['../classlogi_1_1_indirect_commands_layout_n_v_x_impl.html#adffcd110fb51552bf0a41fd2773367ee',1,'logi::IndirectCommandsLayoutNVXImpl::IndirectCommandsLayoutNVXImpl()']]],
+  ['initializationerror_450',['InitializationError',['../classlogi_1_1_initialization_error.html',1,'logi']]],
+  ['insertdebugutilslabelext_451',['insertDebugUtilsLabelEXT',['../classlogi_1_1_command_buffer.html#adeffeffc116b7accb4968ed86791e671',1,'logi::CommandBuffer::insertDebugUtilsLabelEXT()'],['../classlogi_1_1_command_buffer_impl.html#a2357a8fe87b814813e9a68bc8c6ef1ec',1,'logi::CommandBufferImpl::insertDebugUtilsLabelEXT()'],['../classlogi_1_1_queue.html#a31b7ffe84e7a565c906dacfec117b41a',1,'logi::Queue::insertDebugUtilsLabelEXT()'],['../classlogi_1_1_queue_impl.html#ac54eea1e76f9d5cde619676bbfd6b87c',1,'logi::QueueImpl::insertDebugUtilsLabelEXT()']]],
+  ['invalidatemappedmemoryranges_452',['invalidateMappedMemoryRanges',['../classlogi_1_1_logical_device.html#a26ee7d3b8c260e1eebc5f1933e48e618',1,'logi::LogicalDevice::invalidateMappedMemoryRanges()'],['../classlogi_1_1_logical_device_impl.html#a672e9734079717ef2728da5571e15ea9',1,'logi::LogicalDeviceImpl::invalidateMappedMemoryRanges()']]],
+  ['ismappable_453',['isMappable',['../classlogi_1_1_v_m_a_acceleration_structure_n_v.html#a31e0a524985cc88f3d4100853ed873f7',1,'logi::VMAAccelerationStructureNV::isMappable()'],['../classlogi_1_1_v_m_a_acceleration_structure_n_v_impl.html#af108b4a6572a38dd096765d14355e5f7',1,'logi::VMAAccelerationStructureNVImpl::isMappable()'],['../classlogi_1_1_v_m_a_buffer.html#a000c854ff29cfa5b63aed55ab8997235',1,'logi::VMABuffer::isMappable()'],['../classlogi_1_1_v_m_a_buffer_impl.html#a4cba5aac5e317152ab59d7e40829e006',1,'logi::VMABufferImpl::isMappable()'],['../classlogi_1_1_v_m_a_image.html#ab286ae70d15fb43e6e9e328ad75798ca',1,'logi::VMAImage::isMappable()'],['../classlogi_1_1_v_m_a_image_impl.html#a48204e963d069ecea332f2e75d8b2b2f',1,'logi::VMAImageImpl::isMappable()']]]
+];

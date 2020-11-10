@@ -253,17 +253,17 @@ class LogicalDeviceImpl : public VulkanObject,
 
   void destroyAccelerationStructureNV(size_t id);
 
-  const std::shared_ptr<IndirectCommandsLayoutNVXImpl>& createIndirectCommandsLayoutNVXIndirectCommandsLayoutNVX(
+  const std::shared_ptr<IndirectCommandsLayoutNVXImpl>& createIndirectCommandsLayoutNVX(
     const vk::IndirectCommandsLayoutCreateInfoNVX& createInfo,
     const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroyIndirectCommandsLayoutNVX(size_t id);
 
-  const std::shared_ptr<ObjectTableNVXImpl>&
-    createObjectTableNVX(const vk::ObjectTableCreateInfoNVX& createInfo,
-                         const std::optional<vk::AllocationCallbacks>& allocator = {});
+  // const std::shared_ptr<ObjectTableNVXImpl>&
+  //   createObjectTableNVX(const vk::ObjectTableCreateInfoNVX& createInfo,
+  //                        const std::optional<vk::AllocationCallbacks>& allocator = {});
 
-  void destroyObjectTableNVX(size_t id);
+  // void destroyObjectTableNVX(size_t id);
 
   std::vector<std::shared_ptr<QueueFamilyImpl>> enumerateQueueFamilies() const;
 

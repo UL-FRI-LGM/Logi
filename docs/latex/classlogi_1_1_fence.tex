@@ -1,0 +1,189 @@
+\hypertarget{classlogi_1_1_fence}{}\doxysection{logi\+::Fence Class Reference}
+\label{classlogi_1_1_fence}\index{logi::Fence@{logi::Fence}}
+
+
+{\ttfamily \#include $<$fence.\+hpp$>$}
+
+
+
+Inheritance diagram for logi\+::Fence\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=211pt]{classlogi_1_1_fence__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for logi\+::Fence\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=211pt]{classlogi_1_1_fence__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+vk\+::\+Result \mbox{\hyperlink{classlogi_1_1_fence_a8cf591f8e387cf25e1295f5ba01855d3}{get\+Status}} () const
+\item 
+vk\+::\+Result \mbox{\hyperlink{classlogi_1_1_fence_a4e38e4861019c47dbf08d840c914076d}{wait}} (const std\+::vector$<$ vk\+::\+Fence $>$ \&fences, vk\+::\+Bool32 wait\+All, uint64\+\_\+t timeout) const
+\item 
+vk\+::\+Result \mbox{\hyperlink{classlogi_1_1_fence_a22f56e03f1a7283f7d1805dd1194e0d3}{wait}} (uint64\+\_\+t timeout) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_fence_a2b8964ad28bf2fd0b7d52f62a278b33e}{reset}} (const std\+::vector$<$ vk\+::\+Fence $>$ \&fences) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_fence_a4c12576b9d66e61602b2c207db6c979b}{reset}} () const
+\item 
+vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_fence_a4fa684647a0bab2344084de81102d045}{import\+Fd\+K\+HR}} (const vk\+::\+Fence\+Import\+Flags \&flags, vk\+::\+External\+Fence\+Handle\+Type\+Flag\+Bits handle\+Type, int fd, const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Import\+Fence\+Fd\+Info\+K\+HR $>$ \&next=\{\}) const
+\item 
+vk\+::\+Result\+Value\+Type$<$ int $>$\+::type \mbox{\hyperlink{classlogi_1_1_fence_a5fae2cb1c5f416636946efe12bd90801}{get\+Fd\+K\+HR}} (vk\+::\+External\+Fence\+Handle\+Type\+Flag\+Bits handle\+Type, const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Fence\+Get\+Fd\+Info\+K\+HR $>$ \&next=\{\}) const
+\item 
+\mbox{\hyperlink{classlogi_1_1_vulkan_instance}{Vulkan\+Instance}} \mbox{\hyperlink{classlogi_1_1_fence_a978fa2548ba09e881bf06a90e2ae473f}{get\+Instance}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_physical_device}{Physical\+Device}} \mbox{\hyperlink{classlogi_1_1_fence_a67c2f200167cf106336a12542a80a62e}{get\+Physical\+Device}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_logical_device}{Logical\+Device}} \mbox{\hyperlink{classlogi_1_1_fence_ae73262a35ee7c7def9b391aa1e1fafee}{get\+Logical\+Device}} () const
+\item 
+const vk\+::\+Dispatch\+Loader\+Dynamic \& \mbox{\hyperlink{classlogi_1_1_fence_ac08084bf48218ea2dc79ea815171fce2}{get\+Dispatcher}} () const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_fence_a0e6c578eac972007627092110e7f8972}{destroy}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_fence_a6a77a67266cdf2d7068b6167ece13125}{operator const vk\+::\+Fence \&}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_fence_a573850795cef46e5e0c9acc997cce250}{Handle}} ()=default
+\begin{DoxyCompactList}\small\item\em Default null handle constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classlogi_1_1_fence_afd9a0687dd950205ac03c19afca4c553}{Handle}} (std\+::shared\+\_\+ptr$<$ T $>$ object)
+\begin{DoxyCompactList}\small\item\em Initialize the referred object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static vk\+::\+Result \mbox{\hyperlink{classlogi_1_1_fence_a4f49dd25b4ce43fd9e6a7427d7e7aee5}{wait}} (const std\+::vector$<$ \mbox{\hyperlink{classlogi_1_1_fence}{Fence}} $>$ \&fences, vk\+::\+Bool32 wait\+All, uint64\+\_\+t timeout)
+\item 
+static vk\+::\+Result\+Value\+Type$<$ void $>$\+::type \mbox{\hyperlink{classlogi_1_1_fence_afd30ca55954306c38f3d14d5cda07ea2}{reset}} (const std\+::vector$<$ \mbox{\hyperlink{classlogi_1_1_fence}{Fence}} $>$ \&fences)
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogi_1_1_fence_a0e6c578eac972007627092110e7f8972}\label{classlogi_1_1_fence_a0e6c578eac972007627092110e7f8972}} 
+\index{logi::Fence@{logi::Fence}!destroy@{destroy}}
+\index{destroy@{destroy}!logi::Fence@{logi::Fence}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily void logi\+::\+Fence\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_fence_ac08084bf48218ea2dc79ea815171fce2}\label{classlogi_1_1_fence_ac08084bf48218ea2dc79ea815171fce2}} 
+\index{logi::Fence@{logi::Fence}!getDispatcher@{getDispatcher}}
+\index{getDispatcher@{getDispatcher}!logi::Fence@{logi::Fence}}
+\doxysubsubsection{\texorpdfstring{getDispatcher()}{getDispatcher()}}
+{\footnotesize\ttfamily const vk\+::\+Dispatch\+Loader\+Dynamic \& logi\+::\+Fence\+::get\+Dispatcher (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_fence_a5fae2cb1c5f416636946efe12bd90801}\label{classlogi_1_1_fence_a5fae2cb1c5f416636946efe12bd90801}} 
+\index{logi::Fence@{logi::Fence}!getFdKHR@{getFdKHR}}
+\index{getFdKHR@{getFdKHR}!logi::Fence@{logi::Fence}}
+\doxysubsubsection{\texorpdfstring{getFdKHR()}{getFdKHR()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ int $>$\+::type logi\+::\+Fence\+::get\+Fd\+K\+HR (\begin{DoxyParamCaption}\item[{vk\+::\+External\+Fence\+Handle\+Type\+Flag\+Bits}]{handle\+Type,  }\item[{const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Fence\+Get\+Fd\+Info\+K\+HR $>$ \&}]{next = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_fence_a978fa2548ba09e881bf06a90e2ae473f}\label{classlogi_1_1_fence_a978fa2548ba09e881bf06a90e2ae473f}} 
+\index{logi::Fence@{logi::Fence}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!logi::Fence@{logi::Fence}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_vulkan_instance}{Vulkan\+Instance}} logi\+::\+Fence\+::get\+Instance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_fence_ae73262a35ee7c7def9b391aa1e1fafee}\label{classlogi_1_1_fence_ae73262a35ee7c7def9b391aa1e1fafee}} 
+\index{logi::Fence@{logi::Fence}!getLogicalDevice@{getLogicalDevice}}
+\index{getLogicalDevice@{getLogicalDevice}!logi::Fence@{logi::Fence}}
+\doxysubsubsection{\texorpdfstring{getLogicalDevice()}{getLogicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_logical_device}{Logical\+Device}} logi\+::\+Fence\+::get\+Logical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_fence_a67c2f200167cf106336a12542a80a62e}\label{classlogi_1_1_fence_a67c2f200167cf106336a12542a80a62e}} 
+\index{logi::Fence@{logi::Fence}!getPhysicalDevice@{getPhysicalDevice}}
+\index{getPhysicalDevice@{getPhysicalDevice}!logi::Fence@{logi::Fence}}
+\doxysubsubsection{\texorpdfstring{getPhysicalDevice()}{getPhysicalDevice()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_physical_device}{Physical\+Device}} logi\+::\+Fence\+::get\+Physical\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_fence_a8cf591f8e387cf25e1295f5ba01855d3}\label{classlogi_1_1_fence_a8cf591f8e387cf25e1295f5ba01855d3}} 
+\index{logi::Fence@{logi::Fence}!getStatus@{getStatus}}
+\index{getStatus@{getStatus}!logi::Fence@{logi::Fence}}
+\doxysubsubsection{\texorpdfstring{getStatus()}{getStatus()}}
+{\footnotesize\ttfamily vk\+::\+Result logi\+::\+Fence\+::get\+Status (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_fence_a573850795cef46e5e0c9acc997cce250}\label{classlogi_1_1_fence_a573850795cef46e5e0c9acc997cce250}} 
+\index{logi::Fence@{logi::Fence}!Handle@{Handle}}
+\index{Handle@{Handle}!logi::Fence@{logi::Fence}}
+\doxysubsubsection{\texorpdfstring{Handle()}{Handle()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_handle}{logi\+::\+Handle}}$<$ T $>$\+::\mbox{\hyperlink{classlogi_1_1_handle}{Handle}}\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+Default null handle constructor. 
+
+\mbox{\Hypertarget{classlogi_1_1_fence_afd9a0687dd950205ac03c19afca4c553}\label{classlogi_1_1_fence_afd9a0687dd950205ac03c19afca4c553}} 
+\index{logi::Fence@{logi::Fence}!Handle@{Handle}}
+\index{Handle@{Handle}!logi::Fence@{logi::Fence}}
+\doxysubsubsection{\texorpdfstring{Handle()}{Handle()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_handle}{logi\+::\+Handle}}$<$ T $>$\+::\mbox{\hyperlink{classlogi_1_1_handle}{Handle}}\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Initialize the referred object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & Referred object. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlogi_1_1_fence_a4fa684647a0bab2344084de81102d045}\label{classlogi_1_1_fence_a4fa684647a0bab2344084de81102d045}} 
+\index{logi::Fence@{logi::Fence}!importFdKHR@{importFdKHR}}
+\index{importFdKHR@{importFdKHR}!logi::Fence@{logi::Fence}}
+\doxysubsubsection{\texorpdfstring{importFdKHR()}{importFdKHR()}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Fence\+::import\+Fd\+K\+HR (\begin{DoxyParamCaption}\item[{const vk\+::\+Fence\+Import\+Flags \&}]{flags,  }\item[{vk\+::\+External\+Fence\+Handle\+Type\+Flag\+Bits}]{handle\+Type,  }\item[{int}]{fd,  }\item[{const \mbox{\hyperlink{classlogi_1_1_const_vk_next_proxy}{Const\+Vk\+Next\+Proxy}}$<$ vk\+::\+Import\+Fence\+Fd\+Info\+K\+HR $>$ \&}]{next = {\ttfamily \{\}} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_fence_a6a77a67266cdf2d7068b6167ece13125}\label{classlogi_1_1_fence_a6a77a67266cdf2d7068b6167ece13125}} 
+\index{logi::Fence@{logi::Fence}!operator const vk::Fence \&@{operator const vk::Fence \&}}
+\index{operator const vk::Fence \&@{operator const vk::Fence \&}!logi::Fence@{logi::Fence}}
+\doxysubsubsection{\texorpdfstring{operator const vk::Fence \&()}{operator const vk::Fence \&()}}
+{\footnotesize\ttfamily logi\+::\+Fence\+::operator const vk\+::\+Fence \& (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_fence_a4c12576b9d66e61602b2c207db6c979b}\label{classlogi_1_1_fence_a4c12576b9d66e61602b2c207db6c979b}} 
+\index{logi::Fence@{logi::Fence}!reset@{reset}}
+\index{reset@{reset}!logi::Fence@{logi::Fence}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Fence\+::reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_fence_afd30ca55954306c38f3d14d5cda07ea2}\label{classlogi_1_1_fence_afd30ca55954306c38f3d14d5cda07ea2}} 
+\index{logi::Fence@{logi::Fence}!reset@{reset}}
+\index{reset@{reset}!logi::Fence@{logi::Fence}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Fence\+::reset (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classlogi_1_1_fence}{Fence}} $>$ \&}]{fences }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classlogi_1_1_fence_a2b8964ad28bf2fd0b7d52f62a278b33e}\label{classlogi_1_1_fence_a2b8964ad28bf2fd0b7d52f62a278b33e}} 
+\index{logi::Fence@{logi::Fence}!reset@{reset}}
+\index{reset@{reset}!logi::Fence@{logi::Fence}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily vk\+::\+Result\+Value\+Type$<$ void $>$\+::type logi\+::\+Fence\+::reset (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ vk\+::\+Fence $>$ \&}]{fences }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_fence_a4f49dd25b4ce43fd9e6a7427d7e7aee5}\label{classlogi_1_1_fence_a4f49dd25b4ce43fd9e6a7427d7e7aee5}} 
+\index{logi::Fence@{logi::Fence}!wait@{wait}}
+\index{wait@{wait}!logi::Fence@{logi::Fence}}
+\doxysubsubsection{\texorpdfstring{wait()}{wait()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily vk\+::\+Result logi\+::\+Fence\+::wait (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classlogi_1_1_fence}{Fence}} $>$ \&}]{fences,  }\item[{vk\+::\+Bool32}]{wait\+All,  }\item[{uint64\+\_\+t}]{timeout }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classlogi_1_1_fence_a4e38e4861019c47dbf08d840c914076d}\label{classlogi_1_1_fence_a4e38e4861019c47dbf08d840c914076d}} 
+\index{logi::Fence@{logi::Fence}!wait@{wait}}
+\index{wait@{wait}!logi::Fence@{logi::Fence}}
+\doxysubsubsection{\texorpdfstring{wait()}{wait()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily vk\+::\+Result logi\+::\+Fence\+::wait (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ vk\+::\+Fence $>$ \&}]{fences,  }\item[{vk\+::\+Bool32}]{wait\+All,  }\item[{uint64\+\_\+t}]{timeout }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_fence_a22f56e03f1a7283f7d1805dd1194e0d3}\label{classlogi_1_1_fence_a22f56e03f1a7283f7d1805dd1194e0d3}} 
+\index{logi::Fence@{logi::Fence}!wait@{wait}}
+\index{wait@{wait}!logi::Fence@{logi::Fence}}
+\doxysubsubsection{\texorpdfstring{wait()}{wait()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily vk\+::\+Result logi\+::\+Fence\+::wait (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{timeout }\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+logi/synchronization/\mbox{\hyperlink{fence_8hpp}{fence.\+hpp}}\item 
+C\+:/\+Users/aljaz/\+Documents/\+Visual\+Studio\+Code\+Projects/\+Logi/src/logi/synchronization/\mbox{\hyperlink{fence_8cpp}{fence.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,7 @@
+var searchData=
+[
+  ['name_476',['name',['../structlogi_1_1_specialization_constant_reflection_info.html#a476a55de75a450d841a933dd10e40337',1,'logi::SpecializationConstantReflectionInfo::name()'],['../structlogi_1_1_descriptor_binding_reflection_info.html#ab87170be05a8a5515debb3ef99012a19',1,'logi::DescriptorBindingReflectionInfo::name()'],['../structlogi_1_1_vertex_attribute_reflection_info.html#a8a9ef4e12daf1e63ec1840138cb8b75a',1,'logi::VertexAttributeReflectionInfo::name()'],['../structlogi_1_1_entry_point_reflection_info.html#a4c45ccdd2d57c65d993f51b15519da1b',1,'logi::EntryPointReflectionInfo::name()']]],
+  ['nextsubpass_477',['nextSubpass',['../classlogi_1_1_command_buffer.html#a1c5941b70b40fb2422a8e61543952059',1,'logi::CommandBuffer::nextSubpass()'],['../classlogi_1_1_command_buffer_impl.html#a4ef437db45ffa078b644c6cf3ba85b0d',1,'logi::CommandBufferImpl::nextSubpass()']]],
+  ['nextsubpass2_478',['nextSubpass2',['../classlogi_1_1_command_buffer.html#a015a727097c2f9ba2a5550c3df01758f',1,'logi::CommandBuffer::nextSubpass2()'],['../classlogi_1_1_command_buffer_impl.html#aa2edf98ac0ee796e2d9ca08ae7956d89',1,'logi::CommandBufferImpl::nextSubpass2()']]],
+  ['nextsubpass2khr_479',['nextSubpass2KHR',['../classlogi_1_1_command_buffer.html#a713ba1e9c168b004dd3a203f659d5710',1,'logi::CommandBuffer::nextSubpass2KHR()'],['../classlogi_1_1_command_buffer_impl.html#ad56b494697e84d07ac39f24ff3f93cde',1,'logi::CommandBufferImpl::nextSubpass2KHR()']]]
+];

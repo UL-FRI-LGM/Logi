@@ -1,0 +1,135 @@
+\hypertarget{classlogi_1_1_vulkan_object}{}\doxysection{logi\+::Vulkan\+Object Class Reference}
+\label{classlogi_1_1_vulkan_object}\index{logi::VulkanObject@{logi::VulkanObject}}
+
+
+{\ttfamily \#include $<$vulkan\+\_\+object.\+hpp$>$}
+
+
+
+Inheritance diagram for logi\+::Vulkan\+Object\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{classlogi_1_1_vulkan_object__inherit__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlogi_1_1_vulkan_object_ac4f663bea6959b0ecd427fa063361aa3}{Vulkan\+Object}} (bool \mbox{\hyperlink{classlogi_1_1_vulkan_object_a86714d6e287f7b4c788c72b80d7f9ec9}{valid}}=true)
+\begin{DoxyCompactList}\small\item\em Initialize \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classlogi_1_1_vulkan_object_a228d983c6b7d202aa7e1f372856cc707}{id}} () const
+\begin{DoxyCompactList}\small\item\em Retrieve \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}} unique identifier. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classlogi_1_1_vulkan_object_aee0a0303e31b39fb9d52ea60255cd9e9}{operator bool}} () const
+\begin{DoxyCompactList}\small\item\em Converts to true if the \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}} is valid. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classlogi_1_1_vulkan_object_a7b0edd860df9600547bef5c61428ad7d}{operator!}} () const
+\begin{DoxyCompactList}\small\item\em Return true if the \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}} is not valid. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classlogi_1_1_vulkan_object_a86714d6e287f7b4c788c72b80d7f9ec9}{valid}} () const
+\begin{DoxyCompactList}\small\item\em Return true if the \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}} is valid. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classlogi_1_1_vulkan_object_a7a5cafb30933f8bbd0d4e89e14477f4a}{free}} ()
+\begin{DoxyCompactList}\small\item\em Invalidates \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. Overriding implementations should free the object\textquotesingle{}s resources and invoke \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}\textquotesingle{}s free. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T $>$ }\\class \mbox{\hyperlink{classlogi_1_1_vulkan_object_a0c65dbfb3346fbc3825750227eeb47de}{Vulkan\+Object\+Composite}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlogi_1_1_vulkan_object_ac4f663bea6959b0ecd427fa063361aa3}\label{classlogi_1_1_vulkan_object_ac4f663bea6959b0ecd427fa063361aa3}} 
+\index{logi::VulkanObject@{logi::VulkanObject}!VulkanObject@{VulkanObject}}
+\index{VulkanObject@{VulkanObject}!logi::VulkanObject@{logi::VulkanObject}}
+\doxysubsubsection{\texorpdfstring{VulkanObject()}{VulkanObject()}}
+{\footnotesize\ttfamily logi\+::\+Vulkan\+Object\+::\+Vulkan\+Object (\begin{DoxyParamCaption}\item[{bool}]{valid = {\ttfamily true} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Initialize \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em valid} & Initial validity state. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogi_1_1_vulkan_object_a7a5cafb30933f8bbd0d4e89e14477f4a}\label{classlogi_1_1_vulkan_object_a7a5cafb30933f8bbd0d4e89e14477f4a}} 
+\index{logi::VulkanObject@{logi::VulkanObject}!free@{free}}
+\index{free@{free}!logi::VulkanObject@{logi::VulkanObject}}
+\doxysubsubsection{\texorpdfstring{free()}{free()}}
+{\footnotesize\ttfamily void logi\+::\+Vulkan\+Object\+::free (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Invalidates \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}. Overriding implementations should free the object\textquotesingle{}s resources and invoke \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}}\textquotesingle{}s free. 
+
+
+
+Reimplemented in \mbox{\hyperlink{classlogi_1_1_semaphore_impl_a4e338493f17c26678423a4104f0d4ca3}{logi\+::\+Semaphore\+Impl}}, \mbox{\hyperlink{classlogi_1_1_fence_impl_a1390411bb5f17d3e4b5d6874851e7b0f}{logi\+::\+Fence\+Impl}}, \mbox{\hyperlink{classlogi_1_1_event_impl_afbdf77dc44be19afd8cbe9016e0f5f5c}{logi\+::\+Event\+Impl}}, \mbox{\hyperlink{classlogi_1_1_swapchain_k_h_r_impl_afd245477f9de9fa26722fa8b8cc4292a}{logi\+::\+Swapchain\+K\+H\+R\+Impl}}, \mbox{\hyperlink{classlogi_1_1_swapchain_image_impl_acd0bb710e78da93d2add616675d9f56c}{logi\+::\+Swapchain\+Image\+Impl}}, \mbox{\hyperlink{classlogi_1_1_surface_k_h_r_impl_a760a8cbf5be74661df1500b6335f79f9}{logi\+::\+Surface\+K\+H\+R\+Impl}}, \mbox{\hyperlink{classlogi_1_1_render_pass_impl_a15aadae664793a4a057d7b98d4b899c4}{logi\+::\+Render\+Pass\+Impl}}, \mbox{\hyperlink{classlogi_1_1_framebuffer_impl_a43a5dcdf68eae6d0b7f7ae2e4aeb398e}{logi\+::\+Framebuffer\+Impl}}, \mbox{\hyperlink{classlogi_1_1_queue_impl_a3b733e22e77e59416dec02191e26875f}{logi\+::\+Queue\+Impl}}, \mbox{\hyperlink{classlogi_1_1_queue_family_impl_a6e5a716383a95de0da8a4e414a466763}{logi\+::\+Queue\+Family\+Impl}}, \mbox{\hyperlink{classlogi_1_1_query_pool_impl_a6c46437fb47e553fea5a463f5c551f5c}{logi\+::\+Query\+Pool\+Impl}}, \mbox{\hyperlink{classlogi_1_1_validation_cache_e_x_t_impl_a4a10bf4be78c488922d9572fab861f2b}{logi\+::\+Validation\+Cache\+E\+X\+T\+Impl}}, \mbox{\hyperlink{classlogi_1_1_shader_module_impl_a9d8488b90b7cc00d05102397ee1cbb31}{logi\+::\+Shader\+Module\+Impl}}, \mbox{\hyperlink{classlogi_1_1_pipeline_layout_impl_ab0f4a46ccf68fd71492971d73a28976c}{logi\+::\+Pipeline\+Layout\+Impl}}, \mbox{\hyperlink{classlogi_1_1_pipeline_impl_a8087130cceaa53204494b30aa773f84a}{logi\+::\+Pipeline\+Impl}}, \mbox{\hyperlink{classlogi_1_1_pipeline_cache_impl_af8e02a0647c9a3ba524916a382fd210d}{logi\+::\+Pipeline\+Cache\+Impl}}, \mbox{\hyperlink{classlogi_1_1_descriptor_set_layout_impl_a4cc671471bf4480e994db8a82d93f5b7}{logi\+::\+Descriptor\+Set\+Layout\+Impl}}, \mbox{\hyperlink{classlogi_1_1_object_table_n_v_x_impl_a3a87bb7c9ea335f4904761129b46474d}{logi\+::\+Object\+Table\+N\+V\+X\+Impl}}, \mbox{\hyperlink{classlogi_1_1_indirect_commands_layout_n_v_x_impl_a67e718c23e7fe9255f7231a0448929cf}{logi\+::\+Indirect\+Commands\+Layout\+N\+V\+X\+Impl}}, \mbox{\hyperlink{classlogi_1_1_v_m_a_image_impl_a8c5e46ee1894ffafb74404c8c7fb9ff0}{logi\+::\+V\+M\+A\+Image\+Impl}}, \mbox{\hyperlink{classlogi_1_1_v_m_a_buffer_impl_ad6b5ef45c65c68e8dc1073a3b8829441}{logi\+::\+V\+M\+A\+Buffer\+Impl}}, \mbox{\hyperlink{classlogi_1_1_v_m_a_acceleration_structure_n_v_impl_aaf25df893f13a98042ef1344ac18014f}{logi\+::\+V\+M\+A\+Acceleration\+Structure\+N\+V\+Impl}}, \mbox{\hyperlink{classlogi_1_1_sampler_ycbcr_conversion_impl_aee7a9a4af0d006da17ad9238083a22cc}{logi\+::\+Sampler\+Ycbcr\+Conversion\+Impl}}, \mbox{\hyperlink{classlogi_1_1_sampler_impl_ac02982d3fcc91a64645b752c5c25128b}{logi\+::\+Sampler\+Impl}}, \mbox{\hyperlink{classlogi_1_1_memory_allocator_impl_a57b11afa1ca766bf9f92d534fd59d7bc}{logi\+::\+Memory\+Allocator\+Impl}}, \mbox{\hyperlink{classlogi_1_1_image_view_impl_a7c011cb76b8c4378686171289740ea19}{logi\+::\+Image\+View\+Impl}}, \mbox{\hyperlink{classlogi_1_1_image_impl_a1d8805af51dbf266fdb11f609b2f3a96}{logi\+::\+Image\+Impl}}, \mbox{\hyperlink{classlogi_1_1_device_memory_impl_a1a4a6fdf9663f5004b59256c8c5f237c}{logi\+::\+Device\+Memory\+Impl}}, \mbox{\hyperlink{classlogi_1_1_buffer_view_impl_a4e6f23cc6396328a0b733b93ad6227ad}{logi\+::\+Buffer\+View\+Impl}}, \mbox{\hyperlink{classlogi_1_1_buffer_impl_a16a66737455897824c6f33eec2f566a8}{logi\+::\+Buffer\+Impl}}, \mbox{\hyperlink{classlogi_1_1_acceleration_structure_n_v_impl_af5178be86c0eb483253f8219e227e553}{logi\+::\+Acceleration\+Structure\+N\+V\+Impl}}, \mbox{\hyperlink{classlogi_1_1_vulkan_instance_impl_a9119da9f38157bd84022faa2c2e2af0c}{logi\+::\+Vulkan\+Instance\+Impl}}, \mbox{\hyperlink{classlogi_1_1_debug_utils_messenger_e_x_t_impl_a0fba8cdbf3ea3e42df8c5bb0503c99d0}{logi\+::\+Debug\+Utils\+Messenger\+E\+X\+T\+Impl}}, \mbox{\hyperlink{classlogi_1_1_debug_report_callback_e_x_t_impl_a2194a8731c852938179f96ade0f34ac8}{logi\+::\+Debug\+Report\+Callback\+E\+X\+T\+Impl}}, \mbox{\hyperlink{classlogi_1_1_physical_device_impl_a221e6ff4b3a45c66cd71492120f1455c}{logi\+::\+Physical\+Device\+Impl}}, \mbox{\hyperlink{classlogi_1_1_logical_device_impl_afa1f556812ccc3f4c12ded6958d10026}{logi\+::\+Logical\+Device\+Impl}}, \mbox{\hyperlink{classlogi_1_1_display_mode_k_h_r_impl_a88cef81d4cc856b256d1d96f3e0cfc1c}{logi\+::\+Display\+Mode\+K\+H\+R\+Impl}}, \mbox{\hyperlink{classlogi_1_1_descriptor_update_template_impl_aecbf818f70188b6c2384e5e94add46ae}{logi\+::\+Descriptor\+Update\+Template\+Impl}}, \mbox{\hyperlink{classlogi_1_1_descriptor_set_impl_a35e45cdacba8fd412e72cd5313afbc87}{logi\+::\+Descriptor\+Set\+Impl}}, \mbox{\hyperlink{classlogi_1_1_descriptor_pool_impl_ab644db1532617a49fa879e7bab961e84}{logi\+::\+Descriptor\+Pool\+Impl}}, \mbox{\hyperlink{classlogi_1_1_command_pool_impl_ad475db9a69159cf7fbf7c339e4970788}{logi\+::\+Command\+Pool\+Impl}}, and \mbox{\hyperlink{classlogi_1_1_command_buffer_impl_a6a701d682f0fd19f9c943153da02f611}{logi\+::\+Command\+Buffer\+Impl}}.
+
+\mbox{\Hypertarget{classlogi_1_1_vulkan_object_a228d983c6b7d202aa7e1f372856cc707}\label{classlogi_1_1_vulkan_object_a228d983c6b7d202aa7e1f372856cc707}} 
+\index{logi::VulkanObject@{logi::VulkanObject}!id@{id}}
+\index{id@{id}!logi::VulkanObject@{logi::VulkanObject}}
+\doxysubsubsection{\texorpdfstring{id()}{id()}}
+{\footnotesize\ttfamily size\+\_\+t logi\+::\+Vulkan\+Object\+::id (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Retrieve \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}} unique identifier. 
+
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classlogi_1_1_handle}{Handle}} unique identifier. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlogi_1_1_vulkan_object_aee0a0303e31b39fb9d52ea60255cd9e9}\label{classlogi_1_1_vulkan_object_aee0a0303e31b39fb9d52ea60255cd9e9}} 
+\index{logi::VulkanObject@{logi::VulkanObject}!operator bool@{operator bool}}
+\index{operator bool@{operator bool}!logi::VulkanObject@{logi::VulkanObject}}
+\doxysubsubsection{\texorpdfstring{operator bool()}{operator bool()}}
+{\footnotesize\ttfamily logi\+::\+Vulkan\+Object\+::operator bool (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Converts to true if the \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}} is valid. 
+
+\mbox{\Hypertarget{classlogi_1_1_vulkan_object_a7b0edd860df9600547bef5c61428ad7d}\label{classlogi_1_1_vulkan_object_a7b0edd860df9600547bef5c61428ad7d}} 
+\index{logi::VulkanObject@{logi::VulkanObject}!operator"!@{operator"!}}
+\index{operator"!@{operator"!}!logi::VulkanObject@{logi::VulkanObject}}
+\doxysubsubsection{\texorpdfstring{operator"!()}{operator!()}}
+{\footnotesize\ttfamily bool logi\+::\+Vulkan\+Object\+::operator! (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Return true if the \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}} is not valid. 
+
+\mbox{\Hypertarget{classlogi_1_1_vulkan_object_a86714d6e287f7b4c788c72b80d7f9ec9}\label{classlogi_1_1_vulkan_object_a86714d6e287f7b4c788c72b80d7f9ec9}} 
+\index{logi::VulkanObject@{logi::VulkanObject}!valid@{valid}}
+\index{valid@{valid}!logi::VulkanObject@{logi::VulkanObject}}
+\doxysubsubsection{\texorpdfstring{valid()}{valid()}}
+{\footnotesize\ttfamily bool logi\+::\+Vulkan\+Object\+::valid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Return true if the \mbox{\hyperlink{classlogi_1_1_vulkan_object}{Vulkan\+Object}} is valid. 
+
+\begin{DoxyReturn}{Returns}
+true If object is valid. 
+\end{DoxyReturn}
+
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classlogi_1_1_vulkan_object_a0c65dbfb3346fbc3825750227eeb47de}\label{classlogi_1_1_vulkan_object_a0c65dbfb3346fbc3825750227eeb47de}} 
+\index{logi::VulkanObject@{logi::VulkanObject}!VulkanObjectComposite@{VulkanObjectComposite}}
+\index{VulkanObjectComposite@{VulkanObjectComposite}!logi::VulkanObject@{logi::VulkanObject}}
+\doxysubsubsection{\texorpdfstring{VulkanObjectComposite}{VulkanObjectComposite}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+friend class \mbox{\hyperlink{classlogi_1_1_vulkan_object_composite}{Vulkan\+Object\+Composite}}\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+logi/base/\mbox{\hyperlink{vulkan__object_8hpp}{vulkan\+\_\+object.\+hpp}}\item 
+C\+:/\+Users/aljaz/\+Documents/\+Visual\+Studio\+Code\+Projects/\+Logi/src/logi/base/\mbox{\hyperlink{vulkan__object_8cpp}{vulkan\+\_\+object.\+cpp}}\end{DoxyCompactItemize}

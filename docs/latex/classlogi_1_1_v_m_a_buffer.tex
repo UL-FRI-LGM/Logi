@@ -1,0 +1,112 @@
+\hypertarget{classlogi_1_1_v_m_a_buffer}{}\doxysection{logi\+::V\+M\+A\+Buffer Class Reference}
+\label{classlogi_1_1_v_m_a_buffer}\index{logi::VMABuffer@{logi::VMABuffer}}
+
+
+{\ttfamily \#include $<$vma\+\_\+buffer.\+hpp$>$}
+
+
+
+Inheritance diagram for logi\+::V\+M\+A\+Buffer\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=208pt]{classlogi_1_1_v_m_a_buffer__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for logi\+::V\+M\+A\+Buffer\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=208pt]{classlogi_1_1_v_m_a_buffer__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlogi_1_1_v_m_a_buffer_a2817da8414686ce15eb7c02addc308f3}{V\+M\+A\+Buffer}} ()=default
+\item 
+\mbox{\hyperlink{classlogi_1_1_v_m_a_buffer_ae472648d5e1527b597bbd71eecfed9e0}{V\+M\+A\+Buffer}} (const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlogi_1_1_v_m_a_buffer_impl}{V\+M\+A\+Buffer\+Impl}} $>$ \&vma\+Buffer\+Impl)
+\item 
+\mbox{\hyperlink{classlogi_1_1_v_m_a_buffer_a81ca1ac5c55dbfcc3d4dec30aded6653}{V\+M\+A\+Buffer}} (const \mbox{\hyperlink{classlogi_1_1_buffer}{Buffer}} \&buffer)
+\item 
+void $\ast$ \mbox{\hyperlink{classlogi_1_1_v_m_a_buffer_ab3bade0d84c755717f893ea094872d73}{map\+Memory}} () const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_v_m_a_buffer_ab97d873d68a9efbcb9047511fdacfb3e}{unmap\+Memory}} () const
+\item 
+size\+\_\+t \mbox{\hyperlink{classlogi_1_1_v_m_a_buffer_a08cee36e01d1821d8d5b1e023e4647ab}{size}} () const
+\item 
+void \mbox{\hyperlink{classlogi_1_1_v_m_a_buffer_af56316dbb32150080a2f668fc28974d7}{write\+To\+Buffer}} (const void $\ast$data, size\+\_\+t \mbox{\hyperlink{classlogi_1_1_v_m_a_buffer_a08cee36e01d1821d8d5b1e023e4647ab}{size}}, size\+\_\+t offset=0) const
+\item 
+bool \mbox{\hyperlink{classlogi_1_1_v_m_a_buffer_a000c854ff29cfa5b63aed55ab8997235}{is\+Mappable}} () const
+\item 
+\mbox{\hyperlink{classlogi_1_1_memory_allocator}{Memory\+Allocator}} \mbox{\hyperlink{classlogi_1_1_v_m_a_buffer_a348d4586f2530fc1af65d4c0077f58c4}{get\+Memory\+Allocator}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlogi_1_1_v_m_a_buffer_a2817da8414686ce15eb7c02addc308f3}\label{classlogi_1_1_v_m_a_buffer_a2817da8414686ce15eb7c02addc308f3}} 
+\index{logi::VMABuffer@{logi::VMABuffer}!VMABuffer@{VMABuffer}}
+\index{VMABuffer@{VMABuffer}!logi::VMABuffer@{logi::VMABuffer}}
+\doxysubsubsection{\texorpdfstring{VMABuffer()}{VMABuffer()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily logi\+::\+V\+M\+A\+Buffer\+::\+V\+M\+A\+Buffer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}, {\ttfamily [default]}}
+
+\mbox{\Hypertarget{classlogi_1_1_v_m_a_buffer_ae472648d5e1527b597bbd71eecfed9e0}\label{classlogi_1_1_v_m_a_buffer_ae472648d5e1527b597bbd71eecfed9e0}} 
+\index{logi::VMABuffer@{logi::VMABuffer}!VMABuffer@{VMABuffer}}
+\index{VMABuffer@{VMABuffer}!logi::VMABuffer@{logi::VMABuffer}}
+\doxysubsubsection{\texorpdfstring{VMABuffer()}{VMABuffer()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily logi\+::\+V\+M\+A\+Buffer\+::\+V\+M\+A\+Buffer (\begin{DoxyParamCaption}\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classlogi_1_1_v_m_a_buffer_impl}{V\+M\+A\+Buffer\+Impl}} $>$ \&}]{vma\+Buffer\+Impl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+\mbox{\Hypertarget{classlogi_1_1_v_m_a_buffer_a81ca1ac5c55dbfcc3d4dec30aded6653}\label{classlogi_1_1_v_m_a_buffer_a81ca1ac5c55dbfcc3d4dec30aded6653}} 
+\index{logi::VMABuffer@{logi::VMABuffer}!VMABuffer@{VMABuffer}}
+\index{VMABuffer@{VMABuffer}!logi::VMABuffer@{logi::VMABuffer}}
+\doxysubsubsection{\texorpdfstring{VMABuffer()}{VMABuffer()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily logi\+::\+V\+M\+A\+Buffer\+::\+V\+M\+A\+Buffer (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlogi_1_1_buffer}{Buffer}} \&}]{buffer }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogi_1_1_v_m_a_buffer_a348d4586f2530fc1af65d4c0077f58c4}\label{classlogi_1_1_v_m_a_buffer_a348d4586f2530fc1af65d4c0077f58c4}} 
+\index{logi::VMABuffer@{logi::VMABuffer}!getMemoryAllocator@{getMemoryAllocator}}
+\index{getMemoryAllocator@{getMemoryAllocator}!logi::VMABuffer@{logi::VMABuffer}}
+\doxysubsubsection{\texorpdfstring{getMemoryAllocator()}{getMemoryAllocator()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogi_1_1_memory_allocator}{Memory\+Allocator}} logi\+::\+V\+M\+A\+Buffer\+::get\+Memory\+Allocator (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_v_m_a_buffer_a000c854ff29cfa5b63aed55ab8997235}\label{classlogi_1_1_v_m_a_buffer_a000c854ff29cfa5b63aed55ab8997235}} 
+\index{logi::VMABuffer@{logi::VMABuffer}!isMappable@{isMappable}}
+\index{isMappable@{isMappable}!logi::VMABuffer@{logi::VMABuffer}}
+\doxysubsubsection{\texorpdfstring{isMappable()}{isMappable()}}
+{\footnotesize\ttfamily bool logi\+::\+V\+M\+A\+Buffer\+::is\+Mappable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_v_m_a_buffer_ab3bade0d84c755717f893ea094872d73}\label{classlogi_1_1_v_m_a_buffer_ab3bade0d84c755717f893ea094872d73}} 
+\index{logi::VMABuffer@{logi::VMABuffer}!mapMemory@{mapMemory}}
+\index{mapMemory@{mapMemory}!logi::VMABuffer@{logi::VMABuffer}}
+\doxysubsubsection{\texorpdfstring{mapMemory()}{mapMemory()}}
+{\footnotesize\ttfamily void $\ast$ logi\+::\+V\+M\+A\+Buffer\+::map\+Memory (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_v_m_a_buffer_a08cee36e01d1821d8d5b1e023e4647ab}\label{classlogi_1_1_v_m_a_buffer_a08cee36e01d1821d8d5b1e023e4647ab}} 
+\index{logi::VMABuffer@{logi::VMABuffer}!size@{size}}
+\index{size@{size}!logi::VMABuffer@{logi::VMABuffer}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily size\+\_\+t logi\+::\+V\+M\+A\+Buffer\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_v_m_a_buffer_ab97d873d68a9efbcb9047511fdacfb3e}\label{classlogi_1_1_v_m_a_buffer_ab97d873d68a9efbcb9047511fdacfb3e}} 
+\index{logi::VMABuffer@{logi::VMABuffer}!unmapMemory@{unmapMemory}}
+\index{unmapMemory@{unmapMemory}!logi::VMABuffer@{logi::VMABuffer}}
+\doxysubsubsection{\texorpdfstring{unmapMemory()}{unmapMemory()}}
+{\footnotesize\ttfamily void logi\+::\+V\+M\+A\+Buffer\+::unmap\+Memory (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlogi_1_1_v_m_a_buffer_af56316dbb32150080a2f668fc28974d7}\label{classlogi_1_1_v_m_a_buffer_af56316dbb32150080a2f668fc28974d7}} 
+\index{logi::VMABuffer@{logi::VMABuffer}!writeToBuffer@{writeToBuffer}}
+\index{writeToBuffer@{writeToBuffer}!logi::VMABuffer@{logi::VMABuffer}}
+\doxysubsubsection{\texorpdfstring{writeToBuffer()}{writeToBuffer()}}
+{\footnotesize\ttfamily void logi\+::\+V\+M\+A\+Buffer\+::write\+To\+Buffer (\begin{DoxyParamCaption}\item[{const void $\ast$}]{data,  }\item[{size\+\_\+t}]{size,  }\item[{size\+\_\+t}]{offset = {\ttfamily 0} }\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+logi/memory/\mbox{\hyperlink{vma__buffer_8hpp}{vma\+\_\+buffer.\+hpp}}\item 
+C\+:/\+Users/aljaz/\+Documents/\+Visual\+Studio\+Code\+Projects/\+Logi/src/logi/memory/\mbox{\hyperlink{vma__buffer_8cpp}{vma\+\_\+buffer.\+cpp}}\end{DoxyCompactItemize}
