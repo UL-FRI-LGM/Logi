@@ -471,6 +471,22 @@ void CommandBuffer::writeAccelerationStructuresPropertiesNV(
   object_->writeAccelerationStructuresPropertiesNV(accelerationStructures, queryType, queryPool, firstQuery);
 }
 
+void CommandBuffer::bindPipelineShaderGroupNV(vk::PipelineBindPoint pipelineBindPoint,
+                                              vk::Pipeline pipeline, uint32_t groupIndex) const {
+  object_->bindPipelineShaderGroupNV(pipelineBindPoint, pipeline, groupIndex);                                              
+} 
+
+void CommandBuffer::preprocessGeneratedCommandsNV(const VkGeneratedCommandsInfoNV& generatedCommandsInfo) const {
+  object_->preprocessGeneratedCommandsNV(generatedCommandsInfo);
+}
+
+void CommandBuffer::executeGeneratedCommandsNV(vk::Bool32 isPreprocessed, const VkGeneratedCommandsInfoNV& generatedCommandsInfo) const {
+  object_->executeGeneratedCommandsNV(isPreprocessed, generatedCommandsInfo);
+}
+
+
+// Deprecated
+
 // void CommandBuffer::processCommandsNVX(const vk::CmdProcessCommandsInfoNVX& processCommandsInfo) const {
 //   object_->processCommandsNVX(processCommandsInfo);
 // }
@@ -478,6 +494,7 @@ void CommandBuffer::writeAccelerationStructuresPropertiesNV(
 // void CommandBuffer::reserveSpaceForCommandsNVX(const vk::CmdReserveSpaceForCommandsInfoNVX& reserveSpaceInfo) const {
 //   object_->reserveSpaceForCommandsNVX(reserveSpaceInfo);
 // }
+
 
 void CommandBuffer::drawIndexedIndirectCountAMD(vk::Buffer buffer, vk::DeviceSize offset, vk::Buffer countBuffer,
                                                 vk::DeviceSize countBufferOffset, uint32_t maxDrawCount,

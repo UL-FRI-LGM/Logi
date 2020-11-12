@@ -280,9 +280,18 @@ class CommandBufferImpl : public VulkanObject, public std::enable_shared_from_th
                                                vk::QueryType queryType, vk::QueryPool queryPool,
                                                uint32_t firstQuery) const;
 
+  void bindPipelineShaderGroupNV(vk::PipelineBindPoint pipelineBindPoint, vk::Pipeline pipeline, uint32_t groupIndex) const;
+
+  void preprocessGeneratedCommandsNV(const VkGeneratedCommandsInfoNV& generatedCommandsInfo) const;
+
+  void executeGeneratedCommandsNV(vk::Bool32 isPreprocessed, const VkGeneratedCommandsInfoNV& generatedCommandsInfo) const;
+
+
+  // Deprecated    
   // void processCommandsNVX(const vk::CmdProcessCommandsInfoNVX& processCommandsInfo) const;
 
   // void reserveSpaceForCommandsNVX(const vk::CmdReserveSpaceForCommandsInfoNVX& reserveSpaceInfo) const;
+  
 
   void drawIndexedIndirectCountAMD(vk::Buffer buffer, vk::DeviceSize offset, vk::Buffer countBuffer,
                                    vk::DeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride) const;

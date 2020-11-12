@@ -560,12 +560,27 @@ class CommandBuffer : public Handle<CommandBufferImpl> {
                                                uint32_t firstQuery) const;
 
   /**
-   * @brief Not supported anymore!
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBindPipelineShaderGroupNV.html">vkCmdBindPipelineShaderGroupNV</a>
+   */
+  void bindPipelineShaderGroupNV(vk::PipelineBindPoint pipelineBindPoint, vk::Pipeline pipeline, uint32_t groupIndex) const; 
+
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdPreprocessGeneratedCommandsNV.html">vkCmdPreprocessGeneratedCommandsNV</a>
+   */
+  void preprocessGeneratedCommandsNV(const VkGeneratedCommandsInfoNV& generatedCommandsInfo) const;
+
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdExecuteGeneratedCommandsNV.html">vkCmdExecuteGeneratedCommandsNV</a>
+   */
+  void executeGeneratedCommandsNV(vk::Bool32 isPreprocessed, const VkGeneratedCommandsInfoNV& generatedCommandsInfo) const;
+
+  /**
+   * @brief Deprecated!
    */
   // void processCommandsNVX(const vk::CmdProcessCommandsInfoNVX& processCommandsInfo) const;
 
   /**
-   * @brief Not supported anymore!
+   * @brief Deprecated!
    */
   // void reserveSpaceForCommandsNVX(const vk::CmdReserveSpaceForCommandsInfoNVX& reserveSpaceInfo) const;
 
