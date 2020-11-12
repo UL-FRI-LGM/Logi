@@ -36,13 +36,25 @@ class DeviceMemory : public Handle<DeviceMemoryImpl> {
 
   // region Vulkan Declarations
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetDeviceMemoryCommitment.html">vkGetDeviceMemoryCommitment</a>
+   */
   vk::DeviceSize getCommitment() const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkMapMemory.html">vkMapMemory</a>
+   */
   vk::ResultValueType<void*>::type mapMemory(vk::DeviceSize offset, vk::DeviceSize size,
                                              const vk::MemoryMapFlags& flags) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkUnmapMemory.html">vkUnmapMemory</a>
+   */
   void unmapMemory() const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetDeviceMemoryOpaqueCaptureAddress.html">vkGetDeviceMemoryOpaqueCaptureAddress</a>
+   */
   uint64_t getOpaqueCaptureAddress(const ConstVkNextProxy<vk::DeviceMemoryOpaqueCaptureAddressInfo>& next = {}) const;
 
   // endregion

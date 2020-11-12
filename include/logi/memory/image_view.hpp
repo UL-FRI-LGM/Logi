@@ -38,6 +38,9 @@ class ImageView : public Handle<ImageViewImpl> {
 
   // region Vulkan Declarations
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetImageViewHandleNVX.html">vkGetImageViewHandleNVX</a>
+   */
   uint32_t getHandleNVX(vk::DescriptorType descriptorType, vk::Sampler sampler,
                         const ConstVkNextProxy<vk::ImageViewHandleInfoNVX>& next) const;
 

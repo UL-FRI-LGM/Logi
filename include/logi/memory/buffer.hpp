@@ -37,25 +37,52 @@ class Buffer : public Handle<BufferImpl> {
 
   // region Vulkan Declarations
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetBufferMemoryRequirements.html">vkGetBufferMemoryRequirements</a>
+   */
   vk::MemoryRequirements getMemoryRequirements() const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetBufferMemoryRequirements2.html">vkGetBufferMemoryRequirements2</a>
+   */
   vk::MemoryRequirements2
     getBufferMemoryRequirements2(const ConstVkNextProxy<vk::BufferMemoryRequirementsInfo2>& next = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetBufferMemoryRequirements2KHR.html">vkGetBufferMemoryRequirements2KHR</a>
+   */
   vk::MemoryRequirements2KHR
     getBufferMemoryRequirements2KHR(const ConstVkNextProxy<vk::BufferMemoryRequirementsInfo2KHR>& next = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetBufferDeviceAddress.html">vkGetBufferDeviceAddress</a>
+   */
   vk::DeviceAddress getDeviceAddress(const ConstVkNextProxy<vk::BufferDeviceAddressInfo>& next = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetBufferDeviceAddressEXT.html">vkGetBufferDeviceAddressEXT</a>
+   */
   vk::DeviceAddress getDeviceAddressEXT(const ConstVkNextProxy<vk::BufferDeviceAddressInfoEXT>& next = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetBufferOpaqueCaptureAddress.html">vkGetBufferOpaqueCaptureAddress</a>
+   */
   uint64_t getBufferOpaqueCaptureAddress(const ConstVkNextProxy<vk::BufferDeviceAddressInfo>& next = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkBindBufferMemory.html">vkBindBufferMemory</a>
+   */
   vk::ResultValueType<void>::type bindMemory(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkBindBufferMemory2.html">vkBindBufferMemory2</a>
+   */
   vk::ResultValueType<void>::type bindMemory2(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset,
                                               const ConstVkNextProxy<vk::BindBufferMemoryInfo>& next) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkBindBufferMemory2KHR.html">vkBindBufferMemory2KHR</a>
+   */
   vk::ResultValueType<void>::type bindMemory2KHR(const vk::DeviceMemory& memory, vk::DeviceSize memoryOffset,
                                                  const ConstVkNextProxy<vk::BindBufferMemoryInfoKHR>& next) const;
 
@@ -63,9 +90,15 @@ class Buffer : public Handle<BufferImpl> {
 
   // region Logi Declarations
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateBufferView.html">vkCreateBufferView</a>
+   */
   BufferView createBufferView(const vk::BufferViewCreateInfo& createInfo,
                               const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroyBufferView.html">vkDestroyBufferView</a>
+   */
   void destroyBufferView(const BufferView& bufferView) const;
 
   VulkanInstance getInstance() const;

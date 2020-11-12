@@ -376,69 +376,135 @@ class LogicalDevice : public Handle<LogicalDeviceImpl> {
     const vk::IndirectCommandsLayoutCreateInfoNV& createInfo,
     const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroyIndirectCommandsLayoutNV.html">vkDestroyIndirectCommandsLayoutNV</a>
+   */
   void destroyIndirectCommandsLayoutNV(const IndirectCommandsLayoutNV& indirectCommandsLayout) const;
 
+
+  // Deprecated
   // ObjectTableNVX createObjectTableNVX(const vk::ObjectTableCreateInfoNV& createInfo,
   //                                     const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
   // void destroyObjectTableNVX(const ObjectTableNVX& objectTable) const;
 
+
+  /**
+   * @brief Enumerate queue families that are created by this logical device
+   */
   std::vector<QueueFamily> enumerateQueueFamilies() const;
 
   // endregion
 
   // region Vulkan Declarations
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkUpdateDescriptorSets.html">vkUpdateDescriptorSets</a>
+   */  
   void updateDescriptorSets(const vk::ArrayProxy<const vk::WriteDescriptorSet>& descriptorWrites,
                             const vk::ArrayProxy<const vk::CopyDescriptorSet>& descriptorCopies = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkSetDebugUtilsObjectNameEXT.html">vkSetDebugUtilsObjectNameEXT</a>
+   */
   vk::ResultValueType<void>::type setDebugUtilsObjectNameEXT(const vk::DebugUtilsObjectNameInfoEXT& nameInfo) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkSetDebugUtilsObjectTagEXT.html">vkSetDebugUtilsObjectTagEXT</a>
+   */
   vk::ResultValueType<void>::type setDebugUtilsObjectTagEXT(const vk::DebugUtilsObjectTagInfoEXT& tagInfo) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDebugMarkerSetObjectNameEXT.html">vkDebugMarkerSetObjectNameEXT</a>
+   */
   vk::ResultValueType<void>::type debugMarkerSetObjectNameEXT(const vk::DebugMarkerObjectNameInfoEXT& nameInfo) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDebugMarkerSetObjectTagEXT.html">vkDebugMarkerSetObjectTagEXT</a>
+   */
   vk::ResultValueType<void>::type debugMarkerSetObjectTagEXT(const vk::DebugMarkerObjectTagInfoEXT& tagInfo) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDeviceWaitIdle.html">vkDeviceWaitIdle</a>
+   */
   vk::ResultValueType<void>::type waitIdle() const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDisplayPowerControlEXT.html">vkDisplayPowerControlEXT</a>
+   */
   vk::ResultValueType<void>::type displayPowerControlEXT(const vk::DisplayKHR& display,
                                                          const vk::DisplayPowerInfoEXT& powerInfo) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetImageViewHandleNVX.html">vkGetImageViewHandleNVX</a>
+   */
   uint32_t getImageViewHandleNVX(const vk::ImageViewHandleInfoNVX& handleInfo) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkFlushMappedMemoryRanges.html">vkFlushMappedMemoryRanges</a>
+   */
   vk::ResultValueType<void>::type
     flushMappedMemoryRanges(const vk::ArrayProxy<const vk::MappedMemoryRange>& memoryRanges = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkInvalidateMappedMemoryRanges.html">vkInvalidateMappedMemoryRanges</a>
+   */
   vk::ResultValueType<void>::type
     invalidateMappedMemoryRanges(const vk::ArrayProxy<const vk::MappedMemoryRange>& memoryRanges = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetCalibratedTimestampsEXT.html">vkGetCalibratedTimestampsEXT</a>
+   */
   vk::ResultValueType<uint64_t>::type
     getCalibratedTimestampsEXT(const vk::ArrayProxy<const vk::CalibratedTimestampInfoEXT>& timestampInfos,
                                const vk::ArrayProxy<uint64_t>& timestamps) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetDescriptorSetLayoutSupport.html">vkGetDescriptorSetLayoutSupport</a>
+   */
   vk::DescriptorSetLayoutSupport
     getDescriptorSetLayoutSupport(const vk::DescriptorSetLayoutCreateInfo& createInfo) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetDescriptorSetLayoutSupportKHR.html">vkGetDescriptorSetLayoutSupportKHR</a>
+   */
   vk::DescriptorSetLayoutSupportKHR
     getDescriptorSetLayoutSupportKHR(const vk::DescriptorSetLayoutCreateInfo& createInfo) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetDeviceGroupPeerMemoryFeatures.html">vkGetDeviceGroupPeerMemoryFeatures</a>
+   */
   vk::PeerMemoryFeatureFlags getGroupPeerMemoryFeatures(uint32_t heapIndex, uint32_t localDeviceIndex,
                                                         uint32_t remoteDeviceIndex) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetDeviceGroupPeerMemoryFeaturesKHR.html">vkGetDeviceGroupPeerMemoryFeaturesKHR</a>
+   */
   vk::PeerMemoryFeatureFlagsKHR getGroupPeerMemoryFeaturesKHR(uint32_t heapIndex, uint32_t localDeviceIndex,
                                                               uint32_t remoteDeviceIndex) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetDeviceGroupPresentCapabilitiesKHR.html">vkGetDeviceGroupPresentCapabilitiesKHR</a>
+   */
   vk::ResultValueType<vk::DeviceGroupPresentCapabilitiesKHR>::type getGroupPresentCapabilitiesKHR() const;
 
 #ifdef VK_USE_PLATFORM_WIN32_KHR
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetDeviceGroupSurfacePresentModes2EXT.html">vkGetDeviceGroupSurfacePresentModes2EXT</a>
+   */
   vk::ResultValueType<vk::DeviceGroupPresentModeFlagsKHR>::type
     getGroupSurfacePresentModes2EXT(const vk::PhysicalDeviceSurfaceInfo2KHR& surfaceInfo) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetDeviceGroupSurfacePresentModes2KHR.html">vkGetDeviceGroupSurfacePresentModes2KHR</a>
+   */
   vk::ResultValueType<vk::DeviceGroupPresentModeFlagsKHR>::type
     getGroupSurfacePresentModes2KHR(const vk::PhysicalDeviceSurfaceInfo2KHR& surfaceInfo) const;
 #endif
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetDeviceProcAddr.html">vkGetDeviceProcAddr</a>
+   */
   PFN_vkVoidFunction getProcAddr(const std::string& name) const;
 
   // endregion

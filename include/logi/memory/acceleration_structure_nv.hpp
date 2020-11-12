@@ -36,13 +36,22 @@ class AccelerationStructureNV : public Handle<AccelerationStructureNVImpl> {
 
   // region Vulkan Declarations
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetAccelerationStructureHandleNV.html">vkGetAccelerationStructureHandleNV</a>
+   */
   template <typename T>
   vk::ResultValueType<void>::type getHandleNV(vk::ArrayProxy<T> data) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetAccelerationStructureMemoryRequirementsNV.html">vkGetAccelerationStructureMemoryRequirementsNV</a>
+   */
   vk::MemoryRequirements2KHR
     getMemoryRequirementsNV(vk::AccelerationStructureMemoryRequirementsTypeNV type,
                             const ConstVkNextProxy<vk::AccelerationStructureMemoryRequirementsInfoNV>& next = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkBindAccelerationStructureMemoryNV.html">vkBindAccelerationStructureMemoryNV</a>
+   */
   vk::ResultValueType<void>::type
     bindMemory(vk::DeviceMemory memory, vk::DeviceSize memoryOffset,
                const vk::ArrayProxy<uint32_t>& deviceIndices = nullptr,

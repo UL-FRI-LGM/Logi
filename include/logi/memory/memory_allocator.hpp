@@ -37,6 +37,7 @@ class MemoryAllocator : public Handle<MemoryAllocatorImpl> {
  public:
   using Handle::Handle;
 
+
   VMABuffer createBuffer(const vk::BufferCreateInfo& bufferCreateInfo,
                          const VmaAllocationCreateInfo& allocationCreateInfo,
                          const std::optional<vk::AllocationCallbacks>& allocator = {});
