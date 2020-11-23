@@ -30,6 +30,7 @@ class SwapchainImageImpl;
 
 class SwapchainImage : public Image {
  public:
+ 
   explicit SwapchainImage() = default;
 
   explicit SwapchainImage(const std::shared_ptr<SwapchainImageImpl>& swapchainImageImpl);

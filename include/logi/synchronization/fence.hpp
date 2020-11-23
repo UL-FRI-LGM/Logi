@@ -90,8 +90,14 @@ class Fence : public Handle<FenceImpl> {
 
   // region Logi Declarations
 
+  /**
+   * @brief Logi implementation of <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkWaitForFences.html">vkWaitForFences</a>
+   */
   static vk::Result wait(const std::vector<Fence>& fences, vk::Bool32 waitAll, uint64_t timeout);
 
+  /**
+   * @brief Logi implementation of <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkResetFences.html">vkResetFences</a>
+   */
   static vk::ResultValueType<void>::type reset(const std::vector<Fence>& fences);
 
   VulkanInstance getInstance() const;

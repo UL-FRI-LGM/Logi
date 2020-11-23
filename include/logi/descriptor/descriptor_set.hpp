@@ -37,6 +37,9 @@ class DescriptorSet : public Handle<DescriptorSetImpl> {
 
   // region Vulkan Declarations
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkUpdateDescriptorSetWithTemplate.html">vkUpdateDescriptorSetWithTemplate</a>
+   */
   void updateWithTemplate(vk::DescriptorUpdateTemplate descriptorUpdateTemplate, const void* pData) const;
 
   // endregion

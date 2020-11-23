@@ -35,8 +35,14 @@ class PipelineCache : public Handle<PipelineCacheImpl> {
 
   // region Vulkan Commands
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetPipelineCacheData.html">vkGetPipelineCacheData</a>
+   */
   typename vk::ResultValueType<std::vector<uint8_t>>::type getPipelineCacheData() const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkMergePipelineCaches.html">vkMergePipelineCaches</a>
+   */
   vk::ResultValueType<void>::type mergeCaches(const vk::ArrayProxy<const vk::PipelineCache>& caches) const;
 
   // endregion Vulkan Commands

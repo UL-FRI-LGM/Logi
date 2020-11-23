@@ -39,27 +39,54 @@ class SwapchainKHR : public Handle<SwapchainKHRImpl> {
   // region Vulkan Declarations
 
 #ifdef VK_USE_PLATFORM_WIN32_KHR
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkAcquireFullScreenExclusiveModeEXT.html">vkAcquireFullScreenExclusiveModeEXT</a>
+   */
   vk::ResultValueType<void>::type acquireFullScreenExclusiveModeEXT() const;
 #endif
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkAcquireNextImageKHR.html">vkAcquireNextImageKHR</a>
+   */
   vk::ResultValue<uint32_t> acquireNextImageKHR(uint64_t timeout, const vk::Semaphore& semaphore,
                                                 const vk::Fence& fence) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkAcquireNextImage2KHR.html">vkAcquireNextImage2KHR</a>
+   */
   vk::ResultValue<uint32_t> acquireNextImage2KHR(uint64_t timeout, const vk::Semaphore& semaphore,
                                                  const vk::Fence& fence, uint32_t deviceMask,
                                                  const ConstVkNextProxy<vk::AcquireNextImageInfoKHR>& next = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetSwapchainImagesKHR.html">vkGetSwapchainImagesKHR</a>
+   */
   std::vector<SwapchainImage> getImagesKHR() const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetSwapchainCounterEXT.html">vkGetSwapchainCounterEXT</a>
+   */
   vk::ResultValueType<uint64_t>::type getCounterEXT(vk::SurfaceCounterFlagBitsEXT counter) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetSwapchainStatusKHR.html">vkGetSwapchainStatusKHR</a>
+   */
   vk::Result getStatusKHR() const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkSetLocalDimmingAMD.html">vkSetLocalDimmingAMD</a>
+   */
   void setLocalDimmingAMD(vk::Bool32 localDimmingEnable) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetPastPresentationTimingGOOGLE.html">vkGetPastPresentationTimingGOOGLE</a>
+   */
   typename vk::ResultValueType<std::vector<vk::PastPresentationTimingGOOGLE>>::type
     getPastPresentationTimingGOOGLE() const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetRefreshCycleDurationGOOGLE.html">vkGetRefreshCycleDurationGOOGLE</a>
+   */
   typename vk::ResultValueType<vk::RefreshCycleDurationGOOGLE>::type getRefreshCycleDurationGOOGLE() const;
 
   // endregion

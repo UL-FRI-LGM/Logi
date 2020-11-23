@@ -36,12 +36,21 @@ class DescriptorPool : public Handle<DescriptorPoolImpl> {
 
   // region Vulkan Declarations
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkAllocateDescriptorSets.html">vkAllocateDescriptorSets</a>
+   */
   std::vector<DescriptorSet>
     allocateDescriptorSets(const std::vector<vk::DescriptorSetLayout>& descriptorSetLayouts,
                            const ConstVkNextProxy<vk::DescriptorSetAllocateInfo>& next = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkFreeDescriptorSets.html">vkFreeDescriptorSets</a>
+   */
   vk::ResultValueType<void>::type freeDescriptorSets(const std::vector<DescriptorSet>& descriptorSets) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkResetDescriptorPool.html">vkResetDescriptorPool</a>
+   */
   vk::ResultValueType<void>::type
     reset(const vk::DescriptorPoolResetFlags& flags = vk::DescriptorPoolResetFlags()) const;
 
