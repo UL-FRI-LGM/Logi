@@ -35,12 +35,21 @@ class QueryPool : public Handle<QueryPoolImpl> {
 
   // region Vulkan Declarations
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetQueryPoolResults.html">vkGetQueryPoolResults</a>
+   */
   template <typename T>
   vk::Result getResults(uint32_t firstQuery, uint32_t queryCount, vk::ArrayProxy<T> data, vk::DeviceSize stride,
                         vk::QueryResultFlags flags) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkResetQueryPool.html">vkResetQueryPool</a>
+   */
   void resetQueryPool(uint32_t firstQuery, uint32_t queryCount) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkResetQueryPoolEXT.html">vkResetQueryPoolEXT</a>
+   */
   void resetQueryPoolEXT(uint32_t firstQuery, uint32_t queryCount) const;
 
   // endregion

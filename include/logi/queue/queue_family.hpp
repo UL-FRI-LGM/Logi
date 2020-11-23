@@ -35,14 +35,26 @@ class QueueFamily : public Handle<QueueFamilyImpl> {
  public:
   using Handle::Handle;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateCommandPool.html">vkCreateCommandPool</a>
+   */
   CommandPool createCommandPool(const vk::CommandPoolCreateFlags& flags = {},
                                 const ConstVkNextProxy<vk::CommandPoolCreateInfo>& next = {},
                                 const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroyCommandPool.html">vkDestroyCommandPool</a>
+   */
   void destroyCommandPool(const CommandPool& commandPool) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetDeviceQueue.html">vkGetDeviceQueue</a>
+   */
   Queue getQueue(uint32_t queueIndex) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetDeviceQueue2.html">vkGetDeviceQueue2</a>
+   */
   Queue getQueue2(uint32_t queueIndex, const vk::DeviceQueueCreateFlags& flags = {},
                   const ConstVkNextProxy<vk::DeviceQueueInfo2>& next = {}) const;
 

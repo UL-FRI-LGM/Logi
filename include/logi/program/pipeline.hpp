@@ -35,12 +35,21 @@ class Pipeline : public Handle<PipelineImpl> {
   using Handle::Handle;
 
   // region Vulkan Declarations
-
+  
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCompileDeferredNV.html">vkCompileDeferredNV</a>
+   */
   vk::ResultValueType<void>::type compileDeferredNV(uint32_t shader) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetShaderInfoAMD.html">vkGetShaderInfoAMD</a>
+   */
   typename vk::ResultValueType<std::vector<uint8_t>>::type getShaderInfoAMD(vk::ShaderStageFlagBits shaderStage,
                                                                             vk::ShaderInfoTypeAMD infoType) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetRayTracingShaderGroupHandlesNV.html">vkGetRayTracingShaderGroupHandlesNV</a>
+   */
   template <typename T>
   vk::ResultValueType<void>::type getRayTracingShaderGroupHandlesNV(uint32_t firstGroup, uint32_t groupCount,
                                                                     vk::ArrayProxy<T> data) const {

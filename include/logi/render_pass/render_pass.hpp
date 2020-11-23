@@ -35,6 +35,9 @@ class RenderPass : public Handle<RenderPassImpl> {
 
   // region Vulkan Declarations
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetRenderAreaGranularity.html">vkGetRenderAreaGranularity</a>
+   */
   vk::Extent2D getRenderAreaGranularity() const;
 
   // endregion

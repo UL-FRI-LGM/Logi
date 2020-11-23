@@ -36,8 +36,14 @@ class Semaphore : public Handle<SemaphoreImpl> {
 
   // region Vulkan Declarations
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkSignalSemaphore.html">vkSignalSemaphore</a>
+   */
   void signalSemaphore(const ConstVkNextProxy<vk::SemaphoreSignalInfo>& next, uint64_t value) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetSemaphoreCounterValue.html">vkGetSemaphoreCounterValue</a>
+   */
   uint64_t getCounterValue() const;
 
   // endregion

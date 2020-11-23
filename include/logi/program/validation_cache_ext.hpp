@@ -35,9 +35,15 @@ class ValidationCacheEXT : public Handle<ValidationCacheEXTImpl> {
 
   // region Vulkan Commands
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkMergeValidationCachesEXT.html">vkMergeValidationCachesEXT</a>
+   */
   vk::ResultValueType<void>::type
     mergeValidationCachesEXT(vk::ArrayProxy<const vk::ValidationCacheEXT> srcCaches) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetValidationCacheDataEXT.html">vkGetValidationCacheDataEXT</a>
+   */
   typename vk::ResultValueType<std::vector<uint8_t>>::type getValidationCacheDataEXT() const;
 
   // endregion Vulkan Commands

@@ -35,22 +35,46 @@ class Queue : public Handle<QueueImpl> {
 
   // region Vulkan Declarations
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkQueueSubmit.html">vkQueueSubmit</a>
+   */
   vk::ResultValueType<void>::type submit(const vk::ArrayProxy<const vk::SubmitInfo>& submits,
                                          vk::Fence fence = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkQueueBindSparse.html">vkQueueBindSparse</a>
+   */
   vk::ResultValueType<void>::type bindSparse(const vk::ArrayProxy<const vk::BindSparseInfo>& bindInfo,
                                              vk::Fence fence = {}) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkQueueWaitIdle.html">vkQueueWaitIdle</a>
+   */
   vk::ResultValueType<void>::type waitIdle() const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkQueuePresentKHR.html">vkQueuePresentKHR</a>
+   */
   vk::Result presentKHR(const vk::PresentInfoKHR& presentInfo) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkQueueBeginDebugUtilsLabelEXT.html">vkQueueBeginDebugUtilsLabelEXT</a>
+   */
   void beginDebugUtilsLabelEXT(const vk::DebugUtilsLabelEXT& label) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkQueueInsertDebugUtilsLabelEXT.html">vkQueueInsertDebugUtilsLabelEXT</a>
+   */
   void insertDebugUtilsLabelEXT(const vk::DebugUtilsLabelEXT& label) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkQueueEndDebugUtilsLabelEXT.html">vkQueueEndDebugUtilsLabelEXT</a>
+   */
   void endDebugUtilsLabelEXT() const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetQueueCheckpointDataNV.html">vkGetQueueCheckpointDataNV</a>
+   */
   std::vector<vk::CheckpointDataNV> getCheckpointDataNV() const;
 
   // endregion

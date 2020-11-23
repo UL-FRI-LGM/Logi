@@ -35,23 +35,44 @@ class Fence : public Handle<FenceImpl> {
   using Handle::Handle;
 
   // region Vulkan Declarations
-
+  
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetFenceStatus.html">vkGetFenceStatus</a>
+   */
   vk::Result getStatus() const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkWaitForFences.html">vkWaitForFences</a>
+   */
   vk::Result wait(const std::vector<vk::Fence>& fences, vk::Bool32 waitAll, uint64_t timeout) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkWaitForFences.html">vkWaitForFences</a>
+   */
   vk::Result wait(uint64_t timeout) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkResetFences.html">vkResetFences</a>
+   */
   vk::ResultValueType<void>::type reset(const std::vector<vk::Fence>& fences) const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkResetFences.html">vkResetFences</a>
+   */
   vk::ResultValueType<void>::type reset() const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkImportFenceFdKHR.html">vkImportFenceFdKHR</a>
+   */
   vk::ResultValueType<void>::type importFdKHR(const vk::FenceImportFlags& flags,
                                               vk::ExternalFenceHandleTypeFlagBits handleType, int fd,
                                               const ConstVkNextProxy<vk::ImportFenceFdInfoKHR>& next = {}) const;
 
 #ifdef VK_USE_PLATFORM_WIN32_KHR
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkImportFenceWin32HandleKHR.html">vkImportFenceWin32HandleKHR</a>
+   */
   vk::ResultValueType<void>::type
     importWin32HandleKHR(const vk::FenceImportFlags& flags, vk::ExternalFenceHandleTypeFlagBits handleType,
                          HANDLE handle LPCWSTR name,
@@ -59,6 +80,9 @@ class Fence : public Handle<FenceImpl> {
 
 #endif
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetFenceFdKHR.html">vkGetFenceFdKHR</a>
+   */
   vk::ResultValueType<int>::type getFdKHR(vk::ExternalFenceHandleTypeFlagBits handleType,
                                           const ConstVkNextProxy<vk::FenceGetFdInfoKHR>& next = {}) const;
 

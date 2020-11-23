@@ -35,10 +35,19 @@ class Event : public Handle<EventImpl> {
 
   // region Vulkan Declarations
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetEventStatus.html">vkGetEventStatus</a>
+   */
   bool getStatus() const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkResetEvent.html">vkResetEvent</a>
+   */
   vk::ResultValueType<void>::type reset() const;
 
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkSetEvent.html">vkSetEvent</a>
+   */
   vk::ResultValueType<void>::type set() const;
 
   // endregion
