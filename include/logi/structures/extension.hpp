@@ -21,6 +21,9 @@
 
 namespace logi {
 
+/**
+ * @brief Abstracts extending Vulkan structures
+ */
 template <typename BaseConfigType>
 class VkNextProxy {
  public:
@@ -40,6 +43,9 @@ class VkNextProxy {
   void* next_;
 };
 
+/**
+ * @brief Abstracts extending Vulkan structures
+ */
 template <typename BaseConfigType>
 class ConstVkNextProxy {
  public:

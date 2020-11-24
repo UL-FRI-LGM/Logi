@@ -28,6 +28,10 @@ namespace logi {
 class VMAAccelerationStructureNVImpl;
 class MemoryAllocator;
 
+/**
+ * @brief VMA allocation of acceleration structure 
+ * @see <a href="https://gpuopen-librariesandsdks.github.io/VulkanMemoryAllocator/html/index.html">VMA(Vulkan Memory Allocator)</a> 
+ */
 class VMAAccelerationStructureNV : public AccelerationStructureNV {
  public:
   explicit VMAAccelerationStructureNV() = default;

@@ -33,10 +33,12 @@ class VMABuffer;
 class VMAImage;
 class VMAAccelerationStructureNV;
 
+/**
+ * @brief Implements allocating and destruction of resources using <a href="https://gpuopen-librariesandsdks.github.io/VulkanMemoryAllocator/html/index.html">VMA(Vulkan Memory Allocator)</a> 
+ */
 class MemoryAllocator : public Handle<MemoryAllocatorImpl> {
  public:
   using Handle::Handle;
-
 
   VMABuffer createBuffer(const vk::BufferCreateInfo& bufferCreateInfo,
                          const VmaAllocationCreateInfo& allocationCreateInfo,

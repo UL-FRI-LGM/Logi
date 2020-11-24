@@ -28,6 +28,10 @@ namespace logi {
 class VMABufferImpl;
 class MemoryAllocator;
 
+/**
+ * @brief VMA allocation of a buffer
+ * @see <a href="https://gpuopen-librariesandsdks.github.io/VulkanMemoryAllocator/html/index.html">VMA(Vulkan Memory Allocator)</a> 
+ */
 class VMABuffer : public Buffer {
  public:
   explicit VMABuffer() = default;

@@ -28,6 +28,10 @@ namespace logi {
 class VMAImageImpl;
 class MemoryAllocator;
 
+/**
+ * @brief VMA allocation of an image 
+ * @see <a href="https://gpuopen-librariesandsdks.github.io/VulkanMemoryAllocator/html/index.html">VMA(Vulkan Memory Allocator)</a> 
+ */
 class VMAImage : public Image {
  public:
   explicit VMAImage() = default;

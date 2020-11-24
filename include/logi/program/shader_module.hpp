@@ -30,6 +30,10 @@ class VulkanInstance;
 class PhysicalDevice;
 class LogicalDevice;
 
+/**
+ * @brief Implements shader reflection using SPIR-V Cross
+ * @see <a href="https://github.com/KhronosGroup/SPIRV-Cross">SPIR-V Cross</a>
+ */
 class ShaderModule : public Handle<ShaderModuleImpl> {
  public:
   using Handle::Handle;
