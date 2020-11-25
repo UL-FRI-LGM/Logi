@@ -4,7 +4,7 @@ Logi is light-weight Vulkan abstraction framework, which attempts to bridge the 
 
 ## Features
 
-* Supports Vulkan 1.2
+* Supports core Vulkan 1.2 and Nvidia RTX extension (Khronos ray tracing specification not implemeted!)
 * Object-oriented Vulkan abstraction framework
 * Correctly enforced construction and destruction order of Vulkan resources
 * Integration of the dynamic dispatching of Vulkan functions
@@ -63,7 +63,7 @@ Port of [Vulkan tutorial](https://vulkan-tutorial.com/) to Logi framework. Note,
 
 ### [5 - Fractals](examples/fractals/)
 Visualisation of common 3D fractals. Also Dear ImGUI is used for setting window.   
-  
+
 ![box1](images/box1.png)   
 ![box2](images/box2.png)  
 ![box3](images/box3.png)  
