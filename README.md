@@ -62,7 +62,7 @@ Port of [Vulkan tutorial](https://vulkan-tutorial.com/) to Logi framework. Note,
 ![tutorial_port](images/vulkan_tutorial_port.png) 
 
 ### [5 - Fractals](examples/fractals/)
-Visualisation of common 3D fractals. Also Dear ImGUI is used for setting window.   
+Visualisation of 3D fractals. Also Dear ImGUI is used for setting window.   
 
 ![box1](images/box1.png)   
 ![box2](images/box2.png)  
@@ -73,10 +73,3 @@ Visualisation of common 3D fractals. Also Dear ImGUI is used for setting window.
 
 ### [6 - Path tracing](https://github.com/PrimozLavric/LogiPathTracer)
 Nvidia RTX and rasterization implementation of path tracing.
-
-
-For more see [`./examples`](examples/).
-
-
-
-
