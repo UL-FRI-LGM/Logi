@@ -52,9 +52,9 @@ Visualisation of common 3D fractals. Also Dear ImGUI is used for setting window.
 ![box1](images/box1.png) 
 ![box2](images/box2.png)
 ![box3](images/box3.png)
-![box2](images/serpinski.png)
-![box3](images/sponge.png)
-![box1](images/bulb.png) 
+![serpinski](images/serpinski.png)
+![sponge](images/sponge.png)
+![bulb](images/bulb.png) 
 
 #### [Path tracing](https://github.com/PrimozLavric/LogiPathTracer)
 Nvidia RTX and rasterization implementation of path tracing.
