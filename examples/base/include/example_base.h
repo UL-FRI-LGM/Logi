@@ -30,6 +30,9 @@ struct PipelineLayoutData {
   std::vector<logi::DescriptorSetLayout> descriptorSetLayouts;
 };
 
+/**
+ * @brief Base structure of examples
+ */
 class ExampleBase {
  public:
   explicit ExampleBase(const ExampleConfiguration& config = {});

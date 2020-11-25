@@ -5,6 +5,9 @@
 
 enum PipelineType {Graphics, Compute, Present};
 
+/**
+* @brief Holds common Vulkan objects
+*/
 class VulkanState
 {
 

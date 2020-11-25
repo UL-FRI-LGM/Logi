@@ -16,6 +16,9 @@ static void checkVkResult(VkResult err) {
         abort();
 }
 
+/**
+* @brief Dear ImGUI layer implementation
+*/
 class ImGUIBase : public ExampleBase {
  protected:
   void imGUI_initOverlay();
