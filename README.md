@@ -23,7 +23,9 @@ Requirements for running examples:
 * [glm](https://github.com/g-truc/glm)
 
 When cloning repository clone recursively:  
-`git clone --recursive https://github.com/UL-FRI-LGM/Logi.git`
+```
+git clone --recursive https://github.com/UL-FRI-LGM/Logi.git
+```
 
 
 ## Building
@@ -45,25 +47,25 @@ For more detailed description of framework, please see [Primož Lavrič master t
 Implements Vulkan state holder, utility functions, Dear ImGui layer and base structure for examples.
 
 ### [2 - Hello triangle](examples/hello_triangle/)
-Basic example of rendering colored triangle to screen with Logi framework.  
+Basic example of rendering colored triangle to screen with Logi framework.    
 ![box1](images/hello_triangle.png) 
 
 ### [3 - Texture](examples/texture/)
-Loading 2D texture from disk and rendering it to quad.  
+Loading 2D texture from disk and rendering it to quad.    
 ![box1](images/texture.png) 
 
 ### [4 - Vulkan tutorial port](examples/vulkanTutorialPort/)
-Port of [Vulkan tutorial](https://vulkan-tutorial.com/) to Logi framework. Note, that mipmapping and multisampling are not implemented.  
+Port of [Vulkan tutorial](https://vulkan-tutorial.com/) to Logi framework. Note, that mipmapping and multisampling are not implemented.    
 ![box1](images/vulkan_tutorial_port.png) 
 
 ### [5 - Fractals](examples/fractals/)
-Visualisation of common 3D fractals. Also Dear ImGUI is used for setting window.   
-![box1](images/box1.png) 
-![box2](images/box2.png)
-![box3](images/box3.png)
-![serpinski](images/Serpinski.png)
-![sponge](images/Sponge.png)
-![bulb](images/bulb.png) 
+Visualisation of common 3D fractals. Also Dear ImGUI is used for setting window.     
+![box1](images/box1.png)   
+![box2](images/box2.png)  
+![box3](images/box3.png)  
+![serpinski](images/Serpinski.png)  
+![sponge](images/Sponge.png)  
+![bulb](images/bulb.png)   
 
 ### [6 - Path tracing](https://github.com/PrimozLavric/LogiPathTracer)
 Nvidia RTX and rasterization implementation of path tracing.
