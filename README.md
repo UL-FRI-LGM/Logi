@@ -48,15 +48,16 @@ Implements Vulkan state holder, utility functions, Dear ImGui layer and base str
 
 ### [2 - Hello triangle](examples/hello_triangle/)
 Basic example of rendering colored triangle to screen with Logi framework.    
-![box1](images/hello_triangle.png) 
+![triangle](images/hello_triangle.png) 
+![trianglewhite](images/trianglewhite.png) 
 
 ### [3 - Texture](examples/texture/)
 Loading 2D texture from disk and rendering it to quad.    
-![box1](images/texture.png) 
+![texture](images/texture.png) 
 
 ### [4 - Vulkan tutorial port](examples/vulkanTutorialPort/)
 Port of [Vulkan tutorial](https://vulkan-tutorial.com/) to Logi framework. Note, that mipmapping and multisampling are not implemented.    
-![box1](images/vulkan_tutorial_port.png) 
+![tutorial_port](images/vulkan_tutorial_port.png) 
 
 ### [5 - Fractals](examples/fractals/)
 Visualisation of common 3D fractals. Also Dear ImGUI is used for setting window.     
