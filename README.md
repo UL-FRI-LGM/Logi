@@ -52,7 +52,7 @@ Basic example of rendering colored triangle to screen with Logi framework.
 ![triangle](images/hello_triangle.png) 
 
 ### [3 - Texture](examples/texture/)
-Loading 2D texture from disk and rendering it to quad.    
+Loads 2D texture from disk and renders it to quad.    
 
 ![texture](images/texture.png) 
 
