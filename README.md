@@ -4,6 +4,7 @@ Logi is light-weight Vulkan abstraction framework, which attempts to bridge the 
 
 ## Features
 
+* Supports Vulkan 1.2
 * Object-oriented Vulkan abstraction framework
 * Correctly enforced construction and destruction order of Vulkan resources
 * Integration of the dynamic dispatching of Vulkan functions
@@ -11,14 +12,57 @@ Logi is light-weight Vulkan abstraction framework, which attempts to bridge the 
 * Shader reflection functionality (SPIR-V Cross)
 * Simplified management of memory allocations and memory bindings (Vulkan Memory Allocator)
 
+## Requirements
+Requirements for Logi framework:
+* [Vulkan SDK 1.2](https://vulkan.lunarg.com/) (Tested up to version 1.2.154.1)
+* [SPIRV-Cross](https://github.com/KhronosGroup/SPIRV-Cross)
+* [Vulkan Memory Allocator](https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator)
+  
+Requirements for running examples:
+* [GLFW](https://www.glfw.org/)
+* [glm](https://github.com/g-truc/glm)
+
+When cloning repository clone recursively:  
+`git clone --recursive https://github.com/UL-FRI-LGM/Logi.git`
+
+
 ## Building
 Logi has been tested on Windows and Linux. Use the provided CMakeLists.txt with [CMake](https://cmake.org) to generate a build configuration for your favorite IDE or compiler.
 
 
-## Usage
-For examples see [`./examples`](examples/).
+## Examples
 
-## Documentation and examples
+#### [Base](examples/base/)
+Implements Vulkan state holder, utility functions, Dear ImGui layer and base structure for examples.
+
+#### [Hello triangle](examples/hello_triangle/)
+Basic example of rendering colored triangle to screen with Logi framework.  
+![box1](images/hello_triangle.png) 
+
+#### [Texture](examples/texture/)
+Loading 2D texture from disk and rendering it to quad.  
+![box1](images/texture.png) 
+
+#### [Vulkan tutorial port](examples/vulkanTutorialPort/)
+Port of [Vulkan tutorial](https://vulkan-tutorial.com/) to Logi framework. Note, that mipmapping and multisampling are not implemented.  
+![box1](images/vulkan_tutorial_port.png) 
+
+#### [Fractals](examples/fractals/)
+Visualisation of common 3D fractals. Also Dear ImGUI is used for setting window.   
+![box1](images/box1.png) 
+![box2](images/box2.png)
+![box3](images/box3.png)
+![box2](images/serpinski.png)
+![box3](images/sponge.png)
+![box1](images/bulb.png) 
+
+#### [Path tracing](https://github.com/PrimozLavric/LogiPathTracer)
+Nvidia RTX and rasterization implementation of path tracing.
+
+
+For more see [`./examples`](examples/).
+
+## Documentation
 Generate documentation with [CMake](https://cmake.org) by running `doc_doxygen` target.  
 ```
 cmake --build <dir> --target doc_doxygen 
