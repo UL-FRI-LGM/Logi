@@ -73,10 +73,3 @@ Visualisation of common 3D fractals. Also Dear ImGUI is used for setting window.
 
 ### [6 - Path tracing](https://github.com/PrimozLavric/LogiPathTracer)
 Nvidia RTX and rasterization implementation of path tracing.
-
-
-For more see [`./examples`](examples/).
-
-
-
-
