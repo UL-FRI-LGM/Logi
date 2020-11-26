@@ -1,4 +1,4 @@
-# Logi - Object-oriented Vulkan abstraction framework
+# Logi - Object oriented Vulkan abstraction framework
 
 Logi is light-weight Vulkan abstraction framework, which attempts to bridge the gap between previous graphics APIs and Vulkan by making API easier to use while still preserving Vulkan semantics and introducing as little overhead as possible.
 
