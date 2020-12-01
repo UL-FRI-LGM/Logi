@@ -113,6 +113,7 @@ void ExampleBase::initSurface() {
   surface_ = vulkanState_.instance_.registerSurfaceKHR(window_.createWindowSurface(vulkanState_.instance_).value);
 }
 
+// TODO: account for requested device extensions
 void ExampleBase::selectDevice() {
   // Select GPU
   const std::vector<logi::PhysicalDevice>& devices = vulkanState_.instance_.enumeratePhysicalDevices();
