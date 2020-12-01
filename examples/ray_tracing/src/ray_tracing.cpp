@@ -3,6 +3,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
 
+RayTracing::RayTracing(const ExampleConfiguration& config) : ExampleBase(config) {}
+
+void RayTracing::initRayTracing() {
+  // Query ray tracing properties of physical device
+  auto properties = vulkanState_.physicalDevice_.getProperties2<vk::PhysicalDeviceProperties2, vk::PhysicalDeviceRayTracingPropertiesNV>();
+  rayTracingProperties_ = properties.get<vk::PhysicalDeviceRayTracingPropertiesNV>();
+}
+
 void RayTracing::loadShaders() {
   shaderReflection_ = utility::loadShaders(vulkanState_,
                                            "./shaders/triangle.vert.spv",
@@ -311,6 +319,8 @@ void RayTracing::onSwapChainRecreate() {
 
 void RayTracing::initialize() {
   zoom = -2.5f;
+
+  initRayTracing();
 
   loadShaders();
   allocateBuffers();

@@ -10,7 +10,12 @@ struct Vertex {
 };
 
 class RayTracing : public ExampleBase {
+ public:
+  RayTracing(const ExampleConfiguration& config = {});
+
  protected:
+  void initRayTracing();
+
   void loadShaders();
 
   void allocateBuffers();
@@ -46,6 +51,8 @@ class RayTracing : public ExampleBase {
   std::vector<Vertex> vertices = {{{1.0f, 1.0f, 0.0f}, {1.0f, 0.0f, 0.0f}},
                                   {{-1.0f, 1.0f, 0.0f}, {0.0f, 1.0f, 0.0f}},
                                   {{0.0f, -1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}}};
+
+  vk::PhysicalDeviceRayTracingPropertiesNV rayTracingProperties_;
 
   logi::RenderPass renderPass_;
 
