@@ -19,12 +19,14 @@ void RayTracing::loadShaders() {
   pipelineLayoutData_ = utility::createPipelineLayout(vulkanState_, shaderReflection_);
 }
 
-void RayTracing::allocateBuffers() {
-  // Set allocator
-  logi::MemoryAllocator allocator = vulkanState_.defaultLogicalDevice_->createMemoryAllocator();
-  vulkanState_.addAllocator("MainAlloc", allocator);
-  vulkanState_.setDefaultAllocator("MainAlloc");
+// Loads model using obj_loader and allocates buffers on device
+void RayTracing::loadModel(const std::string& path) {
+  
+  ObjLoader loader;
+  loader.loadModel(path);
+}
 
+void RayTracing::allocateBuffers() {
   // Create vertex buffer
   utility::BufferAllocateInfo vertexBufferAllocateInfo = {};
   vertexBufferAllocateInfo.data = vertices.data();
@@ -323,6 +325,14 @@ void RayTracing::initialize() {
   initRayTracing();
 
   loadShaders();
+
+  // Set allocator
+  logi::MemoryAllocator allocator = vulkanState_.defaultLogicalDevice_->createMemoryAllocator();
+  vulkanState_.addAllocator("MainAlloc", allocator);
+  vulkanState_.setDefaultAllocator("MainAlloc");
+
+  loadModel(MODEL_PATH);
+
   allocateBuffers();
   initializeDescriptorSets();
 
