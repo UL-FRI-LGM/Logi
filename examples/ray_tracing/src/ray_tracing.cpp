@@ -19,12 +19,149 @@ void RayTracing::loadShaders() {
   pipelineLayoutData_ = utility::createPipelineLayout(vulkanState_, shaderReflection_);
 }
 
-void RayTracing::allocateBuffers() {
-  // Set allocator
-  logi::MemoryAllocator allocator = vulkanState_.defaultLogicalDevice_->createMemoryAllocator();
-  vulkanState_.addAllocator("MainAlloc", allocator);
-  vulkanState_.setDefaultAllocator("MainAlloc");
+// Loads model using obj_loader and allocates buffers on device
+void RayTracing::loadModel(const std::string& path, glm::mat4 transform) {
 
+  ObjLoader loader;
+  loader.loadModel(path);
+
+
+  // Convert from srgb to linear
+  for(auto m : loader.m_materials) {
+    float exp = 2.2f;
+    m.ambient = glm::vec3(glm::pow(m.ambient.x, 2.2f), glm::pow(m.ambient.y, 2.2f), glm::pow(m.ambient.z, 2.2f));
+    m.diffuse = glm::vec3(glm::pow(m.diffuse.x, 2.2f), glm::pow(m.diffuse.y, 2.2f), glm::pow(m.diffuse.z, 2.2f));
+    m.specular = glm::vec3(glm::pow(m.specular.x, 2.2f), glm::pow(m.specular.y, 2.2f), glm::pow(m.specular.z, 2.2f));
+  }
+
+
+  ObjInstance instance;
+  instance.objIndex = static_cast<uint32_t>(objInstances_.size());
+  instance.transform = transform;
+  instance.transformIT = glm::transpose(glm::inverse(transform));
+  instance.txtOffset = static_cast<uint32_t>(textures_.size());
+
+  ObjModel model;
+  model.nbVertices = static_cast<uint32_t>(loader.m_vertices.size());
+  model.nbIndices = static_cast<uint32_t>(loader.m_indices.size());
+
+
+  // Allocate buffers
+  utility::BufferAllocateInfo vertexInfo;
+  vertexInfo.data = loader.m_vertices.data();
+  vertexInfo.size = loader.m_vertices.size() * sizeof(VertexObj);
+  vertexInfo.sharingMode = vk::SharingMode::eExclusive;
+  // NOTE: update for KHR
+  vertexInfo.usage = vk::BufferUsageFlagBits::eVertexBuffer | vk::BufferUsageFlagBits::eStorageBuffer |
+                     vk::BufferUsageFlagBits::eShaderDeviceAddress | vk::BufferUsageFlagBits::eRayTracingNV;
+
+  utility::BufferAllocateInfo indexInfo;
+  indexInfo.data = loader.m_indices.data();
+  indexInfo.size = loader.m_indices.size() * sizeof(uint32_t);
+  indexInfo.sharingMode = vk::SharingMode::eExclusive;
+  // NOTE: update for KHR
+  indexInfo.usage = vk::BufferUsageFlagBits::eIndexBuffer | vk::BufferUsageFlagBits::eStorageBuffer |
+                     vk::BufferUsageFlagBits::eShaderDeviceAddress | vk::BufferUsageFlagBits::eRayTracingNV;
+
+  utility::BufferAllocateInfo matInfo;
+  matInfo.data = loader.m_materials.data();
+  matInfo.size = loader.m_materials.size() * sizeof(MaterialObj);
+  matInfo.sharingMode = vk::SharingMode::eExclusive;
+  matInfo.usage = vk::BufferUsageFlagBits::eStorageBuffer;
+
+  utility::BufferAllocateInfo matIndInfo;
+  matIndInfo.data = loader.m_matIndx.data();
+  matIndInfo.size = loader.m_matIndx.size() * sizeof(uint32_t);
+  matIndInfo.sharingMode = vk::SharingMode::eExclusive;
+  matIndInfo.usage = vk::BufferUsageFlagBits::eStorageBuffer;
+
+  std::vector<utility::BufferAllocateInfo> bufferAllocInfos = {vertexInfo, indexInfo, matInfo, matIndInfo};
+  std::vector<logi::VMABuffer> buffers;
+
+  utility::allocateBufferStaged(vulkanState_, VMA_MEMORY_USAGE_GPU_ONLY, bufferAllocInfos, buffers);
+  model.vertexBuffer = buffers[0];
+  model.indexBuffer = buffers[1];
+  model.matColorBuffer = buffers[2];
+  model.matIndexBuffer = buffers[3];
+
+
+  // Allocate textures
+  allocateTextures(loader.m_textures);
+
+
+  objInstances_.push_back(instance);
+  objModels_.push_back(model);
+}
+
+// NOTE: extremely inefficient! - each allocation is separate, better to batch allocations
+void RayTracing::allocateTextures(const std::vector<std::string>& texturePaths) {
+
+  vk::SamplerCreateInfo samplerInfo;
+  samplerInfo.magFilter = vk::Filter::eLinear;
+  samplerInfo.minFilter = vk::Filter::eLinear;
+  samplerInfo.mipmapMode = vk::SamplerMipmapMode::eLinear;
+
+  logi::Sampler sampler = vulkanState_.defaultLogicalDevice_->createSampler(samplerInfo);
+
+  // Create dummy texture if no texture is present
+  if(texturePaths.empty() && textures_.empty()) {
+    
+    // Dummy
+    std::array<uint8_t, 4> color{255u, 255u, 255u, 255u};
+    vk::DeviceSize bufferSize = sizeof(color);
+    uint32_t texWidth = 1;
+    uint32_t texHeight = 1;
+    auto imageSize = vk::Extent2D(1, 1);
+
+
+    // Staging buffer
+    VmaAllocationCreateInfo allocStaged = {};
+    allocStaged.usage = VmaMemoryUsage::VMA_MEMORY_USAGE_CPU_ONLY;   
+
+    vk::BufferCreateInfo imageStaging;
+    imageStaging.size = bufferSize;
+    imageStaging.usage = vk::BufferUsageFlagBits::eTransferSrc;
+    imageStaging.sharingMode = vk::SharingMode::eExclusive;
+
+    logi::VMABuffer stagingBuffer = vulkanState_.defaultAllocator_->createBuffer(imageStaging, allocStaged);
+    stagingBuffer.writeToBuffer(&color, bufferSize); 
+
+    // Image allocation
+    Texture texture;
+
+    texture.image = utility::createImage(vulkanState_, texWidth, texHeight, vk::Format::eR8G8B8A8Unorm, 
+                        vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled, VMA_MEMORY_USAGE_GPU_ONLY);
+
+    utility::transitionImageLayout(vulkanState_, texture.image, vk::ImageLayout::eUndefined, vk::ImageLayout::eTransferDstOptimal);
+
+    utility::copyBufferToImage(vulkanState_, stagingBuffer, texture.image, texWidth, texHeight);
+
+    utility::transitionImageLayout(vulkanState_, texture.image, vk::ImageLayout::eTransferDstOptimal, vk::ImageLayout::eShaderReadOnlyOptimal);
+
+    // Image View creation
+    texture.imageView = texture.image.createImageView({}, vk::ImageViewType::e2D, vk::Format::eR8G8B8A8Unorm, {}, 
+                                                      vk::ImageSubresourceRange(vk::ImageAspectFlagBits::eColor, 0, 1, 0, 1));
+
+    texture.sampler = sampler;
+
+    textures_.push_back(texture);
+  } else {
+    for(auto path : texturePaths) {
+      path = "../resources/textures/" + path;
+
+      Texture texture;
+      texture.image = utility::loadImageStaged(vulkanState_, VMA_MEMORY_USAGE_GPU_ONLY, vk::ImageUsageFlagBits::eSampled,
+                                                vk::ImageLayout::eShaderReadOnlyOptimal, path.c_str());
+      texture.imageView = texture.image.createImageView({}, vk::ImageViewType::e2D, vk::Format::eR8G8B8A8Unorm, {}, 
+                                                        vk::ImageSubresourceRange(vk::ImageAspectFlagBits::eColor, 0, 1, 0, 1));
+      texture.sampler = sampler;
+
+      textures_.push_back(texture);
+    }
+  }
+}
+
+void RayTracing::allocateBuffers() {
   // Create vertex buffer
   utility::BufferAllocateInfo vertexBufferAllocateInfo = {};
   vertexBufferAllocateInfo.data = vertices.data();
@@ -104,6 +241,111 @@ void RayTracing::initializeDescriptorSets() {
 
     vulkanState_.defaultLogicalDevice_->updateDescriptorSets(descriptorWrite);
   }
+}
+
+void RayTracing::createBottomLevelAS() {
+  // Object to vkGeometry
+  std::vector<std::vector<vk::GeometryNV>> geoms; // In our case only one geometry in each BLAS
+  geoms.reserve(objModels_.size());
+
+  for(const auto& obj : objModels_) {
+    auto geo = objectToVkGeometryNV(obj);
+    geoms.push_back({geo});
+  }
+
+  // Create BLAS-es
+  std::vector<vk::AccelerationStructureInfoNV> acInfos;
+  acInfos.reserve(geoms.size());
+  vk::MemoryRequirements memoryRequirements;
+
+  vk::DeviceSize maxScratchSize{0};
+
+  for(int i = 0; i < geoms.size(); i++) {
+    vk::AccelerationStructureInfoNV acInfo;
+    acInfo.type = vk::AccelerationStructureTypeNV::eBottomLevel;
+    acInfo.flags = vk::BuildAccelerationStructureFlagBitsNV::ePreferFastTrace;
+    acInfo.instanceCount = 0;
+    acInfo.geometryCount = static_cast<uint32_t>(geoms[i].size());
+    acInfo.pGeometries = geoms[i].data();
+
+    acInfos.push_back(acInfo);
+
+    vk::AccelerationStructureCreateInfoNV asCreateInfo;
+    asCreateInfo.compactedSize = 0;
+    asCreateInfo.info = acInfo;
+
+    VmaAllocationCreateInfo asAllocationInfo = {};
+    asAllocationInfo.usage = VmaMemoryUsage::VMA_MEMORY_USAGE_GPU_ONLY;
+
+    // Create acceleration structure
+    logi::VMAAccelerationStructureNV accelerationStructure =
+        vulkanState_.defaultAllocator_->createAccelerationStructureNV(asCreateInfo, asAllocationInfo);
+    blas_.push_back(accelerationStructure);
+
+    // Query scratch buffer size
+    memoryRequirements =
+       accelerationStructure.getMemoryRequirementsNV(vk::AccelerationStructureMemoryRequirementsTypeNV::eBuildScratch).memoryRequirements;
+
+    maxScratchSize = std::max(maxScratchSize, memoryRequirements.size);
+  }
+
+
+  // Allocate scratch buffer
+  VmaAllocationCreateInfo scratchBufferAllocationInfo = {};
+  scratchBufferAllocationInfo.usage = VmaMemoryUsage::VMA_MEMORY_USAGE_GPU_ONLY;
+  scratchBufferAllocationInfo.memoryTypeBits = memoryRequirements.memoryTypeBits;
+
+  vk::BufferCreateInfo scratchBufferInfo = {};
+  scratchBufferInfo.size =  maxScratchSize;
+  scratchBufferInfo.usage = vk::BufferUsageFlagBits::eRayTracingNV;
+  scratchBufferInfo.sharingMode = vk::SharingMode::eExclusive;
+
+  logi::VMABuffer scratchBuffer = vulkanState_.defaultAllocator_->createBuffer(scratchBufferInfo, scratchBufferAllocationInfo);
+
+
+  // Build BLAS
+  logi::CommandBuffer cmd = utility::beginSingleTimeCommand(vulkanState_, utility::Graphics);
+  
+  for(int i = 0; i < geoms.size(); i++) {
+    cmd.buildAccelerationStructureNV(acInfos[i], nullptr, 0, false, blas_[i], nullptr, scratchBuffer, 0);
+
+    vk::MemoryBarrier memoryBarrier;
+    memoryBarrier.srcAccessMask = vk::AccessFlagBits::eAccelerationStructureWriteNV | vk::AccessFlagBits::eAccelerationStructureReadNV;
+    memoryBarrier.dstAccessMask = vk::AccessFlagBits::eAccelerationStructureReadNV | vk::AccessFlagBits::eAccelerationStructureWriteNV;
+
+    cmd.pipelineBarrier(vk::PipelineStageFlagBits::eAccelerationStructureBuildNV,
+                        vk::PipelineStageFlagBits::eAccelerationStructureBuildNV, {}, memoryBarrier, {}, {});
+  }
+
+  utility::endSingleTimeCommand(vulkanState_, utility::Graphics, cmd);
+
+
+  cmd.destroy();
+  scratchBuffer.destroy();  
+}
+
+vk::GeometryNV RayTracing::objectToVkGeometryNV(const ObjModel& model) {
+  vk::GeometryTrianglesNV triangles;
+
+  triangles.setVertexData(model.vertexBuffer);
+  triangles.setVertexOffset(0); 
+  triangles.setVertexCount(model.nbVertices);
+  triangles.setVertexStride(sizeof(VertexObj));
+  triangles.setVertexFormat(vk::Format::eR32G32B32Sfloat);  // 3xfloat32 for vertices
+
+  triangles.setIndexData(model.indexBuffer);
+  triangles.setIndexOffset(0);
+  triangles.setIndexCount(model.nbIndices);
+  triangles.setIndexType(vk::IndexType::eUint32);  // 32-bit indices
+
+  vk::GeometryDataNV geoData;
+  geoData.setTriangles(triangles);
+
+  vk::GeometryNV geometry;
+  geometry.setGeometry(geoData);
+  geometry.setFlags(vk::GeometryFlagBitsNV::eOpaque); // only opaque triangles
+
+  return geometry;
 }
 
 void RayTracing::createRenderPass() {
@@ -323,6 +565,15 @@ void RayTracing::initialize() {
   initRayTracing();
 
   loadShaders();
+
+  // Set allocator
+  logi::MemoryAllocator allocator = vulkanState_.defaultLogicalDevice_->createMemoryAllocator();
+  vulkanState_.addAllocator("MainAlloc", allocator);
+  vulkanState_.setDefaultAllocator("MainAlloc");
+
+  loadModel(MODEL_PATH);
+  createBottomLevelAS();
+
   allocateBuffers();
   initializeDescriptorSets();
 
