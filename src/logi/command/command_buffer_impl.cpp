@@ -331,6 +331,35 @@ void CommandBufferImpl::setDeviceMaskKHR(uint32_t deviceMask) const {
   vkCommandBuffer_.setDeviceMaskKHR(deviceMask, getDispatcher());
 }
 
+void CommandBufferImpl::buildAccelerationStructuresKHR(const vk::ArrayProxy<const vk::AccelerationStructureBuildGeometryInfoKHR> buildGeometryInfos,
+                                                       const vk::ArrayProxy<const vk::AccelerationStructureBuildRangeInfoKHR *const> buildRangeInfos) const {
+  vkCommandBuffer_.buildAccelerationStructuresKHR(buildGeometryInfos, buildRangeInfos, getDispatcher());
+}
+
+void CommandBufferImpl::buildAccelerationStructuresIndirectKHR(const vk::ArrayProxy<const vk::AccelerationStructureBuildGeometryInfoKHR> buildGeometryInfos, 
+                                                               const vk::ArrayProxy<const vk::DeviceAddress> indirectDeviceAddresses,
+                                                               const vk::ArrayProxy<const uint32_t> indirectStrides, 
+                                                               const vk::ArrayProxy<const uint32_t *const> maxPrimitiveCounts) const {
+  vkCommandBuffer_.buildAccelerationStructuresIndirectKHR(buildGeometryInfos, indirectDeviceAddresses, indirectStrides, maxPrimitiveCounts, getDispatcher());
+}
+
+void CommandBufferImpl::copyAccelerationStructureKHR(const vk::CopyAccelerationStructureInfoKHR& copyAccelerationStructureInfo) const {
+  vkCommandBuffer_.copyAccelerationStructureKHR(copyAccelerationStructureInfo, getDispatcher());
+}
+
+void CommandBufferImpl::copyAccelerationStructureToMemoryKHR(const vk::CopyAccelerationStructureToMemoryInfoKHR& copyAccelerationStructureToMemoryInfo) const {
+  vkCommandBuffer_.copyAccelerationStructureToMemoryKHR(copyAccelerationStructureToMemoryInfo, getDispatcher());
+}              
+
+void CommandBufferImpl::copyMemoryToAccelerationStructureKHR(const vk::CopyMemoryToAccelerationStructureInfoKHR& copyMemoryToAccelerationStructureInfo) const {
+  vkCommandBuffer_.copyMemoryToAccelerationStructureKHR(copyMemoryToAccelerationStructureInfo, getDispatcher());
+}                      
+
+void CommandBufferImpl::writeAccelerationStructuresPropertiesKHR(const vk::ArrayProxy<const vk::AccelerationStructureKHR> accelerationStructures,
+                                                                 vk::QueryType queryType, vk::QueryPool queryPool, uint32_t firstQuery) const {
+  vkCommandBuffer_.writeAccelerationStructuresPropertiesKHR(accelerationStructures, queryType, queryPool, firstQuery, getDispatcher());
+}
+
 void CommandBufferImpl::beginConditionalRenderingEXT(
   const vk::ConditionalRenderingBeginInfoEXT& conditionalRenderingBegin) const {
   vkCommandBuffer_.beginConditionalRenderingEXT(conditionalRenderingBegin, getDispatcher());

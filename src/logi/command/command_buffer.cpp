@@ -320,6 +320,35 @@ void CommandBuffer::setDeviceMaskKHR(uint32_t deviceMask) const {
   object_->setDeviceMaskKHR(deviceMask);
 }
 
+void CommandBuffer::buildAccelerationStructuresKHR(const vk::ArrayProxy<const vk::AccelerationStructureBuildGeometryInfoKHR> buildGeometryInfos,
+                                                   const vk::ArrayProxy<const vk::AccelerationStructureBuildRangeInfoKHR *const> buildRangeInfos) const {
+  object_->buildAccelerationStructuresKHR(buildGeometryInfos, buildRangeInfos);
+}
+
+void CommandBuffer::buildAccelerationStructuresIndirectKHR(const vk::ArrayProxy<const vk::AccelerationStructureBuildGeometryInfoKHR> buildGeometryInfos, 
+                                                           const vk::ArrayProxy<const vk::DeviceAddress> indirectDeviceAddresses,
+                                                           const vk::ArrayProxy<const uint32_t> indirectStrides, 
+                                                           const vk::ArrayProxy<const uint32_t *const> maxPrimitiveCounts) const {
+  object_->buildAccelerationStructuresIndirectKHR(buildGeometryInfos, indirectDeviceAddresses, indirectStrides, maxPrimitiveCounts);
+}
+
+void CommandBuffer::copyAccelerationStructureKHR(const vk::CopyAccelerationStructureInfoKHR& copyAccelerationStructureInfo) const {
+  object_->copyAccelerationStructureKHR(copyAccelerationStructureInfo);
+}
+
+void CommandBuffer::copyAccelerationStructureToMemoryKHR(const vk::CopyAccelerationStructureToMemoryInfoKHR& copyAccelerationStructureToMemoryInfo) const {
+  object_->copyAccelerationStructureToMemoryKHR(copyAccelerationStructureToMemoryInfo);
+}              
+
+void CommandBuffer::copyMemoryToAccelerationStructureKHR(const vk::CopyMemoryToAccelerationStructureInfoKHR& copyMemoryToAccelerationStructureInfo) const {
+  object_->copyMemoryToAccelerationStructureKHR(copyMemoryToAccelerationStructureInfo);
+}                      
+
+void CommandBuffer::writeAccelerationStructuresPropertiesKHR(const vk::ArrayProxy<const vk::AccelerationStructureKHR> accelerationStructures,
+                                                             vk::QueryType queryType, vk::QueryPool queryPool, uint32_t firstQuery) const {
+  object_->writeAccelerationStructuresPropertiesKHR(accelerationStructures, queryType, queryPool, firstQuery);
+}
+
 void CommandBuffer::beginConditionalRenderingEXT(
   const vk::ConditionalRenderingBeginInfoEXT& conditionalRenderingBegin) const {
   object_->beginConditionalRenderingEXT(conditionalRenderingBegin);
