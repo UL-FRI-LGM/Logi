@@ -35,6 +35,7 @@
 #include "logi/instance/vulkan_instance.hpp"
 #include "logi/logi.hpp"
 #include "logi/memory/acceleration_structure_nv.hpp"
+#include "logi/memory/acceleration_structure_khr.hpp"
 #include "logi/memory/buffer.hpp"
 #include "logi/memory/buffer_view.hpp"
 #include "logi/memory/device_memory.hpp"

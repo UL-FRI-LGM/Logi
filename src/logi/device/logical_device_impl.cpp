@@ -23,6 +23,7 @@
 #include "logi/device/physical_device_impl.hpp"
 #include "logi/instance/vulkan_instance_impl.hpp"
 #include "logi/memory/acceleration_structure_nv_impl.hpp"
+#include "logi/memory/acceleration_structure_khr_impl.hpp"
 #include "logi/memory/buffer_impl.hpp"
 #include "logi/memory/device_memory_impl.hpp"
 #include "logi/memory/image_impl.hpp"
@@ -386,6 +387,27 @@ void LogicalDeviceImpl::destroySwapchainKHR(size_t id) {
   return VulkanObjectComposite<SwapchainKHRImpl>::destroyObject(id);
 }
 
+const std::shared_ptr<AccelerationStructureKHRImpl>&
+  LogicalDeviceImpl::createAccelerationStructureKHR(const vk::AccelerationStructureCreateInfoKHR& createInfo,
+                                                    const std::optional<vk::AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<AccelerationStructureKHRImpl>::createObject(*this, createInfo, allocator);
+}
+
+void LogicalDeviceImpl::destroyAccelerationStructureKHR(size_t id) {
+  VulkanObjectComposite<AccelerationStructureKHRImpl>::destroyObject(id);
+}   
+
+vk::Result LogicalDeviceImpl::buildAccelerationStructuresKHR(vk::DeferredOperationKHR deferredOperation, 
+                                                             const vk::ArrayProxy<const vk::AccelerationStructureBuildGeometryInfoKHR> &infos,
+                                                             const vk::ArrayProxy<const vk::AccelerationStructureBuildRangeInfoKHR *const> &pBuildRangeInfos) const {
+  return vkDevice_.buildAccelerationStructuresKHR(deferredOperation, infos, pBuildRangeInfos, getDispatcher());
+}
+
+vk::AccelerationStructureCompatibilityKHR 
+    LogicalDeviceImpl::getAccelerationStructureCompatibilityKHR(const vk::AccelerationStructureVersionInfoKHR &versionInfo) const {
+  return vkDevice_.getAccelerationStructureCompatibilityKHR(versionInfo, getDispatcher());
+}
+
 const std::shared_ptr<ValidationCacheEXTImpl>&
   LogicalDeviceImpl::createValidationCacheEXT(const vk::ValidationCacheCreateInfoEXT& createInfo,
                                               const std::optional<vk::AllocationCallbacks>& allocator) {
@@ -564,6 +586,7 @@ void LogicalDeviceImpl::free() {
   VulkanObjectComposite<BufferImpl>::destroyAllObjects();
   VulkanObjectComposite<ImageImpl>::destroyAllObjects();
   VulkanObjectComposite<AccelerationStructureNVImpl>::destroyAllObjects();
+  VulkanObjectComposite<AccelerationStructureKHRImpl>::destroyAllObjects();
   VulkanObjectComposite<MemoryAllocatorImpl>::destroyAllObjects();
   VulkanObjectComposite<DeviceMemoryImpl>::destroyAllObjects();
   VulkanObjectComposite<SwapchainKHRImpl>::destroyAllObjects();

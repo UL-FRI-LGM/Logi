@@ -26,6 +26,7 @@
 #include "logi/descriptor/descriptor_update_template.hpp"
 #include "logi/device/logical_device_impl.hpp"
 #include "logi/memory/acceleration_structure_nv.hpp"
+#include "logi/memory/acceleration_structure_khr.hpp"
 #include "logi/memory/buffer.hpp"
 #include "logi/memory/device_memory.hpp"
 #include "logi/memory/image.hpp"
@@ -347,6 +348,38 @@ class LogicalDevice : public Handle<LogicalDeviceImpl> {
   void destroySwapchainKHR(const SwapchainKHR& swapchain) const;
 
   /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateAccelerationStructureKHR.html">vkCreateAccelerationStructureKHR</a>
+   */
+  AccelerationStructureKHR 
+    createAccelerationStructureKHR(const vk::AccelerationStructureCreateInfoKHR& createInfo,
+                                   const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
+
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroyAccelerationStructureKHR.html">vkDestroyAccelerationStructureKHR</a>
+   */
+  void destroyAccelerationStructureKHR(const AccelerationStructureKHR& accelerationStructure) const;
+
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkBuildAccelerationStructuresKHR.html">vkBuildAccelerationStructuresKHR</a>
+   */
+  vk::Result buildAccelerationStructuresKHR(vk::DeferredOperationKHR deferredOperation, 
+                                            const vk::ArrayProxy<const vk::AccelerationStructureBuildGeometryInfoKHR> &infos,
+                                            const vk::ArrayProxy<const vk::AccelerationStructureBuildRangeInfoKHR *const> &pBuildRangeInfos) const;
+
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetDeviceAccelerationStructureCompatibilityKHR.html">vkGetDeviceAccelerationStructureCompatibilityKHR</a>
+   */
+  vk::AccelerationStructureCompatibilityKHR 
+      getAccelerationStructureCompatibilityKHR(const vk::AccelerationStructureVersionInfoKHR &versionInfo) const;
+
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkWriteAccelerationStructuresPropertiesKHR.html">vkWriteAccelerationStructuresPropertiesKHR</a>
+   */
+  template <typename T>
+  vk::ResultValueType<void>::type writeAccelerationStructuresPropertiesKHR(const vk::ArrayProxy<const vk::AccelerationStructureKHR> &accelerationStructures, 
+                                                                           vk::QueryType queryType, const vk::ArrayProxy<T> &data, size_t stride) const;                       
+
+  /**
    * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateValidationCacheEXT.html">vkCreateValidationCacheEXT</a>
    */
   ValidationCacheEXT createValidationCacheEXT(const vk::ValidationCacheCreateInfoEXT& createInfo,
@@ -521,6 +554,13 @@ class LogicalDevice : public Handle<LogicalDeviceImpl> {
 
   operator const vk::Device&() const;
 };
+
+template <typename T>
+vk::ResultValueType<void>::type
+    LogicalDevice::writeAccelerationStructuresPropertiesKHR(const vk::ArrayProxy<const vk::AccelerationStructureKHR> &accelerationStructures,
+                                                            vk::QueryType queryType, const vk::ArrayProxy<T> &data, size_t stride) const {
+  return object_->writeAccelerationStructuresPropertiesKHR(accelerationStructures, queryType, data, stride);
+}
 
 } // namespace logi
 

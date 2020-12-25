@@ -26,6 +26,7 @@
 #include "logi/instance/vulkan_instance.hpp"
 #include "logi/instance/vulkan_instance_impl.hpp"
 #include "logi/memory/acceleration_structure_nv_impl.hpp"
+#include "logi/memory/acceleration_structure_khr_impl.hpp"
 #include "logi/memory/buffer_impl.hpp"
 #include "logi/memory/device_memory_impl.hpp"
 #include "logi/memory/image_impl.hpp"
@@ -306,6 +307,27 @@ std::vector<SwapchainKHR>
 
 void LogicalDevice::destroySwapchainKHR(const SwapchainKHR& swapchain) const {
   object_->destroySwapchainKHR(swapchain.id());
+}
+
+AccelerationStructureKHR 
+  LogicalDevice::createAccelerationStructureKHR(const vk::AccelerationStructureCreateInfoKHR& createInfo,
+                                                const std::optional<vk::AllocationCallbacks>& allocator) const {
+  return AccelerationStructureKHR(object_->createAccelerationStructureKHR(createInfo, allocator));
+}
+
+void LogicalDevice::destroyAccelerationStructureKHR(const AccelerationStructureKHR& accelerationStructure) const {
+  object_->destroyAccelerationStructureKHR(accelerationStructure.id());
+}     
+
+vk::Result LogicalDevice::buildAccelerationStructuresKHR(vk::DeferredOperationKHR deferredOperation, 
+                                                         const vk::ArrayProxy<const vk::AccelerationStructureBuildGeometryInfoKHR> &infos,
+                                                         const vk::ArrayProxy<const vk::AccelerationStructureBuildRangeInfoKHR *const> &pBuildRangeInfos) const {
+  return object_->buildAccelerationStructuresKHR(deferredOperation, infos, pBuildRangeInfos); 
+}
+
+vk::AccelerationStructureCompatibilityKHR 
+    LogicalDevice::getAccelerationStructureCompatibilityKHR(const vk::AccelerationStructureVersionInfoKHR &versionInfo) const {
+  return object_->getAccelerationStructureCompatibilityKHR(versionInfo);
 }
 
 ValidationCacheEXT

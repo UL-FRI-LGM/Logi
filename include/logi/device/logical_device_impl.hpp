@@ -47,6 +47,7 @@ class RenderPassImpl;
 class FramebufferImpl;
 class ValidationCacheEXTImpl;
 class AccelerationStructureNVImpl;
+class AccelerationStructureKHRImpl;
 class IndirectCommandsLayoutNVImpl;
 class ObjectTableNVXImpl;
 class DescriptorUpdateTemplateImpl;
@@ -78,6 +79,7 @@ class LogicalDeviceImpl : public VulkanObject,
                           public VulkanObjectComposite<FramebufferImpl>,
                           public VulkanObjectComposite<ValidationCacheEXTImpl>,
                           public VulkanObjectComposite<AccelerationStructureNVImpl>,
+                          public VulkanObjectComposite<AccelerationStructureKHRImpl>,
                           public VulkanObjectComposite<IndirectCommandsLayoutNVImpl>,
                           public VulkanObjectComposite<ObjectTableNVXImpl> {
  public:
@@ -240,7 +242,24 @@ class LogicalDeviceImpl : public VulkanObject,
                               const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroySwapchainKHR(size_t id);
+  
+  const std::shared_ptr<AccelerationStructureKHRImpl>& 
+    createAccelerationStructureKHR(const vk::AccelerationStructureCreateInfoKHR& createInfo,
+                                   const std::optional<vk::AllocationCallbacks>& allocator = {});
 
+  void destroyAccelerationStructureKHR(size_t id);    
+
+  vk::Result buildAccelerationStructuresKHR(vk::DeferredOperationKHR deferredOperation, 
+                                           const vk::ArrayProxy<const vk::AccelerationStructureBuildGeometryInfoKHR> &infos,
+                                           const vk::ArrayProxy<const vk::AccelerationStructureBuildRangeInfoKHR *const> &pBuildRangeInfos) const;
+
+  vk::AccelerationStructureCompatibilityKHR 
+      getAccelerationStructureCompatibilityKHR(const vk::AccelerationStructureVersionInfoKHR &versionInfo) const;
+
+  template <typename T>
+  vk::ResultValueType<void>::type writeAccelerationStructuresPropertiesKHR(const vk::ArrayProxy<const vk::AccelerationStructureKHR> &accelerationStructures, 
+                                                                           vk::QueryType queryType, const vk::ArrayProxy<T> &data, size_t stride) const; 
+                         
   const std::shared_ptr<ValidationCacheEXTImpl>&
     createValidationCacheEXT(const vk::ValidationCacheCreateInfoEXT& createInfo,
                              const std::optional<vk::AllocationCallbacks>& allocator = {});
@@ -348,6 +367,13 @@ class LogicalDeviceImpl : public VulkanObject,
   vk::Device vkDevice_;
   vk::DispatchLoaderDynamic dispatcher_;
 };
+
+template <typename T>
+vk::ResultValueType<void>::type
+    LogicalDeviceImpl::writeAccelerationStructuresPropertiesKHR(const vk::ArrayProxy<const vk::AccelerationStructureKHR> &accelerationStructures,
+                                                                vk::QueryType queryType, const vk::ArrayProxy<T> &data, size_t stride) const {
+  return vkDevice_.writeAccelerationStructuresPropertiesKHR(accelerationStructures, queryType, data, stride, getDispatcher());
+}
 
 } // namespace logi
 
