@@ -63,5 +63,6 @@
 #include "logi/synchronization/event.hpp"
 #include "logi/synchronization/fence.hpp"
 #include "logi/synchronization/semaphore.hpp"
+#include "logi/synchronization/deferred_operation_khr.hpp"
 
 #endif // LOGI_LOGI_HPP

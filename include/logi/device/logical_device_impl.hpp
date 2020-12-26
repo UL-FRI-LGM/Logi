@@ -34,6 +34,7 @@ class PipelineCacheImpl;
 class EventImpl;
 class FenceImpl;
 class SemaphoreImpl;
+class DeferredOperationKHRImpl;
 class QueryPoolImpl;
 class DescriptorSetLayoutImpl;
 class DescriptorPoolImpl;
@@ -68,6 +69,7 @@ class LogicalDeviceImpl : public VulkanObject,
                           public VulkanObjectComposite<EventImpl>,
                           public VulkanObjectComposite<FenceImpl>,
                           public VulkanObjectComposite<SemaphoreImpl>,
+                          public VulkanObjectComposite<DeferredOperationKHRImpl>,
                           public VulkanObjectComposite<ShaderModuleImpl>,
                           public VulkanObjectComposite<PipelineCacheImpl>,
                           public VulkanObjectComposite<DescriptorSetLayoutImpl>,
@@ -227,6 +229,11 @@ class LogicalDeviceImpl : public VulkanObject,
   void destroySemaphore(size_t id);
 
   void waitSemaphores(const vk::SemaphoreWaitInfo& waitInfo, uint64_t timeout) const;
+
+  const std::shared_ptr<DeferredOperationKHRImpl>& 
+    createDeferredOperationKHR(const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyDeferredOperationKHR(size_t id);
 
   const std::shared_ptr<RenderPassImpl>& createRenderPass(const vk::RenderPassCreateInfo& createInfo,
                                                           const std::optional<vk::AllocationCallbacks>& allocator = {});

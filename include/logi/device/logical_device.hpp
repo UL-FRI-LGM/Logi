@@ -49,6 +49,7 @@
 #include "logi/synchronization/event.hpp"
 #include "logi/synchronization/fence.hpp"
 #include "logi/synchronization/semaphore.hpp"
+#include "logi/synchronization/deferred_operation_khr.hpp"
 
 namespace logi {
 
@@ -310,6 +311,16 @@ class LogicalDevice : public Handle<LogicalDeviceImpl> {
    * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkWaitSemaphores.html">vkWaitSemaphores</a>
    */
   void waitSemaphores(const vk::SemaphoreWaitInfo& waitInfo, uint64_t timeout) const;
+
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateDeferredOperationKHR.html">vkCreateDeferredOperationKHR</a>
+   */
+  DeferredOperationKHR createDeferredOperationKHR(const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
+
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkDestroyDeferredOperationKHR.html">vkDestroyDeferredOperationKHR</a>
+   */
+  void destroyDeferredOperationKHR(const DeferredOperationKHR& deferredOperationKHR) const;
 
   /**
    * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateRenderPass.html">vkCreateRenderPass</a>

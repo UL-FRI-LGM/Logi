@@ -48,6 +48,7 @@
 #include "logi/synchronization/event_impl.hpp"
 #include "logi/synchronization/fence_impl.hpp"
 #include "logi/synchronization/semaphore_impl.hpp"
+#include "logi/synchronization/deferred_operation_khr_impl.hpp"
 
 namespace logi {
 
@@ -278,6 +279,15 @@ void LogicalDevice::destroySemaphore(const Semaphore& semaphore) const {
 
 void LogicalDevice::waitSemaphores(const vk::SemaphoreWaitInfo& waitInfo, uint64_t timeout) const {
   object_->waitSemaphores(waitInfo, timeout);
+}
+
+DeferredOperationKHR 
+  LogicalDevice::createDeferredOperationKHR(const std::optional<vk::AllocationCallbacks>& allocator) const {
+  return DeferredOperationKHR(object_->createDeferredOperationKHR(allocator));
+}
+
+void LogicalDevice::destroyDeferredOperationKHR(const DeferredOperationKHR& deferredOperationKHR) const {
+  object_->destroyDeferredOperationKHR(deferredOperationKHR.id());
 }
 
 RenderPass LogicalDevice::createRenderPass(const vk::RenderPassCreateInfo& createInfo,
