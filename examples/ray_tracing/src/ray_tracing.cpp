@@ -424,7 +424,7 @@ void RayTracing::createGraphicalPipeline() {
   vertexInputInfo.pVertexBindingDescriptions = &vtxBindingDescription;
   vertexInputInfo.vertexBindingDescriptionCount = 1u;
   vertexInputInfo.pVertexAttributeDescriptions = vtxAttributeDescriptions.data();
-  vertexInputInfo.vertexAttributeDescriptionCount = vtxAttributeDescriptions.size();
+  vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(vtxAttributeDescriptions.size());
 
   vk::PipelineInputAssemblyStateCreateInfo inputAssembly;
   inputAssembly.topology = vk::PrimitiveTopology::eTriangleList;
