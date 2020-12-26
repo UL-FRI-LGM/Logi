@@ -73,6 +73,7 @@
         "xtr1common": "cpp",
         "xtree": "cpp",
         "xutility": "cpp",
-        "compare": "cpp"
+        "compare": "cpp",
+        "csignal": "cpp"
     }
 }
