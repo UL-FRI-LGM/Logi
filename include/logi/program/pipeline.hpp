@@ -35,7 +35,30 @@ class Pipeline : public Handle<PipelineImpl> {
   using Handle::Handle;
 
   // region Vulkan Declarations
-  
+
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetRayTracingShaderGroupStackSizeKHR.html">vkGetRayTracingShaderGroupStackSizeKHR</a>
+   */
+  vk::DeviceSize getRayTracingShaderGroupStackSizeKHR(uint32_t group, vk::ShaderGroupShaderKHR groupShader) const;
+
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetRayTracingCaptureReplayShaderGroupHandlesKHR.html">vkGetRayTracingCaptureReplayShaderGroupHandlesKHR</a>
+   */
+  template <typename T>
+  vk::ResultValueType<void>::type getRayTracingCaptureReplayShaderGroupHandlesKHR(uint32_t firstGroup, uint32_t groupCount, 
+                                                                                  const vk::ArrayProxy<T>& data) const {
+    return object_->getRayTracingCaptureReplayShaderGroupHandlesKHR<T>(firstGroup, groupCount, data);
+  }
+
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkGetRayTracingShaderGroupHandlesKHR.html">vkGetRayTracingShaderGroupHandlesKHR</a>
+   */
+  template <typename T>
+  vk::ResultValueType<void>::type getRayTracingShaderGroupHandlesKHR(uint32_t firstGroup, uint32_t groupCount,
+                                                                    vk::ArrayProxy<T> data) const {
+    return object_->getRayTracingShaderGroupHandlesKHR<T>(firstGroup, groupCount, data);
+  }
+
   /**
    * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCompileDeferredNV.html">vkCompileDeferredNV</a>
    */

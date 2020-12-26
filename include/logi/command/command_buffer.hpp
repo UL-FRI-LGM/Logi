@@ -428,6 +428,25 @@ class CommandBuffer : public Handle<CommandBufferImpl> {
                                                 vk::QueryType queryType, vk::QueryPool queryPool, uint32_t firstQuery) const;
 
   /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdTraceRaysKHR.html">vkCmdTraceRaysKHR</a>
+   */
+  void traceRaysKHR(const vk::StridedDeviceAddressRegionKHR &raygenShaderBindingTable, const vk::StridedDeviceAddressRegionKHR &missShaderBindingTable,
+                    const vk::StridedDeviceAddressRegionKHR &hitShaderBindingTable, const vk::StridedDeviceAddressRegionKHR &callableShaderBindingTable,
+                    uint32_t width, uint32_t height, uint32_t depth) const;
+
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdTraceRaysIndirectKHR.html">vkCmdTraceRaysIndirectKHR</a>
+   */
+  void traceRaysIndirectKHR(const vk::StridedDeviceAddressRegionKHR &raygenShaderBindingTable, const vk::StridedDeviceAddressRegionKHR &missShaderBindingTable,
+                            const vk::StridedDeviceAddressRegionKHR &hitShaderBindingTable, const vk::StridedDeviceAddressRegionKHR &callableShaderBindingTable,
+                            vk::DeviceAddress indirectDeviceAddress) const;      
+
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetRayTracingPipelineStackSizeKHR.html">vkCmdSetRayTracingPipelineStackSizeKHR</a>
+   */
+  void setRayTracingPipelineStackSizeKHR(uint32_t pipelineStackSize) const;
+
+  /**
    * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBeginConditionalRenderingEXT.html">vkCmdBeginConditionalRenderingEXT</a>
    */
   void beginConditionalRenderingEXT(const vk::ConditionalRenderingBeginInfoEXT& conditionalRenderingBegin) const;

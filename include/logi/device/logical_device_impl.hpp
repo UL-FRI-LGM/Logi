@@ -176,6 +176,18 @@ class LogicalDeviceImpl : public VulkanObject,
                                                        const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   std::vector<std::shared_ptr<PipelineImpl>>
+     createRayTracingPipelinesKHR(const vk::DeferredOperationKHR deferredOperation, 
+                                  const vk::ArrayProxy<const vk::RayTracingPipelineCreateInfoKHR>& createInfos,
+                                  const vk::PipelineCache& pipelineCache = nullptr,
+                                  const std::optional<const vk::AllocationCallbacks>& allocator = {});
+
+  std::shared_ptr<PipelineImpl> 
+    createRayTracingPipelineKHR(const vk::DeferredOperationKHR deferredOperation, 
+                                const vk::RayTracingPipelineCreateInfoKHR& createInfo, 
+                                const vk::PipelineCache& pipelineCache = nullptr,
+                                const std::optional<const vk::AllocationCallbacks>& allocator = {});
+
+  std::vector<std::shared_ptr<PipelineImpl>>
     createRayTracingPipelinesNV(const vk::ArrayProxy<const vk::RayTracingPipelineCreateInfoNV>& createInfos,
                                 const vk::PipelineCache& cache = nullptr,
                                 const std::optional<vk::AllocationCallbacks>& allocator = {});

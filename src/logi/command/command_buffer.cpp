@@ -349,6 +349,26 @@ void CommandBuffer::writeAccelerationStructuresPropertiesKHR(const vk::ArrayProx
   object_->writeAccelerationStructuresPropertiesKHR(accelerationStructures, queryType, queryPool, firstQuery);
 }
 
+void CommandBuffer::traceRaysKHR(const vk::StridedDeviceAddressRegionKHR &raygenShaderBindingTable, const vk::StridedDeviceAddressRegionKHR &missShaderBindingTable,
+                                 const vk::StridedDeviceAddressRegionKHR &hitShaderBindingTable, const vk::StridedDeviceAddressRegionKHR &callableShaderBindingTable,
+                                 uint32_t width, uint32_t height, uint32_t depth) const {
+  object_->traceRaysKHR(raygenShaderBindingTable, missShaderBindingTable,
+                        hitShaderBindingTable, callableShaderBindingTable,
+                        width, height, depth);
+}  
+
+void CommandBuffer::traceRaysIndirectKHR(const vk::StridedDeviceAddressRegionKHR &raygenShaderBindingTable, const vk::StridedDeviceAddressRegionKHR &missShaderBindingTable,
+                                         const vk::StridedDeviceAddressRegionKHR &hitShaderBindingTable, const vk::StridedDeviceAddressRegionKHR &callableShaderBindingTable,
+                                         vk::DeviceAddress indirectDeviceAddress) const {
+  object_->traceRaysIndirectKHR(raygenShaderBindingTable, missShaderBindingTable,
+                                hitShaderBindingTable, callableShaderBindingTable,
+                                indirectDeviceAddress);
+}      
+
+void CommandBuffer::setRayTracingPipelineStackSizeKHR(uint32_t pipelineStackSize) const {
+  object_->setRayTracingPipelineStackSizeKHR(pipelineStackSize);
+}
+
 void CommandBuffer::beginConditionalRenderingEXT(
   const vk::ConditionalRenderingBeginInfoEXT& conditionalRenderingBegin) const {
   object_->beginConditionalRenderingEXT(conditionalRenderingBegin);

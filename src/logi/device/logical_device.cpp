@@ -196,6 +196,22 @@ Pipeline LogicalDevice::createGraphicsPipeline(const vk::GraphicsPipelineCreateI
   return Pipeline(object_->createGraphicsPipeline(createInfo, cache, allocator));
 }
 
+std::vector<Pipeline> LogicalDevice::createRayTracingPipelinesKHR(const vk::DeferredOperationKHR deferredOperation, 
+                                                                  const vk::ArrayProxy<const vk::RayTracingPipelineCreateInfoKHR>& createInfos,
+                                                                  const vk::PipelineCache& pipelineCache,
+                                                                  const std::optional<const vk::AllocationCallbacks>& allocator) const {
+  std::vector<std::shared_ptr<PipelineImpl>> pipelineImpls =
+    object_->createRayTracingPipelinesKHR(deferredOperation, createInfos, pipelineCache, allocator);
+  return std::vector<Pipeline>(pipelineImpls.begin(), pipelineImpls.end());
+}
+
+Pipeline LogicalDevice::createRayTracingPipelineKHR(const vk::DeferredOperationKHR deferredOperation, 
+                                                    const vk::RayTracingPipelineCreateInfoKHR& createInfo, 
+                                                    const vk::PipelineCache& pipelineCache,
+                                                    const std::optional<const vk::AllocationCallbacks>& allocator) const {
+  return Pipeline(object_->createRayTracingPipelineKHR(deferredOperation, createInfo, pipelineCache, allocator));
+}
+
 std::vector<Pipeline> LogicalDevice::createRayTracingPipelinesNV(
   const vk::ArrayProxy<const vk::RayTracingPipelineCreateInfoNV>& createInfos, const vk::PipelineCache& cache,
   const std::optional<vk::AllocationCallbacks>& allocator) const {

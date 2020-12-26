@@ -27,6 +27,12 @@ PipelineImpl::PipelineImpl(LogicalDeviceImpl& logicalDevice, const vk::Pipeline&
 
 // region Vulkan Definitions
 
+vk::DeviceSize PipelineImpl::getRayTracingShaderGroupStackSizeKHR(uint32_t group, 
+                                                                  vk::ShaderGroupShaderKHR groupShader) const {
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  return vkDevice.getRayTracingShaderGroupStackSizeKHR(vkPipeline_, group, groupShader, getDispatcher());
+}
+
 vk::ResultValueType<void>::type PipelineImpl::compileDeferredNV(uint32_t shader) const {
   auto vkDevice = static_cast<vk::Device>(logicalDevice_);
   return vkDevice.compileDeferredNV(vkPipeline_, shader, getDispatcher());

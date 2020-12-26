@@ -215,6 +215,22 @@ class LogicalDevice : public Handle<LogicalDeviceImpl> {
                                   const std::optional<vk::AllocationCallbacks>& allocator = {}) const;
 
   /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateRayTracingPipelinesKHR.html">vkCreateRayTracingPipelinesKHR</a>
+   */
+  std::vector<Pipeline> createRayTracingPipelinesKHR(const vk::DeferredOperationKHR deferredOperation, 
+                                                     const vk::ArrayProxy<const vk::RayTracingPipelineCreateInfoKHR>& createInfos,
+                                                     const vk::PipelineCache& pipelineCache = nullptr,
+                                                     const std::optional<const vk::AllocationCallbacks>& allocator = {}) const;
+
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateRayTracingPipelineKHR.html">vkCreateRayTracingPipelineKHR</a>
+   */
+  Pipeline createRayTracingPipelineKHR(const vk::DeferredOperationKHR deferredOperation, 
+                                       const vk::RayTracingPipelineCreateInfoKHR& createInfo, 
+                                       const vk::PipelineCache& pipelineCache = nullptr,
+                                       const std::optional<const vk::AllocationCallbacks>& allocator = {}) const;
+
+  /**
    * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCreateRayTracingPipelinesNV.html">vkCreateRayTracingPipelinesNV</a>
    */
   std::vector<Pipeline>

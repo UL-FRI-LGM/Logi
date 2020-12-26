@@ -194,8 +194,10 @@ std::vector<std::shared_ptr<PipelineImpl>>
   LogicalDeviceImpl::createComputePipelines(const vk::ArrayProxy<const vk::ComputePipelineCreateInfo>& createInfos,
                                             const vk::PipelineCache& cache,
                                             const std::optional<vk::AllocationCallbacks>& allocator) {
-  std::vector<vk::Pipeline> vkPipelines =
+  auto vkResult =
     vkDevice_.createComputePipelines(cache, createInfos, allocator ? &allocator.value() : nullptr, getDispatcher());
+
+  std::vector<vk::Pipeline> vkPipelines = vkResult.value; 
 
   std::vector<std::shared_ptr<PipelineImpl>> pipelines;
   pipelines.reserve(vkPipelines.size());
@@ -221,8 +223,10 @@ std::vector<std::shared_ptr<PipelineImpl>>
   LogicalDeviceImpl::createGraphicsPipelines(const vk::ArrayProxy<const vk::GraphicsPipelineCreateInfo>& createInfos,
                                              const vk::PipelineCache& cache,
                                              const std::optional<vk::AllocationCallbacks>& allocator) {
-  std::vector<vk::Pipeline> vkPipelines =
+  auto vkResult =
     vkDevice_.createGraphicsPipelines(cache, createInfos, allocator ? &allocator.value() : nullptr, getDispatcher());
+
+  std::vector<vk::Pipeline> vkPipelines = vkResult.value; 
 
   std::vector<std::shared_ptr<PipelineImpl>> pipelines;
   pipelines.reserve(vkPipelines.size());
@@ -244,11 +248,45 @@ std::shared_ptr<PipelineImpl>
     allocator);
 }
 
+std::vector<std::shared_ptr<PipelineImpl>>
+    LogicalDeviceImpl::createRayTracingPipelinesKHR(const vk::DeferredOperationKHR deferredOperation, 
+                                                    const vk::ArrayProxy<const vk::RayTracingPipelineCreateInfoKHR>& createInfos,
+                                                    const vk::PipelineCache& pipelineCache,
+                                                    const std::optional<const vk::AllocationCallbacks>& allocator) {
+  auto vkResult = vkDevice_.createRayTracingPipelinesKHR(
+    deferredOperation, pipelineCache, createInfos, allocator ? &allocator.value() : nullptr, getDispatcher());
+
+  std::vector<vk::Pipeline> vkPipelines = vkResult.value; 
+
+  std::vector<std::shared_ptr<PipelineImpl>> pipelines;
+  pipelines.reserve(vkPipelines.size());
+
+  for (const vk::Pipeline& vkPipeline : vkPipelines) {
+    pipelines.emplace_back(VulkanObjectComposite<PipelineImpl>::createObject(*this, vkPipeline, allocator));
+  }
+
+  return pipelines;
+}
+
+std::shared_ptr<PipelineImpl>
+  LogicalDeviceImpl::createRayTracingPipelineKHR(const vk::DeferredOperationKHR deferredOperation, 
+                                                 const vk::RayTracingPipelineCreateInfoKHR& createInfo, 
+                                                 const vk::PipelineCache& pipelineCache,
+                                                 const std::optional<const vk::AllocationCallbacks>& allocator) {
+
+  return VulkanObjectComposite<PipelineImpl>::createObject(
+   *this,
+   vkDevice_.createRayTracingPipelineKHR(deferredOperation, pipelineCache, createInfo, allocator ? &allocator.value() : nullptr, getDispatcher()),
+   allocator);
+}
+
 std::vector<std::shared_ptr<PipelineImpl>> LogicalDeviceImpl::createRayTracingPipelinesNV(
   const vk::ArrayProxy<const vk::RayTracingPipelineCreateInfoNV>& createInfos, const vk::PipelineCache& cache,
   const std::optional<vk::AllocationCallbacks>& allocator) {
-  std::vector<vk::Pipeline> vkPipelines = vkDevice_.createRayTracingPipelinesNV(
+  auto vkResult = vkDevice_.createRayTracingPipelinesNV(
     cache, createInfos, allocator ? &allocator.value() : nullptr, getDispatcher());
+
+  std::vector<vk::Pipeline> vkPipelines = vkResult.value; 
 
   std::vector<std::shared_ptr<PipelineImpl>> pipelines;
   pipelines.reserve(vkPipelines.size());
@@ -264,6 +302,7 @@ std::shared_ptr<PipelineImpl>
   LogicalDeviceImpl::createRayTracingPipelineNV(const vk::RayTracingPipelineCreateInfoNV& createInfo,
                                                 const vk::PipelineCache& cache,
                                                 const std::optional<vk::AllocationCallbacks>& allocator) {
+
   return VulkanObjectComposite<PipelineImpl>::createObject(
     *this,
     vkDevice_.createRayTracingPipelineNV(cache, createInfo, allocator ? &allocator.value() : nullptr, getDispatcher()),

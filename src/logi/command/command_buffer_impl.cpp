@@ -360,6 +360,26 @@ void CommandBufferImpl::writeAccelerationStructuresPropertiesKHR(const vk::Array
   vkCommandBuffer_.writeAccelerationStructuresPropertiesKHR(accelerationStructures, queryType, queryPool, firstQuery, getDispatcher());
 }
 
+void CommandBufferImpl::traceRaysKHR(const vk::StridedDeviceAddressRegionKHR &raygenShaderBindingTable, const vk::StridedDeviceAddressRegionKHR &missShaderBindingTable,
+                                     const vk::StridedDeviceAddressRegionKHR &hitShaderBindingTable, const vk::StridedDeviceAddressRegionKHR &callableShaderBindingTable,
+                                     uint32_t width, uint32_t height, uint32_t depth) const {
+  vkCommandBuffer_.traceRaysKHR(raygenShaderBindingTable, missShaderBindingTable,
+                                hitShaderBindingTable, callableShaderBindingTable,
+                                width, height, depth, getDispatcher());
+}    
+
+void CommandBufferImpl::traceRaysIndirectKHR(const vk::StridedDeviceAddressRegionKHR &raygenShaderBindingTable, const vk::StridedDeviceAddressRegionKHR &missShaderBindingTable,
+                                             const vk::StridedDeviceAddressRegionKHR &hitShaderBindingTable, const vk::StridedDeviceAddressRegionKHR &callableShaderBindingTable,
+                                             vk::DeviceAddress indirectDeviceAddress) const {
+  vkCommandBuffer_.traceRaysIndirectKHR(raygenShaderBindingTable, missShaderBindingTable,
+                                        hitShaderBindingTable, callableShaderBindingTable,
+                                        indirectDeviceAddress, getDispatcher());
+}    
+
+void CommandBufferImpl::setRayTracingPipelineStackSizeKHR(uint32_t pipelineStackSize) const {
+  vkCommandBuffer_.setRayTracingPipelineStackSizeKHR(pipelineStackSize, getDispatcher());
+}
+
 void CommandBufferImpl::beginConditionalRenderingEXT(
   const vk::ConditionalRenderingBeginInfoEXT& conditionalRenderingBegin) const {
   vkCommandBuffer_.beginConditionalRenderingEXT(conditionalRenderingBegin, getDispatcher());

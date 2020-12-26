@@ -26,6 +26,11 @@ namespace logi {
 
 // region Vulkan Definitions
 
+vk::DeviceSize Pipeline::getRayTracingShaderGroupStackSizeKHR(uint32_t group, 
+                                                              vk::ShaderGroupShaderKHR groupShader) const {
+  return object_->getRayTracingShaderGroupStackSizeKHR(group, groupShader);
+}
+
 vk::ResultValueType<void>::type Pipeline::compileDeferredNV(uint32_t shader) const {
   return object_->compileDeferredNV(shader);
 }

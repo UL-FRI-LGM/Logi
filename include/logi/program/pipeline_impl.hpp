@@ -36,6 +36,16 @@ class PipelineImpl : public VulkanObject, public std::enable_shared_from_this<Pi
 
   // region Vulkan Declarations
 
+  vk::DeviceSize getRayTracingShaderGroupStackSizeKHR(uint32_t group, vk::ShaderGroupShaderKHR groupShader) const;
+
+  template <typename T>
+  vk::ResultValueType<void>::type getRayTracingCaptureReplayShaderGroupHandlesKHR(uint32_t firstGroup, uint32_t groupCount, 
+                                                                                  const vk::ArrayProxy<T>& data) const;
+
+  template <typename T>
+  vk::ResultValueType<void>::type getRayTracingShaderGroupHandlesKHR(uint32_t firstGroup, uint32_t groupCount,
+                                                                    vk::ArrayProxy<T> data) const;                                                                                  
+
   vk::ResultValueType<void>::type compileDeferredNV(uint32_t shader) const;
 
   typename vk::ResultValueType<std::vector<uint8_t>>::type getShaderInfoAMD(vk::ShaderStageFlagBits shaderStage,
@@ -71,6 +81,22 @@ class PipelineImpl : public VulkanObject, public std::enable_shared_from_this<Pi
   std::optional<vk::AllocationCallbacks> allocator_;
   vk::Pipeline vkPipeline_;
 };
+
+template <typename T>
+vk::ResultValueType<void>::type PipelineImpl::getRayTracingCaptureReplayShaderGroupHandlesKHR(uint32_t firstGroup, 
+                                                                                              uint32_t groupCount, 
+                                                                                              const vk::ArrayProxy<T>& data) const {
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  return vkDevice.getRayTracingCaptureReplayShaderGroupHandleKHR(vkPipeline, firstGroup, groupCount, getDispatcher());
+}
+
+template <typename T>
+vk::ResultValueType<void>::type PipelineImpl::getRayTracingShaderGroupHandlesKHR(uint32_t firstGroup,
+                                                                                 uint32_t groupCount,
+                                                                                 vk::ArrayProxy<T> data) const {
+  auto vkDevice = static_cast<vk::Device>(logicalDevice_);
+  return vkDevice.getRayTracingShaderGroupHandlesKHR(vkPipeline_, firstGroup, groupCount, data, getDispatcher());
+}
 
 template <typename T>
 vk::ResultValueType<void>::type PipelineImpl::getRayTracingShaderGroupHandlesNV(uint32_t firstGroup,
