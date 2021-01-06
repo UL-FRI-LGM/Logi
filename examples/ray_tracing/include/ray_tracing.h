@@ -59,6 +59,11 @@ class RayTracing : public ExampleBase {
 
   vk::GeometryNV objectToVkGeometryNV(const ObjModel& model);
 
+  void createTopLevelAS();
+
+  vk::AccelerationStructureInstanceNV 
+    instanceToVkASGeometryInstance(const ObjInstance& instance, uint64_t& blasAddress);
+
   void createRenderPass();
 
   void createGraphicalPipeline();
@@ -101,6 +106,7 @@ class RayTracing : public ExampleBase {
   std::vector<ObjModel> objModels_;
   std::vector<Texture> textures_;
 
+  logi::VMAAccelerationStructureNV tlas_;
   std::vector<logi::VMAAccelerationStructureNV> blas_;
 
   logi::VMABuffer vertexBuffer_;

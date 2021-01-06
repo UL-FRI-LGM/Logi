@@ -348,6 +348,102 @@ vk::GeometryNV RayTracing::objectToVkGeometryNV(const ObjModel& model) {
   return geometry;
 }
 
+void RayTracing::createTopLevelAS() {
+  // Instance to ASInstanceNV
+  std::vector<vk::AccelerationStructureInstanceNV> geometryInstances;
+  geometryInstances.reserve(objInstances_.size());
+
+  for(int i = 0; i < objInstances_.size(); i++) {
+    uint64_t blasAddress;
+    blas_[i].getHandleNV<uint64_t>(blasAddress);
+
+    vk::AccelerationStructureInstanceNV vkInstanceNV = 
+      instanceToVkASGeometryInstance(objInstances_[i], blasAddress);
+    geometryInstances.push_back(vkInstanceNV);
+  }
+
+  // Create acceleration structure
+  vk::AccelerationStructureInfoNV acInfo;
+  acInfo.type = vk::AccelerationStructureTypeNV::eTopLevel;
+  acInfo.flags = vk::BuildAccelerationStructureFlagBitsNV::ePreferFastTrace;
+  acInfo.instanceCount = static_cast<uint32_t>(geometryInstances.size());
+
+  vk::AccelerationStructureCreateInfoNV asCreateInfo;
+  asCreateInfo.compactedSize = 0;
+  asCreateInfo.info = acInfo;
+
+  VmaAllocationCreateInfo asAllocationInfo = {};
+  asAllocationInfo.usage = VmaMemoryUsage::VMA_MEMORY_USAGE_GPU_ONLY;
+
+  tlas_ = vulkanState_.defaultAllocator_->createAccelerationStructureNV(asCreateInfo, asAllocationInfo);
+
+  // Query scratch buffer size
+  vk::MemoryRequirements memoryRequirements =
+      tlas_.getMemoryRequirementsNV(vk::AccelerationStructureMemoryRequirementsTypeNV::eBuildScratch).memoryRequirements;
+  
+  vk::DeviceSize scratchSize = memoryRequirements.size;
+
+  // Allocate scratch buffer
+  VmaAllocationCreateInfo bufferAllocationInfo = {};
+  bufferAllocationInfo.usage = VmaMemoryUsage::VMA_MEMORY_USAGE_GPU_ONLY;
+  bufferAllocationInfo.memoryTypeBits = memoryRequirements.memoryTypeBits;
+
+  vk::BufferCreateInfo scratchBufferInfo = {};
+  scratchBufferInfo.size =  scratchSize;
+  scratchBufferInfo.usage = vk::BufferUsageFlagBits::eRayTracingNV;
+  scratchBufferInfo.sharingMode = vk::SharingMode::eExclusive;
+
+  logi::VMABuffer scratchBuffer = vulkanState_.defaultAllocator_->createBuffer(scratchBufferInfo, bufferAllocationInfo);
+
+  // Allocate buffer holding instance data
+  utility::BufferAllocateInfo instanceBufferAllocate = {};
+  instanceBufferAllocate.data = geometryInstances.data();
+  instanceBufferAllocate.size = geometryInstances.size() * sizeof(vk::AccelerationStructureInstanceNV);
+  instanceBufferAllocate.usage = vk::BufferUsageFlagBits::eRayTracingNV;
+  instanceBufferAllocate.sharingMode = vk::SharingMode::eExclusive;
+
+  std::vector<utility::BufferAllocateInfo> bufferAllocateInfos = {instanceBufferAllocate};
+  std::vector<logi::VMABuffer> buffers;
+
+  utility::allocateBufferStaged(vulkanState_, VMA_MEMORY_USAGE_GPU_ONLY, bufferAllocateInfos, buffers);
+  logi::VMABuffer instanceBuffer = buffers[0];
+
+
+  // Build TLAS
+  logi::CommandBuffer cmd = utility::beginSingleTimeCommand(vulkanState_, utility::Graphics);
+
+  vk::MemoryBarrier memoryBarrier;
+  memoryBarrier.srcAccessMask = vk::AccessFlagBits::eTransferWrite;
+  memoryBarrier.dstAccessMask = vk::AccessFlagBits::eAccelerationStructureWriteNV;
+
+  cmd.pipelineBarrier(vk::PipelineStageFlagBits::eTransfer,
+                      vk::PipelineStageFlagBits::eAccelerationStructureBuildNV, {}, memoryBarrier, {}, {});
+
+  cmd.buildAccelerationStructureNV(acInfo, instanceBuffer, 0, VK_FALSE, tlas_, nullptr, scratchBuffer, 0);
+                     
+  utility::endSingleTimeCommand(vulkanState_, utility::Graphics, cmd);
+
+  // Clear resources
+  scratchBuffer.destroy();
+}
+
+vk::AccelerationStructureInstanceNV 
+  RayTracing::instanceToVkASGeometryInstance(const ObjInstance& instance, uint64_t& blasAddress){
+    vk::AccelerationStructureInstanceNV vkInstanceNV;
+
+    // Convert to corect transform matrix
+    glm::mat4 transp = glm::transpose(instance.transform);
+    memcpy(&vkInstanceNV.transform, &transp, sizeof(vkInstanceNV.transform));
+
+    vkInstanceNV.instanceCustomIndex = instance.objIndex;
+    vkInstanceNV.mask = 0xff;
+    vkInstanceNV.instanceShaderBindingTableRecordOffset = 0;
+    vkInstanceNV.flags = VK_GEOMETRY_INSTANCE_TRIANGLE_CULL_DISABLE_BIT_NV;
+    vkInstanceNV.accelerationStructureReference = blasAddress;
+
+    return vkInstanceNV;
+}
+
 void RayTracing::createRenderPass() {
   vk::AttachmentDescription colorAttachment;
   colorAttachment.format = swapchainImageFormat_;
@@ -573,6 +669,7 @@ void RayTracing::initialize() {
 
   loadModel(MODEL_PATH);
   createBottomLevelAS();
+  createTopLevelAS();
 
   allocateBuffers();
   initializeDescriptorSets();
