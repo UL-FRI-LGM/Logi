@@ -23,7 +23,7 @@ layout(location = 0) rayPayloadNV hitPayload prd;
 void main() {
   // Generate camera ray
   const vec2 pixelCenter = vec2(gl_LaunchIDNV.xy) + vec2(0.5, 0.5);
-  const vec2 inUV = pixelCenter / vec2(gl_LaunchSizeNV.xy);
+  vec2 inUV = pixelCenter / vec2(gl_LaunchSizeNV.xy);
   inUV = 2.0 * inUV - 1.0;
 
   vec4 origin    = camProp.viewInverse * vec4(0, 0, 0, 1);
@@ -47,5 +47,5 @@ void main() {
           0               // payload (location = 0)
   );
 
-  imageStore(image, ivec2(gl_LaunchIDEXT.xy), vec4(prd.hitValue, 1.0));
+  imageStore(image, ivec2(gl_LaunchIDNV.xy), vec4(prd.hitValue, 1.0));
 }

@@ -11,8 +11,8 @@ layout(location = 0) rayPayloadNV hitPayload prd;
 layout(push_constant) uniform Constants
 {
     vec4 clearColor;
-}
+} pushC;
 
 void main() {
-    prd.hitValue = clearColor.xyz;
+    prd.hitValue = pushC.clearColor.xyz;
 }

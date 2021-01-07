@@ -3,6 +3,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
 
+ShaderInfo::ShaderInfo(std::string path, std::string entryPoint)
+  : path(std::move(path)), entryPoint(std::move(entryPoint)) {}
+
+PipelineLayoutDataRT::PipelineLayoutDataRT(std::map<vk::ShaderStageFlagBits, logi::ShaderModule> shaders,
+                                          logi::PipelineLayout layout,
+                                          std::vector<logi::DescriptorSetLayout> descriptorSetLayouts)
+  : shaders(std::move(shaders)), layout(std::move(layout)), descriptorSetLayouts(std::move(descriptorSetLayouts)) {}
+
 RayTracing::RayTracing(const ExampleConfiguration& config) : ExampleBase(config) {}
 
 void RayTracing::initRayTracing() {
@@ -17,6 +25,54 @@ void RayTracing::loadShaders() {
                                            "./shaders/triangle.frag.spv");
 
   pipelineLayoutData_ = utility::createPipelineLayout(vulkanState_, shaderReflection_);
+
+  // Ray tracing shaders
+  std::vector<ShaderInfo> shaderInfos = {{"./shaders/rayTrace.rgen.spv", "main"}, 
+                                         {"./shaders/rayTrace.rchit.spv", "main"},
+                                         {"./shaders/rayTrace.rmiss.spv", "main"}};
+
+  PipelineLayoutDataRT layoutData;
+  std::vector<logi::ShaderStage> stages; // entry points for reflection
+
+  for(auto shaderInfo : shaderInfos) {
+    logi::ShaderModule shaderModule = utility::createShaderModule(vulkanState_, shaderInfo.path);
+    vk::ShaderStageFlagBits stage = shaderModule.getEntryPointReflectionInfo(shaderInfo.entryPoint).stage;
+
+    layoutData.shaders.emplace(stage, shaderModule);
+    stages.emplace_back(shaderModule, shaderInfo.entryPoint);
+  }
+
+  // Generate descriptor set layouts.
+  std::vector<logi::DescriptorSetReflectionInfo> descriptorSetInfo = logi::reflectDescriptorSets(stages);
+  layoutData.descriptorSetLayouts.reserve(descriptorSetInfo.size());
+
+  for (const auto& info : descriptorSetInfo) {
+    // Generate binding infos.
+    std::vector<vk::DescriptorSetLayoutBinding> bindings(info.bindings.begin(), info.bindings.end());
+
+    vk::DescriptorSetLayoutCreateInfo descriptorSetLayoutInfo;
+    descriptorSetLayoutInfo.bindingCount = bindings.size();
+    descriptorSetLayoutInfo.pBindings = bindings.data();
+
+    layoutData.descriptorSetLayouts.emplace_back(vulkanState_.defaultLogicalDevice_->createDescriptorSetLayout(descriptorSetLayoutInfo));
+  }
+
+  // Generate push constant ranges.
+  std::vector<logi::PushConstantReflectionInfo> pushConstants = logi::reflectPushConstants(stages);
+  std::vector<vk::PushConstantRange> pushConstantRanges(pushConstants.begin(), pushConstants.end());
+
+  // Pipeline layout
+  std::vector<vk::DescriptorSetLayout> descriptorSetLayouts(layoutData.descriptorSetLayouts.begin(),
+                                                            layoutData.descriptorSetLayouts.end());
+  vk::PipelineLayoutCreateInfo pipelineLayoutInfo;
+  pipelineLayoutInfo.setLayoutCount = layoutData.descriptorSetLayouts.size();
+  pipelineLayoutInfo.pSetLayouts = descriptorSetLayouts.data();
+  pipelineLayoutInfo.pushConstantRangeCount = pushConstantRanges.size();
+  pipelineLayoutInfo.pPushConstantRanges = pushConstantRanges.data();
+
+  layoutData.layout = vulkanState_.defaultLogicalDevice_->createPipelineLayout(pipelineLayoutInfo);
+
+  pipelineLayoutDataRT_ = layoutData;
 }
 
 // Loads model using obj_loader and allocates buffers on device

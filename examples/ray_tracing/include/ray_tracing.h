@@ -5,6 +5,51 @@
 #include "example_base.h"
 #include "utility.h"
 
+struct ShaderInfo 
+{
+  ShaderInfo(std::string path, std::string entryPoint);
+
+  std::string path;
+  std::string entryPoint;
+};
+
+struct PipelineLayoutDataRT 
+{
+  explicit PipelineLayoutDataRT(std::map<vk::ShaderStageFlagBits, logi::ShaderModule> shaders = {},
+                              logi::PipelineLayout layout = {},
+                              std::vector<logi::DescriptorSetLayout> descriptorSetLayouts = {});
+
+  std::map<vk::ShaderStageFlagBits, logi::ShaderModule> shaders;
+  logi::PipelineLayout layout;
+  std::vector<logi::DescriptorSetLayout> descriptorSetLayouts;
+};
+
+// The OBJ model
+struct ObjModel
+{
+  uint32_t     nbIndices{0};
+  uint32_t     nbVertices{0};
+  logi::VMABuffer  vertexBuffer;    // Device buffer of all 'Vertex'
+  logi::VMABuffer  indexBuffer;     // Device buffer of the indices forming triangles
+  logi::VMABuffer  matColorBuffer;  // Device buffer of array of 'Wavefront material'
+  logi::VMABuffer  matIndexBuffer;  // Device buffer of array of 'Wavefront material'
+};
+
+// Instance of the OBJ
+struct ObjInstance
+{
+  uint32_t  objIndex{0};     // Reference to the `m_objModel`
+  uint32_t  txtOffset{0};    // Offset in `m_textures`
+  glm::mat4 transform{1};    // Position of the instance
+  glm::mat4 transformIT{1};  // Inverse transpose
+};
+
+struct Texture {
+  logi::VMAImage image;
+  logi::ImageView imageView;
+  logi::Sampler sampler;
+};
+
 struct Vertex {
   glm::vec3 position;
   glm::vec3 color;
@@ -13,32 +58,6 @@ struct Vertex {
 class RayTracing : public ExampleBase {
  public:
   RayTracing(const ExampleConfiguration& config = {});
-
-  // The OBJ model
-  struct ObjModel
-  {
-    uint32_t     nbIndices{0};
-    uint32_t     nbVertices{0};
-    logi::VMABuffer  vertexBuffer;    // Device buffer of all 'Vertex'
-    logi::VMABuffer  indexBuffer;     // Device buffer of the indices forming triangles
-    logi::VMABuffer  matColorBuffer;  // Device buffer of array of 'Wavefront material'
-    logi::VMABuffer  matIndexBuffer;  // Device buffer of array of 'Wavefront material'
-  };
-
-  // Instance of the OBJ
-  struct ObjInstance
-  {
-    uint32_t  objIndex{0};     // Reference to the `m_objModel`
-    uint32_t  txtOffset{0};    // Offset in `m_textures`
-    glm::mat4 transform{1};    // Position of the instance
-    glm::mat4 transformIT{1};  // Inverse transpose
-  };
-
-  struct Texture {
-    logi::VMAImage image;
-    logi::ImageView imageView;
-    logi::Sampler sampler;
-  };
 
  protected:
   void initRayTracing();
@@ -101,6 +120,8 @@ class RayTracing : public ExampleBase {
 
   utility::ShaderReflection shaderReflection_;
   utility::PipelineLayoutData pipelineLayoutData_;
+
+  PipelineLayoutDataRT pipelineLayoutDataRT_;
 
   std::vector<ObjInstance> objInstances_;
   std::vector<ObjModel> objModels_;

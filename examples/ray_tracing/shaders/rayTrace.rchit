@@ -11,13 +11,13 @@ struct hitPayload {
 };
 
 // Hit barycentric cordinates
-hitAttributeEXT vec2 attribs; 
+hitAttributeNV vec3 attribs;
 
 // clang-format off
-layout(location = 0) rayPayloadInEXT hitPayload prd;
-layout(location = 1) rayPayloadEXT bool isShadowed;
+layout(location = 0) rayPayloadInNV hitPayload prd;
+// layout(location = 1) rayPayloadInNV bool isShadowed;
 
-layout(binding = 0, set = 0) uniform accelerationStructureEXT topLevelAS;
+layout(binding = 0, set = 0) uniform accelerationStructureNV topLevelAS;
 layout(binding = 1, set = 1, scalar) buffer MatColorBufferObject { WaveFrontMaterial m[]; } materials[];
 layout(binding = 2, set = 1, scalar) buffer ScnDesc { sceneDesc i[]; } scnDesc;
 layout(binding = 3, set = 1) uniform sampler2D textureSamplers[];
@@ -33,13 +33,12 @@ layout(push_constant) uniform Constants
   vec3  lightPosition;
   float lightIntensity;
   int   lightType;
-}
-pushC;
+} pushC;
 
 void main()
 {
   // Object of this instance
-  uint objId = scnDesc.i[gl_InstanceCustomIndexEXT].objId;
+  uint objId = scnDesc.i[gl_InstanceCustomIndexNV].objId;
 
   // Indices of the triangle
   ivec3 ind = ivec3(indices[nonuniformEXT(objId)].i[3 * gl_PrimitiveID + 0],   //
@@ -57,12 +56,12 @@ void main()
   // Computing the normal at hit position
   vec3 normal = v0.nrm * barycentrics.x + v1.nrm * barycentrics.y + v2.nrm * barycentrics.z;
   // Transforming the normal to world space
-  normal = normalize(vec3(scnDesc.i[gl_InstanceCustomIndexEXT].transfoIT * vec4(normal, 0.0)));
+  normal = normalize(vec3(scnDesc.i[gl_InstanceCustomIndexNV].transfoIT * vec4(normal, 0.0)));
 
   // Computing the coordinates of the hit position
   vec3 worldPos = v0.pos * barycentrics.x + v1.pos * barycentrics.y + v2.pos * barycentrics.z;
   // Transforming the position to world space
-  worldPos = vec3(scnDesc.i[gl_InstanceCustomIndexEXT].transfo * vec4(worldPos, 1.0));
+  worldPos = vec3(scnDesc.i[gl_InstanceCustomIndexNV].transfo * vec4(worldPos, 1.0));
 
 
   // Vector toward the light
@@ -91,14 +90,15 @@ void main()
   vec3 diffuse = computeDiffuse(mat, L, normal);
   if(mat.textureId >= 0)
   {
-    uint txtId = mat.textureId + scnDesc.i[gl_InstanceCustomIndexEXT].txtOffset;
+    uint txtId = mat.textureId + scnDesc.i[gl_InstanceCustomIndexNV].txtOffset;
     vec2 texCoord =
         v0.texCoord * barycentrics.x + v1.texCoord * barycentrics.y + v2.texCoord * barycentrics.z;
     diffuse *= texture(textureSamplers[nonuniformEXT(txtId)], texCoord).xyz;
   }
 
   // Specular
-  vec3  specular    = computeSpecular(mat, gl_WorldRayDirectionEXT, L, normal);
+  vec3  specular = computeSpecular(mat, gl_WorldRayDirectionNV, L, normal);
 
+  float attenuation = 1.0;
   prd.hitValue = vec3(lightIntensity * attenuation * (diffuse + specular));
 }
