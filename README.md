@@ -4,7 +4,7 @@ Logi is light-weight Vulkan abstraction framework, which attempts to bridge the 
 
 ## Features
 
-* Supports core Vulkan 1.2, Nvidia RTX extension and Khronos ray tracing
+* Supports core Vulkan 1.2, Nvidia RTX extension and Khronos ray tracing 
 * Object-oriented Vulkan abstraction framework
 * Correctly enforced construction and destruction order of Vulkan resources
 * Integration of the dynamic dispatching of Vulkan functions
