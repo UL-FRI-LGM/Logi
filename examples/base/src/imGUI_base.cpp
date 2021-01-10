@@ -115,7 +115,8 @@ void ImGUIBase::imGUI_createCommandBuffers() {
         vulkanState_.graphicsFamily_.createCommandPool(vk::CommandPoolCreateFlagBits::eResetCommandBuffer);
     
     imGUI_commandBuffers_ = 
-        imGUI_commandPool_.allocateCommandBuffers(vk::CommandBufferLevel::ePrimary, swapchainImages_.size());
+        imGUI_commandPool_.allocateCommandBuffers(vk::CommandBufferLevel::ePrimary,
+                                                  static_cast<uint32_t>(swapchainImages_.size()));
 }
 
 void ImGUIBase::imGUI_createFrameBuffers() {

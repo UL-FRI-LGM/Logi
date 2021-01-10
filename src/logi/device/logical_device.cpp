@@ -26,6 +26,7 @@
 #include "logi/instance/vulkan_instance.hpp"
 #include "logi/instance/vulkan_instance_impl.hpp"
 #include "logi/memory/acceleration_structure_nv_impl.hpp"
+#include "logi/memory/acceleration_structure_khr_impl.hpp"
 #include "logi/memory/buffer_impl.hpp"
 #include "logi/memory/device_memory_impl.hpp"
 #include "logi/memory/image_impl.hpp"
@@ -47,6 +48,7 @@
 #include "logi/synchronization/event_impl.hpp"
 #include "logi/synchronization/fence_impl.hpp"
 #include "logi/synchronization/semaphore_impl.hpp"
+#include "logi/synchronization/deferred_operation_khr_impl.hpp"
 
 namespace logi {
 
@@ -195,6 +197,22 @@ Pipeline LogicalDevice::createGraphicsPipeline(const vk::GraphicsPipelineCreateI
   return Pipeline(object_->createGraphicsPipeline(createInfo, cache, allocator));
 }
 
+std::vector<Pipeline> LogicalDevice::createRayTracingPipelinesKHR(const vk::DeferredOperationKHR deferredOperation, 
+                                                                  const vk::ArrayProxy<const vk::RayTracingPipelineCreateInfoKHR>& createInfos,
+                                                                  const vk::PipelineCache& pipelineCache,
+                                                                  const std::optional<const vk::AllocationCallbacks>& allocator) const {
+  std::vector<std::shared_ptr<PipelineImpl>> pipelineImpls =
+    object_->createRayTracingPipelinesKHR(deferredOperation, createInfos, pipelineCache, allocator);
+  return std::vector<Pipeline>(pipelineImpls.begin(), pipelineImpls.end());
+}
+
+Pipeline LogicalDevice::createRayTracingPipelineKHR(const vk::DeferredOperationKHR deferredOperation, 
+                                                    const vk::RayTracingPipelineCreateInfoKHR& createInfo, 
+                                                    const vk::PipelineCache& pipelineCache,
+                                                    const std::optional<const vk::AllocationCallbacks>& allocator) const {
+  return Pipeline(object_->createRayTracingPipelineKHR(deferredOperation, createInfo, pipelineCache, allocator));
+}
+
 std::vector<Pipeline> LogicalDevice::createRayTracingPipelinesNV(
   const vk::ArrayProxy<const vk::RayTracingPipelineCreateInfoNV>& createInfos, const vk::PipelineCache& cache,
   const std::optional<vk::AllocationCallbacks>& allocator) const {
@@ -263,6 +281,15 @@ void LogicalDevice::waitSemaphores(const vk::SemaphoreWaitInfo& waitInfo, uint64
   object_->waitSemaphores(waitInfo, timeout);
 }
 
+DeferredOperationKHR 
+  LogicalDevice::createDeferredOperationKHR(const std::optional<vk::AllocationCallbacks>& allocator) const {
+  return DeferredOperationKHR(object_->createDeferredOperationKHR(allocator));
+}
+
+void LogicalDevice::destroyDeferredOperationKHR(const DeferredOperationKHR& deferredOperationKHR) const {
+  object_->destroyDeferredOperationKHR(deferredOperationKHR.id());
+}
+
 RenderPass LogicalDevice::createRenderPass(const vk::RenderPassCreateInfo& createInfo,
                                            const std::optional<vk::AllocationCallbacks>& allocator) const {
   return RenderPass(object_->createRenderPass(createInfo, allocator));
@@ -306,6 +333,27 @@ std::vector<SwapchainKHR>
 
 void LogicalDevice::destroySwapchainKHR(const SwapchainKHR& swapchain) const {
   object_->destroySwapchainKHR(swapchain.id());
+}
+
+AccelerationStructureKHR 
+  LogicalDevice::createAccelerationStructureKHR(const vk::AccelerationStructureCreateInfoKHR& createInfo,
+                                                const std::optional<vk::AllocationCallbacks>& allocator) const {
+  return AccelerationStructureKHR(object_->createAccelerationStructureKHR(createInfo, allocator));
+}
+
+void LogicalDevice::destroyAccelerationStructureKHR(const AccelerationStructureKHR& accelerationStructure) const {
+  object_->destroyAccelerationStructureKHR(accelerationStructure.id());
+}     
+
+vk::Result LogicalDevice::buildAccelerationStructuresKHR(vk::DeferredOperationKHR deferredOperation, 
+                                                         const vk::ArrayProxy<const vk::AccelerationStructureBuildGeometryInfoKHR> &infos,
+                                                         const vk::ArrayProxy<const vk::AccelerationStructureBuildRangeInfoKHR *const> &pBuildRangeInfos) const {
+  return object_->buildAccelerationStructuresKHR(deferredOperation, infos, pBuildRangeInfos); 
+}
+
+vk::AccelerationStructureCompatibilityKHR 
+    LogicalDevice::getAccelerationStructureCompatibilityKHR(const vk::AccelerationStructureVersionInfoKHR &versionInfo) const {
+  return object_->getAccelerationStructureCompatibilityKHR(versionInfo);
 }
 
 ValidationCacheEXT

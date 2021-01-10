@@ -200,6 +200,33 @@ class CommandBufferImpl : public VulkanObject, public std::enable_shared_from_th
 
   void setDeviceMaskKHR(uint32_t deviceMask) const;
 
+  void buildAccelerationStructuresKHR(const vk::ArrayProxy<const vk::AccelerationStructureBuildGeometryInfoKHR> buildGeometryInfos,
+                                      const vk::ArrayProxy<const vk::AccelerationStructureBuildRangeInfoKHR *const> buildRangeInfos) const; 
+
+  void buildAccelerationStructuresIndirectKHR(const vk::ArrayProxy<const vk::AccelerationStructureBuildGeometryInfoKHR> buildGeometryInfos, 
+                                              const vk::ArrayProxy<const vk::DeviceAddress> indirectDeviceAddresses,
+                                              const vk::ArrayProxy<const uint32_t> indirectStrides, 
+                                              const vk::ArrayProxy<const uint32_t *const> maxPrimitiveCounts) const;
+
+  void copyAccelerationStructureKHR(const vk::CopyAccelerationStructureInfoKHR& copyAccelerationStructureInfo) const;
+
+  void copyAccelerationStructureToMemoryKHR(const vk::CopyAccelerationStructureToMemoryInfoKHR& copyAccelerationStructureToMemoryInfo) const;              
+
+  void copyMemoryToAccelerationStructureKHR(const vk::CopyMemoryToAccelerationStructureInfoKHR& copyMemoryToAccelerationStructureInfo) const;                      
+
+  void writeAccelerationStructuresPropertiesKHR(const vk::ArrayProxy<const vk::AccelerationStructureKHR> accelerationStructures,
+                                                vk::QueryType queryType, vk::QueryPool queryPool, uint32_t firstQuery) const;
+
+  void traceRaysKHR(const vk::StridedDeviceAddressRegionKHR &raygenShaderBindingTable, const vk::StridedDeviceAddressRegionKHR &missShaderBindingTable,
+                    const vk::StridedDeviceAddressRegionKHR &hitShaderBindingTable, const vk::StridedDeviceAddressRegionKHR &callableShaderBindingTable,
+                    uint32_t width, uint32_t height, uint32_t depth) const;  
+
+  void traceRaysIndirectKHR(const vk::StridedDeviceAddressRegionKHR &raygenShaderBindingTable, const vk::StridedDeviceAddressRegionKHR &missShaderBindingTable,
+                            const vk::StridedDeviceAddressRegionKHR &hitShaderBindingTable, const vk::StridedDeviceAddressRegionKHR &callableShaderBindingTable,
+                            vk::DeviceAddress indirectDeviceAddress) const;                          
+
+  void setRayTracingPipelineStackSizeKHR(uint32_t pipelineStackSize) const;                                           
+
   void beginConditionalRenderingEXT(const vk::ConditionalRenderingBeginInfoEXT& conditionalRenderingBegin) const;
 
   void beginDebugUtilsLabelEXT(const vk::DebugUtilsLabelEXT& labelInfo) const;

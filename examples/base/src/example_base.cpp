@@ -35,7 +35,7 @@ void ExampleBase::initWindow() {
 
 void ExampleBase::initInput() {
   window_.setOnScrollCallback("onScroll", [this](const cppglfw::Window&, double, double yOffset) {
-    zoom += (double) (0.1 * yOffset);
+    zoom += (float) (0.1 * yOffset);
     viewChanged = true;
   });
 
@@ -92,9 +92,9 @@ void ExampleBase::createInstance() {
   // Create instance.
   vk::InstanceCreateInfo instanceCI;
   instanceCI.ppEnabledLayerNames = config_.validationLayers.data();
-  instanceCI.enabledLayerCount = config_.validationLayers.size();
+  instanceCI.enabledLayerCount = static_cast<uint32_t>(config_.validationLayers.size());
   instanceCI.ppEnabledExtensionNames = extensions.data();
-  instanceCI.enabledExtensionCount = extensions.size();
+  instanceCI.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
 
   vulkanState_.setInstance(logi::createInstance(
     instanceCI, reinterpret_cast<PFN_vkCreateInstance>(glfwGetInstanceProcAddress(nullptr, "vkCreateInstance")),
@@ -113,6 +113,7 @@ void ExampleBase::initSurface() {
   surface_ = vulkanState_.instance_.registerSurfaceKHR(window_.createWindowSurface(vulkanState_.instance_).value);
 }
 
+// TODO: account for requested device extensions
 void ExampleBase::selectDevice() {
   // Select GPU
   const std::vector<logi::PhysicalDevice>& devices = vulkanState_.instance_.enumeratePhysicalDevices();
@@ -176,9 +177,9 @@ void ExampleBase::initializeDevice() {
   }
 
   vk::DeviceCreateInfo deviceCI;
-  deviceCI.enabledExtensionCount = extensions.size();
+  deviceCI.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
   deviceCI.ppEnabledExtensionNames = extensions.data();
-  deviceCI.queueCreateInfoCount = queueCIs.size();
+  deviceCI.queueCreateInfoCount = static_cast<uint32_t>(queueCIs.size());
   deviceCI.pQueueCreateInfos = queueCIs.data();
   
   vulkanState_.addLogicalDevice("MainLogical", vulkanState_.physicalDevice_.createLogicalDevice(deviceCI));
@@ -317,7 +318,7 @@ void ExampleBase::initializeCommandBuffers() {
   vulkanState_.setDefaultGraphicsCommandPool("GraphicsFamilyCmd");
 
   primaryGraphicsCmdBuffers_ =
-    vulkanState_.defaultGraphicsCommandPool_->allocateCommandBuffers(vk::CommandBufferLevel::ePrimary, swapchainImages_.size());
+    vulkanState_.defaultGraphicsCommandPool_->allocateCommandBuffers(vk::CommandBufferLevel::ePrimary, static_cast<uint32_t>(swapchainImages_.size()));
 }
 
 void ExampleBase::buildSyncObjects() {

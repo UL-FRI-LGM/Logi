@@ -23,6 +23,7 @@
 #include "logi/device/physical_device_impl.hpp"
 #include "logi/instance/vulkan_instance_impl.hpp"
 #include "logi/memory/acceleration_structure_nv_impl.hpp"
+#include "logi/memory/acceleration_structure_khr_impl.hpp"
 #include "logi/memory/buffer_impl.hpp"
 #include "logi/memory/device_memory_impl.hpp"
 #include "logi/memory/image_impl.hpp"
@@ -45,6 +46,7 @@
 #include "logi/synchronization/event_impl.hpp"
 #include "logi/synchronization/fence_impl.hpp"
 #include "logi/synchronization/semaphore_impl.hpp"
+#include "logi/synchronization/deferred_operation_khr_impl.hpp"
 
 namespace logi {
 
@@ -193,8 +195,10 @@ std::vector<std::shared_ptr<PipelineImpl>>
   LogicalDeviceImpl::createComputePipelines(const vk::ArrayProxy<const vk::ComputePipelineCreateInfo>& createInfos,
                                             const vk::PipelineCache& cache,
                                             const std::optional<vk::AllocationCallbacks>& allocator) {
-  std::vector<vk::Pipeline> vkPipelines =
+  auto vkResult =
     vkDevice_.createComputePipelines(cache, createInfos, allocator ? &allocator.value() : nullptr, getDispatcher());
+
+  std::vector<vk::Pipeline> vkPipelines = vkResult.value; 
 
   std::vector<std::shared_ptr<PipelineImpl>> pipelines;
   pipelines.reserve(vkPipelines.size());
@@ -220,8 +224,10 @@ std::vector<std::shared_ptr<PipelineImpl>>
   LogicalDeviceImpl::createGraphicsPipelines(const vk::ArrayProxy<const vk::GraphicsPipelineCreateInfo>& createInfos,
                                              const vk::PipelineCache& cache,
                                              const std::optional<vk::AllocationCallbacks>& allocator) {
-  std::vector<vk::Pipeline> vkPipelines =
+  auto vkResult =
     vkDevice_.createGraphicsPipelines(cache, createInfos, allocator ? &allocator.value() : nullptr, getDispatcher());
+
+  std::vector<vk::Pipeline> vkPipelines = vkResult.value; 
 
   std::vector<std::shared_ptr<PipelineImpl>> pipelines;
   pipelines.reserve(vkPipelines.size());
@@ -243,11 +249,45 @@ std::shared_ptr<PipelineImpl>
     allocator);
 }
 
+std::vector<std::shared_ptr<PipelineImpl>>
+    LogicalDeviceImpl::createRayTracingPipelinesKHR(const vk::DeferredOperationKHR deferredOperation, 
+                                                    const vk::ArrayProxy<const vk::RayTracingPipelineCreateInfoKHR>& createInfos,
+                                                    const vk::PipelineCache& pipelineCache,
+                                                    const std::optional<const vk::AllocationCallbacks>& allocator) {
+  auto vkResult = vkDevice_.createRayTracingPipelinesKHR(
+    deferredOperation, pipelineCache, createInfos, allocator ? &allocator.value() : nullptr, getDispatcher());
+
+  std::vector<vk::Pipeline> vkPipelines = vkResult.value; 
+
+  std::vector<std::shared_ptr<PipelineImpl>> pipelines;
+  pipelines.reserve(vkPipelines.size());
+
+  for (const vk::Pipeline& vkPipeline : vkPipelines) {
+    pipelines.emplace_back(VulkanObjectComposite<PipelineImpl>::createObject(*this, vkPipeline, allocator));
+  }
+
+  return pipelines;
+}
+
+std::shared_ptr<PipelineImpl>
+  LogicalDeviceImpl::createRayTracingPipelineKHR(const vk::DeferredOperationKHR deferredOperation, 
+                                                 const vk::RayTracingPipelineCreateInfoKHR& createInfo, 
+                                                 const vk::PipelineCache& pipelineCache,
+                                                 const std::optional<const vk::AllocationCallbacks>& allocator) {
+
+  return VulkanObjectComposite<PipelineImpl>::createObject(
+   *this,
+   vkDevice_.createRayTracingPipelineKHR(deferredOperation, pipelineCache, createInfo, allocator ? &allocator.value() : nullptr, getDispatcher()),
+   allocator);
+}
+
 std::vector<std::shared_ptr<PipelineImpl>> LogicalDeviceImpl::createRayTracingPipelinesNV(
   const vk::ArrayProxy<const vk::RayTracingPipelineCreateInfoNV>& createInfos, const vk::PipelineCache& cache,
   const std::optional<vk::AllocationCallbacks>& allocator) {
-  std::vector<vk::Pipeline> vkPipelines = vkDevice_.createRayTracingPipelinesNV(
+  auto vkResult = vkDevice_.createRayTracingPipelinesNV(
     cache, createInfos, allocator ? &allocator.value() : nullptr, getDispatcher());
+
+  std::vector<vk::Pipeline> vkPipelines = vkResult.value; 
 
   std::vector<std::shared_ptr<PipelineImpl>> pipelines;
   pipelines.reserve(vkPipelines.size());
@@ -263,6 +303,7 @@ std::shared_ptr<PipelineImpl>
   LogicalDeviceImpl::createRayTracingPipelineNV(const vk::RayTracingPipelineCreateInfoNV& createInfo,
                                                 const vk::PipelineCache& cache,
                                                 const std::optional<vk::AllocationCallbacks>& allocator) {
+
   return VulkanObjectComposite<PipelineImpl>::createObject(
     *this,
     vkDevice_.createRayTracingPipelineNV(cache, createInfo, allocator ? &allocator.value() : nullptr, getDispatcher()),
@@ -328,6 +369,15 @@ void LogicalDeviceImpl::waitSemaphores(const vk::SemaphoreWaitInfo& waitInfo, ui
   vkDevice_.waitSemaphores(waitInfo, timeout, getDispatcher());
 }
 
+const std::shared_ptr<DeferredOperationKHRImpl>&
+  LogicalDeviceImpl::createDeferredOperationKHR(const std::optional<vk::AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<DeferredOperationKHRImpl>::createObject(*this, allocator);
+}
+
+void LogicalDeviceImpl::destroyDeferredOperationKHR(size_t id) {
+  VulkanObjectComposite<DeferredOperationKHRImpl>::destroyObject(id);
+}
+
 const std::shared_ptr<RenderPassImpl>&
   LogicalDeviceImpl::createRenderPass(const vk::RenderPassCreateInfo& createInfo,
                                       const std::optional<vk::AllocationCallbacks>& allocator) {
@@ -384,6 +434,27 @@ std::vector<std::shared_ptr<SwapchainKHRImpl>>
 
 void LogicalDeviceImpl::destroySwapchainKHR(size_t id) {
   return VulkanObjectComposite<SwapchainKHRImpl>::destroyObject(id);
+}
+
+const std::shared_ptr<AccelerationStructureKHRImpl>&
+  LogicalDeviceImpl::createAccelerationStructureKHR(const vk::AccelerationStructureCreateInfoKHR& createInfo,
+                                                    const std::optional<vk::AllocationCallbacks>& allocator) {
+  return VulkanObjectComposite<AccelerationStructureKHRImpl>::createObject(*this, createInfo, allocator);
+}
+
+void LogicalDeviceImpl::destroyAccelerationStructureKHR(size_t id) {
+  VulkanObjectComposite<AccelerationStructureKHRImpl>::destroyObject(id);
+}   
+
+vk::Result LogicalDeviceImpl::buildAccelerationStructuresKHR(vk::DeferredOperationKHR deferredOperation, 
+                                                             const vk::ArrayProxy<const vk::AccelerationStructureBuildGeometryInfoKHR> &infos,
+                                                             const vk::ArrayProxy<const vk::AccelerationStructureBuildRangeInfoKHR *const> &pBuildRangeInfos) const {
+  return vkDevice_.buildAccelerationStructuresKHR(deferredOperation, infos, pBuildRangeInfos, getDispatcher());
+}
+
+vk::AccelerationStructureCompatibilityKHR 
+    LogicalDeviceImpl::getAccelerationStructureCompatibilityKHR(const vk::AccelerationStructureVersionInfoKHR &versionInfo) const {
+  return vkDevice_.getAccelerationStructureCompatibilityKHR(versionInfo, getDispatcher());
 }
 
 const std::shared_ptr<ValidationCacheEXTImpl>&
@@ -564,6 +635,7 @@ void LogicalDeviceImpl::free() {
   VulkanObjectComposite<BufferImpl>::destroyAllObjects();
   VulkanObjectComposite<ImageImpl>::destroyAllObjects();
   VulkanObjectComposite<AccelerationStructureNVImpl>::destroyAllObjects();
+  VulkanObjectComposite<AccelerationStructureKHRImpl>::destroyAllObjects();
   VulkanObjectComposite<MemoryAllocatorImpl>::destroyAllObjects();
   VulkanObjectComposite<DeviceMemoryImpl>::destroyAllObjects();
   VulkanObjectComposite<SwapchainKHRImpl>::destroyAllObjects();

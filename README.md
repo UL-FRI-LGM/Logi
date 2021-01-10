@@ -1,10 +1,10 @@
-# Logi
+# Logi - Object-oriented Vulkan abstraction framework
 
 Logi is light-weight Vulkan abstraction framework, which attempts to bridge the gap between previous graphics APIs and Vulkan by making API easier to use while still preserving Vulkan semantics and introducing as little overhead as possible.
 
 ## Features
 
-* Supports core Vulkan 1.2 and Nvidia RTX extension (Khronos ray tracing specification not implemeted!)
+* Supports core Vulkan 1.2, Nvidia RTX extension and Khronos ray tracing
 * Object-oriented Vulkan abstraction framework
 * Correctly enforced construction and destruction order of Vulkan resources
 * Integration of the dynamic dispatching of Vulkan functions
@@ -52,7 +52,7 @@ Basic example of rendering colored triangle to screen with Logi framework.
 ![triangle](images/hello_triangle.png) 
 
 ### [3 - Texture](examples/texture/)
-Loading 2D texture from disk and rendering it to quad.    
+Loads 2D texture from disk and renders it to quad.    
 
 ![texture](images/texture.png) 
 
@@ -62,7 +62,7 @@ Port of [Vulkan tutorial](https://vulkan-tutorial.com/) to Logi framework. Note,
 ![tutorial_port](images/vulkan_tutorial_port.png) 
 
 ### [5 - Fractals](examples/fractals/)
-Visualisation of common 3D fractals. Also Dear ImGUI is used for setting window.   
+Visualisation of 3D fractals. Also Dear ImGUI is used for setting window.   
 
 ![box1](images/box1.png)   
 ![box2](images/box2.png)  
@@ -73,10 +73,3 @@ Visualisation of common 3D fractals. Also Dear ImGUI is used for setting window.
 
 ### [6 - Path tracing](https://github.com/PrimozLavric/LogiPathTracer)
 Nvidia RTX and rasterization implementation of path tracing.
-
-
-For more see [`./examples`](examples/).
-
-
-
-

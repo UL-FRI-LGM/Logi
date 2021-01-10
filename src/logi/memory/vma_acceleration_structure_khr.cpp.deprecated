@@ -1,0 +1,57 @@
+// /**
+//  * Project Logi source code
+//  * Copyright (C) 2020 Aljaz Bogataj
+//  *
+//  * This program is free software: you can redistribute it and/or modify
+//  * it under the terms of the GNU General Public License as published by
+//  * the Free Software Foundation, either version 3 of the License, or
+//  * (at your option) any later version.
+//  *
+//  * This program is distributed in the hope that it will be useful,
+//  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  * GNU General Public License for more details.
+//  *
+//  * You should have received a copy of the GNU General Public License
+//  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//  */
+
+// #include "logi/memory/vma_acceleration_structure_khr.hpp"
+// #include "logi/memory/memory_allocator.hpp"
+// #include "logi/memory/vma_acceleration_structure_khr_impl.hpp"
+
+// namespace logi {
+
+// VMAAccelerationStructureKHR::VMAAccelerationStructureKHR(
+//   const std::shared_ptr<VMAAccelerationStructureKHRImpl>& vmaAccelerationStructureKHRImpl)
+//   : AccelerationStructureKHR(std::static_pointer_cast<AccelerationStructureKHRImpl>(vmaAccelerationStructureKHRImpl)) {}
+
+// VMAAccelerationStructureKHR::VMAAccelerationStructureKHR(const AccelerationStructureKHR& accelerationStructure)
+//   : AccelerationStructureKHR(accelerationStructure) {
+//   if (dynamic_cast<VMAAccelerationStructureKHRImpl*>(object_.get()) == nullptr) {
+//     object_.reset();
+//   }
+// }
+
+// void* VMAAccelerationStructureKHR::mapMemory() const {
+//   return static_cast<VMAAccelerationStructureKHRImpl*>(object_.get())->mapMemory();
+// }
+
+// void VMAAccelerationStructureKHR::unmapMemory() const {
+//   static_cast<VMAAccelerationStructureKHRImpl*>(object_.get())->unmapMemory();
+// }
+
+// size_t VMAAccelerationStructureKHR::size() const {
+//   return static_cast<VMAAccelerationStructureKHRImpl*>(object_.get())->size();
+// }
+
+// bool VMAAccelerationStructureKHR::isMappable() const {
+//   return static_cast<VMAAccelerationStructureKHRImpl*>(object_.get())->isMappable();
+// }
+
+// MemoryAllocator VMAAccelerationStructureKHR::getMemoryAllocator() const {
+//   return MemoryAllocator(
+//     static_cast<VMAAccelerationStructureKHRImpl*>(object_.get())->getMemoryAllocator().shared_from_this());
+// }
+
+// } // namespace logi

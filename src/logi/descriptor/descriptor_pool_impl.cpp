@@ -41,7 +41,7 @@ std::vector<std::shared_ptr<DescriptorSetImpl>>
   DescriptorPoolImpl::allocateDescriptorSets(const std::vector<vk::DescriptorSetLayout>& descriptorSetLayouts,
                                              const ConstVkNextProxy<vk::DescriptorSetAllocateInfo>& next) {
   auto vkDevice = static_cast<vk::Device>(logicalDevice_);
-  vk::DescriptorSetAllocateInfo allocateInfo(vkDescriptorPool_, descriptorSetLayouts.size(),
+  vk::DescriptorSetAllocateInfo allocateInfo(vkDescriptorPool_, static_cast<uint32_t>(descriptorSetLayouts.size()),
                                              descriptorSetLayouts.data());
   allocateInfo.pNext = next;
 

@@ -4,6 +4,9 @@ macro(compile_shaders target_name shaders_path)
 		"${shaders_path}/*.frag"
 		"${shaders_path}/*.vert"
 		"${shaders_path}/*.comp"
+		"${shaders_path}/*.rchit"
+		"${shaders_path}/*.rmiss"
+		"${shaders_path}/*.rgen"
 		)
 
 	foreach(GLSL ${GLSL_SOURCE_FILES})

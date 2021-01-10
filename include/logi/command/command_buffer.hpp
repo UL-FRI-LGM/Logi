@@ -393,6 +393,60 @@ class CommandBuffer : public Handle<CommandBufferImpl> {
   void setDeviceMaskKHR(uint32_t deviceMask) const;
 
   /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBuildAccelerationStructuresKHR.html">vkCmdBuildAccelerationStructuresKHR</a>
+   */
+  void buildAccelerationStructuresKHR(const vk::ArrayProxy<const vk::AccelerationStructureBuildGeometryInfoKHR> buildGeometryInfos,
+                                      const vk::ArrayProxy<const vk::AccelerationStructureBuildRangeInfoKHR *const> buildRangeInfos) const; 
+
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBuildAccelerationStructuresIndirectKHR.html">vkCmdBuildAccelerationStructuresIndirectKHR</a>
+   */
+  void buildAccelerationStructuresIndirectKHR(const vk::ArrayProxy<const vk::AccelerationStructureBuildGeometryInfoKHR> buildGeometryInfos, 
+                                              const vk::ArrayProxy<const vk::DeviceAddress> indirectDeviceAddresses,
+                                              const vk::ArrayProxy<const uint32_t> indirectStrides, 
+                                              const vk::ArrayProxy<const uint32_t *const> maxPrimitiveCounts) const;
+
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdCopyAccelerationStructureKHR.html">vkCmdCopyAccelerationStructureKHR</a>
+   */
+  void copyAccelerationStructureKHR(const vk::CopyAccelerationStructureInfoKHR& copyAccelerationStructureInfo) const;
+
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdCopyAccelerationStructureToMemoryKHR.html">vkCmdCopyAccelerationStructureToMemoryKHR</a>
+   */
+  void copyAccelerationStructureToMemoryKHR(const vk::CopyAccelerationStructureToMemoryInfoKHR& copyAccelerationStructureToMemoryInfo) const;              
+
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdCopyMemoryToAccelerationStructureKHR.html">vkCmdCopyMemoryToAccelerationStructureKHR</a>
+   */
+  void copyMemoryToAccelerationStructureKHR(const vk::CopyMemoryToAccelerationStructureInfoKHR& copyMemoryToAccelerationStructureInfo) const;                      
+
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdWriteAccelerationStructuresPropertiesKHR.html">vkCmdWriteAccelerationStructuresPropertiesKHR</a>
+   */
+  void writeAccelerationStructuresPropertiesKHR(const vk::ArrayProxy<const vk::AccelerationStructureKHR> accelerationStructures,
+                                                vk::QueryType queryType, vk::QueryPool queryPool, uint32_t firstQuery) const;
+
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdTraceRaysKHR.html">vkCmdTraceRaysKHR</a>
+   */
+  void traceRaysKHR(const vk::StridedDeviceAddressRegionKHR &raygenShaderBindingTable, const vk::StridedDeviceAddressRegionKHR &missShaderBindingTable,
+                    const vk::StridedDeviceAddressRegionKHR &hitShaderBindingTable, const vk::StridedDeviceAddressRegionKHR &callableShaderBindingTable,
+                    uint32_t width, uint32_t height, uint32_t depth) const;
+
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdTraceRaysIndirectKHR.html">vkCmdTraceRaysIndirectKHR</a>
+   */
+  void traceRaysIndirectKHR(const vk::StridedDeviceAddressRegionKHR &raygenShaderBindingTable, const vk::StridedDeviceAddressRegionKHR &missShaderBindingTable,
+                            const vk::StridedDeviceAddressRegionKHR &hitShaderBindingTable, const vk::StridedDeviceAddressRegionKHR &callableShaderBindingTable,
+                            vk::DeviceAddress indirectDeviceAddress) const;      
+
+  /**
+   * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdSetRayTracingPipelineStackSizeKHR.html">vkCmdSetRayTracingPipelineStackSizeKHR</a>
+   */
+  void setRayTracingPipelineStackSizeKHR(uint32_t pipelineStackSize) const;
+
+  /**
    * @brief Reference: <a href="https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/vkCmdBeginConditionalRenderingEXT.html">vkCmdBeginConditionalRenderingEXT</a>
    */
   void beginConditionalRenderingEXT(const vk::ConditionalRenderingBeginInfoEXT& conditionalRenderingBegin) const;

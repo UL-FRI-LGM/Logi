@@ -124,7 +124,7 @@ std::vector<DescriptorSetReflectionInfo> ShaderModuleImpl::reflectDescriptorSets
     // Add descriptor sets if set is out of range.
     if (descriptorSets.size() <= set) {
       descriptorSets.reserve(set + 1u);
-      for (uint32_t i = descriptorSets.size(); i < set + 1u; i++) {
+      for (uint32_t i = static_cast<uint32_t>(descriptorSets.size()); i < set + 1u; i++) {
         descriptorSets.emplace_back(i);
       }
     }

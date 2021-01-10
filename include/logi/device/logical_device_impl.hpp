@@ -34,6 +34,7 @@ class PipelineCacheImpl;
 class EventImpl;
 class FenceImpl;
 class SemaphoreImpl;
+class DeferredOperationKHRImpl;
 class QueryPoolImpl;
 class DescriptorSetLayoutImpl;
 class DescriptorPoolImpl;
@@ -47,6 +48,7 @@ class RenderPassImpl;
 class FramebufferImpl;
 class ValidationCacheEXTImpl;
 class AccelerationStructureNVImpl;
+class AccelerationStructureKHRImpl;
 class IndirectCommandsLayoutNVImpl;
 class ObjectTableNVXImpl;
 class DescriptorUpdateTemplateImpl;
@@ -67,6 +69,7 @@ class LogicalDeviceImpl : public VulkanObject,
                           public VulkanObjectComposite<EventImpl>,
                           public VulkanObjectComposite<FenceImpl>,
                           public VulkanObjectComposite<SemaphoreImpl>,
+                          public VulkanObjectComposite<DeferredOperationKHRImpl>,
                           public VulkanObjectComposite<ShaderModuleImpl>,
                           public VulkanObjectComposite<PipelineCacheImpl>,
                           public VulkanObjectComposite<DescriptorSetLayoutImpl>,
@@ -78,6 +81,7 @@ class LogicalDeviceImpl : public VulkanObject,
                           public VulkanObjectComposite<FramebufferImpl>,
                           public VulkanObjectComposite<ValidationCacheEXTImpl>,
                           public VulkanObjectComposite<AccelerationStructureNVImpl>,
+                          public VulkanObjectComposite<AccelerationStructureKHRImpl>,
                           public VulkanObjectComposite<IndirectCommandsLayoutNVImpl>,
                           public VulkanObjectComposite<ObjectTableNVXImpl> {
  public:
@@ -174,6 +178,18 @@ class LogicalDeviceImpl : public VulkanObject,
                                                        const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   std::vector<std::shared_ptr<PipelineImpl>>
+     createRayTracingPipelinesKHR(const vk::DeferredOperationKHR deferredOperation, 
+                                  const vk::ArrayProxy<const vk::RayTracingPipelineCreateInfoKHR>& createInfos,
+                                  const vk::PipelineCache& pipelineCache = nullptr,
+                                  const std::optional<const vk::AllocationCallbacks>& allocator = {});
+
+  std::shared_ptr<PipelineImpl> 
+    createRayTracingPipelineKHR(const vk::DeferredOperationKHR deferredOperation, 
+                                const vk::RayTracingPipelineCreateInfoKHR& createInfo, 
+                                const vk::PipelineCache& pipelineCache = nullptr,
+                                const std::optional<const vk::AllocationCallbacks>& allocator = {});
+
+  std::vector<std::shared_ptr<PipelineImpl>>
     createRayTracingPipelinesNV(const vk::ArrayProxy<const vk::RayTracingPipelineCreateInfoNV>& createInfos,
                                 const vk::PipelineCache& cache = nullptr,
                                 const std::optional<vk::AllocationCallbacks>& allocator = {});
@@ -214,6 +230,11 @@ class LogicalDeviceImpl : public VulkanObject,
 
   void waitSemaphores(const vk::SemaphoreWaitInfo& waitInfo, uint64_t timeout) const;
 
+  const std::shared_ptr<DeferredOperationKHRImpl>& 
+    createDeferredOperationKHR(const std::optional<vk::AllocationCallbacks>& allocator = {});
+
+  void destroyDeferredOperationKHR(size_t id);
+
   const std::shared_ptr<RenderPassImpl>& createRenderPass(const vk::RenderPassCreateInfo& createInfo,
                                                           const std::optional<vk::AllocationCallbacks>& allocator = {});
 
@@ -240,7 +261,24 @@ class LogicalDeviceImpl : public VulkanObject,
                               const std::optional<vk::AllocationCallbacks>& allocator = {});
 
   void destroySwapchainKHR(size_t id);
+  
+  const std::shared_ptr<AccelerationStructureKHRImpl>& 
+    createAccelerationStructureKHR(const vk::AccelerationStructureCreateInfoKHR& createInfo,
+                                   const std::optional<vk::AllocationCallbacks>& allocator = {});
 
+  void destroyAccelerationStructureKHR(size_t id);    
+
+  vk::Result buildAccelerationStructuresKHR(vk::DeferredOperationKHR deferredOperation, 
+                                           const vk::ArrayProxy<const vk::AccelerationStructureBuildGeometryInfoKHR> &infos,
+                                           const vk::ArrayProxy<const vk::AccelerationStructureBuildRangeInfoKHR *const> &pBuildRangeInfos) const;
+
+  vk::AccelerationStructureCompatibilityKHR 
+      getAccelerationStructureCompatibilityKHR(const vk::AccelerationStructureVersionInfoKHR &versionInfo) const;
+
+  template <typename T>
+  vk::ResultValueType<void>::type writeAccelerationStructuresPropertiesKHR(const vk::ArrayProxy<const vk::AccelerationStructureKHR> &accelerationStructures, 
+                                                                           vk::QueryType queryType, const vk::ArrayProxy<T> &data, size_t stride) const; 
+                         
   const std::shared_ptr<ValidationCacheEXTImpl>&
     createValidationCacheEXT(const vk::ValidationCacheCreateInfoEXT& createInfo,
                              const std::optional<vk::AllocationCallbacks>& allocator = {});
@@ -348,6 +386,13 @@ class LogicalDeviceImpl : public VulkanObject,
   vk::Device vkDevice_;
   vk::DispatchLoaderDynamic dispatcher_;
 };
+
+template <typename T>
+vk::ResultValueType<void>::type
+    LogicalDeviceImpl::writeAccelerationStructuresPropertiesKHR(const vk::ArrayProxy<const vk::AccelerationStructureKHR> &accelerationStructures,
+                                                                vk::QueryType queryType, const vk::ArrayProxy<T> &data, size_t stride) const {
+  return vkDevice_.writeAccelerationStructuresPropertiesKHR(accelerationStructures, queryType, data, stride, getDispatcher());
+}
 
 } // namespace logi
 

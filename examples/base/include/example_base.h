@@ -18,7 +18,7 @@ struct ExampleConfiguration {
   size_t maxFramesInFlight = 2u;
   std::vector<const char*> instanceExtensions;
   std::vector<const char*> deviceExtensions;
-  std::vector<const char*> validationLayers = {"VK_LAYER_LUNARG_standard_validation"};
+  std::vector<const char*> validationLayers = {"VK_LAYER_KHRONOS_validation"};
 };
 
 struct PipelineLayoutData {

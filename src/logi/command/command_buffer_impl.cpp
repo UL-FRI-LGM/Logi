@@ -331,6 +331,55 @@ void CommandBufferImpl::setDeviceMaskKHR(uint32_t deviceMask) const {
   vkCommandBuffer_.setDeviceMaskKHR(deviceMask, getDispatcher());
 }
 
+void CommandBufferImpl::buildAccelerationStructuresKHR(const vk::ArrayProxy<const vk::AccelerationStructureBuildGeometryInfoKHR> buildGeometryInfos,
+                                                       const vk::ArrayProxy<const vk::AccelerationStructureBuildRangeInfoKHR *const> buildRangeInfos) const {
+  vkCommandBuffer_.buildAccelerationStructuresKHR(buildGeometryInfos, buildRangeInfos, getDispatcher());
+}
+
+void CommandBufferImpl::buildAccelerationStructuresIndirectKHR(const vk::ArrayProxy<const vk::AccelerationStructureBuildGeometryInfoKHR> buildGeometryInfos, 
+                                                               const vk::ArrayProxy<const vk::DeviceAddress> indirectDeviceAddresses,
+                                                               const vk::ArrayProxy<const uint32_t> indirectStrides, 
+                                                               const vk::ArrayProxy<const uint32_t *const> maxPrimitiveCounts) const {
+  vkCommandBuffer_.buildAccelerationStructuresIndirectKHR(buildGeometryInfos, indirectDeviceAddresses, indirectStrides, maxPrimitiveCounts, getDispatcher());
+}
+
+void CommandBufferImpl::copyAccelerationStructureKHR(const vk::CopyAccelerationStructureInfoKHR& copyAccelerationStructureInfo) const {
+  vkCommandBuffer_.copyAccelerationStructureKHR(copyAccelerationStructureInfo, getDispatcher());
+}
+
+void CommandBufferImpl::copyAccelerationStructureToMemoryKHR(const vk::CopyAccelerationStructureToMemoryInfoKHR& copyAccelerationStructureToMemoryInfo) const {
+  vkCommandBuffer_.copyAccelerationStructureToMemoryKHR(copyAccelerationStructureToMemoryInfo, getDispatcher());
+}              
+
+void CommandBufferImpl::copyMemoryToAccelerationStructureKHR(const vk::CopyMemoryToAccelerationStructureInfoKHR& copyMemoryToAccelerationStructureInfo) const {
+  vkCommandBuffer_.copyMemoryToAccelerationStructureKHR(copyMemoryToAccelerationStructureInfo, getDispatcher());
+}                      
+
+void CommandBufferImpl::writeAccelerationStructuresPropertiesKHR(const vk::ArrayProxy<const vk::AccelerationStructureKHR> accelerationStructures,
+                                                                 vk::QueryType queryType, vk::QueryPool queryPool, uint32_t firstQuery) const {
+  vkCommandBuffer_.writeAccelerationStructuresPropertiesKHR(accelerationStructures, queryType, queryPool, firstQuery, getDispatcher());
+}
+
+void CommandBufferImpl::traceRaysKHR(const vk::StridedDeviceAddressRegionKHR &raygenShaderBindingTable, const vk::StridedDeviceAddressRegionKHR &missShaderBindingTable,
+                                     const vk::StridedDeviceAddressRegionKHR &hitShaderBindingTable, const vk::StridedDeviceAddressRegionKHR &callableShaderBindingTable,
+                                     uint32_t width, uint32_t height, uint32_t depth) const {
+  vkCommandBuffer_.traceRaysKHR(raygenShaderBindingTable, missShaderBindingTable,
+                                hitShaderBindingTable, callableShaderBindingTable,
+                                width, height, depth, getDispatcher());
+}    
+
+void CommandBufferImpl::traceRaysIndirectKHR(const vk::StridedDeviceAddressRegionKHR &raygenShaderBindingTable, const vk::StridedDeviceAddressRegionKHR &missShaderBindingTable,
+                                             const vk::StridedDeviceAddressRegionKHR &hitShaderBindingTable, const vk::StridedDeviceAddressRegionKHR &callableShaderBindingTable,
+                                             vk::DeviceAddress indirectDeviceAddress) const {
+  vkCommandBuffer_.traceRaysIndirectKHR(raygenShaderBindingTable, missShaderBindingTable,
+                                        hitShaderBindingTable, callableShaderBindingTable,
+                                        indirectDeviceAddress, getDispatcher());
+}    
+
+void CommandBufferImpl::setRayTracingPipelineStackSizeKHR(uint32_t pipelineStackSize) const {
+  vkCommandBuffer_.setRayTracingPipelineStackSizeKHR(pipelineStackSize, getDispatcher());
+}
+
 void CommandBufferImpl::beginConditionalRenderingEXT(
   const vk::ConditionalRenderingBeginInfoEXT& conditionalRenderingBegin) const {
   vkCommandBuffer_.beginConditionalRenderingEXT(conditionalRenderingBegin, getDispatcher());
